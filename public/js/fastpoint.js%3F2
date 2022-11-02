@@ -1,0 +1,308 @@
+function webglAvailable() {
+//return false;
+    try {
+        var canvas = document.createElement("canvas");
+        return !!
+            window.WebGLRenderingContext && 
+            (canvas.getContext("webgl") || 
+                canvas.getContext("experimental-webgl"));
+    } catch(e) { 
+        return false;
+    } 
+}
+
+var Path = [];
+
+$(function() {
+		
+	
+
+	if(!webglAvailable())
+		webglAvailable = 0;
+	else
+		webglAvailable = 1;
+		
+	
+		
+	// SET CAMEREA
+	
+	xcamera = 2;
+	
+	if(xcamera==1) {
+		var camera = new THREE.PerspectiveCamera(10, $("body").width()/700, 1, 10000);
+		cameraangle = 30;
+		camera.position.set($("body").width()/2,350, -5000);
+		camera.up = new THREE.Vector3(0,1,0);
+		camera.lookAt(new THREE.Vector3($("body").width()/2,350, 0));
+		
+		cameraangle = 30;
+	}
+	if(xcamera==2) {
+		var camera = new THREE.OrthographicCamera( $("body").width(),0, 700,0,1,5000);
+		
+		camera.position.set(0, 0, 1000);
+		camera.up = new THREE.Vector3(0,1,0);
+		camera.lookAt(new THREE.Vector3(0,0,0));
+	}
+	
+	
+	// SET SCENE
+	fogcolor = 0x000000;
+	var scene = new THREE.Scene();
+	//scene.fog = new THREE.FogExp2( fogcolor, 0.002 );
+
+	 // lights
+
+	light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	light.position.set( 1, 1, 0.5 );
+	scene.add( light );
+
+	light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	light.position.set( -1, 1, 0.5 );
+	scene.add( light );
+	
+	light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	light.position.set( 0, -1, 0.5 );
+	scene.add( light );
+	
+	light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	light.position.set( 0, 0, -1 );
+	scene.add( light );
+	
+	
+	
+		/**/
+		
+	var geometry = new THREE.BoxGeometry( 5, 5,5);
+	var geometry2 = new THREE.BoxGeometry( 20,20,20);
+	
+	
+	
+	
+	for(i=0;i<4;i++) {
+		Path[i] = new Array();
+		
+		
+		curx = Math.floor(Math.random()*($("body").width()/4) + $("body").width()/4);
+		cury = Math.floor(Math.random()*700);
+		
+		
+		
+		angle = Math.random()*Math.PI*2;
+		anglechange = Math.random()*Math.PI*2/20 - Math.PI*2/40;
+		
+		for(j=0;j<150;j++) {
+			
+			
+			
+			curx += Math.cos(angle)*20;
+			cury += Math.sin(angle)*20;
+			
+			if(cury < -20) {
+				cury += 10;
+				angle = Math.random()*Math.PI*2;
+			}
+			if(curx < -20) {
+				curx += 10;
+				angle = Math.random()*Math.PI*2;
+			}
+			if(cury > 720) {
+				cury -= 10;
+				angle = Math.random()*Math.PI*2;
+			}
+			if(curx > $("body").width()) {
+				curx -= 10;
+				angle = Math.random()*Math.PI*2;
+			}
+			
+			angle += anglechange;
+			
+			if(Math.random() < 0.1)
+				anglechange = Math.random()*Math.PI*2/10 - Math.PI*2/20;
+				
+			
+			var geom = new THREE.Geometry();
+			var v1 = new THREE.Vector3(Math.random()*70-35,Math.random()*70-35,Math.random()*70-35);
+			var v2 = new THREE.Vector3(Math.random()*70-35,Math.random()*70-35,Math.random()*70-35);
+			var v3 = new THREE.Vector3(Math.random()*70-35,Math.random()*70-35,Math.random()*70-35);
+			geom.vertices.push( v1 );
+			geom.vertices.push( v2 );
+			geom.vertices.push( v3 );
+			
+			geom.faces.push( new THREE.Face3( 0, 1, 2 ) );
+			geom.computeFaceNormals();
+
+			randcolor = Math.random()/4 + 3/4;
+			if(i == 0 || i == 1) {			
+				color = Math.ceil(0x000080*randcolor)*256*256 + Math.ceil(0x000080*randcolor)*256 + Math.ceil(0x000080*randcolor);
+			}
+			if(i == 2) {
+				color = 0x0066ff;
+				color = Math.ceil(0x000000*randcolor)*256*256 + Math.ceil(0x000066*randcolor)*256 + Math.ceil(0x0000ff*randcolor);
+			}
+			if(i == 3) {		
+				color = 0xff9900;
+				color = Math.ceil(0x0000ff*randcolor)*256*256 + Math.ceil(0x000099*randcolor)*256 + Math.ceil(0x000000*randcolor);
+			}
+			
+			Path[i][j] = {
+				mesh : new THREE.Mesh( geom, new THREE.MeshBasicMaterial({color: color, side: THREE.DoubleSide, transparent: true, opacity: Math.random()}) ),
+				x: curx + Math.random()*30-15,
+				y: cury + Math.random()*30-15,
+				z: i*100
+			}
+			
+			Path[i][j].mesh.position.set(Path[i][j].x,Path[i][j].y,Path[i][j].z);
+			Path[i][j].mesh.rotation.set(Math.random()*Math.PI*2,Math.random()*Math.PI*2,0);
+			scene.add(Path[i][j].mesh);
+			
+		}
+		
+	}
+	
+	
+	
+	/**/
+	
+	
+	// CREATE RENDERER	
+	var renderer = webglAvailable ? new THREE.WebGLRenderer({ alpha: true, antialias: true}) : new THREE.CanvasRenderer({ alpha: true, antialias: true });
+	
+	renderer.setSize($("body").width(), 700);
+	renderer.setClearColor( 0x000000, 0 );
+	document.getElementById("threeD").appendChild(renderer.domElement);
+
+	clock = new THREE.Clock();
+	var mousex = 0;
+	var mousey = 0;
+	var currentmove = 0;
+	var initialmouse = false;
+	function animate() {
+		
+		delta = clock.getDelta();
+		if(delta > 0.2)
+			delta = 0.2;
+
+		
+		targetmove = mousex - initialmouse;
+		currentmove += (targetmove - currentmove)/20;
+		for(i = 0; i<Path.length; i++) {
+			for(j = 0; j<Path[i].length; j++) {
+			
+				Path[i][j].mesh.position.x = Path[i][j].x - (currentmove*((i+1)*Math.sqrt(i+1)+5)/5)/10;
+				
+				distance = Math.sqrt((Path[i][j].mesh.position.x - mousex)*(Path[i][j].mesh.position.x - mousex) + (Path[i][j].y - mousey)*(Path[i][j].y - mousey));
+				
+				if(distance < 300) {
+					Path[i][j].mesh.rotation.z += delta/(distance/(300/5.9)+0.1);
+					scale = 1 + (300-distance)/300/1.;
+					Path[i][j].mesh.scale.set(scale,scale,scale);
+				}
+				else {
+					Path[i][j].mesh.rotation.z += delta/6;
+					Path[i][j].mesh.scale.set(1,1,1);
+				}
+				
+			}
+		}
+		
+		/*
+		currentTime = (new Date()).getTime();
+		totalTime = currentTime - startTime; // millisecs
+		totalTime /= 1000;
+		timeDiff = currentTime - lastTime; lastTime = currentTime;
+		*/
+		currentTime = (new Date()).getTime();
+		
+		render();
+		
+		// request new frame
+		if (typeof requestAnimationFrame === "function") { 
+			setTimeout(function(){
+				requestAnimationFrame(function(){
+					 animate ();
+				});
+			},15);
+		}
+		else {
+			setTimeout(function(){
+				animate();
+			},1000/20);
+		}
+		
+		
+		//requestAnimationFrame( animate );
+		
+	}
+
+	function render() {
+		renderer.render( scene, camera );
+	}
+	animate();
+	
+	function onWindowResize() {
+
+	// 	var camera = new THREE.OrthographicCamera( $("body").width(),0, 700,0,1,5000);
+		camera.left = $("body").width();
+		camera.right = 0;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( $("body").width(), 700 );
+
+		render();
+
+	}
+	
+	 
+	function onDocumentMouseMove( event ) {
+		event.preventDefault();
+		mousex = $("body").width()-event.clientX;
+		if(initialmouse === false)
+			initialmouse = mousex;
+		offset = $("#threeD").offset();
+		mousey = 700-event.clientY + offset.top ;
+		
+		
+	}
+	
+	
+	
+	onWindowResize();
+	
+	 window.addEventListener( 'resize', onWindowResize, false );
+	 window.addEventListener( 'mousemove', onDocumentMouseMove, false );
+	// document.getElementById("threeD").addEventListener( 'wheel', onMouseWheel, false );
+	
+	window.addEventListener( 'mousemove', RoundButton, false );
+	
+});
+
+
+function RoundButton(event) {
+	
+	var offset = $(".roundbutton-back").offset();
+	
+	origX = offset.left + $(".roundbutton-back").width()/2;
+	origY = offset.top + $(".roundbutton-back").height()/2;
+	
+	$(".roundbutton-back div").css("left",-(event.clientX-origX)/50 + "px");
+	$(".roundbutton-back div").css("top", -(event.clientY-origY)/50 + "px");
+	//console.log(event.clientX + " "+origX);
+}
+	
+function changeColor(id) {
+	$("#homebar").removeClass().addClass("hb"+id);
+	//console.log($("#homebar").attr("class"));
+	$("#homecolor").removeClass().addClass("hb"+id);
+	newcolor = $("#homecolor").css("background-color");	
+	
+	setColor=function(j,newcolor){
+	  setTimeout(function(){
+		Path[3][j].mesh.material.color.set(newcolor);
+	  },j*3);
+	}
+
+	for(j = 0; j<Path[3].length; j++) {	
+		setColor(j,newcolor);
+	}
+}

@@ -1,0 +1,139 @@
+<?php
+
+?>
+<style>
+input
+{
+	width:30;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+function rand(min,max)
+{
+	return Math.floor((Math.random() * Number(max)) + Number(min));
+}
+function shuffle(obj)
+{
+	console.log('#'+obj.id);
+	var id=obj.id
+	var coords=id.split('_');
+	var xval=Number(coords[0]);
+	var yval=Number(coords[1]);
+	console.log('x='+xval);
+	console.log('y='+yval);
+	console.log('verify');
+	var test,t1,t2,t3,t4;
+	
+	t1=$('#'+(xval+1)+'_'+yval).val()?Number($('#'+(xval+1)+'_'+yval).val()):0;
+	t2=$('#'+(xval-1)+'_'+yval).val()?Number($('#'+(xval-1)+'_'+yval).val()):0;
+	t3=$('#'+xval+'_'+(yval+1)).val()?Number($('#'+xval+'_'+(yval+1)).val()):0;
+	t4=$('#'+xval+'_'+(yval-1)).val()?Number($('#'+xval+'_'+(yval-1)).val()):0;
+	test=Number(t1)+Number(t2)+Number(t3)+Number(t4);
+	console.log(t1+' '+t2+' '+t3+' '+t4);
+	console.log(test);
+	if(Number($('#'+xval+'_'+yval).val())!==test)
+		$('#'+xval+'_'+yval).val('');
+	
+	for (var x=0;x<5;x++)
+	{
+		for (var y=0;y<5;y++)
+		{
+			if($('#'+x+'_'+y).val()!=0&&$('#'+x+'_'+y)!==$('#'+xval+'_'+yval))
+			{
+				console.log($('#'+x+'_'+y).val());
+				$('#'+x+'_'+y).val(rand(0,50));
+			}
+			else $('#'+x+'_'+y).val('');
+		}
+	}
+}
+</script>
+Fill the grid by adding adjacent squares.
+<table>
+	<tr>
+		<td>
+			<input id=0_0 type=text onchange=shuffle(this); value=1></input>
+		</td>
+		<td>
+			<input id=0_1 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=0_2 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=0_3 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=0_4 type=text onchange=shuffle(this);></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input id=1_0 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=1_1 type=text onchange=shuffle(this); value=1></input>
+		</td>
+		<td>
+			<input id=1_2 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=1_3 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=1_4 type=text onchange=shuffle(this);></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input id=2_0 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=2_1 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=2_2 type=text onchange=shuffle(this); value=1></input>
+		</td>
+		<td>
+			<input id=2_3 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=2_4 type=text onchange=shuffle(this);></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input id=3_0 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=3_1 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=3_2 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=3_3 type=text onchange=shuffle(this); value=1></input>
+		</td>
+		<td>
+			<input id=3_4 type=text onchange=shuffle(this);></input>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input id=4_0 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=4_1 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=4_2 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=4_3 type=text onchange=shuffle(this);></input>
+		</td>
+		<td>
+			<input id=4_4 type=text onchange=shuffle(this); value=1></input>
+		</td>
+	</tr>
+</table>

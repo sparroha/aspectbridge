@@ -1,0 +1,169 @@
+<html>
+<!--
+-
+-[[[HEAD]]]
+-
+-->
+<head>
+	<title>'Terra Forge'</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="programming, community, communities, minecraft, steam, java, C++, html, modding, sentinel, gaming, sentinel-gaming, feed-the-beast, ftb" />
+	<meta name="description" content="SparLogic is a web side dedicated to coordinating and organizing any public content related to or assaciated with the programmer, sparroha." />
+	<link rel="shortcut icon" href="assets/binary2.png" type="image/x-icon">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="js/script.js"></script>
+	<link rel='stylesheet' href='css/nav.css'>
+	<script src="js/bs-dropdown-hover.js"></script>
+
+</head>
+<!--
+-
+-[[[AUTHENTICATION]]]
+-
+-->
+<body class='container'>
+<!--
+-
+-[[[HEADER]]]
+-
+-->
+<header>
+	<div id='header' class='well-sm row m1 tcenter black-back'>
+		<div class='col-sm-12 tcenter navy_back title logo'>
+			<h1>Page Title</h1>
+		</div>
+	</div>
+	<div id='nav_con' class='well-sm row m1'>
+		<div class='col-sm-12 p5 black-back'>
+			<div id="nav"><h2>NAV IMPORT FAILED</h2></div>
+		</div>
+	</div>
+</header>
+<!--
+-
+-[[[CONTENT]]]
+-
+-->
+<content>
+<!--
+-#####-HOME-#####
+-->
+	<div id='home' class='row m5'>
+	</div>
+<!--
+-#####-IRC-##### FUNCTIONAL
+-->
+	<div id='irc' class='row m5'>
+		<div class='col-sm-1 h60 grey-back o5'>
+			<div id="ab">NAV IMPORT FAILED</div>
+		</div>
+		<div class="col-sm-10 h60 black-back">
+			<iframe class="w100 h100 grey-back" src="https://webchat.esper.net/?nick=&channels=terraforge" frameborder="0"></iframe>
+		</div>
+		<div class='col-sm-1 h60 grey-back o5'>
+		</div>
+	</div>
+<!--
+-#####-DOCS-##### TODO
+-->
+	<div id='docs' class='row m5'>
+		<div class='well-sm col-sm-2 h60 grey-back o5'>
+			<div id="ab">NAV IMPORT FAILED</div>
+			<center>
+				<table>
+					<tr><h3>Click a button to open the associated document.</h3></tr><hr>
+					<tr><td><button onClick="viewtxt('resources/commands.txt')">commands</button></td></tr>
+					<tr><td><button onClick="viewtxt('resources/permissions.yml')">permissions</button></td></tr>
+					<tr><td><button onClick="viewtxt('resources/layout.php')">layout</button></td></tr>
+					<tr><td><button onClick="viewtxt('https://docs.google.com/spreadsheets/d/1alR-Xiv8QgkjDVWfRCL7Veg7Q3oWrhuemSbWOmRMiuQ/edit#gid=776153889')">mod list thermal</button></td></tr>
+					<tr><td><button onClick="viewtxt('resources/ATLauncher XML and API Documentation.pdf')">ATL XML</button></td></tr>
+					<tr><td><button onClick="viewtxt('resources/hurricane.txt')">Hurricane Lyrics</button></td></tr>
+					<tr><td><button onClick="viewtxt('resources/netherportal.php')">Nether Portal Science</button></td></tr>
+				</table>
+			</center>
+		</div>
+		<div class='well-sm col-sm-8 h60 white-back'>
+			<center class=vcenter>
+				<div class="">
+					<!--<iframe id="txtout" class="w100 h100 scroll" src ="resources/ATLauncher XML and API Documentation.pdf" frameborder="0" ></iframe>-->
+				</div>
+			</center>
+		</div>
+		<div class='well-sm col-sm-2 h60 grey-back o5'>
+			<ul>
+				<li><button onClick="viewtxt('http://multitwitch.tv/'+$(this).next().val())">multitwitch.tv/</button><input type=text></input></li>
+			</ul>
+		</div>
+	</div>
+<!--
+-#####-CONTACT-#####
+-->
+	<div id='contact' class='row m5'>
+		<div class='well-sm col-sm-2 h60 grey-back o5'>
+			<div id="ab">NAV IMPORT FAILED</div>
+		</div>
+		<div class='well-sm col-sm-8 h60 white-back'>
+			<center class=vcenter>
+				<div class="">
+					<script>
+						$(function() {
+			                $("#contact-form").on("submit", function(e) {
+			                    e.preventDefault();
+			                    $.ajax({
+			                        url: $(this).attr("action"),
+			                        type: 'POST',
+			                        data: $(this).serialize(),
+			                        beforeSend: function() {
+			                            //$("#message").html("sending...");
+			                        },
+			                        success: function(data) {
+			                            //$("#message").hide();
+			                            //$("#response").html(data);
+			                            alert('Message Sent');
+			                            console.log('Message Sent: '+data);
+			                        }
+			                    });
+			                });
+			            });
+					</script>
+					<form id=contact-form action="sendto.php" method=POST>
+						<input type=hidden name=returnurl value=<? echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'] ?>>
+						<p><label>Name : </label>
+						<input id="name" type="text" name="username" placeholder="username" />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label>E-Mail : </label>
+						<input id="password" type="email" name="email" placeholder="user@email.com" /></p>
+						<p><textarea id="message" type="textarea" rows=6 cols=80 name="message" placeholder="email content" ></textarea></p>
+						<input class="btn btn-default" type="submit" name="submit" value="Send" />
+					</form>
+				</div>
+			</center>
+		</div>
+		<div class='well-sm col-sm-2 h60 grey-back o5'>
+
+		</div>
+	</div>
+</content>
+<!--
+-
+-[[[FOOTER]]]
+-
+-->
+<footer>
+	<div id='footer' class='row'>
+		<div class='col-sm-6 tcenter'>
+			<br><a class='blue-font' href='menu.php'>Site Map</a>
+		</div>
+		<div class='col-sm-6 tcenter'>
+			<br><p id=update class='white-font'>Last updated: </p>
+		</div>
+	</div>
+</footer>
+</body>
+</html>
