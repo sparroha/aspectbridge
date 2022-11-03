@@ -34,7 +34,7 @@ const style = {
                 <Script src="../../node_modules/jquery/dist/jquery.js" type='text/javascript'></Script>
                 <Script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js" type='text/javascript'></Script>
 
-                <link rel="stylesheet" href="../../pages/css/wasd.css" />
+                <link rel="stylesheet" href="./css/wasd.css" />
                 <Script src="js/engine.js" type='text/javascript'></Script>
                 <Script src="js/movement.js" type='text/javascript'></Script>
                 <Script src="js/entity.js" type='text/javascript'></Script>
