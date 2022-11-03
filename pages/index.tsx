@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import $ from 'jquery';
+//import $ from 'jquery';
 import Link from "next/link";
 //import Nav from '../components/nav';
 import dynamic from "next/dynamic";
 
-const Nav = dynamic(()=> import("./../components/nav"), {ssr: false})
+const Nav = dynamic(()=> {return(import("./../components/nav"))}, {ssr: false})
 
-const root = ReactDOM.createRoot(<Nav />,$('#nav'));
+//const root = ReactDOM.createRoot(<Nav />,document.getElementById('nav'));
 export default function Main() {
     return (
         <div>
