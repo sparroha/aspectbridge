@@ -1,7 +1,7 @@
 import Link from 'next/link'
-export {Nav};
+export default {Nav};
 
-function Nav () {
+function Nav() {
     return (
         <div>
             <h1>www.donalds.party.dance</h1>
