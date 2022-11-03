@@ -1,3 +1,5 @@
+
+import $ from "jquery"
 function vec(x,y){
 	this.x = x;
 	this.y = y;
@@ -15,7 +17,7 @@ function vecObj(obj,vec,speed,life,decay){
 //returns collision target
 function vecMoveObj(obj,vec){
 	//console.log((parseFloat(obj.css('left'))+parseFloat(obj.css('width'))/2)+','+(parseFloat(obj.css('top'))+parseFloat(obj.css('height'))/2));
-	collisionTarget = scanForCollisionAt(obj,vec);
+	let collisionTarget = scanForCollisionAt(obj,vec);
 	/*console.log(collisionTarget);*/
 	if(collisionTarget!==false){
 		obj.css('top',Math.max(0,Math.min(maxY-parseInt(obj.css('height')),parseFloat(obj.css('top')) - vec.y*1)) + 'px');
@@ -52,7 +54,7 @@ function arrayMoveObj(objArray){
 	return objArray;
 }
 function moveClientObj(clientObj,speed){
-	collisionTarget = vecMoveObj(clientObj,new vec(
+	return vecMoveObj(clientObj,new vec(
 		0+(DIRECTION.WEST?-speed:0)+(DIRECTION.EAST?speed:0),
 		0+(DIRECTION.NORTH?-speed:0)+(DIRECTION.SOUTH?speed:0)
 	));

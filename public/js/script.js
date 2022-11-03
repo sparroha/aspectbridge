@@ -1,3 +1,4 @@
+import $ from 'jquery';
 
 function sentimg(obj,id){
 	if(id==1){

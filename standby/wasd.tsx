@@ -35,10 +35,10 @@ const style = {
                 <Script src="../node_modules/bootstrap/dist/js/bootstrap.min.js" type='text/javascript'></Script>
 
                 <link rel="stylesheet" href="../pages/css/wasd.css" />
-                <Script src="../pages/js/engine.js" type='text/javascript'></Script>
-                <Script src="../pages/js/movement.js" type='text/javascript'></Script>
-                <Script src="../pages/js/entity.js" type='text/javascript'></Script>
-                <Script src="../pages/js/game.js" type='text/javascript'></Script>
+                <Script src="../public/wasd/js/engine.js" type='text/javascript'></Script>
+                <Script src="../public/wasd/js/movement.js" type='text/javascript'></Script>
+                <Script src="../public/wasd/js/entity.js" type='text/javascript'></Script>
+                <Script src="../public/wasd/js/game.js" type='text/javascript'></Script>
             </Head>
             <body id="body">
                 <Row class="row center-block">
