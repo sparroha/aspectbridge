@@ -1,4 +1,8 @@
 import Link from 'next/link'
+//import $ from "jquery"
+import 'jquery/dist/jquery.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 export default function () {
   return (
