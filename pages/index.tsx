@@ -14,7 +14,7 @@ if (typeof window !== 'undefined') {
 }
 
 //const root = ReactDOM.createRoot(document.getElementById('root'));
-/*export default */function Main() {
+export default function Main() {
   return (
     <div>
       <h1>www.donalds.party.dance</h1>
