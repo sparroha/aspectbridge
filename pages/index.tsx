@@ -10,7 +10,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render([WASD]);
+//root.render([WASD]);
 /*export default function () {
   return (
     <div>
