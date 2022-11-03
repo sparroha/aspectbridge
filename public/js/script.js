@@ -1,6 +1,5 @@
-//import $ from 'jquery';
 
-function sentimg(obj,id){
+function sentImg(obj,id){
 	if(id==1){
 		obj.src="assets/sg_logo.png";
 		obj.width=obj.width/2;

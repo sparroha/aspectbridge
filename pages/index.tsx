@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import $ from "jquery"
+/*import $ from "jquery"
 import 'jquery/dist/jquery.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
+import 'bootstrap/dist/js/bootstrap.min.js';*/
 //import WASD from "../public/wasd/wasd";//this works to impor
 import React from 'react';
 import ReactDOM from 'react-dom';
