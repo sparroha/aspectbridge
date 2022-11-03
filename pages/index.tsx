@@ -3,6 +3,8 @@ import Link from 'next/link'
 import 'jquery/dist/jquery.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
+import 'wasd.tsx';
+import WASD from "./wasd";
 
 export default function () {
   return (
@@ -10,6 +12,7 @@ export default function () {
       <h1>www.donalds.party.dance</h1>
       <p>This is a simple home page</p>
       <p><Link href="/invite.txt">A link to a file</Link></p>
+        <WASD />
     </div>
   );
 }
