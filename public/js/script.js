@@ -102,7 +102,7 @@ function showHome(){
 			'</center>'+
 		'</div>'+
 		'<div class="well-sm col-sm-2 h60 grey-back o5">'+
-		'</div>");'
+		'</div>'
 		)
 }
 function showNav(){

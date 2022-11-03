@@ -3,13 +3,13 @@ import $ from "jquery"
 import 'jquery/dist/jquery.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import WASD from "./wasd";//this works to import
+//import WASD from "../standby/wasd";//this works to import
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<WASD />);
+//root.render(<WASD />);
 /*export default function () {
   return (
     <div>

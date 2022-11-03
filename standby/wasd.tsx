@@ -18,7 +18,7 @@ const style = {
         background: "#CCC"
     }
 }
-export default function WASD() {
+/*export default */function WASD() {
     return (
         <Container>
             <Head>
@@ -29,16 +29,16 @@ export default function WASD() {
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
                 <meta name="keywords" content=""/>
                 <meta name="description" content=""/>
-                <link rel="shortcut icon" href="./../public/assets/binary2.png" type="image/x-icon" />
-                <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css" />
-                <Script src="./../node_modules/jquery/dist/jquery.js" type='text/javascript'></Script>
-                <Script src="./../node_modules/bootstrap/dist/js/bootstrap.min.js" type='text/javascript'></Script>
+                <link rel="shortcut icon" href="../public/assets/binary2.png" type="image/x-icon" />
+                <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+                <Script src="../node_modules/jquery/dist/jquery.js" type='text/javascript'></Script>
+                <Script src="../node_modules/bootstrap/dist/js/bootstrap.min.js" type='text/javascript'></Script>
 
-                <link rel="stylesheet" href="./../pages/css/wasd.css" />
-                <Script src="./../pages/js/engine.js" type='text/javascript'></Script>
-                <Script src="./../pages/js/movement.js" type='text/javascript'></Script>
-                <Script src="./../pages/js/entity.js" type='text/javascript'></Script>
-                <Script src="./../pages/js/game.js" type='text/javascript'></Script>
+                <link rel="stylesheet" href="../pages/css/wasd.css" />
+                <Script src="../pages/js/engine.js" type='text/javascript'></Script>
+                <Script src="../pages/js/movement.js" type='text/javascript'></Script>
+                <Script src="../pages/js/entity.js" type='text/javascript'></Script>
+                <Script src="../pages/js/game.js" type='text/javascript'></Script>
             </Head>
             <body id="body">
                 <Row class="row center-block">
