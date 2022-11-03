@@ -1,4 +1,5 @@
 
+import $ from "jquery"
 //console.log('screan start = '+objOffset(EngineScrean.parent()).x+" x "+objOffset(EngineScrean.parent()).y);
 var clientPlayer;
 var gamespeed = 1;

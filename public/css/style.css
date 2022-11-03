@@ -67,6 +67,9 @@ a{
     background-repeat: no-repeat;
     padding:0;
 }
+.center{
+	text-align: center;
+}
 .red-back{
 	background:red;
 }

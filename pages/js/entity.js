@@ -1,8 +1,10 @@
+
+import $ from "jquery"
 //newProjectile(fireball(),$('caster'),new vec(target.x,target.y))
 function newProjectile(entity,caster,target,maxlife,size,speed){
 	maxlife = maxlife||200;
 	speed = speed||5;
-	spread = 1+size/5;
+	//spread = 1+size/5;
 	var startX = parseFloat(caster.css('left'))+parseFloat(caster.css('width'))/2;
 	var startY = parseFloat(caster.css('top'))+parseFloat(caster.css('height'))/2;
 	if(target.x<startX){startX=startX-parseFloat(caster.css('width'))*spread;}

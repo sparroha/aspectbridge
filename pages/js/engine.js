@@ -1,3 +1,5 @@
+
+import $ from "jquery"
 //Engine Valiables
 var EngineScrean = $("#battlefield");
 var maxX;
