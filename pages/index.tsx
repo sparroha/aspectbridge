@@ -10,7 +10,7 @@ export default function Main() {
 
     return (
         <>
-        <Head></Head>
+        <Head children={<Imports />}></Head>
         <div>
             <Nav />
             <h1>www.donalds.party.dance</h1>
@@ -18,6 +18,13 @@ export default function Main() {
             <p><Link href="/index.html">Home</Link></p>
         </div></>
     );
+}
+function Imports(){
+    return<>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="/js/bs-dropdown-hover.js"></script>
+    </>
 }
 function Profile() {
     const [data, setData] = useState(null)

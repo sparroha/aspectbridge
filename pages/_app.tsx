@@ -11,8 +11,9 @@ import '../styles/both.css'
 import '../styles/init.css'
 import '../styles/layout.css'
 import '../styles/main.css'*/
+import '/styles/nav.css'
+import '/styles/style.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-//import 'bootstrap/dist/js/bootstrap.min.js'
 
 //import Custom404 from './404'
 //import { ApiCommonProps } from './api/common-props'

@@ -4,7 +4,7 @@ html{
 body{
 	margin:0;
 	border:0;
-	background-image:url(www/public_html/assets/terraforge_bg.jpg);
+	background-image:url(/public/assets/terraforge_bg.jpg);
 }
 head{
 	object-position: top;
@@ -329,7 +329,7 @@ a{
 	box-shadow: 5px 5px 5px #00a;
 }
 .logo{
-	background-image: url("www/public_html/assets/banner_back.jpg");
+	background-image: url("/public/assets/banner_back.jpg");
     background-size:  100% 100px;/*auto 100%;*/
     background-repeat: no-repeat;
 }
