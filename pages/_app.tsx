@@ -11,8 +11,8 @@ import '../styles/both.css'
 import '../styles/init.css'
 import '../styles/layout.css'
 import '../styles/main.css'*/
-import '/styles/nav.css'
-import '/styles/style.css'
+import '../styles/nav.css'
+import '../styles/style.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 //import Custom404 from './404'
