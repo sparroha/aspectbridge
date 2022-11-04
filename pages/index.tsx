@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 //import $ from 'jquery';
 import Link from "next/link";
-//import Nav from '../components/nav';
-import dynamic from "next/dynamic";
-
-const Nav = dynamic(()=> {return(import("./../components/nav"))}, {ssr: false})
+import Nav from '../components/nav';
+import Head from "next/head";
 
 //const root = ReactDOM.createRoot(<Nav />,document.getElementById('nav'));
 export default function Main() {
+
     return (
+        <>
+        <Head></Head>
         <div>
             <Nav />
             <h1>www.donalds.party.dance</h1>
             <p>This is a simple home page</p>
-            <p><Link href="../public/index.html">Home</Link></p>
-        </div>
+            <p><Link href="/index.html">Home</Link></p>
+        </div></>
     );
 }
 function Profile() {

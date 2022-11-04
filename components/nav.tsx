@@ -1,5 +1,7 @@
-import React from 'react';
-import 'bootstrap/dist/js/bootstrap.min.js';
+//import React from 'react';
+//import ReactDOM from 'react-dom';
+//import $ from 'jquery';
+//import 'bootstrap/dist/js/bootstrap.min.js';
 export default function Nav() {
     return (
         <>

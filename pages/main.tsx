@@ -13,13 +13,13 @@ if (typeof window !== 'undefined') {
     //React.render(<WASD />, document.getElementById("root"));
 }*/
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+//const root = ReactDOM.createRoot(document.getElementById('root'));run
 export default function Main() {
   return (
     <div>
       <h1>www.donalds.party.dance</h1>
       <p>This is a simple home page</p>
-      <p><Link href="../public/index.html">Home</Link></p>
+      <p><Link href="./index.html">Home</Link></p>
     </div>
   );
 }
