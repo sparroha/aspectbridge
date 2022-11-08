@@ -13,9 +13,9 @@ export default function Main() {
         <Head children={<Imports />}></Head>
         <div>
             <Nav />
-            <h1>www.donalds.party.dance</h1>
+            <h1>H1</h1>
             <p>This is a simple home page</p>
-            <p><Link href="/index.html">Home</Link></p>
+            <p><Link href="/dashboard.html">Home</Link></p>
         </div></>
     );
 }
