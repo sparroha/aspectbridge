@@ -10,7 +10,7 @@ export default function Main() {
 
     return (
         <>
-        <Head children={<meta http-equiv="Refresh" content="0; URL=/dashboard.html" />}></Head>
+        <Head children={<meta httpEquiv="Refresh" content="0; URL=/dashboard.html" />}></Head>
         <div>
             <Nav />
             <h1>H1</h1>
