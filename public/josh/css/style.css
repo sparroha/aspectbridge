@@ -4,7 +4,7 @@ html{
 body{
 	margin:0;
 	border:0;
-	background-image:url(www/public_html/josh/assets/terraforge_bg.jpg);
+	background-image:url("../assets/terraforge_bg.jpg");
 }
 ul,li{
     list-style:none;

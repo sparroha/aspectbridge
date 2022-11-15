@@ -19,7 +19,7 @@
 	<link rel="stylesheet" href="../css/style.css" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="../js/script.js"></script>-->
+	<script src="../../js/script.js"></script>-->
 	
 </head>
 <!--
@@ -120,18 +120,6 @@
 		</div>
 	</div>
 <!--
--#####-IRC-#####
--->
-	<div id='content' class='row m5'>
-		<div class='col-sm-1 h60 grey-back o5'>
-		</div>
-		<div class="col-sm-10 h60 black-back">
-			<iframe class="w100 h100 grey-back" src="https://webchat.esper.net/?nick=&channels=terraforge" frameborder="0"></iframe>
-		</div>
-		<div class='col-sm-1 h60 grey-back o5'>
-		</div>
-	</div>
-<!--
 -#####-DOCS-#####
 -->
 	<div id='content' class='row m5'>
@@ -139,13 +127,7 @@
 			<center>
 				<table>
 					<tr><h3>Click a button to open the associated document.</h3></tr><hr>
-					<tr><td><button onClick="viewtxt('resources/commands.txt')">commands</button></td></tr>
-					<tr><td><button onClick="viewtxt('resources/permissions.yml')">permissions</button></td></tr>
-					<tr><td><button onClick="viewtxt('resources/layout.php')">layout</button></td></tr>
-					<tr><td><button onClick="viewtxt('https://docs.google.com/spreadsheets/d/1alR-Xiv8QgkjDVWfRCL7Veg7Q3oWrhuemSbWOmRMiuQ/edit#gid=776153889')">mod list thermal</button></td></tr>
-					<tr><td><button onClick="viewtxt('resources/ATLauncher XML and API Documentation.pdf')">ATL XML</button></td></tr>
-					<tr><td><button onClick="viewtxt('resources/hurricane.txt')">Hurricane Lyrics</button></td></tr>
-					<tr><td><button onClick="viewtxt('resources/netherportal.php')">Nether Portal Science</button></td></tr>
+					<tr><td><button onClick="viewtxt('path/fileName.txt')">commands</button></td></tr>
 				</table>
 			</center>
 		</div>
@@ -160,119 +142,6 @@
 			<ul>
 				<li><button onClick="viewtxt('http://multitwitch.tv/'+$(this).next().val())">multitwitch.tv/</button><input type=text></input></li>
 			</ul>
-		</div>
-	</div>
-<!--
--#####-TEAMSPEAK-#####
--->
-	<div id='content' class='row m5'>
-		<div class='well-sm col-sm-2 h60 grey-back o5'>
-			<center>
-				<h2>Teamspeak3</h2>
-				<a href="http://www.teamspeak.com" target="_blank">Teamspeak Download</a>
-				<hr>
-			</center>
-		</div>
-		<div class="well-sm col-sm-8 h60 white-back">
-			<center class=vcenter>
-				<div class="h100 w100 scroll">
-					<p style="color:red">click the teamspeak icon to connect to the community teamspeak channel<br>
-					Teamspeak3 must be installed for buttons to work</p>
-					<hr>
-					<h1>sentinel-gaming.com</h1>
-					<h3><a href='http://sentinel-gaming.com' target='_blank'>official web site</a></h3>
-					<a href='http://sentinel-hosting.com' target='_blank'><img src='assets/sg_logo.png' onMouseOver="sentimg(this,2)" onMouseOut="sentimg(this,1)" alt="Sentinel Hosting Logo" width="118" height="60"></a>
-					<a href='ts3server://sentinel-gaming.com'><img src="assets/ts_logo.png" alt="Teamspeak Logo" width="64" height="80"></a>
-					<hr>
-					<h1>n9ne</h1>
-					<a href='ts3server://n9ne.teamspeak3.com?port=5935'><img src="assets/ts_logo.png" alt="Teamspeak Logo" width="64" height="80"></a>
-				</div><br>
-			</center>
-		</div>
-		<div class='well-sm col-sm-2 h60 grey-back o5'>
-		</div>
-	</div>
-<!--
--#####-SQUAD-#####
--->
-	<div id='content' class='row m5'>
-		<div class='well-sm col-sm-2 h60 grey-back o5'>
-			<center>
-				<h2>Event Feed</h2>
-				<hr>
-			</center>
-		</div>
-		<div class="well-sm col-sm-8 h60 white-back">
-			<center class=vcenter>
-				<div class="h100 w100 scroll">
-				</div>
-			</center>
-		</div>
-		<div class='well-sm col-sm-2 h60 grey-back o5'>
-		</div>
-	</div>
-<!--
--#####-Servers-#####
--->
-	<div id='content' class='row m5'>
-		<div class='well-sm col-sm-2 h60 grey-back o5'>
-			<div class='expand scroll'>
-				<center><br>
-					<h3 class=purple_font><i><u>Psytech Modpack</u></i></h3>
-					<a class=link_button href="http://sentinel-gaming.com/mods/sentinel.xml" target="_blank">mod list</a><br>
-					Pack Code:Psytech<hr>
-					<h3 class=purple_font><i><u>Thermak Endeavor Modpack</u></i></h3>
-					<a class=link_button href="http://sentinel-gaming.com/mods/thermal-atlcompat.xml" target="_blank">mod list</a><br>
-					Pack Code:thermal
-				</center>
-			</div>
-		</div>
-		<div class="well-sm col-sm-8 h60 white-back">
-			<center class=vcenter>
-				<div class="h100 w100 scroll">
-					<div class="expand scroll">
-						<div style=width:90%>
-							<h1>Sentinel-Gaming Servers and Packs</h1><hr>
-							<ul><h2>Mission Statement</h2>
-								<li>We strive to ensure all mod packs are enjoyable and operational for all players withing the bounds of theme.</li>
-							</ul>
-							<ul><h3><u>Pack: Psytech</u></i></h3>
-								<li><b>Short Discription</b></li>
-								<li>The original idea behind Psytech is a direct balance between magic and tech mods.
-								Due to the resource intensity of magic mods, I have decided to use this pack as a playground for ideas</li>
-								<li><b>Pack Code: Psytech</b></li>
-							</ul>
-							<ul><h3><u>Pack: Thermal Endeavor</u></i></h3>
-								<li><b>Short Discription</b></li>
-								<li>This pack has a dual purpose. Be light weight. Experiance the world of Thermal Foundation to it's full uncompromised potential</li>
-								<li><b>Pack Code: thermal</b></li>
-							</ul>
-							<ul><b>Things to Note</b>
-								<li>Access to this mod pack while in Alpha and Beta is strictly granted for the purpose of development.</li>
-								<li>Please report broken links regarding this mod pack and the ATLauncher.</li>
-								<li>Anyone is welcome to report any bugs related to this mod pack and related servers.</li>
-							</ul>
-							<br>
-						</div>
-					</div>
-				</div><br>
-			</center>
-		</div>
-		<div class='well-sm col-sm-2 h60 grey-back o5'>
-			<center>
-			<p>Want to be a<br>
-			tester for our mod packs?</p>
-			</center><hr>
-			<form style=margin-left:10px method=get action=atlapi.php>
-				Pack Name:
-				<select name=pack>
-					<option value=Psytech>Psytech</option>
-					<option value=ThermalEndeavor selected=true>Thermal Endeavor</option>
-				</select>
-				<br>
-				Minecraft Username: <input type=text name=ign value=ign></input><br>
-				<input type=submit value='Submit Username'></input>
-			</form>
 		</div>
 	</div>
 <!--
@@ -306,8 +175,8 @@
 			                });
 			            });
 					</script>
-					<form id=contact-form action="sendto.php" method=POST>
-						<input type=hidden name=returnurl value=<? echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'] ?>>
+					<form id=contact-form action="" method=POST>
+						<input type=hidden name=returnurl value='https://aspctbridge.com/josh/index.html'>
 						<p><label>Name : </label>
 						<input id="name" type="text" name="username" placeholder="username" />
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
