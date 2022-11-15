@@ -1,0 +1,166 @@
+.drag
+{
+	position: relative;
+	cursor: move;
+}
+#pins-main{
+  margin:3em;
+}
+#pins-outer *,#pins-editor *{
+  margin:0;
+  padding:0;
+}
+#pins-outer{
+  font-family:arial,sans-serif;
+  font-size:100%;
+  margin:0em;
+  background:#666;
+  color:#fff;
+}
+#pins-buttons button{
+  font-family:arial,sans-serif;
+  font-size:100%;
+  margin:0em;
+  color:#fff;
+}
+#pins-outer h2,#pins-outer p{
+  font-size:100%;
+  font-weight:normal;
+}
+#pins-outer ul,#pins-outer li{
+  list-style:none;
+}
+#pins-outer ul{
+  /*overflow:hidden;*/
+  padding:0em;
+}
+
+#pins-outer ul li a{
+  text-decoration:none;
+  color:#000;
+  background:#ffc;
+  display:block;
+  height:1.5em;
+  width:6em;
+  margin-top:0em;
+  overflow: hidden;
+  
+  /* Shadows */
+  /* Firefox */
+  -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
+  /* Safari+Chrome */
+  -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+  /* Opera */
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+  
+  
+  /* smooth focus/hover */
+  -moz-transition:-moz-transform .15s linear, width .15s, height .15s, overflow .15s, padding .15s;
+  -o-transition:-o-transform .15s linear, width .15s, height .15s, overflow .15s, padding .15s;
+  -webkit-transition:-webkit-transform .15s linear, width .15s, height .15s, overflow .15s, padding .15s;
+}
+/* random tilt */
+#pins-outer ul li:nth-child(even){
+  -ms-transform:rotate(4deg);
+  -o-transform:rotate(4deg);
+  -webkit-transform:rotate(4deg);
+  -moz-transform:rotate(4deg);
+  transform:rotate(4deg);
+  top:5px;
+}
+#pins-outer ul li:nth-child(3n){
+  -ms-transform:rotate(-3deg);
+  -o-transform:rotate(-3deg);
+  -webkit-transform:rotate(-3deg);
+  -moz-transform:rotate(-3deg);
+  transform:rotate(-3deg);
+  top:-5px;
+}
+#pins-outer ul li:nth-child(5n){
+  -ms-transform:rotate(5deg);
+  -o-transform:rotate(5deg);
+  -webkit-transform:rotate(5deg);
+  -moz-transform:rotate(5deg);
+  transform:rotate(5deg);
+  top:-10px;
+}
+/* end random tilt */
+
+#pins-outer ul li{
+  margin:1em;
+  float:left;
+  /*background:#555;*/
+  position: absolute;
+  
+  
+  /* tilt */
+  -webkit-transform:rotate(-6deg);
+  -ms-transform:rotate(-6deg);
+  -o-transform:rotate(-6deg);
+  -moz-transform:rotate(-6deg);
+  transform:rotate(-6deg);
+  /* smooth focus/hover */
+  -moz-transition:-moz-transform .15s linear;
+  -o-transition:-o-transform .15s linear;
+  -webkit-transition:-webkit-transform .15s linear;
+}
+#pins-outer ul li:hover,#pins-outer ul li:focus{
+  -moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  -webkit-transform: scale(1.25);
+  -moz-transform: scale(1.25);
+  -o-transform: scale(1.25);
+  -ms-transform: scale(1.25);
+  transform: scale(1.25);
+}
+
+/*fonts{}*/
+#pins-outer ul li h2{
+  font-size:100%;
+  font-weight:bold;
+  padding-bottom:10px;
+}
+#pins-outer ul li p{
+  font-family:"Reenie Beanie",arial,sans-serif;
+  font-size:140%;
+  visibility:hidden;
+  -moz-transition:visibility .15s;
+  -o-transition:visibility .15s;
+  -webkit-transition:visibility .15s;
+}
+#pins-outer ul li a:hover p,#pins-outer ul li a:focus p{
+  visibility:inherit;
+}
+#pins-outer ul li a:hover h2,#pins-outer ul li a:focus h2{
+  font-size:115%;
+}
+
+#pins-outer ul li a:hover,#pins-outer ul li a:focus{
+/*possibly depricated*/
+  -moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  -webkit-transform: scale(1.25);
+  -moz-transform: scale(1.25);
+  -o-transform: scale(1.25);
+/*possibly depricated*/
+  position:relative;
+  z-index:5;
+  height:10em;
+  width:10em;
+  overflow: visible;
+  padding-right:0em;
+  padding:1em;
+}
+#pins-editor textarea{
+  background:#ffc;
+  width: 20em;
+}
+#pins-editor{
+  font-family:arial,sans-serif;
+  font-size:100%;
+  margin:0em;
+  background:#666;
+  color:#fff;
+}

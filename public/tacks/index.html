@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="pins-main" style="position:relative;overflow:hidden;width:1000px;height:500px;border: 1px solid black">
+	<link href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
+	<link href="pins.css" rel="stylesheet" type="text/css">
+	<div id="pins-login" style="position:absolute;overflow:scroll;width:30em;height:30em;border: 1px solid black">
+		User Name: <input id="username" type="text" name="username"><br>
+		Password: <input id="password" type="text" name="password">
+		<button onclick="login()">Submit</button>
+	</div>
+	<div id="pins-editor" style="position:absolute;overflow:scroll;width:30em;height:30em;border: 1px solid black;visibility:hidden">
+		<button onclick="editNote(noteEditobj,false)">POST</button><br>
+		<textarea id="in1" type="text" value="title" rows="1" cols="40"></textarea><br>
+		<textarea id="in2" type="text" value="content" rows="20" cols="40" style="height: 20em;"></textarea>
+	</div>
+	<div id="pins-outer" style="position:absolute;overflow:scroll;width:1000px;height:500px;border: 1px solid black;visibility:hidden">
+		<h3>Welcome to Nifty Notes ALPHA</h3>
+		<p>Take notes any time; Come back to them later.(auto-save enabled)</p>
+		<!--<button onclick="delNoteLatest()">Delete Latest Note</button>-->
+		<button onclick="elementsSaveLoad(saveElements)">Save</button>
+		<br>
+		<div id="pins-buttons">
+			<button onclick="addNote(this.style.background,saveElements)" style="background:#555">New Note</button>
+			<button onclick="addNote(this.style.background,saveElements)" style="background:#00F">New Note</button>
+			<button onclick="addNote(this.style.background,saveElements)" style="background:#F00">New Note</button>
+			<button onclick="addNote(this.style.background,saveElements)" style="background:#FE0">New Note</button>
+			<button onclick="addNote(this.style.background,saveElements)" style="background:#80F">New Note</button>
+			<button onclick="addNote(this.style.background,saveElements)" style="background:#080">New Note</button>
+		</div>
+		<hr>
+		<img id="trash" src="trash.png" style="background:#F00;width:5em;height:5em" />
+		<ul id="bulletin">
+		</ul>
+		<pre id="debug" style="visibility:hidden">draggable element clicked</pre>
+	</div>
+</div>
+<script src="pins.js" type='text/javascript'></script>
+</body>
+</html>

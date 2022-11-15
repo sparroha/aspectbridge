@@ -1,0 +1,8 @@
+{"notes":[
+    {"id":1, "left":"100px", "top":"100px", "username":"Doe", "title":"title1", "text":"text1"},
+    {"id":2, "left":"100px", "top":"100px",  "username":"John", "title":"title2", "text":"text2"}, 
+    {"id":3, "left":"100px", "top":"200px",  "username":"John", "title":"title2", "text":"text2"}, 
+    {"id":4, "left":"150px", "top":"250px",  "username":"John", "title":"title2", "text":"text2"}, 
+    {"id":5, "left":"550px", "top":"400px",  "username":"John", "title":"title2", "text":"text2"}, 
+    {"id":6, "left":"100px", "top":"100px",  "username":"Jim", "title":"title3", "text":"text3"}
+]}

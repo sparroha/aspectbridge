@@ -61,7 +61,7 @@
 -->
 	<div id='irc' class='row m5'>
 		<div class='col-sm-1 h60 grey-back o5'>
-			<div id="ab">NAV IMPORT FAILED</div>
+			<div id="nav">NAV IMPORT FAILED</div>
 		</div>
 		<div class="col-sm-10 h60 black-back">
 			<iframe class="w100 h100 grey-back" src="https://webchat.esper.net/?nick=&channels=terraforge" frameborder="0"></iframe>
@@ -131,7 +131,7 @@
 			            });
 					</script>
 					<form id=contact-form action="sendto.php" method=POST>
-						<input type=hidden name=returnurl value=<? echo 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'] ?>>
+						<input type=hidden name=returnurl value='#'>
 						<p><label>Name : </label>
 						<input id="name" type="text" name="username" placeholder="username" />
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
