@@ -1,4 +1,4 @@
-const albeth = {
+const alephbeth = {
     aleph: {
         uni: '\u05D0',
         char: א

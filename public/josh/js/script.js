@@ -108,8 +108,7 @@ function showHome(){
 function showNav(){
 	$.get("nav.html",function(html_string){
 		$('#nav').html(html_string)
-	},'html')
-	$('#navbar-brand').html('Zypk '+alephbeth.zain+alephbeth.yod+alephbeth.pe+alephbeth.keth+' Bridge')
+	},'html');
 }
 function showNavHome(){
 	$.get("navHome.html",function(html_string){
@@ -121,4 +120,5 @@ $(function(){
 	//showNavHome();
 	//showNav();
 	console.log('showHome()');
+	$('#navbar-brand').html('Zypk '+alephbeth.zain+alephbeth.yod+alephbeth.pe+alephbeth.keth+' Bridge');
 })
