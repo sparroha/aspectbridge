@@ -1,39 +1,3 @@
-
-function setImg(obj,id){
-	if(id==1){
-		obj.src="assets/sg_logo.png";
-		obj.width=obj.width/2;
-		obj.height=obj.height/2;
-	}
-	if(id==2){
-		obj.src="assets/main-bg.jpg";
-		obj.width=obj.width*2;
-		obj.height=obj.height*2;
-	}
-}
-$(function(){
-	try{
-	$('#music').volume=0.2;
-	}catch(error){}
-});
-var track = 1;
-$('#music').onended = nextaudio;
-function nextaudio(){
-	console.log('try change audio from track '+track);
-	if(track==1){
-		$('#music').attr('src',"assets/Daft_Punk_Pentatonix.mp3");
-		track = 2;
-	}
-	else if(track==2){
-		$('#music').attr('src',"assets/WhiteWinterHymnal_Pentatonix_cover.mp3");
-		track = 3;
-	}
-	else if(track==3){
-		$('#music').attr('src',"assets/Radioactive_PTX_LindseyStirling_cover.mp3");
-		track = 1;
-	}
-}
-
 function readTextFile(file)
 {
 	var output;
@@ -85,7 +49,7 @@ function tryParseJSON (jsonString){
 //$('#testDiv').html('<p>'+testfile+'</p>');
 function showHome(){
 	clearContent();
-	alert('showHome()');
+	//alert('showHome()');
 	$('content').html(
 		'<div class="well-sm col-sm-2 h60 grey-back o5">'+
 			'<div id="nav_home"></div>'+
@@ -105,7 +69,12 @@ function showHome(){
 		'</div>'
 		);
 }
-function showNav(){
+function showDocs(){
+	$.get("docs.html",function(html_string){
+		$('content').html(html_string)
+	},'html');
+}
+/*function showNav(){
 	$.get("nav.html",function(html_string){
 		$('#nav').html(html_string)
 	},'html');
@@ -114,11 +83,11 @@ function showNavHome(){
 	$.get("navHome.html",function(html_string){
 		$('#nav_home').html(html_string)
 	},'html');
-}
+}*/
 $(function(){
-	//showHome();
+	showHome();
 	//showNavHome();
 	//showNav();
-	console.log('showHome()');
-	$('#navbar-brand').html('Zypk '+alephbeth.zain+alephbeth.yod+alephbeth.pe+alephbeth.keth+' Bridge');
+	//console.log('showHome()');
+	$('.navbar-brand').html('Zypk '+alephbeth.zain+alephbeth.yod+alephbeth.pe+alephbeth.keth+' Bridge');
 })
