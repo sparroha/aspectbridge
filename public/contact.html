@@ -1,0 +1,42 @@
+<div class='well-sm col-sm-2 h60 grey-back o5'>
+		
+</div>
+<div class='well-sm col-sm-8 h60 white-back'>
+    <div class="vcenter">
+        <script>
+            $(function() {
+                $("#contact-form").on("submit", function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        beforeSend: function() {
+                            //$("#message").html("sending...");
+                        },
+                        success: function(data) {
+                            //$("#message").hide();
+                            //$("#response").html(data);
+                            alert('Message Sent');
+                            console.log('Message Sent: '+data);
+                        }
+                    });
+                });
+            });
+        </script>
+        <form id=contact-form action="" method=POST>
+            <input type=hidden name=returnurl value='https://aspctbridge.com/josh/index.html'>
+            <p><label>Name : </label>
+            <input id="name" type="text" name="username" placeholder="username" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>E-Mail : </label>
+            <input id="password" type="email" name="email" placeholder="user@email.com" /></p>
+            <p><textarea id="message" type="textarea" rows=6 cols=80 name="message" placeholder="email content" ></textarea></p>
+            <input class="btn btn-default" type="submit" name="submit" value="Send" />
+        </form>
+    </div>
+</div>
+<div class='well-sm col-sm-2 h60 grey-back o5'>
+
+</div>
+</div>

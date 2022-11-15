@@ -2,9 +2,9 @@ html{
 	font-family: "Times New Roman", Times, serif;
 }
 body{
-	margin:0;
-	border:0;
 	background-image:url("../assets/terraforge_bg.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 head{
 	object-position: top;
@@ -61,14 +61,9 @@ a{
 	outline:none;
 }
 .container{
-	width: 100vw;
-	height: 125vh;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    padding:0;
-}
-.center{
-	text-align: center;
+	width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .red-back{
 	background:red;
@@ -199,20 +194,11 @@ a{
 .o10{
 	opacity:1.0;
 }
-.h5{
-	height:5%;
-}
 .h10{
 	height:10%;
 }
-.h15{
-	height:15%;
-}
 .h20{
 	height:20%;
-}
-.h25{
-	height:25%;
 }
 .h30{
 	height:30%;
@@ -220,32 +206,20 @@ a{
 .h40{
 	height:40%;
 }
-.h45{
-	height:45%;
-}
 .h50{
 	height:50%;
 }
 .h60{
 	height:60%;
 }
-.h65{
-	height:65%;
-}
 .h70{
 	height:70%;
-}
-.h75{
-	height:75%;
 }
 .h80{
 	height:80%;
 }
 .h90{
 	height:90%;
-}
-.h95{
-	height:95%;
 }
 .h100{
 	height:100vh;
@@ -256,47 +230,41 @@ a{
 .h200{
 	height:200%;
 }
-.w5{
-	width:5%;
-}
 .w10{
 	width:10%;
-}
-.w15{
-	width:15%;
+	left: 45%;
 }
 .w20{
 	width:20%;
-}
-.w25{
-	width:25%;
+	left: 40%;
 }
 .w30{
 	width:30%;
+	left: 35%;
 }
 .w40{
 	width:40%;
+	left: 30%;
 }
 .w50{
 	width:50%;
+	left: 25%;
 }
 .w60{
 	width:60%;
+	left: 20%;
 }
 .w70{
 	width:70%;
+	left: 15%;
 }
 .w80{
 	width:80%;
-}
-.w85{
-	width:85%;
+	left: 10%;
 }
 .w90{
 	width:90%;
-}
-.w95{
-	width:95%;
+	left: 5%;
 }
 .w100{
 	width:100vw;
@@ -348,10 +316,15 @@ a{
 .title{
 	color:#fff;
 }
+/*.hcenter{
+	position: relative;
+	left: 50%;
+	transform: translateX(-70%);
+}*/
 .vcenter{
 	position: relative;
 	top: 50%;
-	transform: translateY(-50%);
+	transform: translateY(-45%);
 }
 .tcenter{
 	text-align:center;

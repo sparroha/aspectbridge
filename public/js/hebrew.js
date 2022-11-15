@@ -1,7 +1,7 @@
 const alephbeth = {
     aleph: {
         uni: '\u05D0',
-        char: א
+        char: 'א'
     },
     beth: {
         uni: '\u05D1'

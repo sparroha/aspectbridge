@@ -10,17 +10,17 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="keywords" content="programming, community, communities, minecraft, steam, java, C++, html, modding, sentinel, gaming, sentinel-gaming, feed-the-beast, ftb" />
-	<meta name="description" content="SparLogic is a web side dedicated to coordinating and organizing any public content related to or assaciated with the programmer, sparroha." />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
 	<link rel="shortcut icon"href="assets/binary2.png" type="image/x-icon">
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../css/style.css" type="text/css">
+	<link rel="stylesheet" href="../css/style.css" type="text/css"><!--using public/css-->
+	<link rel="stylesheet" href="../css/nav.css" type="text/css"><!--using public/css-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="../josh/js/hebrew.js"></script>
+	<script src="../js/hebrew.js"></script><!--using public/js-->
 	<script src="../josh/js/script.js"></script>
-	
 </head>
 <!--
 -
@@ -35,12 +35,13 @@
 -->
 <header>
 	<!--?php include 'header.php';?-->
-	<div id='header' class='well-sm row m1 tcenter black-back'>
+	<div id='header' class='well-sm row p1 tcenter black-back'>
 		<div class='col-sm-12 tcenter navy_back title logo'>
 			<h1>ASPECT BRIDGE</h1>
 		</div>
 	</div>
-	<div id='nav' class='well-sm row m1'>
+	<div id='nav' class='well-sm row p1'>
+		<link rel="stylesheet" href="../css/nav.css" type="text/css"><!--using public/css-->
 		<div class='col-sm-12 p5 black-back'>
 			<nav class="navbar navbar-inverse cssmenu">
 				<div class="container-fluid">
@@ -50,16 +51,26 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Zypk bridge</a>
+						<a class="navbar-brand" href="#">Zypk Bridge</a>
 					</div>
 					<div class="collapse navbar-collapse" id="myNavbar">
 						<ul class="nav navbar-nav">
 							<li class="active"><a href="#" onclick="showHome(); return false;">Home</a></li>
 							<li class="dropdown">
-								<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Resources<span class="caret"></span></a>
+								<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Business<span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<li><a href="#">Resource A</a></li>
-									<li><a href="#">Resource B</a></li>
+									<li class="dropdown">
+										<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Projects<span class="caret"></span></a>
+										<ul class="dropdown-menu">
+											<li><a href="#">Project1</a></li>
+										</ul>
+									</li>
+									<li class="dropdown">
+										<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Clients<span class="caret"></span></a>
+										<ul class="dropdown-menu">
+											<li><a href="#">Bill</a></li>
+										</ul>
+									</li>
 								</ul>
 							</li>
 							<li><a href="#" onclick="showDocs(); return false;">Documents</a></li>
@@ -67,7 +78,7 @@
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Partner Sites<span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<li><a href='aspectbridge.com'>Aspect Bridge</a></li>
+									<li><a href='https://aspectbridge.com'>Aspect Bridge</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -86,58 +97,20 @@
 <!--
 -#####-HOME-#####
 -->
-	<div id='contentHome' class='row m5'>
+	<div id='contentHome' class='row p1'>
+		UNUSED
 	</div>
 <!--
 -#####-DOCS-#####
 -->
-	<div id='contentDocs' class='row m5'>
+	<div id='contentDocs' class='row p1'>
+		UNUSED
 	</div>
 <!--
--#####-CONTACT-#####
+-#####-CONTENT-#####
 -->
-	<div id='content' class='row m5'>
-		<div class='well-sm col-sm-2 h60 grey-back o5'>
-		
-		</div>
-		<div class='well-sm col-sm-8 h60 white-back'>
-			<div class="vcenter">
-				<script>
-					$(function() {
-						$("#contact-form").on("submit", function(e) {
-							e.preventDefault();
-							$.ajax({
-								url: $(this).attr("action"),
-								type: 'POST',
-								data: $(this).serialize(),
-								beforeSend: function() {
-									//$("#message").html("sending...");
-								},
-								success: function(data) {
-									//$("#message").hide();
-									//$("#response").html(data);
-									alert('Message Sent');
-									console.log('Message Sent: '+data);
-								}
-							});
-						});
-					});
-				</script>
-				<form id=contact-form action="" method=POST>
-					<input type=hidden name=returnurl value='https://aspctbridge.com/josh/index.html'>
-					<p><label>Name : </label>
-					<input id="name" type="text" name="username" placeholder="username" />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label>E-Mail : </label>
-					<input id="password" type="email" name="email" placeholder="user@email.com" /></p>
-					<p><textarea id="message" type="textarea" rows=6 cols=80 name="message" placeholder="email content" ></textarea></p>
-					<input class="btn btn-default" type="submit" name="submit" value="Send" />
-				</form>
-			</div>
-		</div>
-		<div class='well-sm col-sm-2 h60 grey-back o5'>
-		
-		</div>
+	<div id='content' clas="p1">
+		CONTENT LOADS HERE
 	</div>
 </content>
 <!--
@@ -146,15 +119,14 @@
 -
 -->
 <footer>
-	<div id='footer' class='row'>
+	<div id='footer' class='row w100 hidden'>
 		<div class='col-sm-5 tcenter'>
-			<iframe class='iframe-hidden grey-back' src='http://terraforge.net/shoutcast/player.html' width='382' height='70' scrolling='no'></iframe>
 		</div>
 		<div class='col-sm-2 tcenter'>
-			<br><a class='blue-font' href='menu.php'>Site Map</a>
+			<br><a class='blue-font' href='#'>Site Map</a>
 		</div>
 		<div class='col-sm-5 tcenter'>
-			<br><p id=update class='white-font'>Last updated: <?php echo ' '.date('l, F d, Y');?></p>
+			<br><p id=update class='white-font'>Last updated: </p>
 		</div>
 	</div>
 </footer>
