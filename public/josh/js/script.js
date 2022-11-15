@@ -57,9 +57,10 @@ function showDocs(){
 		$('content').html(html_string)
 	},'html');
 }
-/*function showNav(){
+function showNav(){
 	$.get("nav.html",function(html_string){
 		$('#nav').html(html_string)
+        $('.navbar-brand').html('Zypk '+alephbeth.zain.uni+alephbeth.yod.uni+alephbeth.pe.uni+alephbeth.keth.uni+' Bridge');
 	},'html');
 }
 /*function showNavHome(){
@@ -68,9 +69,9 @@ function showDocs(){
 	},'html');
 }*/
 $(function(){
+	showNav();
 	showHome();
 	//showNavHome();
-	//showNav();
 	//console.log('showHome()');
 	$('.navbar-brand').html('Zypk '+alephbeth.zain.uni+alephbeth.yod.uni+alephbeth.pe.uni+alephbeth.keth.uni+' Bridge');
 })
