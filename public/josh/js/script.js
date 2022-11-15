@@ -62,7 +62,7 @@ function showDocs(){
 		$('#nav').html(html_string)
 	},'html');
 }
-function showNavHome(){
+/*function showNavHome(){
 	$.get("navHome.html",function(html_string){
 		$('#nav_home').html(html_string)
 	},'html');
