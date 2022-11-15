@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="../css/style.css" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="../../js/script.js"></script>-->
+	<script src="../js/script.js"></script>
 	
 </head>
 <!--
@@ -53,7 +53,7 @@
 					</div>
 					<div class="collapse navbar-collapse" id="myNavbar">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="index.php?page=Terra Forge Home">Home</a></li>
+							<li class="active"><a href="#" onclick="showHome(); alert('!'); return false;">Home</a></li>
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Resources<span class="caret"></span></a>
 								<ul class="dropdown-menu">
@@ -99,7 +99,7 @@
 <!--
 -#####-HOME-#####
 -->
-	<div id='content' class='row m5'>
+	<div id='contentHome' class='row m5'>
 		<div class='well-sm col-sm-12 h90 white-back scroll'>
 			<center class='vcenter'>
 				<div class='w50 black-font'>
@@ -121,25 +121,19 @@
 <!--
 -#####-DOCS-#####
 -->
-	<div id='content' class='row m5'>
+	<div id='contentDocs' class='row m5'>
 		<div class='well-sm col-sm-2 h60 grey-back o5'>
-			<center>
-				<table>
-					<tr><h3>Click a button to open the associated document.</h3></tr><hr>
-					<tr><td><button onClick="viewtxt('path/fileName.txt')">commands</button></td></tr>
-				</table>
-			</center>
+			<table class="child vcenter">
+				<tr><h3>Click a button to open the associated document.</h3></tr><hr>
+				<tr><td><button onClick="viewtxt('https://docs.google.com/document/d/e/2PACX-1vSxf0d1IXu3SeWmfahGtBdmWiagKMtgvnEJ_vKqbi6FrZrIoXtUrK-dPWvKMO6PKJy3cpI_o-BDg6Y8/pub')">Code Talk</button></td></tr>
+			</table>
 		</div>
 		<div class='well-sm col-sm-8 h60 white-back'>
-			<center class=vcenter>
-				<div class="">
-					<iframe id="txtout" class="w100 h100 scroll" src ="resources/ATLauncher XML and API Documentation.pdf" frameborder="0" ></iframe>
-				</div>
-			</center>
+			<iframe id="txtout" class="child scroll" height="100%" width="100%" src ="" frameborder="0"></iframe>
 		</div>
 		<div class='well-sm col-sm-2 h60 grey-back o5'>
-			<ul>
-				<li><button onClick="viewtxt('http://multitwitch.tv/'+$(this).next().val())">multitwitch.tv/</button><input type=text></input></li>
+			<ul class="child vcenter">
+				<li></li>
 			</ul>
 		</div>
 	</div>
