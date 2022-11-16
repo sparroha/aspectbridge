@@ -94,11 +94,18 @@ const grammar = {
 }
 function translit(str){
     let s = str.toLowerCase();
-    //s = s.replace(' ', '');
+
+    if (s.charAt(0)==='a'){s = s.replace('a',alephbeth.aleph.uni);}
+    else if (s.charAt(0)=='e'){s = s.replace('e',alephbeth.aleph.uni);}
+    else if ((s.charAt(0)=='g') && (s.charAt(1)=='a')){
+        s = s.replace('g',alephbeth.ain.uni);
+        s = s.replace('a', '');
+    }
     s = s.replaceAll('a',alephbeth.aleph.uni);
     s = s.replaceAll('e','');
     s = s.replaceAll('b',alephbeth.beth.uni);
     s = s.replaceAll('g',alephbeth.gimel.uni);
+
     s = s.replaceAll('d',alephbeth.daleth.uni);
     s = s.replaceAll('h',alephbeth.hey.uni);
     s = s.replaceAll('v',alephbeth.vav.uni);
