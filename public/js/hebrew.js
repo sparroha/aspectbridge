@@ -93,7 +93,7 @@ const grammar = {
     }
 }
 function translit(str){
-    let s = str
+    let s = str.toLowerCase();
     s = s.replace('a',alephbeth.aleph.uni);
     s = s.replace('e','');
     s = s.replace('b',alephbeth.beth.uni);
