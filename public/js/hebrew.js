@@ -82,3 +82,44 @@ const alephbeth = {
         uni: '\u05EA'
     }
 }
+const grammar = {
+    pre: {
+        exown: 'i',
+    },
+    suf: {
+        enown: 'i',
+        mplural: 'im',
+        fplural: 'ot',
+    }
+}
+function translit(str){
+    let s = str
+    s = s.replace('a',alephbeth.aleph.uni);
+    s = s.replace('e','');
+    s = s.replace('b',alephbeth.beth.uni);
+    s = s.replace('g',alephbeth.gimel.uni);
+    s = s.replace('d',alephbeth.daleth.uni);
+    s = s.replace('h',alephbeth.hey.uni);
+    s = s.replace('v',alephbeth.vav.uni);
+    s = s.replace('u',alephbeth.vav.uni);
+    s = s.replace('w',alephbeth.vav.uni);
+    s = s.replace('z',alephbeth.zain.uni);
+    s = s.replace('k',alephbeth.keth.uni);
+    //s = s.replace('t',alephbeth.teth.uni);
+    s = s.replace('y',alephbeth.yod.uni);
+    s = s.replace('i',alephbeth.yod.uni);
+    s = s.replace('j',alephbeth.yod.uni);
+    s = s.replace('c',alephbeth.caph.uni);
+    s = s.replace('l',alephbeth.lamed.uni);
+    s = s.replace('m',alephbeth.mem.uni);
+    s = s.replace('n',alephbeth.nun.uni);
+    //s = s.replace('s',alephbeth.samec.uni);
+    s = s.replace('o',alephbeth.ain.uni);
+    s = s.replace('p',alephbeth.pe.uni);
+    //s = s.replace('s',alephbeth.tzadi.uni);
+    s = s.replace('q',alephbeth.qoph.uni);
+    s = s.replace('r',alephbeth.resh.uni);
+    s = s.replace('s',alephbeth.shin.uni);
+    s = s.replace('t',alephbeth.tav.uni);
+    return s;
+}
