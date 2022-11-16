@@ -1,3 +1,0 @@
-test
-
-"C:\PathTo\Chrome.exe" --allow-file-access-from-files source

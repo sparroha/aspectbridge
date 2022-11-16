@@ -1,5 +1,28 @@
 
-function sentImg(obj,id){
+function viewtxt(txt)
+{
+	$('#txtout').attr('src',txt);
+}
+
+function showNav(){
+	$()
+}
+function showHome(){
+	$.get("home.html",function(html_string){
+		$('#content').html(html_string)
+	},'html')
+}
+function showNav(){
+	$.get("nav.html",function(html_string){
+		$('#nav').html(html_string)
+	},'html')
+}
+$(function(){
+	showNav();
+	showHome();
+})
+
+/*function sentImg(obj,id){
 	if(id==1){
 		obj.src="assets/sg_logo.png";
 		obj.width=obj.width/2;
@@ -55,12 +78,7 @@ function readTextFile(file)
     rawFile.send(null);
     return output;
 }
-function viewtxt(txt)
-{
-	$('#txtout').attr('src',txt);
-}
-
-function clearContent()
+/*function clearContent()
 {
 	$('content').empty();
 }
@@ -77,32 +95,8 @@ function tryParseJSON (jsonString){
     }
     catch (e) {alert('Failed to parse json:\n<'+jsonString+'> \nAre you a new user?');return "";}
     return false;
-}
+}*/
 //alert('test');
 //var testfile=readTextFile("botlogin.txt")
 //$('#testDiv').val(testfile);
-//$('#testDiv').html('<p>'+testfile+'</p>');
-function showNav(){
-	$()
-}
-function showHome(){
-	$.get("home.html",function(html_string){
-		$('#home').html(html_string)
-	},'html')
-}
-function showNav(){
-	$.get("nav.html",function(html_string){
-		$('#nav').html(html_string)
-	},'html')
-}
-function showNavHome(){
-	$.get("navHome.html",function(html_string){
-		$('#nav_home').html(html_string)
-	},'html');
-}
-$(function(){
-	showHome();
-	showNavHome();
-	showNav();
-	console.log('showHome()');
-})
+//$('#testDiv').html('<p>'+testfile+'</p>');*/
