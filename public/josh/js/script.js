@@ -1,4 +1,50 @@
-function readTextFile(file)
+function viewtxt(txt)
+{
+	$('#txtout').attr('src',txt);
+	//txtout.$('.doc-content').addClassName('child')
+}
+function showHome(id){
+	$.get("home.html",function(html_string){
+		$('content').html(html_string)
+        if(id){
+            $.get("clients/"+id+"/"+id+".html",function(html_string){
+                //alert("clients/"+id+"/"+id+".html");
+                $('#homeContent').html(html_string)
+            },'html')
+        }
+	},'html');
+}
+function showContent(query,src){
+    alert(query);
+    switch(query){
+        case '#homeContent':$('#homeContent').attr('src',src);
+        break;
+    }
+}
+function showDocs(){
+	$.get("docs.html",function(html_string){
+		$('content').html(html_string)
+	},'html');
+}
+function showNav(){
+	$.get("nav.html",function(html_string){
+		$('#nav').html(html_string)
+        $('.navbar-brand').html('Zypk '+alephbeth.zain.uni+alephbeth.yod.uni+alephbeth.pe.uni+alephbeth.keth.uni+' Bridge');
+	},'html');
+}
+
+
+$(function(){
+	showNav();
+	showHome();
+})
+
+
+/**
+ * UNUSED CODE
+ */
+
+/*function readTextFile(file)
 {
 	var output;
     var rawFile = new XMLHttpRequest();
@@ -19,12 +65,6 @@ function readTextFile(file)
     rawFile.send(null);
     return output;
 }
-function viewtxt(txt)
-{
-	$('#txtout').attr('src',txt);
-	txtout.$('.doc-content').addClassName('child')
-}
-
 function clearContent()
 {
 	$('content').empty();
@@ -42,36 +82,8 @@ function tryParseJSON (jsonString){
     }
     catch (e) {alert('Failed to parse json:\n<'+jsonString+'> \nAre you a new user?');return "";}
     return false;
-}
+}*/
 //alert('test');
 //var testfile=readTextFile("botlogin.txt")
 //$('#testDiv').val(testfile);
 //$('#testDiv').html('<p>'+testfile+'</p>');
-function showHome(){
-	$.get("home.html",function(html_string){
-		$('content').html(html_string)
-	},'html');
-}
-function showDocs(){
-	$.get("docs.html",function(html_string){
-		$('content').html(html_string)
-	},'html');
-}
-function showNav(){
-	$.get("nav.html",function(html_string){
-		$('#nav').html(html_string)
-        $('.navbar-brand').html('Zypk '+alephbeth.zain.uni+alephbeth.yod.uni+alephbeth.pe.uni+alephbeth.keth.uni+' Bridge');
-	},'html');
-}
-/*function showNavHome(){
-	$.get("navHome.html",function(html_string){
-		$('#nav_home').html(html_string)
-	},'html');
-}*/
-$(function(){
-	showNav();
-	showHome();
-	//showNavHome();
-	//console.log('showHome()');
-	$('.navbar-brand').html('Zypk '+alephbeth.zain.uni+alephbeth.yod.uni+alephbeth.pe.uni+alephbeth.keth.uni+' Bridge');
-})
