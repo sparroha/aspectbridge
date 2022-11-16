@@ -92,15 +92,32 @@ const grammar = {
         fplural: 'ot',
     }
 }
+$("#tLit").submit(function(e) {
+    e.preventDefault();
+});
 function translit(str){
     let s = str.toLowerCase();
+    let a = str.split("");
 
-    if (s.charAt(0)==='a'){s = s.replace('a',alephbeth.aleph.uni);}
+    
+    if (s.charAt(s.length-1)=='s'){
+        s = s.slice(0,-1);
+        s = s.concat('im');
+    }
+
+    if (s.charAt(0)=='a'){s = s.replace('a',alephbeth.aleph.uni);}
     else if (s.charAt(0)=='e'){s = s.replace('e',alephbeth.aleph.uni);}
     else if ((s.charAt(0)=='g') && (s.charAt(1)=='a')){
         s = s.replace('g',alephbeth.ain.uni);
         s = s.replace('a', '');
-    }
+    }else if (s.charAt(0)=='h'){s = s.replace('h',alephbeth.hey.uni);}
+
+    s = s.replaceAll('th',alephbeth.tav.uni);
+    s = s.replaceAll('ck',alephbeth.keth.uni);
+    s = s.replaceAll('ch',alephbeth.keth.uni);
+    s = s.replaceAll('kh',alephbeth.keth.uni);
+    s = s.replaceAll('sh',alephbeth.shin.uni);
+
     s = s.replaceAll('a',alephbeth.aleph.uni);
     s = s.replaceAll('e','');
     s = s.replaceAll('b',alephbeth.beth.uni);
@@ -128,6 +145,7 @@ function translit(str){
     s = s.replaceAll('q',alephbeth.qoph.uni);
     s = s.replaceAll('r',alephbeth.resh.uni);
     s = s.replaceAll('s',alephbeth.shin.uni);
+    
     s = s.replaceAll('t',alephbeth.tav.uni);
     return s;
 }
