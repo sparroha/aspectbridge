@@ -3,7 +3,7 @@ html{
 }
 body{
 	background-image:url("../assets/terraforge_bg.jpg");
-    background-size: 100% 100%;
+    background-size: 100% auto;
     background-repeat: no-repeat;
 	background-position: center;
 	background-attachment: fixed;
