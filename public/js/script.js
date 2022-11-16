@@ -7,14 +7,33 @@ function viewtxt(txt)
 function showNav(){
 	$()
 }
-function showHome(){
+function showHome(id){
 	$.get("home.html",function(html_string){
-		$('#content').html(html_string)
-	},'html')
+		$('content').html(html_string)
+        if(id){
+            $.get("clients/"+id+"/"+id+".html",function(html_string){
+                //alert("clients/"+id+"/"+id+".html");
+                $('#homeContent').html(html_string)
+            },'html')
+        }
+	},'html');
+}
+function showContent(query,src){
+    alert(query);
+    switch(query){
+        case '#homeContent':$('#homeContent').attr('src',src);
+        break;
+    }
+}
+function showDocs(){
+	$.get("docs.html",function(html_string){
+		$('content').html(html_string)
+	},'html');
 }
 function showNav(){
 	$.get("nav.html",function(html_string){
 		$('#nav').html(html_string)
+        $('.navbar-brand').html('Aspect '+alephbeth.ain.uni+alephbeth.samec.uni+alephbeth.pe.uni+alephbeth.keth.uni+alephbeth.tav.uni+' Bridge');
 	},'html')
 }
 $(function(){

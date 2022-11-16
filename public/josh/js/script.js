@@ -1,7 +1,6 @@
 function viewtxt(txt)
 {
 	$('#txtout').attr('src',txt);
-	//txtout.$('.doc-content').addClassName('child')
 }
 function showHome(id){
 	$.get("home.html",function(html_string){
