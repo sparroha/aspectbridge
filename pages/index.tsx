@@ -15,7 +15,7 @@ const html = Html;
 
 var activePage = "Home";
 export default function Main() {
-    return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/dashboard.html" />}></Head>
+    return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/index.html" />}></Head>
         <div>
             <Nav />
             <h1>H1</h1>
