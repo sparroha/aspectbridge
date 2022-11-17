@@ -3,12 +3,27 @@ function viewtxt(txt)
 	$('#txtout').attr('src',txt);
 }
 function showHome(id){
-	$.get("home.html",function(html_string){
+    let page = "home.html";
+	$.get(page,function(html_string){
 		$('content').html(html_string)
         if(id){
             $.get("clients/"+id+"/"+id+".html",function(html_string){
                 //alert("clients/"+id+"/"+id+".html");
                 $('#homeContent').html(html_string)
+            },'html')
+        }
+	},'html');
+}
+function showJam(id){
+	$.get("jam.html",function(html_string){
+		$('content').html(html_string)
+        $.get("nav_client.html",function(html_string){
+            $('#nav-client').html(html_string)
+        },'html');
+        if(id){
+            $.get("clients/"+id+"/"+id+".html",function(html_string){
+                //alert("clients/"+id+"/"+id+".html");
+                $('#client-content').html(html_string)
             },'html')
         }
 	},'html');
