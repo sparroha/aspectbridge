@@ -3,14 +3,16 @@
         <div id="nav_home"></div>
     </div>
     <div class="well-sm col-sm-10 h90 white-back scroll">
-        <!--<div id="homeContent" class="vcenter tcenter black-font">
-            <iframe id="homeContent" class="scroll" height="100%" width="100%" src ="" frameborder="0"></iframe>
-        </div>-->
-        <form id="tLit" class="vcenter tcenter">
-            <h2>Input: </h2><input type="text" id="fname" name="fname"><br>
-            <h2>transliteration: </h2><h1 id="hbru"></h1><br>
-            <button onclick="$('#hbru').html(translit($('#fname').val()));return false;">Submit</button>
-        </form>
+        <div class="row">
+            <div id="homeContent" class="col-sm-12 vcenter tcenter black-font">
+                <iframe id="homeContent" class="scroll" height="100%" width="100%" src ="https://jamboard.google.com/d/18-5D46Y8bRVTO7MVTkiCuSdTEE7ZzQ9wINH9l1l0Xkc/edit?usp=sharing" frameborder="0"></iframe>
+            </div>
+            <form id="tLit" class="col-sm-12 vcenter tcenter">
+                <h2>Input: </h2><input type="text" id="fname" name="fname"><br>
+                <h2>transliteration: </h2><h1 id="hbru"></h1><br>
+                <button onclick="$('#hbru').html(translit($('#fname').val()));return false;">Submit</button>
+            </form>
+        </div>
     </div>
     <div class="well-sm col-sm-1 h90 grey-back o5">
     </div>
