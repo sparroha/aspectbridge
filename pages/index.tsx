@@ -15,20 +15,15 @@ var domain = "aspectbridge";
 //root.render(<Nav />);
 
 var activePage = "Home";
-export default function Main() {
-    useEffect(() => {
-        console.log('CLIENT SIDE RENDERING');
-        domain = /:\/\/([^\.]+)/.exec(window.location.href)[1];
-        console.log(domain);
-    });
-    if(domain=="aspectbridge" || domain=="www"){
+export default async function Main() {
+    /*if(domain == "aspectbridge" || domain == "www"){
         return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/dashboard.html" />}></Head></>
     }
-    if(domain=="logan"){
+    if(domain == "logan"){
         return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head></>
-    }
-    //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
-    return <>
+    }*/
+    return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head></>
+    /*return <>
         <div>
             <h1>H1</h1>
             <p>This is a simple home page</p>
@@ -37,7 +32,7 @@ export default function Main() {
             {pageObj.home.html}
             {pageObj.about.html}
         </div>
-    </>
+    </>*/
 }
 const pageObj = {
     home: {
