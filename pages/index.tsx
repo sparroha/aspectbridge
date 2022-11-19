@@ -10,14 +10,26 @@ import Document, {Html} from "next/document";
 import {Row} from "react-bootstrap";
 
 const html = Html;
+var domain = "aspectbridge";
 //const root = ReactDOM.createRoot(<Nav />,Document.getElementById('nav'));
 //root.render(<Nav />);
 
 var activePage = "Home";
 export default function Main() {
-    return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/index.html" />}></Head>
+    useEffect(() => {
+        console.log('CLIENT SIDE RENDERING');
+        domain = /:\/\/([^\.]+)/.exec(window.location.href)[1];
+        console.log(domain);
+    });
+    if(domain=="aspectbridge" || domain=="www"){
+        return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/dashboard.html" />}></Head></>
+    }
+    if(domain=="logan"){
+        return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head></>
+    }
+    //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
+    return <>
         <div>
-            <Nav />
             <h1>H1</h1>
             <p>This is a simple home page</p>
         </div>
