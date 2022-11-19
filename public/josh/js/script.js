@@ -50,7 +50,7 @@ function showNav(){
 
 $(function(){
 	showNav();
-	showHome();
+	showJam();
 })
 
 
