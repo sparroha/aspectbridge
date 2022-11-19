@@ -10,6 +10,9 @@ function showHome(id){
             $.get("clients/"+id+"/"+id+".html",function(html_string){
                 //alert("clients/"+id+"/"+id+".html");
                 $('#homeContent').html(html_string)
+                $.get("nav_client.html",function(html_string){
+                    $('#nav-client').html(html_string)
+                },'html');
             },'html')
         }
 	},'html');
