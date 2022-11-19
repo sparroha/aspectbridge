@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 //import ReactDOM from 'react-dom'
-import $ from 'jquery';
+//import $ from 'jquery';
 import Link from "next/link";
 import Nav from '../components/nav';
 import Head from "next/head";
-import {querySelectorAll} from "dom-helpers";
+//import {querySelectorAll} from "dom-helpers";
 import fetch from 'isomorphic-unfetch'
 import Document, {Html} from "next/document";
 import {Row} from "react-bootstrap";
-import { getDomainLocale } from 'next/dist/shared/lib/router/router';
+//import { getDomainLocale } from 'next/dist/shared/lib/router/router';
 import { useRouter } from 'next/router';
 
 const html = Html;
