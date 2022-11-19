@@ -10,20 +10,26 @@ import Document, {Html} from "next/document";
 import {Row} from "react-bootstrap";
 
 const html = Html;
-var domain = "aspectbridge";
+var domain = "";
 //const root = ReactDOM.createRoot(<Nav />,Document.getElementById('nav'));
 //root.render(<Nav />);
 
 var activePage = "Home";
-export default async function Main() {
-    /*if(domain == "aspectbridge" || domain == "www"){
+export default function Main() {
+    useEffect(() => {
+        console.log('CLIENT SIDE RENDERING');
+        domain = /:\/\/([^\.]+)/.exec(window.location.href)[1];
+        console.log(domain);
+    });
+    while(domain == ""){}
+    if(domain =="aspectbridge" || domain=="www"){
         return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/dashboard.html" />}></Head></>
     }
-    if(domain == "logan"){
+    if(domain =="logan"){
         return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head></>
-    }*/
-    return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head></>
-    /*return <>
+    }
+    //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
+    return <>
         <div>
             <h1>H1</h1>
             <p>This is a simple home page</p>
@@ -32,8 +38,21 @@ export default async function Main() {
             {pageObj.home.html}
             {pageObj.about.html}
         </div>
-    </>*/
+    </>
 }
+/*async function getData() {
+    const res = await fetch('https://api.example.com/...');
+    // The return value is *not* serialized
+    // You can return Date, Map, Set, etc.
+  
+    // Recommendation: handle errors
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error('Failed to fetch data');
+    }
+  
+    return res.json();
+}*/
 const pageObj = {
     home: {
         title: "Home",
