@@ -64,9 +64,11 @@ a{
 	outline:none;
 }
 .container{
-	width: 95%;
-    padding-left: 5px;
-    padding-right: 5px;
+	width: 100vw;
+	height: 125vh;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding:0;
 }
 .red-back{
 	background:red;
