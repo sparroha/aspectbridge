@@ -89,7 +89,7 @@ const pageObj = {
             <Col md={10} id='home' className={"well-sm h90 white-back scroll"}>
                 <Row className={"h50"}>
                     <Col md={12} id="homeContent" className={"tcenter black-font"}>
-                        <iframe id="homeContent" className={"scroll"} height="100%" width="100%" src ="https://jamboard.google.com/d/18-5D46Y8bRVTO7MVTkiCuSdTEE7ZzQ9wINH9l1l0Xkc/edit?usp=sharing" frameborder="0"></iframe>
+                        <iframe id="homeContent" className={"scroll"} height="100%" width="100%" src ="https://jamboard.google.com/d/18-5D46Y8bRVTO7MVTkiCuSdTEE7ZzQ9wINH9l1l0Xkc/edit?usp=sharing" frameBorder={"0"}></iframe>
                     </Col>
                 </Row>
                 <Row className={"h50"}>
