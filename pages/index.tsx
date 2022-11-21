@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 
 var activePage = "Home";
 export default function Main() {
-    //getInitialPage();
+    getInitialPage();
     //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
     //<p><Link href="%PUBLIC_URL%/dashboard.html">Home</Link></p>
     return <>
