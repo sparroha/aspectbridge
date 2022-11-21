@@ -1,42 +1,56 @@
 import React, { useState, useEffect } from 'react'
-//import ReactDOM from 'react-dom'
-//import $ from 'jquery';
+import $ from 'jquery';
 import Link from "next/link";
 import Nav from '../components/nav';
 import Head from "next/head";
-//import {querySelectorAll} from "dom-helpers";
+import Script from 'next/script';
 import fetch from 'isomorphic-unfetch'
-import Document, {Html} from "next/document";
-import {Row} from "react-bootstrap";
-//import { getDomainLocale } from 'next/dist/shared/lib/router/router';
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import { useRouter } from 'next/router';
-
-const html = Html;
-//const root = ReactDOM.createRoot(<Nav />,Document.getElementById('nav'));
-//root.render(<Nav />);
+//import { getDomainLocale } from 'next/dist/shared/lib/router/router';
 
 var activePage = "Home";
 export default function Main() {
-    getPage();
-    /*while(domain == "" && timeout < 2000){timeout++}
-    if(domain =="aspectbridge" || domain=="www"){
-        return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/dashboard.html" />}></Head></>
-    }
-    else if(domain =="logan" || domain == "localhost"){
-        return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head></>
-    }
-    else{*/
+    //getInitialPage();
     //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
     //<p><Link href="%PUBLIC_URL%/dashboard.html">Home</Link></p>
     return <>
-        <div>
-            <h1>HOME</h1>
-            <p>This is a simple home page</p>
-        </div>
-        <div>
-            {pageObj.home.html}
-            {pageObj.about.html}
-        </div>
+        <Head>
+            <title>Aspect Bridge</title>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <meta name="keywords" content="" />
+            <meta name="description" content="" />
+            <link rel="shortcut icon" href="assets/binary2.png" type="image/x-icon" />
+            <Script src="js/script.js"></Script>
+            <Script src="js/hebrew.js"></Script>
+        </Head>
+        <Container fluid>
+            <Row id='header' className='well-sm row p1 tcenter black-back h10'>
+                <Col sm={12} className='tcenter navy_back title logo'>
+                    <h1>Aspect Bridge</h1>
+                    <p>Nav goes here</p>
+                </Col>
+            </Row>
+            <Row id="nav" className={"h10"}>
+                <Nav />
+            </Row>
+            <Row id="content" className={"h70"}>
+                {pageObj.home.html}
+            </Row>
+            <Row id="footer" className={"h10"}>
+                <Col sm={5} >
+                    {pageObj.about.html}
+                </Col>
+                <Col sm={2} >
+                    {pageObj.about.html}
+                </Col>
+                <Col sm={5} >
+                    {pageObj.about.html}
+                </Col>
+            </Row>
+        </Container>
     </>
     //}
 }
@@ -53,7 +67,7 @@ export default function Main() {
   
     return res.json();
 }*/
-function getPage() {
+function getInitialPage() {
     const router = useRouter();
     useEffect(() => {
         let domain = "";
@@ -65,14 +79,33 @@ function getPage() {
         if(domain =="aspectbridge" || domain=="www"){router.push('/dashboard.html')}
         else if(domain =="logan" || domain == "localhost"){router.push('/josh/index.html')}
     });
-}
+}     
 const pageObj = {
     home: {
         title: "Home",
         html: <>
-            <Row id='home' className='row m5'>
-                Home Page
-            </Row>
+            <Col md={1} id="nav1" className={"well-sm h90 grey-back o5"}>?
+            </Col>
+            <Col md={10} id='home' className={"well-sm h90 white-back scroll"}>
+                <Row className={"h50"}>
+                    <Col md={12} id="homeContent" className={"tcenter black-font"}>
+                        <iframe id="homeContent" className={"scroll"} height="100%" width="100%" src ="https://jamboard.google.com/d/18-5D46Y8bRVTO7MVTkiCuSdTEE7ZzQ9wINH9l1l0Xkc/edit?usp=sharing" frameborder="0"></iframe>
+                    </Col>
+                </Row>
+                <Row className={"h50"}>
+                    <Form id="tLit" className="vcenter tcenter">
+                        <Form.Group>
+                            <Form.Label>Input</Form.Label>
+                            <Form.Control  type="text" id="word" name="word" placeholder="Enter word" />
+                            <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
+                            <Form.Text className="text-muted"><h1 id="hbru"></h1></Form.Text>
+                        </Form.Group>
+                        
+                    </Form>
+                </Row>
+            </Col>
+            <Col md={1} id="nav2" className={"well-sm h90 grey-back o5"}>
+            </Col>
         </>
     },
     about: {
@@ -82,7 +115,17 @@ const pageObj = {
                 About Page
             </Row>
         </>
+    },
+    translit: {
+        button: {
+            html: {
+            }
+        }
     }
+}
+
+export function TLButton(){
+    return pageObj.translit.button.html;
 }
 export async function getNasaImgProps() {
     const res = await fetch(
@@ -97,13 +140,13 @@ export async function getNasaImgProps() {
         },
     };
 }
-function Imports(){
+/*function JavaScript(){
     return<>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script src="/js/bs-dropdown-hover.js"></script>
+        <Script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></Script>
+        <Script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></Script>
+        <Script src="/js/bs-dropdown-hover.js"></Script>
     </>
-}
+}*/
 function Profile() {
     const [data, setData] = useState(null)
     const [isLoading, setLoading] = useState(false)

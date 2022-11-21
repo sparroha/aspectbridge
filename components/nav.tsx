@@ -5,8 +5,6 @@
 export default function Nav() {
     return (
         <>
-            <link rel='stylesheet' href='/css/nav.css'/>
-            <script src="/js/bs-dropdown-hover.js"></script>
             <nav className="navbar navbar-inverse cssmenu">
                 <div className="container-fluid">
                     <div className="navbar-header">
