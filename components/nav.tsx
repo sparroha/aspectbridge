@@ -3,14 +3,15 @@ import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, 
 export default function NavIndex() {
     return (
         <>
-            <Navbar sticky="top" bg="secondary" expand="lg">
+            <Navbar sticky="top" bg="ew" expand="lg" id="navindex">
                 <Container fluid>
-                    <Navbar.Brand href="#">Aspect Bridge</Navbar.Brand>
+                    <Navbar.Brand href="#navindex">Aspect Bridge</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
 
                             <Nav.Link href="#">Home</Nav.Link>{''}
+                            <Nav.Link href="#about">About</Nav.Link>{''}
                             <NavDropdown title="Partners" id="navbarScrollingDropdown">
                                 <Nav.Link href="logan.aspectbridge.com">Logan</Nav.Link>
                                 <NavDropdown.Divider />
@@ -30,14 +31,9 @@ export default function NavIndex() {
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="#ankor3" disabled>Other Wikis</NavDropdown.Item>
                             </NavDropdown>{''}
-                            <NavDropdown title="Links" id="navbarScrollingDropdown">
-                                <Nav.Link href="#">Enabled_Link</Nav.Link>
-                                <NavDropdown.Divider />
-                                <Nav.Link href="#" disabled>Disabled_Link</Nav.Link>
-                            </NavDropdown>{''}
                             
                         </Nav>{''}
-                        <Form className="d-flex">
+                        <Form className="d-flex" hidden='true'>
                             <Form.Control
                                 type="search"
                                 placeholder="Search"
