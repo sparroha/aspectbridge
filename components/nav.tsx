@@ -1,56 +1,51 @@
-//import React from 'react';
-//import ReactDOM from 'react-dom';
-//import $ from 'jquery';
-//import 'bootstrap/dist/js/bootstrap.min.js';
+import Link from "next/link";
+import { Button, Collapse, Container, Dropdown, ListGroup, ListGroupItem, Navbar, NavbarBrand, NavLink} from "react-bootstrap";
 export default function Nav() {
     return (
         <>
-            <nav className="navbar navbar-inverse cssmenu">
-                <div className="container-fluid">
+            <Navbar className="navbar-inverse cssmenu">
+                <Container fluid className="">
                     <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <Button className="navbar-toggle" data-toggle="collapse" data-target="#navIndex">
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
-                        </button>
-                        <a className="navbar-brand" href="components/nav#">Terra Forge</a>
+                        </Button>
+                        <NavbarBrand className="" href="#">Terra Forge</NavbarBrand>
                     </div>
-                    <div className="collapse navbar-collapse" id="myNavbar">
-                        <ul className="nav navbar-nav">
-                            <li className="active"><a href="components/nav#home">Home</a></li>
-                            !--
-                            <li className="dropdown">
-                                <a className="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="components/nav#">Resources<span
-                                    className="caret"></span></a>
-                                <ul className="dropdown-menu">
-                                    <li><a href="components/nav#">Wiki</a></li>
-                                    <li><a href="components/nav#">Mimicry Wiki</a></li>
-                                    <li><a href="components/nav#">Other Wikis</a></li>
-                                </ul>
-                            </li>
-                            --
-                            <li><a href="components/nav#docs">Documents</a></li>
-                            <li><a href="components/nav#irc">IRC</a></li>
-                            <li><a href="components/nav#contact">Contact Us</a></li>
-                            <li className="dropdown">
-                                <a className="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="components/nav#">Child
-                                    Sites<span className="caret"></span></a>
-                                <ul className="dropdown-menu">
-                                    <li><a href='/josh'>Josh</a></li>
-                                </ul>
-                            </li>
-                            <li className="dropdown">
-                                <a className="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="components/nav#">Projects<span
-                                    className="caret"></span></a>
-                                <ul className="dropdown-menu">
-                                    <li><a href='wasd'>Game</a></li>
-                                    <li><a href='grid'>Grid</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                    <div className="collapse navbar-collapse" id="navIndex">
+                        <ListGroup className="nav navbar-nav">
+                            <ListGroupItem className="active"><NavLink href="/">Home</NavLink></ListGroupItem>
+                            <ListGroupItem className="dropdown">
+                                <NavLink className="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Resources<span
+                                    className="caret"></span></NavLink>
+                                <ListGroup className="dropdown-menu">
+                                    <ListGroupItem><NavLink href="#">Wiki</NavLink></ListGroupItem>
+                                    <ListGroupItem><NavLink href="#">Mimicry Wiki</NavLink></ListGroupItem>
+                                    <ListGroupItem><NavLink href="#">Other Wikis</NavLink></ListGroupItem>
+                                </ListGroup>
+                            </ListGroupItem>
+                            <ListGroupItem className="dropdown">
+                                <NavLink className="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Child
+                                    Sites<span className="caret"></span></NavLink>
+                                <ListGroup className="dropdown-menu">
+                                    <ListGroupItem><NavLink href='/josh'>Josh</NavLink></ListGroupItem>
+                                </ListGroup>
+                            </ListGroupItem>
+                            <ListGroupItem>
+                                <Dropdown>
+                                    <NavLink className="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Projects<span
+                                        className="caret"></span></NavLink>
+                                    <ListGroup className="dropdown-menu">
+                                        <ListGroupItem><NavLink href='/wasd/index.html'>Game</NavLink></ListGroupItem>
+                                        <ListGroupItem><NavLink href='/grid/index.html'>Grid</NavLink></ListGroupItem>
+                                    </ListGroup>
+                                </Dropdown>
+                            </ListGroupItem>
+                        </ListGroup>
                     </div>
-                </div>
-            </nav>
+                </Container>
+            </Navbar>
         </>
     );
 }

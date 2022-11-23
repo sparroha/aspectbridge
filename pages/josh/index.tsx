@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import $ from 'jquery';
 import Link from "next/link";
-import Nav from '../components/nav';
+import Nav from '/components/nav';
 import Head from "next/head";
 import Script from 'next/script';
 import fetch from 'isomorphic-unfetch'
