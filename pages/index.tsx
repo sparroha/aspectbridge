@@ -17,9 +17,9 @@ export default function Main() {
     return <>
         <Head>
             <title>Aspect Bridge</title>
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
             <meta name="keywords" content="" />
             <meta name="description" content="" />
             <link rel="shortcut icon" href="assets/binary2.png" type="image/x-icon" />
