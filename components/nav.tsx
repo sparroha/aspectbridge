@@ -1,18 +1,19 @@
 import Link from "next/link";
-import { Button, Collapse, Container, Dropdown, ListGroup, ListGroupItem, Navbar, NavbarBrand, NavLink} from "react-bootstrap";
+import { Button, Collapse, Container, Dropdown, ListGroup, ListGroupItem, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
 export default function Nav() {
     return (
         <>
-            <Navbar className="navbar-inverse cssmenu">
-                <Container fluid className="">
-                    <div className="navbar-header">
+            <Navbar bg={'secondary'} className="navbar-inverse cssmenu h100">
+                <Container>
+                    <Navbar.Brand className="navbar-header">
                         <Button className="navbar-toggle" data-toggle="collapse" data-target="#navIndex">
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </Button>
-                        <NavbarBrand className="" href="#">Terra Forge</NavbarBrand>
-                    </div>
+                        <NavbarBrand href="#">Terra Forge</NavbarBrand>
+                    </Navbar.Brand>
+                    
                     <div className="collapse navbar-collapse" id="navIndex">
                         <ListGroup className="nav navbar-nav">
                             <ListGroupItem className="active"><NavLink href="/">Home</NavLink></ListGroupItem>
@@ -44,6 +45,29 @@ export default function Nav() {
                             </ListGroupItem>
                         </ListGroup>
                     </div>
+                </Container>
+            </Navbar>
+            <Navbar bg="light" expand="lg" className={'h100 '}>
+                <Container>
+                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Navbar className="me-auto">
+                        <NavLink href="#home">Home</NavLink>
+                        <NavLink href="#link">Link</NavLink>
+                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                        <NavDropdown.Item href="#action/3.2">
+                            Another action
+                        </NavDropdown.Item>
+                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item href="#action/3.4">
+                            Separated link
+                        </NavDropdown.Item>
+                        </NavDropdown>
+                    </Navbar>
+                    </Navbar.Collapse>
                 </Container>
             </Navbar>
         </>
