@@ -27,7 +27,7 @@ function showContent(query,src){
 }
 function showDocs(){
 	$.get("docs.html",function(html_string){
-		$('content').html(html_string)
+		$('#content').html(html_string)
 	},'html');
 }
 function showNav(){

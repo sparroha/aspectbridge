@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 var activePage = "Home";
 export default function Main() {
     getInitialPage();
+    //showDocs();
     //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
     //<p><Link href="%PUBLIC_URL%/dashboard.html">Home</Link></p>
     return <>
@@ -26,7 +27,7 @@ export default function Main() {
             <Script src="js/script.js"></Script>
             <Script src="js/hebrew.js"></Script>
         </Head>
-        <Container fluid>
+        <Container>
             <Row id='header' className='well-sm row p1 tcenter black-back h10'>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
@@ -76,35 +77,55 @@ function getInitialPage() {
         else domain = /:\/\/([^\.]+)/.exec(window.location.href)[1];
         console.log(domain);
         console.log(window.location.href);
-        if(domain =="aspectbridge" || domain=="www"){router.push('/dashboard.html')}
-        else if(domain =="logan" || domain == "localhost"){router.push('/josh/index.html')}
+        if(domain == "aspectbridge" || domain == "www"){/*router.push('/dashboard.html')*/}
+        else if(domain == "logan" || domain == "localhost"){router.push('/josh/index.html')}
     });
-}     
+}/*
+function showDocs(){
+    useEffect(() => {
+        $.get("docs.html",function(html_string){
+            $('#content').html(html_string)
+        },'html');
+    });
+}
+function viewtxt(txt)
+{
+    useEffect(() => {
+        $('#txtout').attr('src',txt);
+    });
+}*/
 const pageObj = {
     home: {
         title: "Home",
         html: <>
-            <Col md={1} id="nav1" className={"well-sm h90 grey-back o5"}>?
+            <Col md={1} id="nav1" className={"well-sm grey-back o5"}>
             </Col>
-            <Col md={10} id='home' className={"well-sm h90 white-back scroll"}>
-                <Row className={"h50"}>
+            <Col md={10} id='home' className={"well-sm white-back scroll"}>
+                <Row className={""}>
+                    <Col sm={12} id="content"></Col>
+                </Row>
+                <Row className={""}>
                     <Col md={12} id="homeContent" className={"tcenter black-font"}>
-                        <iframe id="homeContent" className={"scroll"} height="100%" width="100%" src ="https://jamboard.google.com/d/18-5D46Y8bRVTO7MVTkiCuSdTEE7ZzQ9wINH9l1l0Xkc/edit?usp=sharing" frameBorder={"0"}></iframe>
+                        <iframe id="homeContent" className={"scroll"} height="100%" width="100%" src ="" frameBorder={"0"}></iframe>
                     </Col>
                 </Row>
-                <Row className={"h50"}>
-                    <Form id="tLit" className="vcenter tcenter">
-                        <Form.Group>
-                            <Form.Label>Input</Form.Label>
-                            <Form.Control  type="text" id="word" name="word" placeholder="Enter word" />
-                            <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
-                            <Form.Text className="text-muted"><h1 id="hbru"></h1></Form.Text>
-                        </Form.Group>
+                <Row className={""}>
+                    <Col sm={3}></Col>
+                    <Col sm={6} id="content">
+                        <Form id="tLit" className="vcenter tcenter">
+                            <Form.Group>
+                                <Form.Label>Input</Form.Label>
+                                <Form.Control  type="text" id="word" name="word" placeholder="Enter word" />
+                                <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
+                                <Form.Text className="text-muted"><h1 id="hbru"></h1></Form.Text>
+                            </Form.Group>
                         
-                    </Form>
+                        </Form>
+                    </Col>
+                    <Col sm={3}></Col>
                 </Row>
             </Col>
-            <Col md={1} id="nav2" className={"well-sm h90 grey-back o5"}>
+            <Col md={1} id="nav2" className={"well-sm grey-back o5"}>
             </Col>
         </>
     },
