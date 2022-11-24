@@ -30,7 +30,7 @@ export default function Main() {
         <Container>
             <Row id='header' className='well-sm row p1 tcenter black-back'>
                 <Col sm={12} className='tcenter navy_back title logo'>
-                    <h1>Aspect Bridge</h1>
+                    <h1>Aspect {} Bridge</h1>
                     <NavIndex />
                 </Col>
             </Row>
@@ -115,7 +115,7 @@ const pageObj = {
                                 <Form.Control  type="text" id="word" name="word" placeholder="Enter word" />
                                 <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
                                 <Form.Text className="text-muted"><h1 id="hbru"></h1></Form.Text>
-                                <Form.Control  type="submit" id="word" name="word" placeholder="Enter word" />
+                                <Form.Control  type="submit" />
                             </Form.Group>
                         
                         </Form>

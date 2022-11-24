@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import $ from 'jquery';
 import Link from "next/link";
-import Nav from '/components/nav';
+import NavIndex from '../../components/nav';
 import Head from "next/head";
 import Script from 'next/script';
 import fetch from 'isomorphic-unfetch'
@@ -35,7 +35,7 @@ export default function Main() {
                 </Col>
             </Row>
             <Row id="nav" className={"h10"}>
-                <Nav />
+                <NavIndex />
             </Row>
             <Row id="content" className={"h70"}>
                 {pageObj.home.html}
