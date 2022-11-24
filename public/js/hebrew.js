@@ -92,9 +92,10 @@ const grammar = {
         fplural: 'ot',
     }
 }
-$("#tLit").submit(function(e) {
+$("#word").submit(function(e) {
     e.preventDefault();
 });
+$('#aspectnav').html('Aspect '+translit('Aspect')+' Bridge');
 function translit(str){
     let s = str.toLowerCase();
     let a = str.split("");
