@@ -75,7 +75,7 @@ function getInitialPage() {
         console.log(domain);
         console.log(window.location.href);
         if(domain == "aspectbridge" || domain == "www"){/*router.push('/dashboard.html')*/}
-        else if(domain == "logan" || domain == "localhost"){router.push('/josh/index.html')}
+        else if(domain == "logan" || domain == "localhost"){router.push('../public/josh/index.html')}
     });
 }/*
 function showDocs(){
