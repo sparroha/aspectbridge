@@ -21,7 +21,7 @@ export default function Main() {
             <Script src="js/script.js"></Script>
             <Script src="js/hebrew.js"></Script>
         </Head>
-        <Container className={'logan'}>
+        <Container fluid className={'logan'}>
             <Row id='header' className='well-sm row p1 tcenter black-back h10'>
                 <Col sm={12} className={'text-warning tcenter h20 loganLogo'}>
                     <h1>Sunrise Landscapes</h1>
@@ -29,7 +29,9 @@ export default function Main() {
                 </Col>
             </Row>
             <Row id="content" className={"h70"}>
-                {pageObj.jam.html}
+                <Col sm={12}>
+                    {pageObj.jam.html}
+                </Col>
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={5} >
@@ -53,7 +55,7 @@ const pageObj = {
             </Col>
             <Col md={10} id='home' className={"well-sm white-back scroll"}>
                 <Row className={""}>
-                    <Col sm={12} id="content"></Col>
+                    <Col sm={12} id=""></Col>
                 </Row>
                 <Row className={""}>
                     <Col md={12} id="homeContent" className={"tcenter black-font"}>
@@ -62,7 +64,7 @@ const pageObj = {
                 </Row>
                 <Row className={""}>
                     <Col sm={3}></Col>
-                    <Col sm={6} id="content">
+                    <Col sm={6} id="">
                         <Form id="tLit" className="vcenter tcenter">
                             <Form.Group>
                                 <Form.Label>Input</Form.Label>
@@ -83,24 +85,26 @@ const pageObj = {
     jam: {
         title: "Jam",
         html: <>
-            <Col xs={6} sm={1} md={1} lg={1}  id="nav1" className={"well-sm grey-back o5"}>
-                <Row className="h30">
-                    <Col sm={12} className="h100 grey-back p5">
-                        <Banner />
-                    </Col>
-                </Row>
-                <Row className="h70">
-                    <Col sm={12} className="h100 grey-back p5">
-                        <Grass />
-                    </Col>
-                </Row>
-            </Col>
-            <Col xs={6} sm={8} md={8} lg={9} id="client-content" className="p5 grey-back o8">
-                        <h3 className="title">Client Content</h3>
-            </Col>
-            <Col xs={6} sm={1} md={1} lg={1}  id="nav2" className={"well-sm grey-back o5"}>
-                <NavClient />
-            </Col>
+            <Row className={'h100'}>
+                <Col xs={6} sm={2} md={2} lg={2}  id="nav1" className={"well-sm grey-back o5"}>
+                    <Row className="h30">
+                        <Col sm={12} className="h100 grey-back p5">
+                            <Banner />
+                        </Col>
+                    </Row>
+                    <Row className="h70">
+                        <Col sm={12} className="h100 grey-back p5">
+                            <Grass />
+                        </Col>
+                    </Row>
+                </Col>
+                <Col xs={6} sm={8} md={9} lg={9} id="client-content" className="p5 grey-back o8">
+                            <h3 className="title">Client Content</h3>
+                </Col>
+                <Col xs={6} sm={2} md={1} lg={1}  id="nav2" className={"well-sm grey-back o5"}>
+                    <NavClient />
+                </Col>
+            </Row>
         </>
     },
     about: {
