@@ -3,13 +3,12 @@ import NavIndex from './navigation/nav';
 import NavClient from './navigation/nav_client';
 import Head from "next/head";
 import Script from 'next/script';
-import {Button, Col, Container, Form, Image, Row, SSRProvider} from "react-bootstrap";
+import {Button, Col, Container, Form, Image, Row} from "react-bootstrap";
+import grass from 'assets/Grass.png';
 
 var activePage = "Home";
 export default function Main() {
-    
     return <>
-        <SSRProvider>
         <Head>
             <title>Aspect Bridge</title>
             <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -46,7 +45,6 @@ export default function Main() {
                 </Col>
             </Row>
         </Container>
-        </SSRProvider>
     </>
 }
 const pageObj = {
@@ -91,19 +89,19 @@ const pageObj = {
                 <Col sm={1} className="h100 p5"><Image src="./assets/blue_collar.png" className="img-fluid grey-back" width="100%" height="100%" alt="img-thumbnail" />
                 </Col>
                 <Col sm={11} className="h100 p5">
-                        <Image src="public/assets/Sunrise.png" className="img-fluid grey-back o5" width="100%" height="100%" alt="Responsive image" />
+                        <Image src="assets/Sunrise.png" className="img-fluid grey-back o5" width="100%" height="100%" alt="Responsive image" />
                 </Col>
             </Row>
             <Row className="h60">
                 <Col xs={6} sm={1} md={1} lg={1} className="h100">
                     <Row className="h30">
                         <Col sm={12} className="h100 p5">
-                            <Image src="./public/assets/logan_banner.png" className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
+                            <Image src="logan_banner.png" className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
                         </Col>
                     </Row>
                     <Row className="h70">
                         <Col sm={12} className="h100 p5">
-                            <Image src="/public/assets/Grass.png" className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
+                            <Image src={grass.src} className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
                         </Col>
                     </Row>
                 </Col>

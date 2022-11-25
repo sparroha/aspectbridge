@@ -8,6 +8,7 @@ import jsonFetch from '../lib/,base/jsonFetch'
 //import '../public/css/nav.css'
 import '../public/css/style.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { SSRProvider } from 'react-bootstrap'
 
 //import Custom404 from './404'
 //import { ApiCommonProps } from './api/common-props'
@@ -68,7 +69,7 @@ function App(props: CustomAppProps) {
     if ('_app_RenderNot' in pageProps || '_app_RedirectToLogin' in pageProps || '_app_RedirectShallow' in pageProps)
         return null
 
-    return <SWRConfig value={{ fetcher: jsonFetch }}>{
+    return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}>{
         /*'_app_Say404' in pageProps
             ? <Custom404 /> // static - 404.tsx
             : <PageProps.Provider value={pageProps}>{
@@ -76,7 +77,7 @@ function App(props: CustomAppProps) {
                     ? <CustomError {...pageProps._app_SayErr} /> // dynamic - _error.tsx
                     :*/ <Component {...pageProps} /> // dynamic - whichever page .tsx e.g. PageLogin from login.tsx
           //  }</PageProps.Provider>
-    }</SWRConfig>
+    }</SWRConfig></SSRProvider>
 }
 
 /*export const PageProps = React.createContext<CommonPropsPossible>(null as any)
