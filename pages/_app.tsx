@@ -5,16 +5,9 @@ import 'nprogress/nprogress.css' // styles of nprogress
 import React, { useEffect } from 'react'
 import { SWRConfig } from 'swr'
 import jsonFetch from '../lib/,base/jsonFetch'
-// import '../lib/init'
-/*import '../styles/base.css'
-import '../styles/both.css'
-import '../styles/init.css'
-import '../styles/layout.css'
-import '../styles/main.css'*/
 //import '../public/css/nav.css'
 import '../public/css/style.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-//import '../public/css/bootstrap.min.css'
 
 //import Custom404 from './404'
 //import { ApiCommonProps } from './api/common-props'

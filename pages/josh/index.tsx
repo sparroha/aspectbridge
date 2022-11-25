@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import $ from 'jquery';
-import Link from "next/link";
-import NavIndex from '../../components/nav';
+import NavIndex from './navigation/nav';
+import NavClient from './navigation/nav_client';
 import Head from "next/head";
 import Script from 'next/script';
-import fetch from 'isomorphic-unfetch'
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
-import { useRouter } from 'next/router';
-//import { getDomainLocale } from 'next/dist/shared/lib/router/router';
+import {Button, Col, Container, Form, Image, Row, SSRProvider} from "react-bootstrap";
 
 var activePage = "Home";
 export default function Main() {
-    //getInitialPage();
-    //showDocs();
-    //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
-    //<p><Link href="%PUBLIC_URL%/dashboard.html">Home</Link></p>
+    
     return <>
+        <SSRProvider>
         <Head>
             <title>Aspect Bridge</title>
             <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -38,7 +32,7 @@ export default function Main() {
                 <NavIndex />
             </Row>
             <Row id="content" className={"h70"}>
-                {pageObj.home.html}
+                {pageObj.jam.html}
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={5} >
@@ -52,48 +46,9 @@ export default function Main() {
                 </Col>
             </Row>
         </Container>
+        </SSRProvider>
     </>
-    //}
 }
-/*async function getData() {
-    const res = await fetch('https://api.example.com/...');
-    // The return value is *not* serialized
-    // You can return Date, Map, Set, etc.
-  
-    // Recommendation: handle errors
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error('Failed to fetch data');
-    }
-  
-    return res.json();
-}*/
-function getInitialPage() {
-    const router = useRouter();
-    useEffect(() => {
-        let domain = "";
-        console.log('CLIENT SIDE RENDERING');
-        if(window.location.href=="http://localhost:3000/"){domain="localhost"}
-        else domain = /:\/\/([^\.]+)/.exec(window.location.href)[1];
-        console.log(domain);
-        console.log(window.location.href);
-        if(domain == "aspectbridge" || domain == "www"){/*router.push('/dashboard.html')*/}
-        else if(domain == "logan" || domain == "localhost"){router.push('/josh/index.html')}
-    });
-}/*
-function showDocs(){
-    useEffect(() => {
-        $.get("docs.html",function(html_string){
-            $('#content').html(html_string)
-        },'html');
-    });
-}
-function viewtxt(txt)
-{
-    useEffect(() => {
-        $('#txtout').attr('src',txt);
-    });
-}*/
 const pageObj = {
     home: {
         title: "Home",
@@ -129,6 +84,44 @@ const pageObj = {
             </Col>
         </>
     },
+    jam: {
+        title: "Jam",
+        html: <>
+            <Row className="h10">
+                <Col sm={1} className="h100 p5"><Image src="./assets/blue_collar.png" className="img-fluid grey-back" width="100%" height="100%" alt="img-thumbnail" />
+                </Col>
+                <Col sm={11} className="h100 p5">
+                        <Image src="public/assets/Sunrise.png" className="img-fluid grey-back o5" width="100%" height="100%" alt="Responsive image" />
+                </Col>
+            </Row>
+            <Row className="h60">
+                <Col xs={6} sm={1} md={1} lg={1} className="h100">
+                    <Row className="h30">
+                        <Col sm={12} className="h100 p5">
+                            <Image src="./public/assets/logan_banner.png" className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
+                        </Col>
+                    </Row>
+                    <Row className="h70">
+                        <Col sm={12} className="h100 p5">
+                            <Image src="/public/assets/Grass.png" className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
+                        </Col>
+                    </Row>
+                </Col>
+                <Col xs={6} sm={8} md={8} lg={9} className="h100">
+                    <Row className="h100">
+                        <Col id="client-content" className="col-sm-28 h100 p5 grey-back o8">
+                            <h3 className="title">Client Content</h3>
+                        </Col>
+                    </Row>
+                </Col>
+                <Col xs={6} sm={3} md={2} lg={1} className="h100">
+                    <Row className="h100">
+                        <NavClient />
+                    </Row>
+                </Col>
+            </Row>
+        </>
+    },
     about: {
         title: "About",
         html: <>
@@ -137,61 +130,8 @@ const pageObj = {
             </Row>
         </>
     },
-    translit: {
-        button: {
-            html: {
-            }
-        }
-    },
     nav: {
         html: {
         }
     }
-}
-export function TLButton(){
-    return pageObj.translit.button.html;
-}
-export async function getNasaImgProps() {
-    const res = await fetch(
-        "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
-    );
-    const data = await res.json();
-
-    return {
-        props: {
-            title: data.title,
-            imageUrl: data.url,
-        },
-    };
-}
-/*function JavaScript(){
-    return<>
-        <Script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></Script>
-        <Script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></Script>
-        <Script src="/js/bs-dropdown-hover.js"></Script>
-    </>
-}*/
-function Profile() {
-    const [data, setData] = useState(null)
-    const [isLoading, setLoading] = useState(false)
-
-    useEffect(() => {
-        setLoading(true)
-        fetch('/api/profile-data')
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data)
-                setLoading(false)
-            })
-    }, [])
-
-    if (isLoading) return <p>Loading...</p>
-    if (!data) return <p>No profile data</p>
-
-    return (
-        <div>
-            <h1>{data.name}</h1>
-            <p>{data.bio}</p>
-        </div>
-    )
 }
