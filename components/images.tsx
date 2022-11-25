@@ -1,7 +1,7 @@
 import Image from "next/image";
 import grass from '../public/josh/assets/Grass.png'
 import banner from '../public/josh/assets/logan_banner.png'
-import sunrise from '../public/josh/assets/sunrise.png'
+import sunrise from '../public/josh/assets/Sunrise.png'
 import blue from '../public/josh/assets/blue_collar.png'
 
 
