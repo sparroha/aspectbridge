@@ -27,8 +27,8 @@ export default function Main() {
             <Script src="js/script.js"></Script>
             <Script src="js/hebrew.js"></Script>
         </Head>
-        <Container>
-            <Row id='header' className='well-sm tcenter'>
+        <Container className={'aspect'}>
+            <Row id='header' className='well-sm tcenter h20'>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect {} Bridge</h1>
                     <NavIndex />
