@@ -5,33 +5,25 @@ export default function NavIndex() {
         <>
             <Navbar bg="" variant="dark" expand="lg" id="navindex">
                 <Container fluid>
-                    <Navbar.Brand href="#navindex" id="aspectnav">Aspect Bridge</Navbar.Brand>
+                    <Navbar.Brand href="#navindex" id="aspectnav">Zypk Bridge</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }} navbarScroll>
 
                             <Nav.Link href="#">Home</Nav.Link>{' '}
                             <Nav.Link  href="#about">About</Nav.Link>{' '}
-                            <NavDropdown title="Partners" id="navbarPartnersDropdown">
-                                <Nav.Link href="https://aspectbridge.com">Aspect Bridge</Nav.Link>
+                            <NavDropdown title="AC" id="navbarPartnersDropdown">
+                                <Nav.Link as={Button} href="#" onclick="showJam('procedures'); return false;">Procedures</Nav.Link>
                                 <NavDropdown.Divider />
-                                <Nav.Link href="https://logantest.aspectbridge.com" disabled>Logan_Test_Live</Nav.Link>
-                                <Nav.Link href="http://localhost:3000/josh/index.html" disabled>Logan_Test_Dev</Nav.Link>
+                                <Nav.Link as={Button} href="#" onclick="showJam('billing'); return false;">Billing</Nav.Link>
+                                <NavDropdown.Divider />
+                                <Nav.Link as={Button} href="#" onclick="showJam('records'); return false;">Records</Nav.Link>
+                                <NavDropdown.Divider />
+                                <Nav.Link as={Button} href="#" onclick="showJam('contacts'); return false;">Contacts</Nav.Link>
                             </NavDropdown>{' '}
+                            <Nav.Link href="/assistant" >Assistant</Nav.Link>{' '}
+                            <Nav.Link href="/employees" >Employees</Nav.Link>{' '}
 
-                            <NavDropdown title="Projects" id="navbarProjectsDropdown">
-                                <Nav.Link href="/grid/index.html">Grid</Nav.Link>
-                                <NavDropdown.Divider />
-                                <Nav.Link href="/wasd/index.html" disabled>wasd</Nav.Link>
-                            </NavDropdown>{' '}
-
-                            <NavDropdown title="Resources" id="navbarResourcesDropdown">
-                                <NavDropdown.Item href="#ankor1" disabled>Wiki</NavDropdown.Item>
-                                <NavDropdown.Item href="#ankor2" disabled>Mimicry Wiki</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#ankor3" disabled>Other Wikis</NavDropdown.Item>
-                            </NavDropdown>{' '}
-                            
                         </Nav>{' '}
                         <Form className="d-flex">
                             <Form.Control

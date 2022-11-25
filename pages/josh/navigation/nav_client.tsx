@@ -31,36 +31,33 @@ export default function NavClient() {
                                     </Nav>
                             </Navbar.Collapse>
                         </Col>
+                        <Col sm={12}>
+                            <Navbar.Collapse id="navbarScroll">
+                                    <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }} navbarScroll>
+                                        <NavDropdown title="Graves" id="navbarPartnersDropdown">
+                                            <Nav.Link as={Button} href="#" onclick="showJam('lake_hills'); return false;">Lake Hills</Nav.Link>
+                                            <Nav.Link as={Button} href="#" onclick="showJam('weekly'); return false;">Ringgold</Nav.Link>
+                                            <Nav.Link as={Button} href="#" onclick="showJam('gordy'); return false;">Gordy</Nav.Link>
+                                            <Nav.Link as={Button} href="#" onclick="showJam('havens_rest'); return false;">Havens Rest</Nav.Link>
+                                        </NavDropdown>
+                                    </Nav>
+                            </Navbar.Collapse>
+                        </Col>
+                        <Col sm={12}>
+                            <Navbar.Collapse id="navbarScroll">
+                                    <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }} navbarScroll>
+                                        <NavDropdown title="Regions" id="navbarPartnersDropdown">
+                                            <Nav.Link as={Button} href="#" onclick="showJam('south'); return false;">South</Nav.Link>
+                                            <Nav.Link as={Button} href="#" onclick="showJam('east'); return false;">East</Nav.Link>
+                                            <Nav.Link as={Button} href="#" onclick="showJam('north'); return false;">North</Nav.Link>
+                                            <Nav.Link as={Button} href="#" onclick="showJam('west'); return false;">West</Nav.Link>
+                                        </NavDropdown>
+                                    </Nav>
+                            </Navbar.Collapse>
+                        </Col>
                     </Row>
                 </Container>
             </Navbar>
         </Col></>
     );
 }
-/*<li class="dropdown">
-<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Bill<span class="caret"></span></a>
-<ul class="dropdown-menu">
-    <li><a href="#" onclick="showJam('bill'); return false;">Seasonal</a></li>
-    <li><a href="#" onclick="showJam('bill'); return false;">Weekly</a></li>
-    <li><a href="#" onclick="showJam('bill'); return false;">Projects</a></li>
-</ul>
-</li>
-<li class="dropdown">
-<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Graves<span class="caret"></span></a>
-<ul class="dropdown-menu">
-    <li><a href="#" onclick="showJam('graveyard'); return false;">Lake Hills</a></li>
-    <li><a href="#" onclick="showJam('graveyard'); return false;">Ringgold 1</a></li>
-    <li><a href="#" onclick="showJam('graveyard'); return false;">Ringgold 2</a></li>
-    <li><a href="#" onclick="showJam('graveyard'); return false;">Gordy</a></li>
-    <li><a href="#" onclick="showJam('graveyard'); return false;">Havens Rest</a></li>
-</ul>
-</li>
-<li class="dropdown">
-<a class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">Regions<span class="caret"></span></a>
-<ul class="dropdown-menu">
-    <li><a href="#" onclick="showJam('lookout'); return false;">South</a></li>
-    <li><a href="#" onclick="showJam('lookout'); return false;">East</a></li>
-    <li><a href="#" onclick="showJam('lookout'); return false;">North</a></li>
-    <li><a href="#" onclick="showJam('lookout'); return false;">West</a></li>
-</ul>
-</li>*/

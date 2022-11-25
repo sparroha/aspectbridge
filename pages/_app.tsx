@@ -48,9 +48,9 @@ export default React.memo(App, function propsAreEqual(prevProps, nextProps) {
         Router.replace(`/login#` + location.pathname.substring(1) + location.search + location.hash, undefined)
         return true // skip render (I think it would page blink otherwise)
 
-    } else if ('_app_RedirectShallow' in pageProps)
+    } /*else if ('_app_RedirectShallow' in pageProps)
         // Change URL without fetching again
-        Router.replace(pageProps._app_RedirectShallow, undefined, { shallow: true })
+        Router.replace(pageProps._app_RedirectShallow, undefined, { shallow: true })*/
 
     return false
 })
