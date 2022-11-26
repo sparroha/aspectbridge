@@ -8,18 +8,6 @@ html{
 	background-position: center;
 	background-attachment: fixed;
 }
-:has(.logan){
-	background-image:url("../josh/assets/Sunrise.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-	background-position: center;
-	background-attachment: fixed;
-}
-.loganLogo{
-	background-image: url("../josh/assets/Grass.png");
-    background-size:  100% 100px;/*auto 100%;*/
-    background-repeat: no-repeat;
-}
 head{
 	object-position: top;
 	float: top;
