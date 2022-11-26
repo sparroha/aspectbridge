@@ -10,44 +10,58 @@ var displayClient = 'Lorem Ipsum'
 export default function Main() {
     const cards = {
         header:
-        <Card className={'text-white'}>
-            <Card.Body className={'mgrass'}>
-                <Card.Title className={'banner text-secondary'}>Sunrise Landscapes</Card.Title>
+        <Card className={'mgrass'}>
+            <Card.Body>
+                <Card.Title className={'banner'}>Lorem Ipsum</Card.Title>
                 <NavIndex />
             </Card.Body>
         </Card>
         ,navclient:
-        <Card className={'text-secondary'}>
-            <Card.Body className={'farm'}>
+        <Card className={'farm'}>
+            <Card.Body>
                 <NavClient />
             </Card.Body>
         </Card>
+        ,contact:
+        <Card className={'mgrass'}>
+            <Card.Body>
+                <Card.Title className={'banner'}>Contact Us</Card.Title>
+                <Card.Text>"Lorem ipsum dolor sit amet,</Card.Text>
+            </Card.Body>
+        </Card>
         ,about:
-        <Card className={'text-white'}>
-            <Card.Body className={'mgrass'}>
-                <Card.Title className={'banner text-secondary'}>About</Card.Title>
-                <Card.Text>about text</Card.Text>
+        <Card className={'mgrass'}>
+            <Card.Body>
+                <Card.Title className={'banner'}>About</Card.Title>
+                <Card.Text>consectetur adipiscing elit,</Card.Text>
+            </Card.Body>
+        </Card>
+        ,news:
+        <Card className={'mgrass'}>
+            <Card.Body>
+                <Card.Title className={'banner'}>News Feed</Card.Title>
+                <Card.Text>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</Card.Text>
             </Card.Body>
         </Card>
         ,banner:
-        <Card className={'text-white'}>
-            <Card.Body className={'specles'}>
+        <Card className={'specles'}>
+            <Card.Body>
                 <Card.Title>Banner</Card.Title>
                 <Card.Text>banner text</Card.Text>
             </Card.Body>
         </Card>
         ,grass:
-        <Card className={'text-white'}>
-            <Card.Body className={'grass'}>
-                <Card.Title className={'banner text-secondary'}>Grass</Card.Title>
+        <Card className={'grass'}>
+            <Card.Body>
+                <Card.Title className={'banner'}>Grass</Card.Title>
                 <Card.Text>grass text</Card.Text>
             </Card.Body>
         </Card>
         ,clientDynamic:
-        <Card className={'text-white h100'}>
-            <Card.Body className={'terrace'}>
-                <Card.Title className={'banner text-secondary'}>What is {displayClient}?</Card.Title>
-                <hr className="white" />
+        <Card className={'terrace'}>
+            <Card.Body>
+                <Card.Title className={'banner'}>What is {displayClient}?</Card.Title>
+                <hr />
                 <Card.Text>
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
                         Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
@@ -63,16 +77,26 @@ export default function Main() {
 
     }
     const pages = {
-        jam: {
-            title: "Jam",
+        home: {
+            title: "Dashboard",
             html: <>
-                <Col md={3}  id="nav1" className={'h100'}>
-                    {cards.banner}
-                    {cards.grass}
+                <Col md={3}  id="nav1" className={''}>
+                    <Row>
+                        <Col sm={6}>{cards.banner}</Col>
+                        <Col sm={6}>{cards.grass}</Col>
+                        <Col sm={6}>{cards.grass}</Col>
+                        <Col sm={6}>{cards.grass}</Col>
+                    </Row>
                 </Col>
-                <Col md={7} id="client-content" className={'h100'} >{cards.clientDynamic}
+                <Col md={7} id="client-content h100" className={'h100 scroll'} >
+                    <Row>
+                        <Col sm={12} md={12} lg={6}>{cards.clientDynamic}</Col>
+                        <Col sm={12} md={12} lg={6}>{cards.clientDynamic}</Col>
+                        <Col sm={12} md={12} lg={6}>{cards.clientDynamic}</Col>
+                        <Col sm={12} md={12} lg={6}>{cards.clientDynamic}</Col>
+                    </Row>
                 </Col>
-                <Col md={2} id="nav2" className={'h100'}><NavClient />
+                <Col md={2} id="nav2" className={''}><NavClient />
                 </Col>
             </>
         },
@@ -96,23 +120,23 @@ export default function Main() {
             <Script src="js/hebrew.js"></Script>
         </Head>
         <Container className={'logan'}>
-            <Row id='header' className='h20'>
+            <Row id='header' className={"h20"}>
                 <Col sm={12}>
                     {cards.header}
                 </Col>
             </Row>
-            <Row id="content" className={"h70"}>
-                {pages.jam.html}
+            <Row id="content" className={"h70 scroll"}>
+                {pages.home.html}
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={4} >
-                    {cards.about}
+                    {cards.contact}
                 </Col>
                 <Col sm={4} >
                     {cards.about}
                 </Col>
                 <Col sm={4} >
-                    {cards.about}
+                    {cards.news}
                 </Col>
             </Row>
         </Container>

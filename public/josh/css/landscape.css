@@ -1,0 +1,13 @@
+.card{
+    padding: 10px;
+}
+.card-title, .card-text, .navbar{
+    color: black;
+    font-weight: bold;
+    font-size: larger;
+    z-index: 1;
+}
+.card-body{
+    background-color: lightgray;
+    opacity: 0.8;
+}

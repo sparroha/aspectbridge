@@ -10,6 +10,7 @@ import { SSRProvider } from 'react-bootstrap'
 import '../public/css/style.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../public/josh/css/images.css'
+import '../public/josh/css/landscape.css'
 
 //import Custom404 from './404'
 //import { ApiCommonProps } from './api/common-props'

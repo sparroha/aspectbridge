@@ -3,7 +3,7 @@ const aspect = '';
 export default function NavIndex() {
     return (
         <>
-            <Navbar bg="" variant="dark" expand="lg" id="navindex">
+            <Navbar bg="" variant="light" expand="lg" id="navindex">
                 <Container fluid>
                     <Navbar.Brand href="#navindex" id="aspectnav">Zypk Bridge</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
