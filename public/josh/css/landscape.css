@@ -1,6 +1,20 @@
 .card{
     padding: 10px;
 }
+#nav1 hr{
+	border-top: 2px solid black !important;
+	opacity: 1;
+}
+#nav1 .card-title, #nav1 .card-text{
+    color: black;
+    font-weight: light;
+    font-size: small;
+    z-index: 1;
+}
+hr{
+	border-top: 5px solid black !important;
+	opacity: 1;
+}
 .card-title, .card-text, .navbar{
     color: black;
     font-weight: bold;

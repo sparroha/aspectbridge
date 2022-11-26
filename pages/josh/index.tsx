@@ -13,12 +13,14 @@ export default function Main() {
         <Card className={'mgrass'}>
             <Card.Body>
                 <Card.Title className={'banner'}>Lorem Ipsum</Card.Title>
+                <hr />
                 <NavIndex />
             </Card.Body>
         </Card>
         ,navclient:
         <Card className={'farm'}>
             <Card.Body>
+                <hr />
                 <NavClient />
             </Card.Body>
         </Card>
@@ -26,6 +28,7 @@ export default function Main() {
         <Card className={'mgrass'}>
             <Card.Body>
                 <Card.Title className={'banner'}>Contact Us</Card.Title>
+                <hr />
                 <Card.Text>"Lorem ipsum dolor sit amet,</Card.Text>
             </Card.Body>
         </Card>
@@ -33,6 +36,7 @@ export default function Main() {
         <Card className={'mgrass'}>
             <Card.Body>
                 <Card.Title className={'banner'}>About</Card.Title>
+                <hr />
                 <Card.Text>consectetur adipiscing elit,</Card.Text>
             </Card.Body>
         </Card>
@@ -40,6 +44,7 @@ export default function Main() {
         <Card className={'mgrass'}>
             <Card.Body>
                 <Card.Title className={'banner'}>News Feed</Card.Title>
+                <hr />
                 <Card.Text>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</Card.Text>
             </Card.Body>
         </Card>
@@ -47,6 +52,7 @@ export default function Main() {
         <Card className={'specles'}>
             <Card.Body>
                 <Card.Title>Banner</Card.Title>
+                <hr />
                 <Card.Text>banner text</Card.Text>
             </Card.Body>
         </Card>
@@ -54,6 +60,7 @@ export default function Main() {
         <Card className={'grass'}>
             <Card.Body>
                 <Card.Title className={'banner'}>Grass</Card.Title>
+                <hr />
                 <Card.Text>grass text</Card.Text>
             </Card.Body>
         </Card>
@@ -88,7 +95,7 @@ export default function Main() {
                         <Col sm={6}>{cards.grass}</Col>
                     </Row>
                 </Col>
-                <Col md={7} id="client-content h100" className={'h100 scroll'} >
+                <Col md={7} id="client-content h100" className={'md-well h100 scroll'} >
                     <Row>
                         <Col sm={12} md={12} lg={6}>{cards.clientDynamic}</Col>
                         <Col sm={12} md={12} lg={6}>{cards.clientDynamic}</Col>
