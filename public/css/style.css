@@ -20,6 +20,10 @@ h3{
 	font-weight:bold;
 	margin: 0;
 }
+hr.white{
+	border-top: 2px solid white !important;
+	opacity: 0.5;
+}
 a{
 	text-decoration:none;
 }
