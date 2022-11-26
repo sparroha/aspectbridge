@@ -10,7 +10,7 @@ export default function Images(){
     //return <Image src={logo} className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
 }
 export function Grass(){
-    return <Image src={grass} className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
+    return <Image src={grass} className="img-fluid fluid rounded grey-back" width="100%" height="100%" alt="Responsive image" />
 }
 export function Banner(){
     return <Image src={banner} className="img-fluid grey-back" width="100%" height="100%" alt="Responsive image" />
