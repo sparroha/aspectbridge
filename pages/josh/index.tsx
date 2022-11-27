@@ -28,8 +28,9 @@ export default function Main() {
                     {jsobj.card.header}
                 </Col>
             </Row>
-            <Row id="content" className={"h70"}>
-                <PageComponent />
+            <Row id="" className={"h70"}>
+                <Col md={2} id="nav-client">{jsobj.card.navcards.mowing}</Col>
+                <Col md={10} id="content"><PageComponent /></Col>
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={4} >

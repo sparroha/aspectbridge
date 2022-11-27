@@ -3,11 +3,22 @@ import { Nav, Button, Card, Col, Row } from 'react-bootstrap'
 import NavIndex from './navigation/nav'
 import NavClient from './navigation/nav_client'
 
-var displayClient = 'Lorem Ipsum'
+
+const filler = {
+    title: 'Lorem Ipsum',
+    body: <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+            when an unknown printer took a galley of type and scrambled it to make a type 
+            specimen book. It has survived not only five centuries, but also the leap into 
+            electronic typesetting, remaining essentially unchanged. It was popularised in 
+            the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+            and more recently with desktop publishing software like Aldus PageMaker including 
+            versions of Lorem Ipsum.</p>
+}
 const buttons = {
     a: {
         mowing: {
-            yards: <Nav.Link href="#" onClick={() => {showJam('yards'); return false;}}>Yards</Nav.Link>,
+            yards: <Nav.Link href="#" onClick={() => {useClientComponent('yards'); return false;}}>Yards</Nav.Link>,
             trimming: <Nav.Link href="#" onClick={() => {showJam('trimming'); return false;}}>Trimming</Nav.Link>,
             hardees: <Nav.Link href="#" onClick={() => {showJam('tardees'); return false;}}>Hardees</Nav.Link>
         }
@@ -77,23 +88,6 @@ const cards = {
                 <Card.Text>grass text</Card.Text>
             </Card.Body>
         </Card>
-    ,clientDynamic:
-        <Card className={'img-terrace'}>
-            <Card.Body>
-                <Card.Title className={'img-banner'}>What is {displayClient}?</Card.Title>
-                <hr />
-                <Card.Text>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                        when an unknown printer took a galley of type and scrambled it to make a type 
-                        specimen book. It has survived not only five centuries, but also the leap into 
-                        electronic typesetting, remaining essentially unchanged. It was popularised in 
-                        the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-                        and more recently with desktop publishing software like Aldus PageMaker including 
-                        versions of Lorem Ipsum.
-                </Card.Text>
-            </Card.Body>
-        </Card>
     ,navcards: {
         mowing: 
             <Card className={'img-grey-back'}>
@@ -108,28 +102,22 @@ const cards = {
                 </Card.Body>
             </Card>
     }
+    ,clientDynamic:
+        <Card className={'img-terrace'}>
+            <Card.Body>
+                <Card.Title className={'img-banner'}>What is {filler.title}?</Card.Title>
+                <hr />
+                <Card.Text>
+                </Card.Text>
+                <hr />
+            </Card.Body>
+        </Card>
 
 }
 const pages = {
     home: {
         title: "Dashboard",
-        html: <>
-            <Col sm={3} md={3} lg={5}  id="nav1" className={''}>
-                <Row>
-                    <Col sm={12} md={6} >{cards.navcards.mowing}</Col>
-                    <Col sm={12} md={6} >{cards.grass}</Col>
-                    <Col sm={12} md={6} >{cards.grass}</Col>
-                    <Col sm={12} md={6} >{cards.grass}</Col>
-                </Row>
-            </Col>
-            <Col sm={9} md={7} lg={6} id="client-content h100" className={'md-well h100'} >
-                <Row>
-                    {cards.clientDynamic}
-                </Row>
-            </Col>
-            <Col sm={12} md={2} lg={1} id="nav2" className={''}><NavClient />
-            </Col>
-        </>
+        html: cards.clientDynamic
     },
     about: {
         title: "About",
@@ -155,4 +143,32 @@ export function RenderPage(page){
     const ref = useRef('#pagecontent');
     useEffect(() => {
     },[activepage]);
+}
+export function Client(name: String){
+    const [client, setClient] = useState(name)
+    useEffect(() => {
+        //window.location.reload();
+    }, [client])
+}
+
+function useClientComponent(name){
+    const [client, setClient] = useState(name);
+    useEffect(() => {
+        const handlePageUpdate = () => {setClient(name)};
+
+    })
+    return client;
+}
+export function MyMod(){
+    const client = useClientComponent('Name');
+    return;
+
+    function useClientComponent(name){
+        const [client, setClient] = useState(name);
+        useEffect(() => {
+            const handlePageUpdate = () => {setClient(name)};
+    
+        })
+        return client;
+    }
 }
