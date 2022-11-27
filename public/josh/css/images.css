@@ -5,52 +5,52 @@
 	background-position: center;
 	background-attachment: fixed;
 }
-.sunrise{
+.img-sunrise{
     background-image: url('../../josh/assets/sunrise.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.grass{
+.img-grass{
     background-image: url('../assets/grass.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.specles{
+.img-specles{
     background-image: url('../assets/logan_specles.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.blue-collar{
+.img-blue-collar{
     background-image: url('../assets/blue_collar.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.flower-grass{
+.img-flower-grass{
     background-image: url('../assets/flower_grass.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.pond{
+.img-pond{
     background-image: url('../assets/pond.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.farm{
+.img-farm{
     background-image: url('../assets/farm.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.terrace{
+.img-terrace{
     background-image: url('../assets/terrace.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.mgrass{
+.img-mgrass{
     background-image: url('../assets/MGrass.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.mgrass1{
+.img-mgrass1{
     background-image: url('../assets/MGrass1.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;

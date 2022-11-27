@@ -21,7 +21,7 @@ h3{
 	margin: 0;
 }
 hr{
-	border-top: 5px solid black !important;
+	border-top: 5px solid black;
 	opacity: 1;
 }
 a{
