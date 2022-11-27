@@ -1,8 +1,11 @@
 .card{
     padding: 10px;
+    border-style: outset;
+    border-radius: 10px;
+    border: 2px outset white;
 }
 #nav1 hr{
-	border-top: 2px solid black !important;
+	border-top: 1px solid black !important;
 	opacity: 1;
 }
 #nav1 .card-title, #nav1 .card-text{
@@ -13,7 +16,7 @@
     z-index: 1;
 }
 hr{
-	border-top: 5px solid black !important;
+	border-top: 2px solid black !important;
 	opacity: 1;
 }
 .card-title, .card-text, .navbar{
@@ -25,5 +28,5 @@ hr{
 }
 .card-body{
     background-color: lightgray;
-    opacity: 0.5;
+    opacity: 0.7;
 }
