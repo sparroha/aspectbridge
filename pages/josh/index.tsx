@@ -5,17 +5,11 @@ import Head from "next/head";
 import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
 import jsObjs from './jsobjs';
+import PageComponent from './navigation/content';
 
 var jsobj = jsObjs();
 var activePage = "Home";
 export default function Main() {
-    const [page, setPage] = useState(jsobj.page.home)
-    function getSetPage(newpage: String){
-        useEffect(() => {
-            if(newpage == 'home') setPage(jsobj.page.home)
-            else if(newpage == 'about') setPage(jsobj.page.about)
-        })
-    }
     return <>
         <Head>
             <title>Sunrise Landscapes</title>
@@ -35,7 +29,7 @@ export default function Main() {
                 </Col>
             </Row>
             <Row id="content" className={"h70"}>
-                {page}
+                <PageComponent />
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={4} >
@@ -50,5 +44,22 @@ export default function Main() {
             </Row>
         </Container>
     </>
+}
+
+function getSetPage(pageName: String){
+    const [page, setPage] = useState(pageName)
+    switch(page){
+        case 'home':
+            return<></>;
+            break;
+        case 'about':
+            return<></>;
+            break;
+        default: return <></>
+    }
+    useEffect(() => {
+        if(page == 'home') setPage('home')
+        else if(page == 'about') setPage('about')
+    })
 }
 
