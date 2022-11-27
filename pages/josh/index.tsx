@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect} from 'react'
 import NavIndex from './navigation/nav';
 import NavClient from './navigation/nav_client';
 import Head from "next/head";
@@ -9,9 +9,11 @@ import jsObjs from './jsobjs';
 var jsobj = jsObjs();
 var activePage = "Home";
 export default function Main() {
-    function getSetPage(page: String){
+    const [page, setPage] = useState(jsobj.page.home)
+    function getSetPage(newpage: String){
         useEffect(() => {
-            
+            if(newpage == 'home') setPage(jsobj.page.home)
+            else if(newpage == 'about') setPage(jsobj.page.about)
         })
     }
     return <>
@@ -33,7 +35,7 @@ export default function Main() {
                 </Col>
             </Row>
             <Row id="content" className={"h70"}>
-                {jsobj.page.home.html}
+                {page}
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={4} >

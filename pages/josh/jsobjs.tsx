@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Nav, Button, Card, Col, Row } from 'react-bootstrap'
 import NavIndex from './navigation/nav'
 import NavClient from './navigation/nav_client'
@@ -146,10 +146,13 @@ export default function jsObjs(){
             page: pages
     }
 }
-function showJam(id){
-    
+function showJam(id: String){
+    const [activepage, setPage] = useState(id);
 }
-function usePage(id){
-    const [page, setPage] = useState(id);
-    return page;
+
+export function RenderPage(page){
+    const [activepage, setActivePage] = useState(page);
+    const ref = useRef('#pagecontent');
+    useEffect(() => {
+    },[activepage]);
 }
