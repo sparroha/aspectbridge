@@ -9,7 +9,6 @@ import jsonFetch from '../lib/,base/jsonFetch'
 import { SSRProvider } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../public/css/style.css'
-import '../public/josh/css/images.css'
 import '../public/josh/css/landscape.css'
 
 //import Custom404 from './404'
