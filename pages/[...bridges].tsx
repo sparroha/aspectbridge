@@ -44,7 +44,8 @@ const componentObject = {
                     </Card.Text>
                 </Card.Body>
             </Card>,
-    }
+    },
+
 }
 
 /**
@@ -55,9 +56,9 @@ const componentObject = {
 export default function Clients() {
     return <>
         <Headers />
-        <Container className={'logan h100'}>
+        <Container className={'aspect h100'}>
             <ContainerHeader />
-            <Row id="" className={"h70"}>
+            <Row id="content" className={"h70"}>
                 <NavLeftDefault />
                     <DynamicInfo />
                 <NavRightDefault />
@@ -93,15 +94,11 @@ function Headers(){
  * @returns Title bar and Navbar
  */
 function ContainerHeader(){
-    return <Row id='header' className={"h20"}>
-                <Col sm={12}>
-                    <Card className={'img-mgrass'}>
-                        <Card.Body>
-                            <Card.Title className={'img-banner'}>Aspect Bridge</Card.Title>
-                            <hr />
-                            <NavIndex />
-                        </Card.Body>
-                    </Card>
+    return <Row id='header' className={"well-sm tcenter h20"}>
+                <Col sm={12} className='tcenter navy_back title logo'>
+                    <h1>Aspect Bridge</h1>
+                    <hr />
+                    <NavIndex />
                 </Col>
             </Row>
 }
@@ -113,12 +110,12 @@ function ContainerHeader(){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col md={2} id="nav-left">
+    return <Col md={1} id="nav-left" className={"well-sm grey-back o5"}>
             {componentObject.navcards.aspects}
             </Col>
 }
 function NavRightDefault(){  
-    return <Col md={2} id="nav-right">
+    return <Col md={1} id="nav-right" className={"well-sm grey-back o5"}>
             {componentObject.navcards.air}
             </Col>
 }
@@ -193,11 +190,11 @@ function DynamicInfo(){
                 }
             }
             case 'dashboard': return <></>
-            default: return <></>
+            default: return <><Placeholder /></>
         }
         return <></>
     }
-    return <Col md={8} id="content">
+    return <><Col md={8} id="content">
                 <Card className={'img-terrace'}>
                     <Card.Body>
                         <Card.Title className={'img-banner'}>{aspect}</Card.Title>
@@ -208,4 +205,40 @@ function DynamicInfo(){
                     </Card.Body>
                 </Card>
             </Col>
+            <Col md={10} id='home' className={"well-sm white-back scroll"}>
+                <h3 className={'img-banner'}>{aspect}</h3>
+                        <hr />
+                <BridgePassage />
+                <TLiterator />
+            </Col>
+</>
+}
+function Placeholder(){
+    return <Row className={""}>
+            <Col md={12} className={"tcenter black-font"}>
+            <p>14. The race of the dwarfs | in Dvalin's throng</p>
+            <p>Down to Lofar | the list must I tell;</p>
+            <p>The rocks they left, | and through wet lands</p>
+            <p>They sought a home | in the fields of sand.</p>
+                <iframe id="homeContent" className={"scroll"} height="100%" width="100%" src ="" frameBorder={"0"}></iframe>
+            </Col>
+        </Row>
+}
+function TLiterator(){
+    return <Row className={""}>
+            <Col sm={3}></Col>
+            <Col sm={6} id="content">
+                <Form id="tLit" className="vcenter tcenter">
+                    <Form.Group>
+                        <Form.Label>Input</Form.Label>
+                        <Form.Control  type="text" id="word" name="word" placeholder="Enter word" />
+                        <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
+                        <Form.Text className="text-muted"><h1 id="hbru"></h1></Form.Text>
+                        <Form.Control  type="submit" />
+                    </Form.Group>
+                
+                </Form>
+            </Col>
+            <Col sm={3}></Col>
+        </Row>
 }
