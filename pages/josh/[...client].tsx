@@ -12,7 +12,7 @@ import Link from 'next/link';
 import jsObjs from './jsobjs';
 import Ashmore from './clients/ashmore';
 import Bill from './clients/bill';
-
+const jsObj = jsObjs();
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
@@ -30,13 +30,13 @@ export default function Clients() {
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={4} >
-                    {jsObjs().card.contact}
+                    {jsObj.card.contact}
                 </Col>
                 <Col sm={4} >
-                    {jsObjs().card.about}
+                    {jsObj.card.about}
                 </Col>
                 <Col sm={4} >
-                    {jsObjs().card.news}
+                    {jsObj.card.news}
                 </Col>
             </Row>
         </Container>
@@ -71,7 +71,7 @@ function Headers(){
 function ContainerHeader(){
     return <Row id='header' className={"h20"}>
                 <Col sm={12}>
-                    {jsObjs().card.header}
+                    {jsObj.card.header}
                 </Col>
             </Row>
 }
@@ -84,9 +84,9 @@ function ContainerHeader(){
  */
 function NavLeftDefault(){  
     return <Col md={2} id="nav-client">
-            {jsObjs().card.navcards.ashmore}
-            {jsObjs().card.navcards.mowing}
-            {jsObjs().card.navcards.mowing}
+            {jsObj.card.navcards.ashmore}
+            {jsObj.card.navcards.mowing}
+            {jsObj.card.navcards.mowing}
             </Col>
 }
 
