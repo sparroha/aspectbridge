@@ -120,7 +120,7 @@ const cards = {
 export default function jsObjs(){
     return {
             button: buttons,
-            card: cards,
+            card: cards
             //page: pages
     }
 }
