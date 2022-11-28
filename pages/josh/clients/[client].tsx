@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Ashmore from "./ashmore";
 import Bill from "./bill";
 
-export function Client(){
+export default function Client(){
     const router = useRouter()
     const { pid } = router.query
     const [client, setClient] = useState(pid);
