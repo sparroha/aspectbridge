@@ -19,7 +19,7 @@ const jsObj = jsObjs();
  * @returns This web site
  */
 export default function Clients() {
-    noReact();
+    //noReact();
     return <>
         <Headers />
         <Container className={'logan h100'}>
@@ -113,30 +113,48 @@ function NavLeftDefault(){
  */
 function ClientInfo(){
     const router = useRouter()
-    const { client, sub } = router.query
-    function ClientSelector(){
-        switch(client){
-            case 'ashmore': {
-                if(sub){
-                    switch(sub){
-                        case 'yards': return <Ashmore />
-                        case 'trimmings': return <Ashmore />
-                        case 'hardees': return <Ashmore />
-                        default: return <Ashmore />
-                    }
+    const { client } = router.query //array
+    const [res, setRes] = useState(<></>)
+    const [dir, setDir] = useState('dashboard')
+    const [sub, setSub] = useState('')
+    function handleClientSelect(){
+        if(client){
+            setDir(client[0].toString())
+            setSub(client[1].toString())
+            switch(client[0]){
+                case 'ashmore': {
+                    if(client.length > 1) switch(client[1]){
+                            case 'yards': setRes(<Ashmore />)
+                            break;
+                            case 'trimmings': setRes(<Ashmore />)
+                            break;
+                            case 'hardees': setRes(<Ashmore />)
+                            break;
+                            case 'unidentified': setRes(<Ashmore />)
+                            break;
+                            default: setRes(<Ashmore />)
+                            break;
+                        }
                 }
+                case 'bill': setRes(<Ashmore />)
+                break;
+                default: setRes(<Ashmore />)
+                break;
             }
-            case 'bill': return <Bill />
-            default: return <></>
-        }
+        }console.log('Client: '+dir+' ./. Subdomain: '+sub)
     }
+    useEffect(() => {
+        handleClientSelect()
+        return handleClientSelect()
+    }, [client])
+    
     return <Col md={10} id="content">
                 <Card className={'img-terrace'}>
                     <Card.Body>
-                        <Card.Title className={'img-banner'}>{client}</Card.Title>
+                        <Card.Title className={'img-banner'}>{dir}</Card.Title>
                         <hr />
                         <Card.Text>
-                            <ClientSelector />
+                            {res}
                         </Card.Text>
                     </Card.Body>
                 </Card>
@@ -145,9 +163,9 @@ function ClientInfo(){
 
 function noReact() {
     const router = useRouter();
-    const { client, sub } = router.query
-    if(client=='noreact')
+    const { client } = router.query
     useEffect(() => {
-        router.push('localhost:3000/public/josh/index.html')
+        if(client || (client == 'noreact'))
+            router.push('localhost:3000/public/josh/index.html')
     });
 }

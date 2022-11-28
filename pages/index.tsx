@@ -74,7 +74,7 @@ function getInitialPage() {
         else domain = /:\/\/([^\.]+)/.exec(window.location.href)[1];
         console.log(domain);
         console.log(window.location.href);
-        if(domain == "aspectbridge" || domain == "localhost"){router.push('/dashboard')}
+        if(domain == "aspectbridge" || domain == "www" || domain == "localhost"){router.push('/dashboard')}
         else if(domain == "logan" || domain == "localhost"){router.push('/josh/dashboard')}
     });
 }/*

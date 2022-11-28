@@ -20,9 +20,7 @@ const componentObject = navCcomponentObject()
  * 
  * @returns This web site
  */
-export default function Clients() {
-    const router = useRouter()
-    const { aspect, bridge } = router.query
+export default function AspectBridge() {
     return <>
         <Headers />
         <Container className={'aspect h100'}>
@@ -146,55 +144,54 @@ function Footer(){
  */
 function DynamicInfo(){
     const router = useRouter()
-    const { aspect, bridge } = router.query
-    function BridgePassage(){
-        if(aspect)
-        switch(aspect){
-            case 'q': {
-                if(bridge){
-                    switch(bridge){
-                        case 'q': return <>QQ</>
-                        default: return <></>
+    const { aspect } = router.query
+    const [bridge, setBridge] = useState(<></>)
+    const [dir, setDir] = useState('dashboard')
+    const [sub, setSub] = useState('')
+    function handleBridgePassage(){
+        if(aspect){
+            setDir(aspect[0].toString())
+            setSub(aspect[1].toString())
+            switch(aspect){
+                case 'q': {
+                    if(aspect.length > 1)switch(aspect[1]){
+                        case 'q': setBridge(<>QQ</>)
+                        break;
+                        default: setBridge(<>Q not Q</>)
+                        break;
                     }
                 }
+                case 'dashboard': setBridge(<Placeholder />)
+                break;
+                default: setBridge(<Placeholder />)
+                break;
             }
-            case 'dashboard': return <></>
-            default: return <><Placeholder /></>
-        }
-        return <></>
+        }console.log('Client: '+dir+' ./. Subdomain: '+sub)
     }
-    return <><Col md={8} id="content">
-                <Card className={'img-terrace'}>
-                    <Card.Body>
-                        <Card.Title className={'img-banner'}>{aspect}</Card.Title>
+    useEffect(() => {
+        handleBridgePassage()
+        return handleBridgePassage()
+    }, [aspect])
+    return <Col md={10} id='home' className={"well-sm white-back scroll"}>
+                <Row className={"h10"}><h3 className={'img-banner'}>{dir}</h3>
                         <hr />
-                        <Card.Text>
-                            <BridgePassage />
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-            </Col>
-            <Col md={10} id='home' className={"well-sm white-back scroll"}>
-                <h3 className={'img-banner'}>{aspect}</h3>
-                        <hr />
-                <BridgePassage />
+                </Row>
+                {bridge}
                 <TLiterator />
             </Col>
-</>
 }
 function Placeholder(){
-    return <Row className={""}>
+    return <Row className={"h70"}>
             <Col md={12} className={"tcenter black-font"}>
-            <p>14. The race of the dwarfs | in Dvalin's throng</p>
-            <p>Down to Lofar | the list must I tell;</p>
-            <p>The rocks they left, | and through wet lands</p>
-            <p>They sought a home | in the fields of sand.</p>
-                <iframe id="homeContent" className={"scroll"} height="100%" width="100%" src ="" frameBorder={"0"}></iframe>
+                <p>14. The race of the dwarfs | in Dvalin's throng</p>
+                <p>Down to Lofar | the list must I tell;</p>
+                <p>The rocks they left, | and through wet lands</p>
+                <p>They sought a home | in the fields of sand.</p>
             </Col>
         </Row>
 }
 function TLiterator(){
-    return <Row className={""}>
+    return <Row className={"h30"}>
             <Col sm={3}></Col>
             <Col sm={6} id="content">
                 <Form id="tLit" className="vcenter tcenter">
