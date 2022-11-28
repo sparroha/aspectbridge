@@ -5,6 +5,7 @@ import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "rea
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NavIndex from '../components/nav';
+import navCcomponentObject from './navigation';
 
 /**CSS module *//not working/
 
@@ -12,41 +13,7 @@ import NavIndex from '../components/nav';
 
 
 /*THERE'S A BETTER WAY THAN THIS*/
-const componentObject = {
-    navcards: {
-        aspects: 
-            <Card className={'img-grey-back'}>
-                <Card.Body>
-                    <Card.Title className={'img-banner'}>
-                        <Link href='/aspects'>Aspects</Link>
-                    </Card.Title>
-                    <hr />
-                    <Card.Text>
-                        <Link href='/air'>Aspect of Air</Link>
-                        <Link href='/fire'>Aspect of Fire</Link>
-                        <Link href='/water'>Aspect of Water</Link>
-                        <Link href='/earth'>Aspect of Earth</Link>
-                    </Card.Text>
-                </Card.Body>
-            </Card>,
-        air:
-            <Card className={'img-grey-back'}>
-                <Card.Body>
-                    <Card.Title className={'img-banner'}>
-                        <Link href='/air'>Air</Link>
-                    </Card.Title>
-                    <hr />
-                    <Card.Text>
-                        <Link href='/light'>Aspect of Spirit</Link>
-                        <Link href='/spirit'>Aspect of breath</Link>
-                        <Link href='/water'>Aspect of wind</Link>
-                        <Link href='/earth'>Aspect of wand</Link>
-                    </Card.Text>
-                </Card.Body>
-            </Card>,
-    },
-
-}
+const componentObject = navCcomponentObject()
 
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
@@ -54,6 +21,8 @@ const componentObject = {
  * @returns This web site
  */
 export default function Clients() {
+    const router = useRouter()
+    const { aspect, bridge } = router.query
     return <>
         <Headers />
         <Container className={'aspect h100'}>

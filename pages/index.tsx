@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import $ from 'jquery';
+import { useRouter } from 'next/router';
+/*import $ from 'jquery';
 import Link from "next/link";
 import NavIndex from '../components/nav';
 import Head from "next/head";
 import Script from 'next/script';
 import fetch from 'isomorphic-unfetch'
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
-import { useRouter } from 'next/router';
+import {Button, Col, Container, Form, Row} from "react-bootstrap";*/
 //import { getDomainLocale } from 'next/dist/shared/lib/router/router';
 
 var activePage = "Home";
@@ -15,7 +15,7 @@ export default function Main() {
     //showDocs();
     //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
     //<p><Link href="%PUBLIC_URL%/dashboard.html">Home</Link></p>
-    return <>
+    return <></>/*
         <Head>
             <title>Aspect Bridge</title>
             <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -49,7 +49,7 @@ export default function Main() {
                 </Col>
             </Row>
         </Container>
-    </>
+    </>*/
     //}
 }
 /*async function getData() {
@@ -74,7 +74,7 @@ function getInitialPage() {
         else domain = /:\/\/([^\.]+)/.exec(window.location.href)[1];
         console.log(domain);
         console.log(window.location.href);
-        if(domain == "aspectbridge" || domain == "www"){/*router.push('/dashboard.html')*/}
+        if(domain == "aspectbridge" || domain == "localhost"){router.push('/dashboard')}
         else if(domain == "logan" || domain == "localhost"){router.push('/josh/dashboard')}
     });
 }/*
@@ -91,7 +91,7 @@ function viewtxt(txt)
         $('#txtout').attr('src',txt);
     });
 }*/
-const pageObj = {
+/*const pageObj = {
     home: {
         title: "Home",
         html: <>
@@ -165,7 +165,7 @@ export async function getNasaImgProps() {
             imageUrl: data.url,
         },
     };
-}
+}*/
 /*function JavaScript(){
     return<>
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></Script>
@@ -173,7 +173,7 @@ export async function getNasaImgProps() {
         <Script src="/js/bs-dropdown-hover.js"></Script>
     </>
 }*/
-function Profile() {
+/*function Profile() {
     const [data, setData] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
@@ -196,4 +196,4 @@ function Profile() {
             <p>{data.bio}</p>
         </div>
     )
-}
+}*/
