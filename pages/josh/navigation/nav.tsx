@@ -5,24 +5,27 @@ export default function NavIndex() {
         <>
             <Navbar bg="" variant="light" expand="lg" id="navindex">
                 <Container fluid>
-                    <Navbar.Brand href="#navindex" id="aspectnav">Zypk Bridge</Navbar.Brand>
+                    <Navbar.Brand href="/josh" id="aspectnav">Zypk Bridge</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }} navbarScroll>
 
-                            <Nav.Link href="#">Home</Nav.Link>{' '}
-                            <Nav.Link  href="#about">About</Nav.Link>{' '}
+                            <Nav.Link href="/josh">Home</Nav.Link>{' '}
+                            <Nav.Link  href="/josh/about">About</Nav.Link>{' '}
                             <NavDropdown title="AC" id="navbarPartnersDropdown">
-                                <Nav.Link as={Button} href="#" onclick="showJam('procedures'); return false;">Procedures</Nav.Link>
+                                <Nav.Link href="/josh/ac">AC</Nav.Link>
                                 <NavDropdown.Divider />
-                                <Nav.Link as={Button} href="#" onclick="showJam('billing'); return false;">Billing</Nav.Link>
-                                <NavDropdown.Divider />
-                                <Nav.Link as={Button} href="#" onclick="showJam('records'); return false;">Records</Nav.Link>
-                                <NavDropdown.Divider />
-                                <Nav.Link as={Button} href="#" onclick="showJam('contacts'); return false;">Contacts</Nav.Link>
+                                <Nav.Link href="/josh/ac/procedures">Procedures</Nav.Link>
+                                <Nav.Link href="/josh/ac/billing">Billing</Nav.Link>
+                                <Nav.Link href="/josh/ac/records">Records</Nav.Link>
+                                <Nav.Link href="/josh/ac/contacts">Contacts</Nav.Link>
                             </NavDropdown>{' '}
-                            <Nav.Link href="/assistant" >Assistant</Nav.Link>{' '}
-                            <Nav.Link href="/employees" >Employees</Nav.Link>{' '}
+                            <Nav.Link href="/josh/assistant" >Assistant</Nav.Link>{' '}
+                            <Nav.Link href="/josh/employees" >Employees</Nav.Link>{' '}
+                            <NavDropdown title="External" id="navbarPartnersDropdown">
+                                <Nav.Link href="dashboard">AspectBridge</Nav.Link>
+                                <Nav.Link href="../public/josh/index.html">NRLandscape</Nav.Link>
+                            </NavDropdown>{' '}
 
                         </Nav>{' '}
                         <Form className="d-flex">

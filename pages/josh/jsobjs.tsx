@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Nav, Button, Card, Col, Row } from 'react-bootstrap'
 import NavIndex from './navigation/nav'
 import NavClient from './navigation/nav_client'
-
+//const [client, setClient] = useState('');
 
 const filler = {
     title: 'Lorem Ipsum',
@@ -18,10 +18,11 @@ const filler = {
 const buttons = {
     a: {
         mowing: {
-            yards: <Nav.Link href="#" onClick={() => {useClientComponent('yards'); return false;}}>Yards</Nav.Link>,
-            trimming: <Nav.Link href="#" onClick={() => {showJam('trimming'); return false;}}>Trimming</Nav.Link>,
-            hardees: <Nav.Link href="#" onClick={() => {showJam('tardees'); return false;}}>Hardees</Nav.Link>
-        }
+            yards: <Nav.Link href="/josh/ashmore/yards">Yards</Nav.Link>,
+            trimming: <Nav.Link href="/josh/ashmore/trimmings">Trimmings</Nav.Link>,
+            hardees: <Nav.Link href="/josh/ashmore/hardees">Hardees</Nav.Link>
+        },
+        ashmore: <Nav.Link href="/josh/ashmore">Ashmore</Nav.Link>
     }
 }
 const cards = {
@@ -101,20 +102,33 @@ const cards = {
                     </Card.Text>
                 </Card.Body>
             </Card>
+        ,ashmore: 
+            <Card className={'img-grey-back'}>
+                <Card.Body>
+                    <Card.Title className={'img-banner'}>{buttons.a.ashmore}</Card.Title>
+                    <hr />
+                    <Card.Text>
+                        {buttons.a.mowing.yards}
+                        {buttons.a.mowing.trimming}
+                        {buttons.a.mowing.hardees}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
     }
     ,clientDynamic:
         <Card className={'img-terrace'}>
             <Card.Body>
-                <Card.Title className={'img-banner'}>What is {filler.title}?</Card.Title>
+                <Card.Title className={'img-banner'}>Unknown</Card.Title>
                 <hr />
                 <Card.Text>
+                    
                 </Card.Text>
                 <hr />
             </Card.Body>
         </Card>
 
 }
-const pages = {
+/*const pages = {
     home: {
         title: "Dashboard",
         html: cards.clientDynamic
@@ -125,50 +139,11 @@ const pages = {
             {cards.about}
         </>
     },
-}
-
+}*/
 export default function jsObjs(){
     return {
             button: buttons,
             card: cards,
-            page: pages
-    }
-}
-function showJam(id: String){
-    const [activepage, setPage] = useState(id);
-}
-
-export function RenderPage(page){
-    const [activepage, setActivePage] = useState(page);
-    const ref = useRef('#pagecontent');
-    useEffect(() => {
-    },[activepage]);
-}
-export function Client(name: String){
-    const [client, setClient] = useState(name)
-    useEffect(() => {
-        //window.location.reload();
-    }, [client])
-}
-
-function useClientComponent(name){
-    const [client, setClient] = useState(name);
-    useEffect(() => {
-        const handlePageUpdate = () => {setClient(name)};
-
-    })
-    return client;
-}
-export function MyMod(){
-    const client = useClientComponent('Name');
-    return;
-
-    function useClientComponent(name){
-        const [client, setClient] = useState(name);
-        useEffect(() => {
-            const handlePageUpdate = () => {setClient(name)};
-    
-        })
-        return client;
+            //page: pages
     }
 }
