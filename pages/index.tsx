@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 
 var activePage = "Home";
 export default function Main() {
-    //getInitialPage();
+    getInitialPage();
     //showDocs();
     //return <><Head children={<meta httpEquiv="Refresh" content="0; URL=/josh/jam.html" />}></Head>
     //<p><Link href="%PUBLIC_URL%/dashboard.html">Home</Link></p>
@@ -75,7 +75,7 @@ function getInitialPage() {
         console.log(domain);
         console.log(window.location.href);
         if(domain == "aspectbridge" || domain == "www"){/*router.push('/dashboard.html')*/}
-        else if(domain == "logan" || domain == "localhost"){router.push('/josh/index.html')}
+        else if(domain == "logan" || domain == "localhost"){router.push('/josh/dashboard')}
     });
 }/*
 function showDocs(){
