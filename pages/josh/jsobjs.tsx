@@ -115,31 +115,8 @@ const cards = {
                 </Card.Body>
             </Card>
     }
-    ,clientDynamic:
-        <Card className={'img-terrace'}>
-            <Card.Body>
-                <Card.Title className={'img-banner'}>Unknown</Card.Title>
-                <hr />
-                <Card.Text>
-                    
-                </Card.Text>
-                <hr />
-            </Card.Body>
-        </Card>
 
 }
-/*const pages = {
-    home: {
-        title: "Dashboard",
-        html: cards.clientDynamic
-    },
-    about: {
-        title: "About",
-        html: <>
-            {cards.about}
-        </>
-    },
-}*/
 export default function jsObjs(){
     return {
             button: buttons,
