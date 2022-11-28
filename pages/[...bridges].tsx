@@ -11,45 +11,40 @@ import NavIndex from '../components/nav';
 /**Custom Components */
 
 
-/**/
+/*THERE'S A BETTER WAY THAN THIS*/
 const componentObject = {
     navcards: {
-        mowing: 
+        aspects: 
             <Card className={'img-grey-back'}>
                 <Card.Body>
-                    <Card.Title className={'img-banner'}>Mowing</Card.Title>
+                    <Card.Title className={'img-banner'}>
+                        <Link href='/aspects'>Aspects</Link>
+                    </Card.Title>
                     <hr />
                     <Card.Text>
-                        {buttons.a.mowing.yards}
-                        {buttons.a.mowing.trimming}
-                        {buttons.a.mowing.hardees}
+                        <Link href='/air'>Aspect of Air</Link>
+                        <Link href='/fire'>Aspect of Fire</Link>
+                        <Link href='/water'>Aspect of Water</Link>
+                        <Link href='/earth'>Aspect of Earth</Link>
                     </Card.Text>
                 </Card.Body>
-            </Card>
-        ,ashmore: 
+            </Card>,
+        air:
             <Card className={'img-grey-back'}>
                 <Card.Body>
-                    <Card.Title className={'img-banner'}>{buttons.a.ashmore}</Card.Title>
+                    <Card.Title className={'img-banner'}>
+                        <Link href='/air'>Air</Link>
+                    </Card.Title>
                     <hr />
                     <Card.Text>
-                        {buttons.a.mowing.yards}
-                        {buttons.a.mowing.trimming}
-                        {buttons.a.mowing.hardees}
+                        <Link href='/light'>Aspect of Spirit</Link>
+                        <Link href='/spirit'>Aspect of breath</Link>
+                        <Link href='/water'>Aspect of wind</Link>
+                        <Link href='/earth'>Aspect of wand</Link>
                     </Card.Text>
                 </Card.Body>
-            </Card>
+            </Card>,
     }
-    ,clientDynamic:
-        <Card className={'img-terrace'}>
-            <Card.Body>
-                <Card.Title className={'img-banner'}>Unknown</Card.Title>
-                <hr />
-                <Card.Text>
-                    
-                </Card.Text>
-                <hr />
-            </Card.Body>
-        </Card>
 }
 
 /**
@@ -64,19 +59,10 @@ export default function Clients() {
             <ContainerHeader />
             <Row id="" className={"h70"}>
                 <NavLeftDefault />
-                <DynamicInfo />
+                    <DynamicInfo />
+                <NavRightDefault />
             </Row>
-            <Row id="footer" className={"h10"}>
-                <Col sm={4} >
-                    .contact.
-                </Col>
-                <Col sm={4} >
-                    .about.
-                </Col>
-                <Col sm={4} >
-                    .news.
-                </Col>
-            </Row>
+            <Footer />
         </Container>
     </>
 }
@@ -109,7 +95,13 @@ function Headers(){
 function ContainerHeader(){
     return <Row id='header' className={"h20"}>
                 <Col sm={12}>
-                    .header.
+                    <Card className={'img-mgrass'}>
+                        <Card.Body>
+                            <Card.Title className={'img-banner'}>Aspect Bridge</Card.Title>
+                            <hr />
+                            <NavIndex />
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
 }
@@ -121,9 +113,48 @@ function ContainerHeader(){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col md={2} id="nav-side">
-            <NavIndex />
+    return <Col md={2} id="nav-left">
+            {componentObject.navcards.aspects}
             </Col>
+}
+function NavRightDefault(){  
+    return <Col md={2} id="nav-right">
+            {componentObject.navcards.air}
+            </Col>
+}
+function Footer(){
+    return <Row id="footer" className={"h10"}>
+                <Col sm={4} >
+                    <Card className={'gray-back'}>
+                        <Card.Body>
+                            <Card.Title className={'img-banner'}>Contact Us</Card.Title>
+                            <hr />
+                            <Card.Text>Somehow</Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col sm={4} >
+                    <Card className={'gray-back'}>
+                        <Card.Body>
+                            <Card.Title className={'img-banner'}>About...Upon</Card.Title>
+                            <hr />
+                            <Card.Text><p>
+                                Crossing lines no one considers crossing, not for lacking morality.<br />
+                                More has remained mystery that has ever been concieved of by mind.
+                             </p></Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col sm={4} >
+                    <Card className={'gray-back'}>
+                        <Card.Body>
+                            <Card.Title className={'img-banner'}>News</Card.Title>
+                            <hr />
+                            <Card.Text>"Lorem ipsum dolor sit amet,</Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
 }
 
 /**
@@ -151,21 +182,22 @@ function DynamicInfo(){
     const router = useRouter()
     const { aspect, bridge } = router.query
     function BridgePassage(){
+        if(aspect)
         switch(aspect){
             case 'q': {
                 if(bridge){
                     switch(bridge){
-                        case 'q': return <></>
+                        case 'q': return <>QQ</>
                         default: return <></>
                     }
                 }
             }
             case 'dashboard': return <></>
-            case 'dashboard': return <></>
             default: return <></>
         }
+        return <></>
     }
-    return <Col md={10} id="content">
+    return <Col md={8} id="content">
                 <Card className={'img-terrace'}>
                     <Card.Body>
                         <Card.Title className={'img-banner'}>{aspect}</Card.Title>
