@@ -4,14 +4,53 @@ import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import NavIndex from '../components/nav';
 
 /**CSS module *//not working/
-//import Landscape from './components/layout';
 
 /**Custom Components */
-import jsObjs from './jsobjs';
-import Ashmore from './clients/ashmore';
-import Bill from './clients/bill';
+
+
+/**/
+const componentObject = {
+    navcards: {
+        mowing: 
+            <Card className={'img-grey-back'}>
+                <Card.Body>
+                    <Card.Title className={'img-banner'}>Mowing</Card.Title>
+                    <hr />
+                    <Card.Text>
+                        {buttons.a.mowing.yards}
+                        {buttons.a.mowing.trimming}
+                        {buttons.a.mowing.hardees}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+        ,ashmore: 
+            <Card className={'img-grey-back'}>
+                <Card.Body>
+                    <Card.Title className={'img-banner'}>{buttons.a.ashmore}</Card.Title>
+                    <hr />
+                    <Card.Text>
+                        {buttons.a.mowing.yards}
+                        {buttons.a.mowing.trimming}
+                        {buttons.a.mowing.hardees}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+    }
+    ,clientDynamic:
+        <Card className={'img-terrace'}>
+            <Card.Body>
+                <Card.Title className={'img-banner'}>Unknown</Card.Title>
+                <hr />
+                <Card.Text>
+                    
+                </Card.Text>
+                <hr />
+            </Card.Body>
+        </Card>
+}
 
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
@@ -19,24 +58,23 @@ import Bill from './clients/bill';
  * @returns This web site
  */
 export default function Clients() {
-    noReact();
     return <>
         <Headers />
         <Container className={'logan h100'}>
             <ContainerHeader />
             <Row id="" className={"h70"}>
                 <NavLeftDefault />
-                <ClientInfo />
+                <DynamicInfo />
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={4} >
-                    {jsObjs().card.contact}
+                    .contact.
                 </Col>
                 <Col sm={4} >
-                    {jsObjs().card.about}
+                    .about.
                 </Col>
                 <Col sm={4} >
-                    {jsObjs().card.news}
+                    .news.
                 </Col>
             </Row>
         </Container>
@@ -71,7 +109,7 @@ function Headers(){
 function ContainerHeader(){
     return <Row id='header' className={"h20"}>
                 <Col sm={12}>
-                    {jsObjs().card.header}
+                    .header.
                 </Col>
             </Row>
 }
@@ -83,10 +121,8 @@ function ContainerHeader(){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col md={2} id="nav-client">
-            {jsObjs().card.navcards.ashmore}
-            {jsObjs().card.navcards.mowing}
-            {jsObjs().card.navcards.mowing}
+    return <Col md={2} id="nav-side">
+            <NavIndex />
             </Col>
 }
 
@@ -111,43 +147,33 @@ function NavLeftDefault(){
  * 
  * @returns Client Info Box
  */
-function ClientInfo(){
+function DynamicInfo(){
     const router = useRouter()
-    const { client, sub } = router.query
-    function ClientSelector(){
-        switch(client){
-            case 'ashmore': {
-                if(sub){
-                    switch(sub){
-                        case 'yards': return <Ashmore />
-                        case 'trimmings': return <Ashmore />
-                        case 'hardees': return <Ashmore />
-                        default: return <Ashmore />
+    const { aspect, bridge } = router.query
+    function BridgePassage(){
+        switch(aspect){
+            case 'q': {
+                if(bridge){
+                    switch(bridge){
+                        case 'q': return <></>
+                        default: return <></>
                     }
                 }
             }
-            case 'bill': return <Bill />
+            case 'dashboard': return <></>
+            case 'dashboard': return <></>
             default: return <></>
         }
     }
     return <Col md={10} id="content">
                 <Card className={'img-terrace'}>
                     <Card.Body>
-                        <Card.Title className={'img-banner'}>{client}</Card.Title>
+                        <Card.Title className={'img-banner'}>{aspect}</Card.Title>
                         <hr />
                         <Card.Text>
-                            <ClientSelector />
+                            <BridgePassage />
                         </Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
-}
-
-function noReact() {
-    const router = useRouter();
-    const { client, sub } = router.query
-    if(client=='noreact')
-    useEffect(() => {
-        router.push('localhost:3000/public/josh/index.html')
-    });
 }

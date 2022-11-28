@@ -1,9 +1,11 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
 const aspect = '';
 export default function NavIndex() {
     return (
         <>
-            <Navbar bg="" variant="light" expand="lg" id="navindex">
+            <Navbar bg="" variant="light" expand="lg" id="navindexjosh">
                 <Container fluid>
                     <Navbar.Brand href="/josh" id="aspectnav">Zypk Bridge</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
@@ -24,7 +26,7 @@ export default function NavIndex() {
                             <Nav.Link href="/josh/employees" >Employees</Nav.Link>{' '}
                             <NavDropdown title="External" id="navbarPartnersDropdown">
                                 <Nav.Link href="dashboard">AspectBridge</Nav.Link>
-                                <Nav.Link href="../public/josh/index.html">NRLandscape</Nav.Link>
+                                <Nav.Link href="noreact">NRLandscape</Nav.Link>
                             </NavDropdown>{' '}
 
                         </Nav>{' '}
