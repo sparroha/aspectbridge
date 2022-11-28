@@ -5,7 +5,7 @@ import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "rea
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NavIndex from '../components/nav';
-import navCcomponentObject from './navigation';
+import navCcomponentObject from '../components/ab/navigaton';
 
 /**CSS module *//not working/
 
