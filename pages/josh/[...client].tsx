@@ -9,7 +9,7 @@ import Link from 'next/link';
 //import Landscape from './components/layout';
 
 /**Custom Components */
-import jsObjs from './components/jsobjs';
+import jsObjs from '../../components/jsobjs';
 import Ashmore from './clients/ashmore';
 import Bill from './clients/bill';
 

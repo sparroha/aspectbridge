@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Nav, Button, Card, Col, Row } from 'react-bootstrap'
-import NavIndex from '../navigation/nav'
-import NavClient from '../navigation/nav_client'
+import NavIndex from '../pages/josh/navigation/nav'
+import NavClient from '../pages/josh/navigation/nav_client'
 //const [client, setClient] = useState('');
 
 const filler = {
