@@ -87,7 +87,7 @@ function NavRightDefault(){
             </Col>
 }
 function Footer(){
-    return <Row id="footer" className={"overflow"}>
+    return <Row id="footer" className={"safe-size"}>
                 <Col sm={3} >
                     <Card className={'gray-back'}>
                         <Card.Body>

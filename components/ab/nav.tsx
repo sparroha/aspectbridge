@@ -14,6 +14,16 @@ export default function NavIndex() {
         <Navbar.Brand as={Nav.Link} href="https://aspectbridge.com/dashboard" id="brandaspect" >Aspect Bridge</Navbar.Brand>
         :<Navbar.Brand as={Nav.Link} href="/dashboard" id="brandaspect" disabled>Aspect Bridge</Navbar.Brand>
     }
+    function NavPartners(local){
+        return local?(<>
+            <Nav.Link href="https://logan.aspectbridge.com">Logan's Landscapes</Nav.Link>
+            <NavDropdown.Divider />
+            <Nav.Link href="https://logantest.aspectbridge.com" disabled>Logan_Test_Live</Nav.Link>
+            <Nav.Link href="/josh">Logan_Test_Dev</Nav.Link></>
+        ):(<>
+            <Nav.Link href="/josh">Logan's Landscapes</Nav.Link>
+        </>)
+    }
     return (
         <>
             <Navbar bg="" variant="dark" expand="lg" id="navaspect">
@@ -26,10 +36,7 @@ export default function NavIndex() {
                             <Nav.Link href="/dashboard">Home</Nav.Link>{' '}
                             <Nav.Link  href="/about">About</Nav.Link>{' '}
                             <NavDropdown title="Partners" id="navbarPartnersDropdown">
-                                <Nav.Link href="/josh">Logan's Landscapes</Nav.Link>
-                                <NavDropdown.Divider />
-                                <Nav.Link href="https://logantest.aspectbridge.com" disabled>Logan_Test_Live</Nav.Link>
-                                <Nav.Link href="/josh">Logan_Test_Dev</Nav.Link>
+                                <NavPartners local={local} />
                             </NavDropdown>{' '}
 
                             <NavDropdown title="Projects" id="navbarProjectsDropdown">

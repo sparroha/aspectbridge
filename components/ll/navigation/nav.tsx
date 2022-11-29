@@ -1,13 +1,24 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
+import { useDomainRoot } from "../../domain";
 const aspect = '';
 export default function NavIndex() {
+    const domain = useDomainRoot()
+    const [local, setLocal] = useState(null)
+    useEffect(()=>{
+        setLocal(domain=='localhost'?'true':'false')
+    },[domain])
+    function NavBrand(local){
+        return local?
+        <Navbar.Brand as={Nav.Link} href="https://logan.aspectbridge.com/dashboard" id="brandlogan" >Zypk Bridge</Navbar.Brand>
+        :<Navbar.Brand as={Nav.Link} href="/josh/dashboard" id="brandlogan" disabled>Zypk Bridge</Navbar.Brand>
+    }
     return (
         <>
             <Navbar bg="" variant="light" expand="lg" id="navindexjosh">
                 <Container fluid>
-                    <Navbar.Brand href="/josh" id="aspectnav">Zypk Bridge</Navbar.Brand>
+                    <NavBrand local={local} />
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }} navbarScroll>
