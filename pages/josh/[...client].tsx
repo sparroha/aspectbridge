@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 //import Landscape from './components/layout';
 
 /**Custom Components */
-import jsObjs from '../../components/jsobjs';
+import jsObjs from '../../components/ll/jsobjs';
 import ClientInfoCard from '../../components/ll/client_info_card';
 const jsObj = jsObjs();
 /**

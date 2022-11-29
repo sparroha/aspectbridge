@@ -396,6 +396,7 @@ a{
 }
 
 /*CHANGES TO REACT BOOTSTRAP*/
-:has(.dropdown-menu){
+#navaspect > .container-fluid > .navbar-collapse > .navbar-nav > .dropdown > .dropdown-menu{
+	background-color: gray;
 	z-index: 1;
 }
