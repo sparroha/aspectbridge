@@ -62,10 +62,9 @@ function Headers(){
  * @returns Title bar and Navbar
  */
 function ContainerHeader(){
-    return <Row id='header' className={"well-sm tcenter h20"}>
+    return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
-                    <hr />
                     <NavIndex />
                 </Col>
             </Row>
@@ -78,18 +77,18 @@ function ContainerHeader(){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col md={1} id="nav-left" className={"well-sm grey-back o5"}>
+    return <Col md={1} id="nav-left" className={"well-sm grey-back o7"}>
             {componentObject.navcards.aspects}
             </Col>
 }
 function NavRightDefault(){  
-    return <Col md={1} id="nav-right" className={"well-sm grey-back o5"}>
+    return <Col md={1} id="nav-right" className={"well-sm grey-back o7"}>
             {componentObject.navcards.air}
             </Col>
 }
 function Footer(){
-    return <Row id="footer" className={"h10"}>
-                <Col sm={4} >
+    return <Row id="footer" className={"overflow"}>
+                <Col sm={3} >
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>Contact Us</Card.Title>
@@ -98,7 +97,7 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={4} >
+                <Col sm={6} >
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>About...Upon</Card.Title>
@@ -110,7 +109,7 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={4} >
+                <Col sm={3} >
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>News</Card.Title>
@@ -143,6 +142,11 @@ function Footer(){
  * 
  * @returns Client Info Box
  */
+function usePageProps(){
+    const router = useRouter()
+    const { aspect, word } = router.query //query url props
+
+}
 function DynamicInfo(){
     const router = useRouter()
     const { aspect } = router.query //query url props
@@ -185,8 +189,9 @@ function DynamicInfo(){
                 <TLiterator />
             </Col>
 }
+function getStaticProps(){}
 function Placeholder(){
-    return <Row className={"h70"}>
+    return <Row className={"h80"}>
             <Col md={12} className={"tcenter black-font"}>
                 <p>14. The race of the dwarfs | in Dvalin's throng</p>
                 <p>Down to Lofar | the list must I tell;</p>
@@ -196,6 +201,7 @@ function Placeholder(){
         </Row>
 }
 function TLiterator(){
+    const word = 'Inavtive'
     return <Row className={"h30"}>
             <Col sm={3}></Col>
             <Col sm={6} id="content">
@@ -204,7 +210,7 @@ function TLiterator(){
                         <Form.Label>Input</Form.Label>
                         <Form.Control  type="text" id="word" name="word" placeholder="Enter word" />
                         <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
-                        <Form.Text className="text-muted"><h1 id="hbru"></h1></Form.Text>
+                        <Form.Text className="text-muted"><h1 id="hbru">{word}</h1></Form.Text>
                         <Form.Control  type="submit" />
                     </Form.Group>
                 

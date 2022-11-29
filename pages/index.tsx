@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useDomainRoot } from '../components/domain';
 
 var activePage = "Home";
-export default function Main() {
+export default function Main(props) {
     getInitialPage();
     return <></>
 }
