@@ -1,3 +1,4 @@
+"use strict";
 import React, { useState, useEffect } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
@@ -102,10 +103,10 @@ function Footer(){
                         <Card.Body>
                             <Card.Title className={'img-banner'}>About...Upon</Card.Title>
                             <hr />
-                            <Card.Text><p>
-                                Crossing lines no one considers crossing, not for lacking morality.<br />
+                            <Card.Text>
+                                Crossing lines no one considers crossing, not for lacking morality<br />
                                 More has remained mystery that has ever been concieved of by mind.
-                             </p></Card.Text>
+                            </Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -148,25 +149,30 @@ function DynamicInfo(){
     const [bridge, setBridge] = useState(<></>)
     const [dir, setDir] = useState('dashboard')
     const [sub, setSub] = useState('')
+    const [nest, setNest] = useState('')
     function handleBridgePassage(){
         if(aspect){
-            setDir(aspect[0].toString())
-            setSub(aspect[1].toString())
-            switch(aspect){
+            let dir = (aspect.length>1?aspect[0]:aspect).toString()
+            let sub = (aspect.length>1?aspect[1]:aspect).toString()
+            let nest = (aspect.length>2?aspect[2]:(aspect.length>1?aspect[1]:aspect)).toString()
+            setDir(dir)
+            setSub(sub)
+            setNest(nest)            
+            switch(dir){
+                case 'dashboard': setBridge(<>DASHBOARD</>)
+                break;
                 case 'q': {
-                    if(aspect.length > 1)switch(aspect[1]){
+                    switch(sub){
                         case 'q': setBridge(<>QQ</>)
                         break;
                         default: setBridge(<>Q not Q</>)
                         break;
                     }
-                }
-                case 'dashboard': setBridge(<Placeholder />)
-                break;
+                } break;
                 default: setBridge(<Placeholder />)
                 break;
-            }
-        }console.log('Client: '+dir+' ./. Subdomain: '+sub)
+            }console.log('Client: '+dir+'|'+(aspect.length>1?aspect[0]:aspect)+' ./. Subdomain: '+sub+'|'+(aspect.length>1?aspect[1]:aspect))
+        }
     }
     useEffect(() => {
         handleBridgePassage()

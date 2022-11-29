@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
-import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
+import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "react-bootstrap";
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 /**CSS module *//not working/
 //import Landscape from './components/layout';
 
 /**Custom Components */
 import jsObjs from '../../components/jsobjs';
-import Ashmore from './clients/ashmore';
-import Bill from './clients/bill';
+import ClientInfoCard from '../../components/ll/client_info_card';
 const jsObj = jsObjs();
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
@@ -26,7 +24,7 @@ export default function Clients() {
             <ContainerHeader />
             <Row id="" className={"h70"}>
                 <NavLeftDefault />
-                <ClientInfo />
+                <ClientInfoCard />
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={4} >
@@ -111,55 +109,6 @@ function NavLeftDefault(){
  * 
  * @returns Client Info Box
  */
-function ClientInfo(){
-    const router = useRouter()
-    const { client } = router.query //array
-    const [res, setRes] = useState(<></>)
-    const [dir, setDir] = useState('dashboard')
-    const [sub, setSub] = useState('')
-    function handleClientSelect(){
-        if(client){
-            setDir(client[0].toString())
-            setSub(client[1].toString())
-            switch(client[0]){
-                case 'ashmore': {
-                    if(client.length > 1) switch(client[1]){
-                            case 'yards': setRes(<Ashmore />)
-                            break;
-                            case 'trimmings': setRes(<Ashmore />)
-                            break;
-                            case 'hardees': setRes(<Ashmore />)
-                            break;
-                            case 'unidentified': setRes(<Ashmore />)
-                            break;
-                            default: setRes(<Ashmore />)
-                            break;
-                        }
-                }
-                case 'bill': setRes(<Ashmore />)
-                break;
-                default: setRes(<Ashmore />)
-                break;
-            }
-        }console.log('Client: '+dir+' ./. Subdomain: '+sub)
-    }
-    useEffect(() => {
-        handleClientSelect()
-        return handleClientSelect()
-    }, [client])
-    
-    return <Col md={10} id="content">
-                <Card className={'img-terrace'}>
-                    <Card.Body>
-                        <Card.Title className={'img-banner'}>{dir}</Card.Title>
-                        <hr />
-                        <Card.Text>
-                            {res}
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-            </Col>
-}
 
 function noReact() {
     const router = useRouter();
