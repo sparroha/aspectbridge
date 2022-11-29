@@ -9,16 +9,21 @@ export default function NavIndex() {
     useEffect(()=>{
         setLocal(domain=='localhost'?'true':'false')
     },[domain])
+    function NavBrand(local){
+        return local?
+        <Navbar.Brand as={Nav.Link} href="https://aspectbridge.com/dashboard" id="brandaspect" >Aspect Bridge</Navbar.Brand>
+        :<Navbar.Brand as={Nav.Link} href="/dashboard" id="brandaspect" disabled>Aspect Bridge</Navbar.Brand>
+    }
     return (
         <>
             <Navbar bg="" variant="dark" expand="lg" id="navaspect">
                 <Container fluid>
-                    <Navbar.Brand as={Nav.Link} href="https://aspectridge.com/dashboard" id="brandaspect" disabled={local}>Aspect Bridge</Navbar.Brand>
+                    <NavBrand local={local} />
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }} navbarScroll>
 
-                            <Nav.Link href="/dahboard">Home</Nav.Link>{' '}
+                            <Nav.Link href="/dashboard">Home</Nav.Link>{' '}
                             <Nav.Link  href="/about">About</Nav.Link>{' '}
                             <NavDropdown title="Partners" id="navbarPartnersDropdown">
                                 <Nav.Link href="/josh">Logan's Landscapes</Nav.Link>

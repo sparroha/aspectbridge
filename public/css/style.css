@@ -394,6 +394,10 @@ a{
 	top:95%;
 	left:10%;
 }
+/*
+#brandaspect[disabled]{
+	color: white;
+}*/
 
 /*CHANGES TO REACT BOOTSTRAP*/
 #navaspect > .container-fluid > .navbar-collapse > .navbar-nav > .dropdown > .dropdown-menu{
