@@ -145,7 +145,7 @@ function Footer(){
  */
 function DynamicInfo(){
     const router = useRouter()
-    const { aspect } = router.query
+    const { aspect } = router.query //query url props
     const [bridge, setBridge] = useState(<></>)
     const [dir, setDir] = useState('dashboard')
     const [sub, setSub] = useState('')

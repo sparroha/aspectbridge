@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
+import { useDomainRoot } from '../components/domain';
 
 var activePage = "Home";
 export default function Main() {
@@ -7,16 +8,11 @@ export default function Main() {
     return <></>
 }
 function getInitialPage() {
-    const router = useRouter();
+    const router = useRouter()
+    let domain = useDomainRoot()
     useEffect(() => {
-        let domain = "";
-        console.log('CLIENT SIDE RENDERING');
-        if(window.location.href=="http://localhost:3000/"){domain="localhost"}
-        else domain = /:\/\/([^\.]+)/.exec(window.location.href)[1];
-        console.log(domain);
-        console.log(window.location.href);
-        if(domain == "aspectbridge" || domain == "www" || domain == "localhost"){router.push('/dashboard')}
-        else if(domain == "logan" || domain == "localhost"){router.push('/josh/dashboard')}
+        if(domain == "aspectbridge" || "www" || "localhost"){router.push('/dashboard')}
+        else if(domain == "logan" || "localhost"){router.push('/josh/dashboard')}
     });
 }
 /*async function getData() {
