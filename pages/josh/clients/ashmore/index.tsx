@@ -3,3 +3,6 @@ export default function Ashmore(){
         Ashmore Information Goes Here
     </>
 }
+export function AshmoreNav(){
+    return <></>
+}

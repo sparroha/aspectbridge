@@ -11,8 +11,19 @@ export default function NavIndex() {
     },[domain])
     function NavBrand(local){
         return local?
-        <Navbar.Brand as={Nav.Link} href="https://logan.aspectbridge.com/dashboard" id="brandlogan" >Zypk Bridge</Navbar.Brand>
+        <Navbar.Brand as={Nav.Link} href="https://logan.aspectbridge.com/josh/dashboard" id="brandlogan" >Zypk Bridge</Navbar.Brand>
         :<Navbar.Brand as={Nav.Link} href="/josh/dashboard" id="brandlogan" disabled>Zypk Bridge</Navbar.Brand>
+    }
+    function NavActiveClient(dir){
+        return <>
+        <NavDropdown title="AC" id="navbarPartnersDropdown">
+            <Nav.Link href="/josh/ac">AC</Nav.Link>
+            <NavDropdown.Divider />
+            <Nav.Link href="/josh/ac/procedures">Procedures</Nav.Link>
+            <Nav.Link href="/josh/ac/billing">Billing</Nav.Link>
+            <Nav.Link href="/josh/ac/records">Records</Nav.Link>
+            <Nav.Link href="/josh/ac/contacts">Contacts</Nav.Link>
+        </NavDropdown>{' '}</>
     }
     return (
         <>
@@ -25,6 +36,7 @@ export default function NavIndex() {
 
                             <Nav.Link href="/josh">Home</Nav.Link>{' '}
                             <Nav.Link  href="/josh/about">About</Nav.Link>{' '}
+
                             <NavDropdown title="AC" id="navbarPartnersDropdown">
                                 <Nav.Link href="/josh/ac">AC</Nav.Link>
                                 <NavDropdown.Divider />
