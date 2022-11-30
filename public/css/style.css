@@ -1,4 +1,5 @@
-html{
+/*Recently Added*/
+* {
 	font-family: "Times New Roman", Times, serif;
 }
 :has(.aspect){
@@ -8,6 +9,26 @@ html{
 	background-position: center;
 	background-attachment: fixed;
 }
+:root, html, body, #__next{
+	height: 100%;
+}
+.side-nav .col a{
+	color: white;
+}
+h1, h2, h3, h4{
+	font-weight:bold;
+	margin: 0;
+}
+hr{
+	border-top: 1px solid black;
+	opacity: 1;
+}
+/*.safe-size{
+	overflow: scroll;
+}*/
+
+
+/*Legacy*/
 head{
 	object-position: top;
 	float: top;
@@ -15,14 +36,6 @@ head{
 ul,li{
     list-style:none;
     padding:0;
-}
-h3{
-	font-weight:bold;
-	margin: 0;
-}
-hr{
-	border-top: 5px solid black;
-	opacity: 1;
 }
 a{
 	text-decoration:none;
@@ -394,8 +407,13 @@ a{
 	top:95%;
 	left:10%;
 }
+/*
+#brandaspect[disabled]{
+	color: white;
+}*/
 
 /*CHANGES TO REACT BOOTSTRAP*/
-:has(.dropdown-menu){
+#navaspect > .container-fluid > .navbar-collapse > .navbar-nav > .dropdown > .dropdown-menu{
+	background-color: gray;
 	z-index: 1;
 }

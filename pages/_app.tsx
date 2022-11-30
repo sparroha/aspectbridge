@@ -58,27 +58,31 @@ export default React.memo(App, function propsAreEqual(prevProps, nextProps) {
 
 function App(props: CustomAppProps) {
     const { pageProps, Component } = props
-    useEffect(function () {
+    /*useEffect(function () {
         if ('_app_RedirectToLogin' in pageProps)
             // TODO this might be better written as a Router.replace line to be snappy, but was having error
             location.replace(`/login#` + location.pathname.substring(1) + location.search + location.hash)
-    })
+    })*/
     useEffect(() => {
-        require("bootstrap/dist/js/bootstrap.bundle.min.js");
+        //require("bootstrap/dist/js/bootstrap.bundle.min.js");
     }, []);
 
     if ('_app_RenderNot' in pageProps || '_app_RedirectToLogin' in pageProps || '_app_RedirectShallow' in pageProps)
         return null
 
-    return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}>{
-        /*'_app_Say404' in pageProps
-            ? <Custom404 /> // static - 404.tsx
-            : <PageProps.Provider value={pageProps}>{
-                '_app_SayErr' in pageProps
-                    ? <CustomError {...pageProps._app_SayErr} /> // dynamic - _error.tsx
-                    :*/ <Component {...pageProps} /> // dynamic - whichever page .tsx e.g. PageLogin from login.tsx
-          //  }</PageProps.Provider>
-    }</SWRConfig></SSRProvider>
+    return <SSRProvider>
+                <SWRConfig value={{ fetcher: jsonFetch }}>
+                    {
+                    /*'_app_Say404' in pageProps
+                        ? <Custom404 /> // static - 404.tsx
+                        : <PageProps.Provider value={pageProps}>{
+                            '_app_SayErr' in pageProps
+                                ? <CustomError {...pageProps._app_SayErr} /> // dynamic - _error.tsx
+                                :*/ <Component {...pageProps} /> // dynamic - whichever page .tsx e.g. PageLogin from login.tsx
+                    //  }</PageProps.Provider>
+                    }
+                </SWRConfig>
+            </SSRProvider>
 }
 
 /*export const PageProps = React.createContext<CommonPropsPossible>(null as any)

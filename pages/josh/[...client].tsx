@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
-import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
+import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "react-bootstrap";
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 /**CSS module *//not working/
 //import Landscape from './components/layout';
 
 /**Custom Components */
-import jsObjs from './jsobjs';
-import Ashmore from './clients/ashmore';
-import Bill from './clients/bill';
+import jsObjs from '../../components/ll/jsobjs';
+import ClientInfoCard from '../../components/ll/client_info_card';
 const jsObj = jsObjs();
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
@@ -19,14 +17,14 @@ const jsObj = jsObjs();
  * @returns This web site
  */
 export default function Clients() {
-    noReact();
+    //noReact();
     return <>
         <Headers />
         <Container className={'logan h100'}>
             <ContainerHeader />
             <Row id="" className={"h70"}>
                 <NavLeftDefault />
-                <ClientInfo />
+                <ClientInfoCard />
             </Row>
             <Row id="footer" className={"h10"}>
                 <Col sm={4} >
@@ -111,43 +109,12 @@ function NavLeftDefault(){
  * 
  * @returns Client Info Box
  */
-function ClientInfo(){
-    const router = useRouter()
-    const { client, sub } = router.query
-    function ClientSelector(){
-        switch(client){
-            case 'ashmore': {
-                if(sub){
-                    switch(sub){
-                        case 'yards': return <Ashmore />
-                        case 'trimmings': return <Ashmore />
-                        case 'hardees': return <Ashmore />
-                        default: return <Ashmore />
-                    }
-                }
-            }
-            case 'bill': return <Bill />
-            default: return <></>
-        }
-    }
-    return <Col md={10} id="content">
-                <Card className={'img-terrace'}>
-                    <Card.Body>
-                        <Card.Title className={'img-banner'}>{client}</Card.Title>
-                        <hr />
-                        <Card.Text>
-                            <ClientSelector />
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-            </Col>
-}
 
 function noReact() {
     const router = useRouter();
-    const { client, sub } = router.query
-    if(client=='noreact')
+    const { client } = router.query
     useEffect(() => {
-        router.push('localhost:3000/public/josh/index.html')
+        if(client || (client == 'noreact'))
+            router.push('localhost:3000/public/josh/index.html')
     });
 }

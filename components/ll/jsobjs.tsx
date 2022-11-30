@@ -119,8 +119,7 @@ const cards = {
 }
 export default function jsObjs(){
     return {
-            button: buttons,
-            card: cards
-            //page: pages
-    }
-}
+        button: buttons,
+        card: cards
+        //page: pages
+}}

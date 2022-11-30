@@ -1,22 +1,42 @@
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
+import { useDomainRoot } from "../domain";
 const aspect = '';
 export default function NavIndex() {
+    const domain = useDomainRoot()
+    const [local, setLocal] = useState(null)
+    useEffect(()=>{
+        setLocal(domain=='localhost'?'true':'false')
+    },[domain])
+    function NavBrand(local){
+        return local?
+        <Navbar.Brand as={Nav.Link} href="https://aspectbridge.com/dashboard" id="brandaspect" >Aspect Bridge</Navbar.Brand>
+        :<Navbar.Brand as={Nav.Link} href="/dashboard" id="brandaspect" disabled>Aspect Bridge</Navbar.Brand>
+    }
+    function NavPartners(local){
+        return local?(<>
+            <Nav.Link href="https://logan.aspectbridge.com">Logan's Landscapes</Nav.Link>
+            <NavDropdown.Divider />
+            <Nav.Link href="https://logantest.aspectbridge.com" disabled>Logan_Test_Live</Nav.Link>
+            <Nav.Link href="/josh">Logan_Test_Dev</Nav.Link></>
+        ):(<>
+            <Nav.Link href="/josh">Logan's Landscapes</Nav.Link>
+        </>)
+    }
     return (
         <>
-            <Navbar bg="" variant="dark" expand="lg" id="navindex">
+            <Navbar bg="" variant="dark" expand="lg" id="navaspect">
                 <Container fluid>
-                    <Navbar.Brand href="#navindex" id="aspectnav">Aspect Bridge</Navbar.Brand>
+                    <NavBrand local={local} />
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }} navbarScroll>
 
-                            <Nav.Link href="#">Home</Nav.Link>{' '}
-                            <Nav.Link  href="#about">About</Nav.Link>{' '}
+                            <Nav.Link href="/dashboard">Home</Nav.Link>{' '}
+                            <Nav.Link  href="/about">About</Nav.Link>{' '}
                             <NavDropdown title="Partners" id="navbarPartnersDropdown">
-                                <Nav.Link href="https://logan.aspectbridge.com">Logan</Nav.Link>
-                                <NavDropdown.Divider />
-                                <Nav.Link href="https://logantest.aspectbridge.com" disabled>Logan_Test_Live</Nav.Link>
-                                <Nav.Link href="/josh">Logan_Test_Dev</Nav.Link>
+                                <NavPartners local={local} />
                             </NavDropdown>{' '}
 
                             <NavDropdown title="Projects" id="navbarProjectsDropdown">
