@@ -15,13 +15,19 @@
 .side-nav .col a{
 	color: white;
 }
-h1, h2, h3, h4{
+h1, h2, h3, h4, h5{
 	font-weight:bold;
 	margin: 0;
 }
 hr{
 	border-top: 1px solid black;
 	opacity: 1;
+}
+.row{
+	margin:0;
+}
+.row>*{
+	padding: 5px;;
 }
 /*.safe-size{
 	overflow: scroll;

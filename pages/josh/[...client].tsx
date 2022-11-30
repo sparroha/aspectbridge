@@ -55,10 +55,10 @@ export default function Clients() {
     return <>
         <Headers />
         <Container className={'logan'}>
-            <Row id="header">
+            <Row id="header" className={'tcenter'}>
                 <ContainerHeader />
             </Row>
-            <Row id="" className={"h80"}>
+            <Row id="">
                 <NavLeftDefault />
                 <ClientInfoCard />
             </Row>
@@ -114,17 +114,10 @@ function ContainerHeader(i){
  * 
  * @returns Client Navs
  */
-function NavLeftDefault(){  
-    const [a, setA] = useState('false')
-    const i = useInit()
-    useEffect(()=>{
-        if(i){
-            setA('true')
-        } return setA('false')
-    }, [i])
+function NavLeftDefault(){
+    const i = useInit();
     return <Col md={2} id="nav-client">
-                {jsObj.card.navcards.ashmore}
-                {jsObj.card.navcards.mowing}
-                {jsObj.card.navcards.mowing}
+                {i.data.nav}
+                {i.data.nav}
             </Col>
 }

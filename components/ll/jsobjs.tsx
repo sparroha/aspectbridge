@@ -29,7 +29,7 @@ const cards = {
     header:
         <Card className={'img-mgrass'}>
             <Card.Body>
-                <Card.Title className={'img-banner'}>Lorem Ipsum</Card.Title>
+                <h1 className={'img-banner'}>Lorem Ipsum</h1>
                 <hr />
                 <NavIndex />
             </Card.Body>

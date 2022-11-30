@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Card, Col } from "react-bootstrap"
 import useLog from "../conlog"
-import useClientInfo from "./navigation/clientinfo"
+import getClientInfo from "./navigation/clientinfo"
 
 
 export default function ClientInfoCard(){
@@ -11,7 +11,7 @@ export default function ClientInfoCard(){
 
     //useLog('@ClientInfoCard('+i.path.dir+':'+i.data.info+')')
     return <Col md={10} id="content">
-                <Card className={'img-terrace'}>
+                <Card className={''}>
                     <Card.Body>
                         <Card.Title className={'img-banner'}>{i.path.dir}</Card.Title>
                         <hr />
@@ -63,7 +63,7 @@ export function useData(path){
     useEffect(()=>{
         function p(){
             if(path){
-                let d = useClientInfo(path)
+                let d = getClientInfo(path)
                 setData(d)
             }
         } p()
