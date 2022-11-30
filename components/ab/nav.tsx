@@ -6,7 +6,7 @@ export default function NavIndex() {
     const domain = useDomainRoot()
     const [local, setLocal] = useState(null)
     useEffect(()=>{
-        setLocal(domain=='localhost'?'true':'false')
+        return setLocal(domain=='localhost'?'true':'false')
     },[domain])
     function NavBrand(local){
         return local?
@@ -15,7 +15,7 @@ export default function NavIndex() {
     }
     function NavPartners(local){
         return local?(<>
-            <Nav.Link href="https://logan.aspectbridge.com">Logan's Landscapes</Nav.Link>
+            <Nav.Link href="https://logan.aspectbridge.com/josh">Logan's Landscapes</Nav.Link>
             <NavDropdown.Divider />
             <Nav.Link href="https://logantest.aspectbridge.com" disabled>Logan_Test_Live</Nav.Link>
             <Nav.Link href="/josh">Logan_Test_Dev</Nav.Link></>
