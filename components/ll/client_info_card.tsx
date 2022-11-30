@@ -1,10 +1,6 @@
-import { ServerResponse } from "http"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Card, Col } from "react-bootstrap"
-import { setEnvironmentData } from "worker_threads"
-import Ashmore, { AshmoreNav } from "../../pages/josh/clients/ashmore"
-import Bill from "../../pages/josh/clients/bill"
 import useLog from "../conlog"
 import useClientInfo from "./navigation/clientinfo"
 
@@ -13,6 +9,7 @@ export default function ClientInfoCard(){
     //{path: path,data: data}
     const i = useInit()
 
+    //useLog('@ClientInfoCard('+i.path.dir+':'+i.data.info+')')
     return <Col md={10} id="content">
                 <Card className={'img-terrace'}>
                     <Card.Body>
@@ -35,12 +32,14 @@ export function useInit(){
     const path = usePath(client)
     //get data from path
     const data = useData(path)
+    useLog('@iseInit(\n<<</'+path.dir+'/'+path.sub+'/'+path.nest+'>>>\n'+
+                    '['+data.info+','+data.nav+','+data.subnav+'])')
     return {path: path,data: data}
 }
 export function useClient(){
     const router = useRouter()
     const { client } = router.query
-    useLog(client)
+    //useLog('@useClient('+client+')')
     return client;
 }
 export function usePath(client){
@@ -56,7 +55,7 @@ export function usePath(client){
         } p()
         return p()
     }, [client])
-    useLog(path)
+    //useLog('@usePath(/'+path.dir+'/'+path.sub+'/'+path.nest+')')
     return path;
 }
 export function useData(path){

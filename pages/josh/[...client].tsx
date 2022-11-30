@@ -50,9 +50,8 @@ export async function getStaticProps({ params }) {
  * @returns This web site
  */
 export default function Clients() {
-    //{path: path,data: data}
+    //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: [], nav: [], subnav: []}}
     const i = useInit()
-    //noReact();
     return <>
         <Headers />
         <Container className={'logan'}>
@@ -128,23 +127,4 @@ function NavLeftDefault(){
                 {jsObj.card.navcards.mowing}
                 {jsObj.card.navcards.mowing}
             </Col>
-}
-
-/**
- * This is where all the magic happens.
- * Observe...
- * 
- * This section between the <Card.Text> tags chooses what Page loads determined by the url
- * 
- 
- * 
- * @returns Client Info Box
- */
-
-function noReact(client) {
-    const router = useRouter();
-    useEffect(() => {
-        if(client || (client == 'noreact'))
-            router.push('localhost:3000/public/josh/index.html')
-    });
 }

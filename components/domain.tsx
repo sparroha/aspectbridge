@@ -4,7 +4,7 @@ export function useDomainRoot(){
     useEffect(() => {
         if(window.location.href=="http://localhost:3000/"){setDomain("localhost")}
         else setDomain(/:\/\/([^\.]+)/.exec(window.location.href)[1])
-        console.log(domain+'||'+window.location.href)
+        console.log('@useDomainRoot('+domain+'||'+window.location.href+')')
     });
     return domain
 }
