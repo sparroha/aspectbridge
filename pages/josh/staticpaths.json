@@ -1,0 +1,20 @@
+{
+	"paths": [
+        {
+			"params": {
+				"client": ["dashboard"],
+				"word": "Obru"
+			}
+		},
+		{
+			"params": {
+				"client": ["ashmore"]
+			}
+		},
+		{
+			"params": {
+				"client": ["ashmore", "yards"]
+			}
+		}
+	]
+}

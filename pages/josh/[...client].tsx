@@ -4,29 +4,66 @@ import Script from 'next/script';
 import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "react-bootstrap";
 import { useRouter } from 'next/router';
 
-/**CSS module *//not working/
+/**CSS module *//not working//*/I did it wrong
 //import Landscape from './components/layout';
 
 /**Custom Components */
 import jsObjs from '../../components/ll/jsobjs';
-import ClientInfoCard from '../../components/ll/client_info_card';
+import ClientInfoCard, { useClient, useInit } from '../../components/ll/client_info_card';
+//import { NavBarSelect } from '../../components/ll/navigation/navigaton';
 const jsObj = jsObjs();
+
+/**GLOBALS *//does not work//**
+export async function getStaticPaths() {
+    /*const res = await fetch('https://aspectbridge.com/josh/staticpaths.json')
+    const posts = await res.json()
+    const paths = posts.map((post) => ({
+        params: { id: post.id },
+    }))*
+    return {
+        paths: [
+          {params: { client: ['dashboard'], word: 'Obru' }},
+          {params: { client: ['ashmore'] }},
+          {params: { client: ['ashmore', 'yards'] }},
+        ],
+        fallback: false
+    }
+}
+export async function getStaticProps({ params }) {
+    // params contains the post `id`.
+    // If the route is like /posts/1, then params.id is 1
+    const res = await fetch(`https://aspectbridge.com/josh/${params.client}`)
+    const post = await res.json()
+  
+    // Pass post data to the page via props
+    return {
+        props: { post },
+        // Re-generate the post at most once per second
+        // if a request comes in
+        revalidate: 1,
+      }
+  }*/
+
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
  * @returns This web site
  */
 export default function Clients() {
+    //{path: path,data: data}
+    const i = useInit()
     //noReact();
     return <>
         <Headers />
-        <Container className={'logan h100'}>
-            <ContainerHeader />
-            <Row id="" className={"h70"}>
+        <Container className={'logan'}>
+            <Row id="header">
+                <ContainerHeader />
+            </Row>
+            <Row id="" className={"h80"}>
                 <NavLeftDefault />
                 <ClientInfoCard />
             </Row>
-            <Row id="footer" className={"h10"}>
+            <Row id="footer">
                 <Col sm={4} >
                     {jsObj.card.contact}
                 </Col>
@@ -66,12 +103,10 @@ function Headers(){
  * 
  * @returns Title bar and Navbar
  */
-function ContainerHeader(){
-    return <Row id='header' className={"h20"}>
-                <Col sm={12}>
-                    {jsObj.card.header}
-                </Col>
-            </Row>
+function ContainerHeader(i){
+    return <Col sm={12}>
+                {jsObj.card.header}
+            </Col>
 }
 
 /**
@@ -81,10 +116,17 @@ function ContainerHeader(){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
+    const [a, setA] = useState('false')
+    const i = useInit()
+    useEffect(()=>{
+        if(i){
+            setA('true')
+        } return setA('false')
+    }, [i])
     return <Col md={2} id="nav-client">
-            {jsObj.card.navcards.ashmore}
-            {jsObj.card.navcards.mowing}
-            {jsObj.card.navcards.mowing}
+                {jsObj.card.navcards.ashmore}
+                {jsObj.card.navcards.mowing}
+                {jsObj.card.navcards.mowing}
             </Col>
 }
 
@@ -94,25 +136,13 @@ function NavLeftDefault(){
  * 
  * This section between the <Card.Text> tags chooses what Page loads determined by the url
  * 
- * {() => {switch(client){
- *             case 'ashmore': {
- *                 if(client){
- *                     switch(sub){
- *                         case 'yards': return YardsAshmore();
- *                         case 'trimmings': return TrimmingsAshmore();
- *                         case 'hardees': return HardeesAshmore();
- *                         default: return Ashmore();
- *                     }}}
- *             case 'bill': {return Bill();}
- *             default: {return <></>;}
- *         }}}
+ 
  * 
  * @returns Client Info Box
  */
 
-function noReact() {
+function noReact(client) {
     const router = useRouter();
-    const { client } = router.query
     useEffect(() => {
         if(client || (client == 'noreact'))
             router.push('localhost:3000/public/josh/index.html')

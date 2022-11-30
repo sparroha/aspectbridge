@@ -10,34 +10,40 @@ import useClientInfo from "./navigation/clientinfo"
 
 
 export default function ClientInfoCard(){
-    //get client from url
-    const client = useClient()
-
-    //get path from client
-    const path = usePath(client)
-    
-    //get data from path
-    const data = useData(path)
+    //{path: path,data: data}
+    const i = useInit()
 
     return <Col md={10} id="content">
                 <Card className={'img-terrace'}>
                     <Card.Body>
-                        <Card.Title className={'img-banner'}>{path.dir}</Card.Title>
+                        <Card.Title className={'img-banner'}>{i.path.dir}</Card.Title>
                         <hr />
                         <Card.Text>
-                            {data.info}
+                            {i.data.info}
                         </Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
 }
-function useClient(){
+export function ClientNavSelector(){
+
+}
+export function useInit(){
+    //get client from url
+    const client = useClient()
+    //get path from client
+    const path = usePath(client)
+    //get data from path
+    const data = useData(path)
+    return {path: path,data: data}
+}
+export function useClient(){
     const router = useRouter()
     const { client } = router.query
     useLog(client)
     return client;
 }
-function usePath(client){
+export function usePath(client){
     const [path, setPath] = useState({dir: ' ', sub: ' ', nest: ' '});
     useEffect(()=>{
         function p(){
@@ -53,7 +59,7 @@ function usePath(client){
     useLog(path)
     return path;
 }
-function useData(path){
+export function useData(path){
     const [data, setData] = useState({ info: <></>, nav: <></>, subnav: <></> })
     useEffect(()=>{
         function p(){
