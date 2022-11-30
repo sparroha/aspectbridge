@@ -8,12 +8,7 @@ export default function Main(props) {
     return <></>
 }
 function getInitialPage() {
-    const router = useRouter()
     let domain = useDomainRoot()
-    useEffect(() => {
-        if(domain == "aspectbridge" || "www" || "localhost"){router.push('/dashboard')}
-        else if(domain == "logan" || "localhost"){router.push('/josh/dashboard')}
-    });
 }
 /*async function getData() {
     const res = await fetch('https://api.example.com/...');
