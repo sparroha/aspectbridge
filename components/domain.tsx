@@ -9,6 +9,6 @@ export function useDomainRoot(){
         console.log('@useDomainRoot('+domain+'||'+window.location.href+')')
         if(domain == "aspectbridge" || "www"){router.push('/dashboard')}
         else if(domain == "logan" || "localhost"){router.push('/josh/dashboard')}
-    });
+    }, [domain]);
     return domain
 }

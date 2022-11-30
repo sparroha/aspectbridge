@@ -142,11 +142,6 @@ function Footer(){
  * 
  * @returns Client Info Box
  */
-function usePageProps(){
-    const router = useRouter()
-    const { aspect, word } = router.query //query url props
-
-}
 function DynamicInfo(){
     const router = useRouter()
     const { aspect } = router.query //query url props
@@ -189,7 +184,6 @@ function DynamicInfo(){
                 <TLiterator />
             </Col>
 }
-function getStaticProps(){}
 function Placeholder(){
     return <Row className={"h80"}>
             <Col md={12} className={"tcenter black-font"}>
