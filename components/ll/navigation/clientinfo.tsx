@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Andrew, { AndrewNav } from "../../../pages/josh/clients/andrew/andrew";
 import Ashmore, { AshmoreNav } from "../../../pages/josh/clients/ashmore/ashmore"
 import Bill, { BillNav } from "../../../pages/josh/clients/bill/bill"
+import { DashNav } from "../../../pages/josh/clients/clientlist";
 
 export default function getClientInfo(path){
     let clinfo = { info: <></>, nav: <></>, subnav: <></> };
@@ -12,7 +13,7 @@ export default function getClientInfo(path){
             switch(path.dir){
                 case 'dashboard': {
                     info= <>Dashboard</>
-                    nav= <>DashboardNav</>
+                    nav= <DashNav/>
                     subnav= <>ClientNav</>
                 }
                 break;

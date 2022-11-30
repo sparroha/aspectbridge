@@ -86,6 +86,5 @@ function NavLeftDefault(){
     const i = useInit();
     return <Col md={2} id="nav-client">
                 {i.data.nav}
-                {i.data.nav}
             </Col>
 }
