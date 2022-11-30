@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
-import { useDomainRoot } from '../components/domain';
+import useDomainRoot from '../components/domain';
 
 var activePage = "Home";
 export default function Main(props) {

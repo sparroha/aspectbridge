@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
 import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "react-bootstrap";
-import { useRouter } from 'next/router';
 
 /**CSS module *//not working//*/I did it wrong
 //import Landscape from './components/layout';
@@ -12,37 +11,6 @@ import jsObjs from '../../components/ll/jsobjs';
 import ClientInfoCard, { useClient, useInit } from '../../components/ll/client_info_card';
 //import { NavBarSelect } from '../../components/ll/navigation/navigaton';
 const jsObj = jsObjs();
-
-/**GLOBALS *//does not work//**
-export async function getStaticPaths() {
-    /*const res = await fetch('https://aspectbridge.com/josh/staticpaths.json')
-    const posts = await res.json()
-    const paths = posts.map((post) => ({
-        params: { id: post.id },
-    }))*
-    return {
-        paths: [
-          {params: { client: ['dashboard'], word: 'Obru' }},
-          {params: { client: ['ashmore'] }},
-          {params: { client: ['ashmore', 'yards'] }},
-        ],
-        fallback: false
-    }
-}
-export async function getStaticProps({ params }) {
-    // params contains the post `id`.
-    // If the route is like /posts/1, then params.id is 1
-    const res = await fetch(`https://aspectbridge.com/josh/${params.client}`)
-    const post = await res.json()
-  
-    // Pass post data to the page via props
-    return {
-        props: { post },
-        // Re-generate the post at most once per second
-        // if a request comes in
-        revalidate: 1,
-      }
-  }*/
 
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here

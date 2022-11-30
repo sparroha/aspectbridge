@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
-import { useDomainRoot } from "../domain";
+import { getDomain } from "../domain";
 
 export default function NavIndex() {
-    const domain = useDomainRoot()
+    const domain = getDomain()
     const [local, setLocal] = useState(null)
     useEffect(()=>{
         return setLocal(domain=='localhost'?'true':'false')
