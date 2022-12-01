@@ -49,7 +49,6 @@ export default function NavIndex() {
                                     <Col><Nav.Link href="/josh/employees" >Employees</Nav.Link></Col>
                                     <Col><NavDropdown title="External" id="navbarPartnersDropdown">
                                         <Nav.Link href="https://aspectbridge.com">AspectBridge</Nav.Link>
-                                        <Nav.Link href="https://aspectbridge.com/public/josh/index.html">NRLandscape</Nav.Link>
                                     </NavDropdown></Col>
                                 </Row>
                             </Nav></Col>
