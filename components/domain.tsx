@@ -12,7 +12,7 @@ export default function useDomainRoot(){
         setDomain(/:\/\/([^\.]+)/.exec(window.location.href)[1])
         console.log('@useDomainRoot('+domain+'||'+window.location.href+')')
         
-        return ()=> {if(domain != 'localhost:3000'){
+        return ()=> {if(domain != 'localhost:3000' && path.dir != 'public' ){
             if(domain == "aspectbridge" || "www"){router.push('/dashboard')}
             else if(domain == "logan"){router.push('/josh/dashboard')}
         }}
