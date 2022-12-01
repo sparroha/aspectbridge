@@ -8,7 +8,7 @@ import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "r
 
 /**Custom Components */
 import jsObjs from '../../components/ll/jsobjs';
-import ClientInfoCard, { useClient, useInit } from '../../components/ll/client_info_card';
+import ClientInfoCard, { useInit } from '../../components/ll/client_info_card';
 //import { NavBarSelect } from '../../components/ll/navigation/navigaton';
 const jsObj = jsObjs();
 
