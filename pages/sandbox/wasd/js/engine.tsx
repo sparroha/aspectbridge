@@ -179,7 +179,7 @@ export default function Engine(){
 			DIRECTION.EAST = true;
 			onKeyDownD();
 		}
-		$('body').focus();
+		useEffect(()=>{document.querySelector('body').focus()})
 	}
 	function OnKeyUp(e)
 	{
