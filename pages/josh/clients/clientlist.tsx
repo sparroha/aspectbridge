@@ -72,7 +72,7 @@ export const clientlist = [
         dname: 'Preacher'
     },
 ]
-export function getClientJSX(){
+export default function getClientJSX(){
     let l = clientlist.map((client) => <Nav.Link href={"/josh/"+(client.name)}>{client.dname}</Nav.Link> )
     useLog(l)
     return l
