@@ -19,6 +19,15 @@ export default function useDomainRoot(){
     }, [domain]);
     return domain
 }
+/*
+const { path } = useRouteMatch()
+
+<Route path={[path, `${path}/new`]} exact component={ThingsList} />
+<Switch>
+  <Route path={`${path}/new`} render={() => <NewThing path={path} />} />
+  <Route path={`${path}/:slug`} render={() => <Thing path={path} />} />
+</Switch>
+*/
 export function getDomain(){
     const [domain, setDomain] = useState('')
     const [path, setPath] = useState({dir: ' ', sub: ' ', nest: ' '});
