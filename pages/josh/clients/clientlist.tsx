@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { Card, Nav } from "react-bootstrap"
 import useLog from "../../../components/conlog";
-import Andrew from "./andrew/andrew";
 
 export const clientlist = [
     {
@@ -72,12 +72,8 @@ export const clientlist = [
         dname: 'Preacher'
     },
 ]
-export default function ClientList(){
-    let l = <>{clientlist.map((client) => {
-        <Nav.Link href={"/josh/"+(client.name)}>
-            {client.dname}
-            </Nav.Link>
-    })}</>
+export function getClientJSX(){
+    let l = clientlist.map((client) => <Nav.Link href={"/josh/"+(client.name)}>{client.dname}</Nav.Link> )
     useLog(l)
     return l
 }
@@ -85,8 +81,13 @@ export function Dashboard(){
     return <>Dashboard</>
 }
 export function DashNav(){
+    const [l, setL] = useState([])
+    const [domain] = useState()
+    useEffect(()=>{
+        if(domain)setL(getClientJSX())
+    },[])
     Object.values(clientlist).forEach((element) => {
-        useLog('@DashNav('+element+')')
+        useLog('@DashNav('+element.dname+')')
     })
     //let l = clientlist.map((client) => {<Nav.Link href={"/josh/"+(client.name?client.name:'')+""}>{client.dname}</Nav.Link>})
     return <Card className={''}>
@@ -94,7 +95,7 @@ export function DashNav(){
             <Card.Title className={''}><Nav.Link href="/josh" className="">Clients</Nav.Link></Card.Title>
             <hr />
             <Card.Text>
-                <ClientList />
+                {l}
             </Card.Text>
         </Card.Body>
     </Card>

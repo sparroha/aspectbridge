@@ -8,7 +8,7 @@ export default function Main(props) {
     return <></>
 }
 function getInitialPage() {
-    let domain = useDomainRoot()
+    return useDomainRoot()
 }
 /*async function getData() {
     const res = await fetch('https://api.example.com/...');
