@@ -1,5 +1,4 @@
 
-import $ from "jquery"
 function vec(x,y){
 	this.x = x;
 	this.y = y;
@@ -16,17 +15,17 @@ function vecObj(obj,vec,speed,life,decay){
 }
 //returns collision target
 function vecMoveObj(obj,vec){
-	//console.log((parseFloat(obj.css('left'))+parseFloat(obj.css('width'))/2)+','+(parseFloat(obj.css('top'))+parseFloat(obj.css('height'))/2));
+	//console.log((parseFloat(obj.left())+parseFloat(obj.width())/2)+','+((parseFloat(obj.top())+parseFloat(obj.height()))/2));
 	let collisionTarget = scanForCollisionAt(obj,vec);
-	/*console.log(collisionTarget);*/
+	//console.log(collisionTarget);
 	if(collisionTarget!==false){
-		obj.css('top',Math.max(0,Math.min(maxY-parseInt(obj.css('height')),parseFloat(obj.css('top')) - vec.y*1)) + 'px');
-		obj.css('left',Math.max(0,Math.min(maxX-parseInt(obj.css('width')),parseFloat(obj.css('left')) - vec.x*1)) + 'px');
+		$(obj).css('top',Math.max(0,Math.min(maxY-parseInt($(obj).css('height')),parseFloat($(obj).css('top')) - vec.y*1)) + 'px');
+		$(obj).css('left',Math.max(0,Math.min(maxX-parseInt($(obj).css('width')),parseFloat($(obj).css('left')) - vec.x*1)) + 'px');
 		return collisionTarget;
 	}
 	else if(collisionTarget===false){
-		obj.css('top',Math.max(0,Math.min(maxY-parseInt(obj.css('height')),parseFloat(obj.css('top')) + vec.y)) + 'px');
-		obj.css('left',Math.max(0,Math.min(maxX-parseInt(obj.css('width')),parseFloat(obj.css('left')) + vec.x)) + 'px');
+		$(obj).css('top',Math.max(0,Math.min(maxY-parseInt($(obj).css('height')),parseFloat($(obj).css('top')) + vec.y)) + 'px');
+		$(obj).css('left',Math.max(0,Math.min(maxX-parseInt($(obj).css('width')),parseFloat($(obj).css('left')) + vec.x)) + 'px');
 		//console.log('1 ' +collisionTarget);
 		return collisionTarget;
 	}
@@ -61,11 +60,11 @@ function moveClientObj(clientObj,speed){
 	//console.log(collisionTarget);
 }
 function scanForCollisionAt(obj,vec){
-	console.log('vec.x='+vec.x+' && vec.y='+vec.y);
-	//var x = parseFloat(obj.css('left'))+parseFloat(obj.css('width'))/2;
-	//var y = parseFloat(obj.css('top'))+parseFloat(obj.css('height'))/2;
+	//console.log('vec.x='+vec.x+' && vec.y='+vec.y);
+	var x = parseFloat($(obj).css('left'))+parseFloat($(obj).css('width'))/2;
+	var y = parseFloat($(obj).css('top'))+parseFloat($(obj).css('height'))/2;
 	var top,bottom,left,right,ret = false;
-	EngineScrean.find('.collide').each(function(){
+	EngineScreen.find('.collide').each(function(){
 		/*console.log('x:'+x+';y:'+y+
 			';collide-x:'+parseFloat($(this).css('left'))+'&'+(parseFloat($(this).css('left'))+parseFloat($(this).css('width')))+
 			';collide-y:'+parseFloat($(this).css('top'))+'&'+(parseFloat($(this).css('top'))+parseFloat($(this).css('height'))));*/

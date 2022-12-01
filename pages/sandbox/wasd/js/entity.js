@@ -1,9 +1,10 @@
 
+import $ from "jquery"
 //newProjectile(fireball(),$('caster'),new vec(target.x,target.y))
 function newProjectile(entity,caster,target,maxlife,size,speed){
 	maxlife = maxlife||200;
 	speed = speed||5;
-	spread = 1+size/5;
+	//spread = 1+size/5;
 	var startX = parseFloat(caster.css('left'))+parseFloat(caster.css('width'))/2;
 	var startY = parseFloat(caster.css('top'))+parseFloat(caster.css('height'))/2;
 	if(target.x<startX){startX=startX-parseFloat(caster.css('width'))*spread;}
@@ -34,7 +35,7 @@ function missile(id,startx,starty,size,angle)
 	var width=20*size;
 	var height=20*size;
 	angle=angle+90;
-	var img = './../assets/binary2.png'
+	var img = 'http://vignette2.wikia.nocookie.net/mugen/images/7/76/Magic_missile.gif'
 	var newObj=$("<div class='projectile'><img src="+img+" width=100% /></div>");
 	newObj.attr('id',"missile_"+(id!==""?id:""));
 	newObj.css('position',"absolute");
@@ -43,7 +44,7 @@ function missile(id,startx,starty,size,angle)
 	newObj.css('height',height+"px");
 	newObj.css('background',"transparent");
 	newObj.css('zindex',100);
-	EngineScreen.append(newObj);
+	EngineScrean.append(newObj);
 	
 	newObj.css('left',(startx-width/2)+"px");
 	newObj.css('top',(starty-height/2)+"px");
@@ -54,7 +55,7 @@ function fireball(id,startx,starty,size,angle){
 	var width=20*size;
 	var height=20*size;
 	angle=angle;
-	var img = './../assets/binary2.png';
+	var img = 'http://www.cliparthut.com/clip-arts/897/small-fireball-897918.png';
 	var newObj=$("<div class='projectile'><img src="+img+" width=100% /></div>");
 	newObj.attr('id',"fireball_"+(id!==""?id:""));
 	newObj.css('position',"absolute");
@@ -63,7 +64,7 @@ function fireball(id,startx,starty,size,angle){
 	newObj.css('height',height+"px");
 	newObj.css('background',"transparent");
 	newObj.css('zindex',100);
-	EngineScreen.append(newObj);
+	EngineScrean.append(newObj);
 	
 	newObj.css('left',(startx-width/2)+"px");
 	newObj.css('top',(starty-height/2)+"px");
@@ -74,7 +75,7 @@ function icicle(id,startx,starty,size,angle){
 	var width=20*size;
 	var height=20*size;
 	angle=angle+45;
-	var img = './../assets/binary2.png';
+	var img = 'http://thingiverse-production-new.s3.amazonaws.com/renders/a1/b8/45/62/8c/Icicle1_preview_featured.jpg';
 	var newObj=$("<div class='projectile'><img src="+img+" width=100% /></div>");
 	newObj.attr('id',"icicle_"+(id!==""?id:""));
 	newObj.css('position',"absolute");
@@ -83,7 +84,7 @@ function icicle(id,startx,starty,size,angle){
 	newObj.css('height',height+"px");
 	newObj.css('background',"transparent");
 	newObj.css('zindex',100);
-	EngineScreen.append(newObj);
+	EngineScrean.append(newObj);
 	
 	newObj.css('left',(startx-width/2)+"px");
 	newObj.css('top',(starty-height/2)+"px");

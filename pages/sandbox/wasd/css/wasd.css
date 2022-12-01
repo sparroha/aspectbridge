@@ -1,0 +1,24 @@
+#actions li{
+    position:relative;
+    text-align:center;
+    content:center;
+    background-color:'#333';
+    border-radius:20px;
+    width:100px;
+    height:100px;
+}
+#actions li h1{
+    position:absolute;
+    top:0;
+    left:0;
+    color:blue;
+    margin:0;
+    border:0;
+}
+#actions li img{
+    background:'#333';
+}
+div{
+    margin:0;
+    border:0;
+}
