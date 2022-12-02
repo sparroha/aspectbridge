@@ -19,9 +19,9 @@ $(setTimeout(function(){
 	seconds = new Date().getSeconds();
 	clientPlayer = $("#player");
 	maxXY = setMaxXY(EngineScreen);
-	startX = (maxXY.x)
+	var startX = (maxXY.x)
 	console.log('startX = '+startX)
-	startY = (maxXY.y)
+	var startY = (maxXY.y)
 	console.log('startX = '+startY)
 	var startY =
 	clientPlayer.css('left', startX);
