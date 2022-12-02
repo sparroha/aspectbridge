@@ -41,14 +41,7 @@ export default function NavIndex() {
                             <NavDropdown title="Projects" id="navbarProjectsDropdown">
                                 <Nav.Link href="/grid/index.html">Grid</Nav.Link>
                                 <NavDropdown.Divider />
-                                <Nav.Link href="/sandbox/wasd" disabled>Sandbox: wasd</Nav.Link>
-                            </NavDropdown>{' '}
-
-                            <NavDropdown title="Resources" id="navbarResourcesDropdown">
-                                <NavDropdown.Item href="#ankor1" disabled>Wiki</NavDropdown.Item>
-                                <NavDropdown.Item href="#ankor2" disabled>Mimicry Wiki</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#ankor3" disabled>Other Wikis</NavDropdown.Item>
+                                <Nav.Link href="/static/wasd/index.html">Sandbox: wasd</Nav.Link>
                             </NavDropdown>{' '}
                             
                         </Nav>{' '}

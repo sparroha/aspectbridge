@@ -1,8 +1,9 @@
 
 //console.log('screan start = '+objOffset(EngineScreen.parent()).x+" x "+objOffset(EngineScreen.parent()).y);
 var screenSet = 'false';
+var maxXY = {};
 var clientPlayer;
-var gamespeed = 1000/60;
+var gamespeed = 1000/20;
 var updates;
 var seconds;
 var aiObjs = [];
@@ -13,15 +14,23 @@ var collisionList = [];
 */
 //export default function Init(){}
 $(setTimeout(function(){
+	EngineScreen = $("#battlefield");
+	console.log('EngineScreen = '+EngineScreen.id)
 	seconds = new Date().getSeconds();
 	clientPlayer = $("#player");
-	setMaxHeightWidth();
-	clientPlayer.css('left',maxX/2+"px");
-	clientPlayer.css('top',maxY/2+"px");
+	maxXY = setMaxXY(EngineScreen);
+	startX = (maxXY.x)
+	console.log('startX = '+startX)
+	startY = (maxXY.y)
+	console.log('startX = '+startY)
+	var startY =
+	clientPlayer.css('left', startX);
+	clientPlayer.css('top', startY);
 	clientPlayer.css('border-radius',"90px");
 	$('html').attr('oncontextmenu','NI();');
-	EngineScreen = $("#battlefield");
-},100));
+	console.log('clientPlayer = '+clientPlayer.css('left'))
+	console.log('clientPlayer = '+clientPlayer.css('top'))
+},1000));
 /**
 * * * PRIMARY GAME LOOP * * *
 */
@@ -36,6 +45,7 @@ useEffect(() => {
 const loop = setInterval(game, gamespeed)
 //$(function(){setInterval(game, gamespeed);});
 function game(){
+	//if(EngineScreen != $("#battlefield"))EngineScreen = $("#battlefield");
 	$("#debug").html(MOUSEPOS.x + " x " +MOUSEPOS.y);
 	moveClientObj(clientPlayer,5);
 	//handleAI();
