@@ -12,22 +12,19 @@ export default function useDomainRoot(){
         setDomain(/:\/\/([^\.]+)/.exec(window.location.href)[1])
         console.log('@useDomainRoot('+domain+'||'+window.location.href+')')
         
-        return ()=> {if(domain != 'localhost:3000' && path.dir != 'public' ){
-            if(domain == "aspectbridge" || "www"){router.push('/dashboard')}
-            else if(domain == "logan"){router.push('/josh/dashboard')}
-        }}
+        return ()=> {
+            /**
+             * In this configuration, the only accessable pages are the root [...slug] pages
+             */
+            if(domain != 'localhost:3000'){
+                //if loading from 'aspectbridge.' or 'www.' then redirect to [...aspect]
+                if(domain == "aspectbridge" || "www"){router.push('/bridge/dashboard')}
+                //if loading from 'logan.' then redirect to [josh/[...client]...aspect]
+                else if(domain == "logan"){router.push('/josh/dashboard')}
+            }
+        }
     }, [domain]);
-    return domain
 }
-/*
-const { path } = useRouteMatch()
-
-<Route path={[path, `${path}/new`]} exact component={ThingsList} />
-<Switch>
-  <Route path={`${path}/new`} render={() => <NewThing path={path} />} />
-  <Route path={`${path}/:slug`} render={() => <Thing path={path} />} />
-</Switch>
-*/
 export function getDomain(){
     const [domain, setDomain] = useState('')
     const [path, setPath] = useState({dir: ' ', sub: ' ', nest: ' '});

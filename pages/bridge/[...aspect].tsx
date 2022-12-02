@@ -5,8 +5,8 @@ import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import NavIndex from '../components/ab/nav';
-import navCcomponentObject from '../components/ab/navigaton';
+import NavIndex from '../../components/ab/nav';
+import navCcomponentObject from '../../components/ab/navigaton';
 
 /**CSS module *//not working/
 
