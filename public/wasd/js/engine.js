@@ -1,7 +1,7 @@
 
-import $ from "jquery"
 //Engine Valiables
-var EngineScrean = $("#battlefield");
+var EngineScreen = $("#battlefield");
+//console.log($(EngineScreen))
 var maxX;
 var maxY;
 var objOldZIndex = 0;
@@ -64,7 +64,7 @@ $(function(){
         event = event || window.event;
 		keyDown = event.keyIdentifier||event.keyCode;
 		OnKeyDown(event);
-		console.log("keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode);
+		//console.log("@engine-67 {events:keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode+"}");
     };
 	window.onkeyup = function handleKeyUp(event) {
 		event = event || window.event; // IE-ism
@@ -81,20 +81,25 @@ $(function(){
     window.onmousemove = handleMouseMove;
     function handleMouseMove(event) {
         event = event || window.event; // IE-ism
-        MOUSEPOS.x = event.clientX-objOffset(EngineScrean).x;
-        MOUSEPOS.y = event.clientY-objOffset(EngineScrean).y;
+        MOUSEPOS.x = event.clientX-objOffset(EngineScreen).x;
+        MOUSEPOS.y = event.clientY-objOffset(EngineScreen).y;
+		console.log(MOUSEPOS.x+"|"+MOUSEPOS.y)
     }
 });
 function setMaxHeightWidth(){
-	maxX = $(window).width()-($(window).width()-parseInt(EngineScrean.css('width')));
-	maxY = $(window).height()-($(window).height()-parseInt(EngineScrean.css('height')));
+	maxX = window.innerWidth-(window.innerWidth-$("#battlefield").width());
+	maxY = window.innerHeight-(window.innerHeight-$("#battlefield").height());
+	//console.log("@engine-92{ maxX: "+maxX+", maxY: "+maxY+"}")
+	//console.log("@engine-93{ $('#battlefield').width()): "+$("#battlefield").width()+", $('#battlefield').height()): "+$("#battlefield").height()+"}");
 }
 function objOffset(obj){
-    var left=0, top=0;
+    var left = 0;
+	var top = 0;
     while (obj.offsetParent) {
-        left += obj.offset().left;
-        top  += obj.offset().top;
+        left += $(obj).offset().left;
+        top  += $(obj).offset().top;
         obj = obj.offsetParent;
+		//console.log("@engine-100{left: "+$(obj).offset().left+", top: "+top+", obj: "+obj+"}")
     } 
     
     return {
@@ -160,7 +165,7 @@ function OnKeyDown(e)
 		onKeyDownW();
 	}
 	if(keyDown==KEYS.WEST.UNI||keyDown==KEYS.WEST.DECI){
-		KEYS.NORTH.WEST = true;
+		KEYS.WEST.DOWN = true;
 		DIRECTION.WEST = true;
 		onKeyDownA();
 	}

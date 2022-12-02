@@ -41,7 +41,7 @@ export default function NavIndex() {
                             <NavDropdown title="Projects" id="navbarProjectsDropdown">
                                 <Nav.Link href="/grid/index.html">Grid</Nav.Link>
                                 <NavDropdown.Divider />
-                                <Nav.Link href="/wasd/index.html" disabled>wasd</Nav.Link>
+                                <Nav.Link href="/sandbox/wasd" disabled>Sandbox: wasd</Nav.Link>
                             </NavDropdown>{' '}
 
                             <NavDropdown title="Resources" id="navbarResourcesDropdown">
