@@ -33,7 +33,7 @@ export default function NavIndex() {
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Row>
-                            <Col><Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }} navbarScroll>
+                            <Col><Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }}>
                                 <Row>
                                     <Col><Nav.Link href="/josh">Home</Nav.Link></Col>
                                     <Col><Nav.Link  href="/josh/about">About</Nav.Link></Col>
