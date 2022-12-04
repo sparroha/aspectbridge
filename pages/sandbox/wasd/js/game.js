@@ -1,5 +1,5 @@
 
-import $ from "jquery"
+//import $ from "jquery"
 //console.log('screan start = '+objOffset(EngineScrean.parent()).x+" x "+objOffset(EngineScrean.parent()).y);
 var clientPlayer;
 var gamespeed = 1;
@@ -10,7 +10,7 @@ var vecObjs = [];
 var collisionList = [];
 /**
 * * * INITIATE GAME SETTINGS * * *
-*/
+*
 $(function(){
 	seconds = new Date().getSeconds();
 	clientPlayer = $("#player");
@@ -22,7 +22,7 @@ $(function(){
 });
 /**
 * * * PRIMARY GAME LOOP * * *
-*/
+*
 $(function(){setInterval(game, gamespeed);});
 function game(){
 	setMaxHeightWidth();
@@ -34,7 +34,7 @@ function game(){
 }
 /**
 * * * FRAME RATE * * *
-*/
+*
 function debug(){
 	var d = new Date();
 	var s = d.getSeconds();
@@ -48,7 +48,7 @@ function debug(){
 }
 /**
 * * * CONTEXT MENUS * * *
-*/
+*
 function NI(){
 	if(prompt('Not Implemented')=='password'){
 		window.oncontextmenu = function handleContextMenue(event) {
@@ -62,8 +62,7 @@ function NI(){
 }
 /**
 * * * OBJECTS * * *
-*/
-/*
+*
 function aiObj(obj,vec,speed,life,decay){
 	this.obj = obj;
 	this.vec = vec;
@@ -71,7 +70,7 @@ function aiObj(obj,vec,speed,life,decay){
 	this.life = life;
 	this.decay = decay;
 	this.target = false;
-}*/
+}
 //vecObjs.push(new vecObj(newMovingElement(id,startx,starty),new vec(x,y),speed,life,decay))
 
 //returns a new array with no "" values
