@@ -102,7 +102,12 @@ const test = [
         dname: 'Preacher'
     }
 ]
-export default function Dashboard(){
+export default function ClientList(){
+    return <>
+        {clientlist.map((client) => <Nav.Link className={'text-dark p3'} href={"/josh/"+(client.name)}>{client.dname}</Nav.Link>)}
+    </>
+}
+export function Dashboard(){
     return <>Dashboard</>
 }
 export function DashNav(){
@@ -116,7 +121,7 @@ export function DashNav(){
             <hr />
             <Card.Text>
                 <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }}>
-                    {clientlist.map((client) => <Nav.Link className={'text-dark p3'} href={"/josh/"+(client.name)}>{client.dname}</Nav.Link>)}
+                    <ClientList />
                 </Nav>
             </Card.Text>
         </Card.Body>
