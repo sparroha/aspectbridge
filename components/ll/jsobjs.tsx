@@ -29,9 +29,7 @@ const cards = {
     header:
         <Card className={'img-mgrass'}>
             <Card.Body>
-                <h1 className={'img-banner'}>Lorem Ipsum</h1>
-                <hr />
-                <NavIndex />
+                <h1 className={'img-banner'}>Clients</h1>
             </Card.Body>
         </Card>
     ,navclient:
