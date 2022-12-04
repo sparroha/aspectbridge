@@ -87,5 +87,10 @@ function NavLeftDefault(){
     const i = useInit();
     return <Col md={2} id="nav-client">
                 {i.data.nav}
+                <Card className={''}>
+                    <Card.Body className={''}>
+                        <Card.Title className={''}><Nav.Link href="/josh/dashboard">Dashboard</Nav.Link></Card.Title>
+                    </Card.Body>
+                </Card>
             </Col>
 }

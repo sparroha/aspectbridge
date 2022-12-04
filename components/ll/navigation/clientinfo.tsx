@@ -3,7 +3,9 @@ import Andrew, { AndrewNav } from "../../../pages/josh/clients/andrew/andrew";
 import Ashmore, { AshmoreNav } from "../../../pages/josh/clients/ashmore/ashmore"
 import Bill, { BillNav } from "../../../pages/josh/clients/bill/bill"
 import Blake, { BlakeNav } from "../../../pages/josh/clients/blake/blake";
+import Church, { ChurchNav } from "../../../pages/josh/clients/church/church";
 import { ClientNA, Dashboard, DashNav } from "../../../pages/josh/clients/clientlist";
+import Coopers, { CoopersNav } from "../../../pages/josh/clients/coopers/coopers";
 import Graveyards, { GraveyardsNav } from "../../../pages/josh/clients/graveyards/graveyards";
 
 /**
@@ -35,7 +37,7 @@ export default function getClientInfo(path){
                         case 'trimmings': {info = <>Trimmings</>; nav = <AndrewNav />}
                         break;
                         case 'hardees': {info = <>Hardees</>; nav = <AndrewNav />}
-                        default: {info = <Andrew />, <AndrewNav />}
+                        default: {info = <Andrew />, nav = <AndrewNav />}
                         break;
                     }
                 } break;
@@ -49,7 +51,7 @@ export default function getClientInfo(path){
                         break;
                         case 'hardees': {info = <>Hardees</>; nav = <AshmoreNav/>}
                         break;
-                        default: {info = <Ashmore />, <AshmoreNav />}
+                        default: {info = <Ashmore />, nav = <AshmoreNav />}
                         break;
                     }
                 } break;
@@ -63,11 +65,11 @@ export default function getClientInfo(path){
                         break;
                         case 'hardees': {info = <>Hardees</>; nav = <BillNav/>}
                         break;
-                        default: {info = <Bill />, <BillNav />}
+                        default: {info = <Bill />, nav = <BillNav />}
                         break;
                     }
                 } break;
-                case 'bill': { 
+                case 'blake': { 
                     info = <Blake />
                     nav = <BlakeNav />
                     switch(path.sub){
@@ -77,7 +79,35 @@ export default function getClientInfo(path){
                         break;
                         case 'hardees': {info = <>Hardees</>; nav = <BlakeNav/>}
                         break;
-                        default: {info = <Blake />, <BlakeNav />}
+                        default: {info = <Blake />, nav = <BlakeNav />}
+                        break;
+                    }
+                } break;
+                case 'church': { 
+                    info = <Church />
+                    nav = <ChurchNav />
+                    switch(path.sub){
+                        case 'yards': {info = <>Yards</>; nav = <ChurchNav/>}
+                        break;
+                        case 'trimmings': {info = <>Trimmings</>; nav = <ChurchNav/>}
+                        break;
+                        case 'hardees': {info = <>Hardees</>; nav = <ChurchNav/>}
+                        break;
+                        default: {info = <Church />, nav = <ChurchNav />}
+                        break;
+                    }
+                } break;
+                case 'coopers': { 
+                    info = <Coopers />
+                    nav = <CoopersNav />
+                    switch(path.sub){
+                        case 'yards': {info = <>Yards</>; nav = <CoopersNav/>}
+                        break;
+                        case 'trimmings': {info = <>Trimmings</>; nav = <CoopersNav/>}
+                        break;
+                        case 'hardees': {info = <>Hardees</>; nav = <CoopersNav/>}
+                        break;
+                        default: {info = <Coopers />, nav = <CoopersNav />}
                         break;
                     }
                 } break;
@@ -87,11 +117,11 @@ export default function getClientInfo(path){
                     switch(path.sub){
                         case 'trenton': {info = <>trenton</>; nav = <GraveyardsNav/>; nav = <GraveyardsNav/>}
                         break;
-                        case 'ringold': {info = <>ringold</>; nav = <GraveyardsNav/>; nav = <GraveyardsNav/>}
+                        case 'ringgold': {info = <>ringold</>; nav = <GraveyardsNav/>; nav = <GraveyardsNav/>}
                         break;
                         case 'calhoon': {info = <>calhoon</>; nav = <GraveyardsNav/>; nav = <GraveyardsNav/>}
                         break;
-                        default: {info = <Graveyards />, <GraveyardsNav />}
+                        default: {info = <Graveyards />, nav = <GraveyardsNav />}
                         break;
                     }
                 } break;
