@@ -2,9 +2,17 @@ import { useEffect, useState } from "react"
 import Andrew, { AndrewNav } from "../../../pages/josh/clients/andrew/andrew";
 import Ashmore, { AshmoreNav } from "../../../pages/josh/clients/ashmore/ashmore"
 import Bill, { BillNav } from "../../../pages/josh/clients/bill/bill"
-import { Dashboard, DashNav } from "../../../pages/josh/clients/clientlist";
+import Blake, { BlakeNav } from "../../../pages/josh/clients/blake/blake";
+import { ClientNA, Dashboard, DashNav } from "../../../pages/josh/clients/clientlist";
 import Graveyards, { GraveyardsNav } from "../../../pages/josh/clients/graveyards/graveyards";
 
+/**
+ * This function provides the data directory JSX.Element that should be loaded according to the url
+ * 
+ * 
+ * @param path 
+ * @returns clinfo = { info: <ClientInfo/>, nav: <ClientNav/>, subnav: <ClientNavAlt/> }
+ */
 export default function getClientInfo(path){
     let clinfo = { info: <></>, nav: <></>, subnav: <></> };
     let info = <></>
@@ -15,7 +23,7 @@ export default function getClientInfo(path){
                 case 'dashboard': {
                     info= <Dashboard />
                     nav= <DashNav/>
-                    subnav= <>ClientNav</>
+                    subnav= <DashNav/>
                 }
                 break;
                 case 'andrew': { 
@@ -55,7 +63,21 @@ export default function getClientInfo(path){
                         break;
                         case 'hardees': {info = <>Hardees</>; nav = <BillNav/>}
                         break;
-                        default: {info = <Bill />, <AshmoreNav />}
+                        default: {info = <Bill />, <BillNav />}
+                        break;
+                    }
+                } break;
+                case 'bill': { 
+                    info = <Blake />
+                    nav = <BlakeNav />
+                    switch(path.sub){
+                        case 'yards': {info = <>Yards</>; nav = <BlakeNav/>}
+                        break;
+                        case 'trimmings': {info = <>Trimmings</>; nav = <BlakeNav/>}
+                        break;
+                        case 'hardees': {info = <>Hardees</>; nav = <BlakeNav/>}
+                        break;
+                        default: {info = <Blake />, <BlakeNav />}
                         break;
                     }
                 } break;
@@ -63,20 +85,20 @@ export default function getClientInfo(path){
                     info = <Graveyards />
                     nav = <GraveyardsNav />
                     switch(path.sub){
-                        case 'trenton': {info = <>trenton</>; nav = <GraveyardsNav/>}
+                        case 'trenton': {info = <>trenton</>; nav = <GraveyardsNav/>; nav = <GraveyardsNav/>}
                         break;
-                        case 'ringold': {info = <>ringold</>; nav = <GraveyardsNav/>}
+                        case 'ringold': {info = <>ringold</>; nav = <GraveyardsNav/>; nav = <GraveyardsNav/>}
                         break;
-                        case 'calhoon': {info = <>calhoon</>; nav = <GraveyardsNav/>}
+                        case 'calhoon': {info = <>calhoon</>; nav = <GraveyardsNav/>; nav = <GraveyardsNav/>}
                         break;
                         default: {info = <Graveyards />, <GraveyardsNav />}
                         break;
                     }
                 } break;
                 default: {
-                    info = <>Client/Dashboard/Loading...</>
-                    nav = <>ClientNav...</>
-                    subnav = <>NA...</>
+                    info = <ClientNA/>
+                    nav = <DashNav/>
+                    subnav = <DashNav/>
                 } break;
             } clinfo = { info: info, nav: nav, subnav: subnav }
         }

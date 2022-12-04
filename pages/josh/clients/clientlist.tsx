@@ -107,6 +107,9 @@ export default function ClientList(){
         {clientlist.map((client) => <Nav.Link className={'text-dark p3'} href={"/josh/"+(client.name)}>{client.dname}</Nav.Link>)}
     </>
 }
+export function ClientNA(){
+    return <>Client Unavailable...</>
+}
 export function Dashboard(){
     return <>Dashboard</>
 }

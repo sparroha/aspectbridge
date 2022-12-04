@@ -18,6 +18,48 @@ export function GraveyardsNav(){
         </Card.Body>
     </Card>
 }
+export function TrentonGraveyards(){
+    return <Card className={''}>
+        <Card.Body className={''}>
+            <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
+            <hr />
+            <Card.Text>
+                <Nav.Link href="/josh/graveyards/trenton/map">Map</Nav.Link>
+                <hr />
+                <Nav.Link href="/josh/graveyards/ringgold/calendar">Calendar</Nav.Link>
+                <Nav.Link href="/josh/graveyards/calhoon/tools">Tools</Nav.Link>
+            </Card.Text>
+        </Card.Body>
+    </Card>
+}
+export function RinggoldGraveyards(){
+    return <Card className={''}>
+        <Card.Body className={''}>
+            <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
+            <hr />
+            <Card.Text>
+                <Nav.Link href="/josh/graveyards/trenton/map">Map</Nav.Link>
+                <hr />
+                <Nav.Link href="/josh/graveyards/ringgold/calendar">Calendar</Nav.Link>
+                <Nav.Link href="/josh/graveyards/calhoon/tools">Tools</Nav.Link>
+            </Card.Text>
+        </Card.Body>
+    </Card>
+}
+export function CalhoonGraveyards(){
+    return <Card className={''}>
+        <Card.Body className={''}>
+            <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
+            <hr />
+            <Card.Text>
+                <Nav.Link href="/josh/graveyards/trenton/map">Map</Nav.Link>
+                <hr />
+                <Nav.Link href="/josh/graveyards/ringgold/calendar">Calendar</Nav.Link>
+                <Nav.Link href="/josh/graveyards/calhoon/tools">Tools</Nav.Link>
+            </Card.Text>
+        </Card.Body>
+    </Card>
+}
 //This is Info Block for Clients
 /*const graves = [
     {
