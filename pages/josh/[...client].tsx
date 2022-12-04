@@ -89,7 +89,7 @@ function NavLeftDefault(){
                 {i.data.nav}
                 <Card className={''}>
                     <Card.Body className={''}>
-                        <Card.Title className={''}><Nav.Link href="/josh/dashboard">Dashboard</Nav.Link></Card.Title>
+                        <Nav.Link href="/josh/dashboard">Dashboard</Nav.Link>
                     </Card.Body>
                 </Card>
             </Col>

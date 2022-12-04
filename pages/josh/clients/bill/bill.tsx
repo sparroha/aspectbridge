@@ -1,4 +1,5 @@
 import { Card, Nav } from "react-bootstrap"
+import SimpleNav from "../../../../components/simplenav"
 
 export default function Bill(){
     return <>
@@ -8,7 +9,7 @@ export default function Bill(){
     Trimming schedule
     Grass schedule     </>
 }
-export function BillNav(){
+export function BillNavOld(){
     return <Card className={''}>
         <Card.Body className={''}>
             <Card.Title className={''}><Nav.Link href="/josh/bill" className="">Bill</Nav.Link></Card.Title>
@@ -20,4 +21,8 @@ export function BillNav(){
             </Card.Text>
         </Card.Body>
     </Card>
+}
+
+export function BillNav(){
+    return <SimpleNav {...{title: "bill", links: ["trenton", "ringgold", "calhoon"]}} />
 }

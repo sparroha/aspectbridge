@@ -1,10 +1,11 @@
 import { Card, Nav } from "react-bootstrap"
+import SimpleNav from "../../../../components/simplenav"
 export default function Church(){
     return <>
         Bill Information Goes Here...Oxygen
     </>
 }
-export function ChurchNav(){
+export function ChurchNavOld(){
     return <Card className={''}>
         <Card.Body className={''}>
             <Card.Title className={''}><Nav.Link href="/josh/church" className="">Church</Nav.Link></Card.Title>
@@ -16,4 +17,7 @@ export function ChurchNav(){
             </Card.Text>
         </Card.Body>
     </Card>
+}
+export function ChurchNav(){
+    return <SimpleNav {...{title: "church", links: ["trenton", "ringgold", "calhoon"]}} />
 }

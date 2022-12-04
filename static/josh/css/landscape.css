@@ -17,6 +17,10 @@
 .card hr{
 	border-top: 2px solid black !important;
 }
+.card-body a{
+    border-radius: 4px;
+    border: 2px outset white;
+}
 .card-title, .card-text, .navbar{
     color: black;
     font-weight: bold;

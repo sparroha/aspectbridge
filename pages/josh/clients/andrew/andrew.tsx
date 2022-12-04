@@ -1,11 +1,12 @@
 import { Card, Nav } from "react-bootstrap"
+import SimpleNav from "../../../../components/simplenav"
 
 export default function Andrew(){
     return <>
         this is cool
     </>
 }
-export function AndrewNav(){
+export function AndrewNavOld(){
     return <Card className={''}>
         <Card.Body className={''}>
             <Card.Title className={''}><Nav.Link href="/josh/andrew" className="">Andrew</Nav.Link></Card.Title>
@@ -17,4 +18,7 @@ export function AndrewNav(){
             </Card.Text>
         </Card.Body>
     </Card>
+}
+export function AndrewNav(){
+    return <SimpleNav {...{title: "andrew", links: ["trenton", "ringgold", "calhoon"]}} />
 }

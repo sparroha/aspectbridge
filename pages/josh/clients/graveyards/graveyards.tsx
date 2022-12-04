@@ -1,11 +1,12 @@
 import { Card, Nav } from "react-bootstrap"
+import SimpleNav from "../../../../components/simplenav"
 
 export default function Graveyards(){
     return <>
         this is cool
     </>
 }
-export function GraveyardsNav(){
+export function GraveyardsNavOld(){
     return <Card className={''}>
         <Card.Body className={''}>
             <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
@@ -18,7 +19,7 @@ export function GraveyardsNav(){
         </Card.Body>
     </Card>
 }
-export function TrentonGraveyards(){
+export function TrentonGraveyardsOld(){
     return <Card className={''}>
         <Card.Body className={''}>
             <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
@@ -31,34 +32,46 @@ export function TrentonGraveyards(){
             </Card.Text>
         </Card.Body>
     </Card>
+}
+export function RinggoldGraveyardsOld(){
+    return <Card className={''}>
+        <Card.Body className={''}>
+            <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
+            <hr />
+            <Card.Text>
+                <Nav.Link href="/josh/graveyards/trenton/map">Map</Nav.Link>
+                <hr />
+                <Nav.Link href="/josh/graveyards/ringgold/calendar">Calendar</Nav.Link>
+                <Nav.Link href="/josh/graveyards/calhoon/tools">Tools</Nav.Link>
+            </Card.Text>
+        </Card.Body>
+    </Card>
+}
+export function CalhoonGraveyardsOld(){
+    return <Card className={''}>
+        <Card.Body className={''}>
+            <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
+            <hr />
+            <Card.Text>
+                <Nav.Link href="/josh/graveyards/trenton/map">Map</Nav.Link>
+                <hr />
+                <Nav.Link href="/josh/graveyards/ringgold/calendar">Calendar</Nav.Link>
+                <Nav.Link href="/josh/graveyards/calhoon/tools">Tools</Nav.Link>
+            </Card.Text>
+        </Card.Body>
+    </Card>
+}
+export function GraveyardsNav(){
+    return <SimpleNav {...{title: "graveyards", links: ["trenton", "ringgold", "calhoon"]}} />
+}
+export function TrentonGraveyards(){
+    return <SimpleNav {...{title: "trenton", links: ["map", "calendar", "tools"]}} />
 }
 export function RinggoldGraveyards(){
-    return <Card className={''}>
-        <Card.Body className={''}>
-            <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
-            <hr />
-            <Card.Text>
-                <Nav.Link href="/josh/graveyards/trenton/map">Map</Nav.Link>
-                <hr />
-                <Nav.Link href="/josh/graveyards/ringgold/calendar">Calendar</Nav.Link>
-                <Nav.Link href="/josh/graveyards/calhoon/tools">Tools</Nav.Link>
-            </Card.Text>
-        </Card.Body>
-    </Card>
+    return <SimpleNav {...{title: "ringgold", links: ["map", "calendar", "tools"]}} />
 }
 export function CalhoonGraveyards(){
-    return <Card className={''}>
-        <Card.Body className={''}>
-            <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
-            <hr />
-            <Card.Text>
-                <Nav.Link href="/josh/graveyards/trenton/map">Map</Nav.Link>
-                <hr />
-                <Nav.Link href="/josh/graveyards/ringgold/calendar">Calendar</Nav.Link>
-                <Nav.Link href="/josh/graveyards/calhoon/tools">Tools</Nav.Link>
-            </Card.Text>
-        </Card.Body>
-    </Card>
+    return <SimpleNav {...{title: "calhoon", links: ["map", "calendar", "tools"]}} />
 }
 //This is Info Block for Clients
 /*const graves = [
