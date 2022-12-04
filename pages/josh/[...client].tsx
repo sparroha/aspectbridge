@@ -9,6 +9,7 @@ import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "r
 /**Custom Components */
 import jsObjs from '../../components/ll/jsobjs';
 import ClientInfoCard, { useInit } from '../../components/ll/client_info_card';
+import SimpleNav from '../../components/simplenav';
 //import { NavBarSelect } from '../../components/ll/navigation/navigaton';
 
 //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: [], nav: [], subnav: []}}
@@ -87,10 +88,6 @@ function NavLeftDefault(){
     const i = useInit();
     return <Col md={2} id="nav-client">
                 {i.data.nav}
-                <Card className={''}>
-                    <Card.Body className={''}>
-                        <Nav.Link href="/josh/dashboard">Dashboard</Nav.Link>
-                    </Card.Body>
-                </Card>
+                <SimpleNav {...{title: "dashboard", links: []}}/>
             </Col>
 }

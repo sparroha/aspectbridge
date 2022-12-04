@@ -1,10 +1,9 @@
-import { Card, Nav } from "react-bootstrap"
+import { Card, Form, Nav } from "react-bootstrap"
 import SimpleNav from "../../../../components/simplenav"
 
 export default function Graveyards(){
-    return <>
-        this is cool
-    </>
+    return <Form>
+            </Form>
 }
 export function GraveyardsNavOld(){
     return <Card className={''}>
