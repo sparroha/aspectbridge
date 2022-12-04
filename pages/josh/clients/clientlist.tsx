@@ -102,7 +102,7 @@ const test = [
         dname: 'Preacher'
     }
 ]
-export function Dashboard(){
+export default function Dashboard(){
     return <>Dashboard</>
 }
 export function DashNav(){
