@@ -1,13 +1,14 @@
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Card, Col } from "react-bootstrap"
 import useLog from "../conlog"
 import getClientInfo from "./navigation/clientinfo"
 
 
-export default function ClientInfoCard(){
+export default function ClientInfoCard(pageInfo){
     //{path: path,data: data}
-    const i = useInit()
+    const i = pageInfo
+    //const i = useInit()
 
     //useLog('@ClientInfoCard('+i.path.dir+':'+i.data.info+')')
     return <Col md={10} id="content">
@@ -32,9 +33,11 @@ export function useInit(){
     const path = usePath(client)
     //get data from path
     const data = useData(path)
-    useLog('@iseInit(\n<<</'+path.dir+'/'+path.sub+'/'+path.nest+'>>>\n'+
-                    '['+data.info+','+data.nav+','+data.subnav+'])')
-    return {path: path,data: data}
+    //save this info to instance
+    const init = useMemo(()=> {return {path: path, data: data}}, [data]);
+    useLog('@useInit(\n<<</'+init.path.dir+'/'+init.path.sub+'/'+init.path.nest+'>>>\n'+
+                    '['+init.data.info+','+init.data.nav+','+init.data.subnav+'])')
+    return init
 }
 export function useClient(){
     const router = useRouter()
@@ -52,7 +55,7 @@ export function usePath(client){
                 let nest = (client.length>2?client[2]:(client.length>1?client[1]:client)).toString()
                 setPath({dir: dir, sub: sub, nest: nest})
             }
-        } p()
+        }
         return p()
     }, [client])
     //useLog('@usePath(/'+path.dir+'/'+path.sub+'/'+path.nest+')')
@@ -66,7 +69,7 @@ export function useData(path){
                 let d = getClientInfo(path)
                 setData(d)
             }
-        } p()
+        }
         return p()
     }, [path])
     return data

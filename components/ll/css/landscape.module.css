@@ -4,6 +4,9 @@
     border-radius: 10px;
     border: 2px outset white;
 }
+.nav-link-spacy{
+    padding: 2px !important;
+}
 #nav1 hr{
 	border-top: 1px solid black !important;
 }
