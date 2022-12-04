@@ -11,9 +11,9 @@ export function GraveyardsNav(){
             <Card.Title className={''}><Nav.Link href="/josh/graveyards" className="">Graveyards</Nav.Link></Card.Title>
             <hr />
             <Card.Text>
-                <Nav.Link href="/josh/graveyards/trenton">Yards</Nav.Link>
-                <Nav.Link href="/josh/graveyards/ringgold">Trimmings</Nav.Link>
-                <Nav.Link href="/josh/graveyards/calhoon">Hardees</Nav.Link>
+                <Nav.Link href="/josh/graveyards/trenton">Trenton</Nav.Link>
+                <Nav.Link href="/josh/graveyards/ringgold">Ringgold</Nav.Link>
+                <Nav.Link href="/josh/graveyards/calhoon">Calhoon</Nav.Link>
             </Card.Text>
         </Card.Body>
     </Card>

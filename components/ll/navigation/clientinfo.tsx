@@ -59,17 +59,17 @@ export default function getClientInfo(path){
                         break;
                     }
                 } break;
-                case 'graves': { 
+                case 'graveyards': { 
                     info = <Graveyards />
                     nav = <GraveyardsNav />
                     switch(path.sub){
-                        case 'yards': {info = <>Yards</>; nav = <BillNav/>}
+                        case 'trenton': {info = <>trenton</>; nav = <GraveyardsNav/>}
                         break;
-                        case 'trimmings': {info = <>Trimmings</>; nav = <BillNav/>}
+                        case 'ringold': {info = <>ringold</>; nav = <GraveyardsNav/>}
                         break;
-                        case 'hardees': {info = <>Hardees</>; nav = <BillNav/>}
+                        case 'calhoon': {info = <>calhoon</>; nav = <GraveyardsNav/>}
                         break;
-                        default: {info = <Bill />, <AshmoreNav />}
+                        default: {info = <Graveyards />, <GraveyardsNav />}
                         break;
                     }
                 } break;
