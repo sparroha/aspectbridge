@@ -3,6 +3,7 @@ import Andrew, { AndrewNav } from "../../../pages/josh/clients/andrew/andrew";
 import Ashmore, { AshmoreNav } from "../../../pages/josh/clients/ashmore/ashmore"
 import Bill, { BillNav } from "../../../pages/josh/clients/bill/bill"
 import { Dashboard, DashNav } from "../../../pages/josh/clients/clientlist";
+import Graveyards, { GraveyardsNav } from "../../../pages/josh/clients/graveyards/graveyards";
 
 export default function getClientInfo(path){
     let clinfo = { info: <></>, nav: <></>, subnav: <></> };
@@ -59,8 +60,8 @@ export default function getClientInfo(path){
                     }
                 } break;
                 case 'graves': { 
-                    info = <Bill />
-                    nav = <BillNav />
+                    info = <Graveyards />
+                    nav = <GraveyardsNav />
                     switch(path.sub){
                         case 'yards': {info = <>Yards</>; nav = <BillNav/>}
                         break;
