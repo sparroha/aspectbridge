@@ -19,7 +19,7 @@ export function GraveyardsNav(){
     </Card>
 }
 //This is Info Block for Clients
-const graves = [
+/*const graves = [
     {
     id:  "trenton",
 address: “1234 five st”,
@@ -42,5 +42,5 @@ wednesday: {start: "15:00", end: "22:00"},
 thursday: {start: "15:00", end: "22:00"},
 friday: {start: "15:00", end: "22:00"}
 }
-    },]
+    },]*/
 
