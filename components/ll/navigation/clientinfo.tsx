@@ -7,6 +7,7 @@ import Church, { ChurchNav } from "../../../pages/josh/clients/church/church";
 import { ClientNA, Dashboard, DashNav } from "../../../pages/josh/clients/clientlist";
 import Coopers, { CoopersNav } from "../../../pages/josh/clients/coopers/coopers";
 import Graveyards, { GraveyardsNav } from "../../../pages/josh/clients/graveyards/graveyards";
+import Tifanny, { TifannyNav } from "../../../pages/josh/clients/tifanny/tifanny";
 
 /**
  * This function provides the data directory JSX.Element that should be loaded according to the url
@@ -122,6 +123,20 @@ export default function getClientInfo(path){
                         case 'calhoon': {info = <>calhoon</>; nav = <GraveyardsNav/>; nav = <GraveyardsNav/>}
                         break;
                         default: {info = <Graveyards />, nav = <GraveyardsNav />}
+                        break;
+                    }
+                } break;
+                case 'tifanny': { 
+                    info = <Tifanny />
+                    nav = <TifannyNav />
+                    switch(path.sub){
+                        case 'trenton': {info = <>trenton</>; nav = <TifannyNav/>; nav = <TifannyNav/>}
+                        break;
+                        case 'ringgold': {info = <>ringold</>; nav = <TifannyNav/>; nav = <TifannyNav/>}
+                        break;
+                        case 'calhoon': {info = <>calhoon</>; nav = <TifannyNav/>; nav = <TifannyNav/>}
+                        break;
+                        default: {info = <Tifanny />, nav = <TifannyNav />}
                         break;
                     }
                 } break;

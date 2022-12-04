@@ -36,7 +36,7 @@ export const clientlist = [
     {
         id: 7,
         name: 'graveyards',
-        dname: 'Grave Yards'
+        dname: 'Graveyards'
     },
     {
         id: 8,
@@ -103,8 +103,11 @@ const test = [
     }
 ]
 export default function ClientList(){
+    let style = {
+            border: '2px outset white'
+        }
     return <>
-        {clientlist.map((client) => <Nav.Link className={'text-dark p3'} href={"/josh/"+(client.name)}>{client.dname}</Nav.Link>)}
+        {clientlist.map((client) => <Col sm={12} className={'p2'}><Nav.Link className={'text-dark p3 r4 tcenter'} style={style} href={"/josh/"+(client.name)}>{client.dname}</Nav.Link></Col>)}
     </>
 }
 export function ClientNA(){
@@ -122,11 +125,9 @@ export function DashNav(){
         <Card.Body className={'p0'}>
             <Card.Title className={''}><Nav.Link href="/josh" className="">Clients</Nav.Link></Card.Title>
             <hr />
-            <Card.Text>
-                <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }}>
-                    <ClientList />
-                </Nav>
-            </Card.Text>
+            <Nav>
+                <Row><ClientList /></Row>
+            </Nav>
         </Card.Body>
     </Card>
 }
