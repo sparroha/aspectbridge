@@ -45,10 +45,10 @@ export default function NavIndex() {
                             </NavDropdown>{' '}
 
                             <NavDropdown title="Resources" id="navbarResourcesDropdown">
-                                <NavDropdown.Item href="#ankor1" disabled>Wiki</NavDropdown.Item>
-                                <NavDropdown.Item href="#ankor2" disabled>Mimicry Wiki</NavDropdown.Item>
+                                <NavDropdown.Item href="https://javascript.plainenglish.io/connect-mysql-and-authentication-on-next-js-761d12340e4f">AccessMysql...</NavDropdown.Item>
+                                <NavDropdown.Item href="https://www.phpmyadmin.co/server_databases.php?db=" disabled>phpMyAdmin</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="#ankor3" disabled>Other Wikis</NavDropdown.Item>
+                                <NavDropdown.Item href="https://www.freesqldatabase.com/account/" disabled>DB Account</NavDropdown.Item>
                             </NavDropdown>{' '}
                             
                         </Nav>{' '}
