@@ -9,7 +9,7 @@ export default async (req, res) => {
           values: [{password: 'galaris', email: 'anthymngalaris@gmail.com'}],
       });
       //console.log( "ttt",result );
-      res.end('success: '+result.username)
+      res.end('success: '+JSON.stringify(result))
   } catch ( error ) {
       console.log( error );
       throw error;
