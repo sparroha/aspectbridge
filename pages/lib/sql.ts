@@ -1,5 +1,7 @@
 import mysql from 'mysql2'
+import { useState } from 'react'
 import { PromiseReturn } from './type-util'
+import { sha256, sha224 } from 'js-sha256';
 
 /**
  * Underlying MySQL Connection Pool (no fool-proof SQL Injection protection)
@@ -64,6 +66,7 @@ export async function sqlConnection<T>(fun: (sql: Sql) => Promise<T>) {
     unsafeConnection.release()
   }
 }
+
 /*
 export async function namedLock<T>(key: string, timeout: number, fun: (locked: boolean, sql: Sql) => Promise<T>) {
   return await sqlConnection(async (sql) => {
@@ -76,13 +79,14 @@ export async function namedLock<T>(key: string, timeout: number, fun: (locked: b
   })
 }
 */
-export async function fetchUser<T>(key: string, timeout: number, fun: (locked: boolean, sql: Sql) => Promise<T>) {
-  return await sqlConnection(async (sql) => {
-    const [{ locked }] = await sql`select GET_LOCK(${key}, ${timeout}) locked`
-    try {
-      return await fun(locked, sql)
-    } finally {
-      await sql`select RELEASE_LOCK(${key})`
-    }
-  })
+
+export async function fetchUser(email, password) {
+  const [username, setUsername] = useState('')
+  const [useraccess, setUseraccess] = useState(0)
+  let shapassword = sha224(password)
+  let shauser = await sql<[{ username: string, access: number }]>`select username, from logan_users where email=${email} and password=${shapassword}`
+  if(shauser){
+    setUsername(shauser[0].username)
+    setUseraccess(shauser[0].access)
+  }
 }
