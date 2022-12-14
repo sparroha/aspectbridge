@@ -80,10 +80,21 @@ export async function namedLock<T>(key: string, timeout: number, fun: (locked: b
 }
 */
 
+   
+export async function createTableOnce(){
+  let query = await sql`SELECT * FROM aspect_users_`
+  if(query) return
+  query = await sql`CREATE TABLE aspect_users_ (
+    userid int,
+    email varchar(255),
+    key varchar(255)
+);`
+}
+
 export async function fetchUser(email, password) {
   const [username, setUsername] = useState('')
   const [useraccess, setUseraccess] = useState(0)
-  let shapassword = sha224(password)
+  let shapassword = sha224(email+password)
   let shauser = await sql<[{ username: string, access: number }]>`select username, from logan_users where email=${email} and password=${shapassword}`
   if(shauser){
     setUsername(shauser[0].username)
