@@ -84,12 +84,14 @@ export async function namedLock<T>(key: string, timeout: number, fun: (locked: b
    
 export async function createTableOnce(){
   let query = null
-  query = await sql`CREATE TABLE IF NOT EXISTS aspect_users_ (
+  /*query = await sql`CREATE TABLE IF NOT EXISTS aspect_users_ (
                     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     userid int,
                     email varchar(255),
                     hash varchar(255)
-                );`
+                );`*/
+  //query = await sql`INSERT INTO aspect_users_ (email) values ('AnthymnGalaris@gmail.com');`
+  query = await sql`SELECT * FROM aspect_users_;`
   return !!query
 }
 export async function getUsers(){

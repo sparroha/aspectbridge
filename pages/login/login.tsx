@@ -1,14 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
+import useLog from '../../components/conlog';
 import { createTableOnce, getUsers } from '../lib/sql';
-export default function UserLogin(){
+
+type Props = {
+    createTableOnce(),
+}
+export default function UserLogin(props: Props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
-    useEffect(()=>{
-        let t = createTableOnce()
-        let usersQ = getUsers()
-    },[])
+    useLog(props)
+    // props.expectdWhatever
+
+    // always data just show data
+
+    //OR
+    // const {data, error} = useSWR('/api/whatever') // dependency swr
+
+    // if error then show error, if data then show data, else show Loading... text
+
+    // OR
+    // const [data, setData] = useState()
+    // useEffect(() => { fetch(...).then(data => setData(data))})
+
+        //let t = createTableOnce()
+        //let usersQ = getUsers()
     
     return(<Container>
             <div className="add_book">
@@ -28,3 +45,4 @@ export default function UserLogin(){
         </Container>
     )
 }
+
