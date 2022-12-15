@@ -1,10 +1,10 @@
 // This app shows what Next.js bundles for the client-side with its new SSG
 // support. This editor supports TypeScript syntax.
 import Cookies from 'cookies';
-import Mysql from 'mysql';
+import Mysql from 'mysql2';
 import Link from 'next/link';
 import SQL from 'sql-template-strings';
-import Layout from '../../components/ll/css/layout';
+//import Layout from '../../components/ll/css/layout';
 
 //const pool = Mysql.createPool(process.env.DATABASE_URL);
 

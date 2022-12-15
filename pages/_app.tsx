@@ -18,7 +18,6 @@ import '../static/josh/css/landscape.css'
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
 Router.events.on('routeChangeError', () => NProgress.done())
-
 export type CommonProps = {
     //commonProps: ApiCommonProps,
 }

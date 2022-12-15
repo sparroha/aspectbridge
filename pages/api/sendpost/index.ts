@@ -1,7 +1,7 @@
-import executeQuery from '../../lib/db'
+//import executeQuery from '../../lib/db'
 
 export default async (req, res) => {
-    try {
+    /*try {
         console.log("req nom", req.body)
       const result = await executeQuery({
           query: 'SELECT username FROM logan_users WHERE VALUES(?)',
@@ -13,7 +13,7 @@ export default async (req, res) => {
   } catch ( error ) {
       console.log( error );
       throw error;
-  }
+  }*/
   
   
   };

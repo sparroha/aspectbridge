@@ -1,7 +1,8 @@
 import mysql from 'mysql2'
 import { useState } from 'react'
 import { PromiseReturn } from './type-util'
-import { sha256, sha224 } from 'js-sha256';
+import { sha256, sha224 } from 'js-sha256'
+import useLog from '../../components/conlog'
 
 /**
  * Underlying MySQL Connection Pool (no fool-proof SQL Injection protection)
@@ -82,22 +83,29 @@ export async function namedLock<T>(key: string, timeout: number, fun: (locked: b
 
    
 export async function createTableOnce(){
-  let query = await sql`SELECT * FROM aspect_users_`
-  if(query) return
-  query = await sql`CREATE TABLE aspect_users_ (
-    userid int,
-    email varchar(255),
-    key varchar(255)
-);`
+  let query = null
+  query = await sql`CREATE TABLE IF NOT EXISTS aspect_users_ (
+                    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    userid int,
+                    email varchar(255),
+                    hash varchar(255)
+                );`
+  return !!query
+}
+export async function getUsers(){
+  let query = null
+  try{query = await sql`SELECT * FROM aspect_users_;`}
+  catch(e){console.log(e.error); return e}
+  return !!query
 }
 
-export async function fetchUser(email, password) {
+/*export async function fetchUser(email, password) {
   const [username, setUsername] = useState('')
   const [useraccess, setUseraccess] = useState(0)
   let shapassword = sha224(email+password)
-  let shauser = await sql<[{ username: string, access: number }]>`select username, from logan_users where email=${email} and password=${shapassword}`
+  let shauser = await sql<[{ username: string, access: number }]>`select username, from logan_users where email=${email} and hash=${shapassword}`
   if(shauser){
     setUsername(shauser[0].username)
     setUseraccess(shauser[0].access)
   }
-}
+}*/
