@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { PromiseReturn } from './type-util'
 import { sha256, sha224 } from 'js-sha256'
 import useLog from '../../components/conlog'
+import { Hash } from 'crypto'
 
 /**
  * Underlying MySQL Connection Pool (no fool-proof SQL Injection protection)
@@ -67,38 +68,64 @@ export async function sqlConnection<T>(fun: (sql: Sql) => Promise<T>) {
     unsafeConnection.release()
   }
 }
+//...................................................
 
-/*
-export async function namedLock<T>(key: string, timeout: number, fun: (locked: boolean, sql: Sql) => Promise<T>) {
-  return await sqlConnection(async (sql) => {
-    const [{ locked }] = await sql`select GET_LOCK(${key}, ${timeout}) locked`
-    try {
-      return await fun(locked, sql)
-    } finally {
-      await sql`select RELEASE_LOCK(${key})`
-    }
-  })
-}
-*/
-
-   
+/**
+ * 
+ * @returns response Object
+ */
 export async function createTableOnce(){
   let query = null
-  /*query = await sql`CREATE TABLE IF NOT EXISTS aspect_users_ (
+  query = await sql`CREATE TABLE IF NOT EXISTS aspect_users_ (
                     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    userid int,
+                    username varchar(255),
                     email varchar(255),
-                    hash varchar(255)
-                );`*/
-  //query = await sql`INSERT INTO aspect_users_ (email) values ('AnthymnGalaris@gmail.com');`
-  query = await sql`SELECT * FROM aspect_users_;`
-  return !!query
+                    hash varchar(255),
+                    access int(2)
+                );`
+  return query
 }
-export async function getUsers(){
+/**
+ * 
+ * @returns response Object
+ */
+export async function alterTable(){
   let query = null
-  try{query = await sql`SELECT * FROM aspect_users_;`}
-  catch(e){console.log(e.error); return e}
-  return !!query
+  query = await sql`ALTER TABLE aspect_users_ DROP COLUMN userid, ADD (username varchar(255), access int(2));`
+  return query
+}
+/**
+ * 
+ * @param username 
+ * @param email 
+ * @param hash 
+ * @param access 
+ * @returns response Object
+ */
+export async function addUser(username: String, email: String, hash: String, access: Number){
+  let query = null
+  query = await sql`INSERT INTO aspect_users_ (username, email, hash, access) values (${username}, ${email}, ${hash}, ${access});`
+  return query
+}
+/**
+ * 
+ * @param email 
+ * @param hash 
+ * @returns response Object {username, access}
+ */
+export async function getUserName(email: String, hash: String){
+  let query = null
+  query = await sql`SELECT username, access FROM aspect_users_ WHERE email = ${email} AND hash = ${hash} ;`
+  return query
+}
+export async function getAnthymn1(){
+  let query = null
+  query = await sql`SELECT * FROM aspect_users_;`
+  return query
+}export async function addAnthymn(){
+  let query = null
+  query = await sql`INSERT INTO aspect_users_ (username) values ("username");`
+  return query
 }
 
 /*export async function fetchUser(email, password) {

@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import useLog from '../../components/conlog';
-import { createTableOnce, getUsers } from '../lib/sql';
+import sql, { createTableOnce, getUserName, addUser, alterTable } from '../lib/sql';
+import { sha256, sha224 } from 'js-sha256'
 
 type Props = {
-    createTableOnce(),
+    createTableOnce(): Promise<any>,
+    alterTable(): Promise<any>,
+    addUser(username: String, email: String, hash: String, access: Number): Promise<Object>,
+    getUserName(email: String, hash: String): Promise<Object>,
 }
 export default function UserLogin(props: Props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
-    useLog(props)
+    useLog(props.createTableOnce)
+    useLog(props.alterTable)
+    //useLog(JSON.stringify(props.addUser('Anthymn', 'AnthymnGalaris@gmail.com', sha224('AnthymnGalaris@gmail.compassword'), 2)))
+    //useLog(JSON.stringify(props.getUserName('AnthymnGalaris@gmail.com', sha224("AnthymnGalaris@gmail.compassword"))))
     // props.expectdWhatever
 
     // always data just show data
