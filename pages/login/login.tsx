@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import useLog from '../../components/conlog';
-import sql, { createTableOnce, getUserName, addUser, alterTable } from '../lib/sql';
+import sql, { createUsersTableOnce, getUserName, addUser } from '../lib/sql';
 import { sha256, sha224 } from 'js-sha256'
 
 type Props = {
-    createTableOnce(): Promise<any>,
-    alterTable(): Promise<any>,
+    createUsersTableOnce(): Promise<{table: any}>,
     addUser(username: String, email: String, hash: String, access: Number): Promise<Object>,
     getUserName(email: String, hash: String): Promise<Object>,
 }

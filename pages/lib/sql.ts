@@ -74,7 +74,7 @@ export async function sqlConnection<T>(fun: (sql: Sql) => Promise<T>) {
  * 
  * @returns response Object
  */
-export async function createTableOnce(){
+export async function createUsersTableOnce(){
   let query = null
   query = await sql`CREATE TABLE IF NOT EXISTS aspect_users_ (
                     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -83,17 +83,17 @@ export async function createTableOnce(){
                     hash varchar(255),
                     access int(2)
                 );`
-  return query
+  return {table: query}
 }
 /**
  * 
  * @returns response Object
- */
+ *
 export async function alterTable(){
   let query = null
   query = await sql`ALTER TABLE aspect_users_ DROP COLUMN userid, ADD (username varchar(255), access int(2));`
   return query
-}
+}*/
 /**
  * 
  * @param username 
