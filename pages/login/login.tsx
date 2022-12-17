@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import useLog from '../../components/conlog';
-import sql, { createUsersTableOnce, getUserName, addUser } from '../lib/sql';
+import sql, { createUsersTableOnce, getUserName, addUser } from '../../lib/,base/sql'
 import { sha256, sha224 } from 'js-sha256'
 
 type Props = {

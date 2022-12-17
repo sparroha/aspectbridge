@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { useEffect } from "react";
 import useLog from "../../../components/conlog";
-import sql from "../../lib/sql";
+import sql from "../../../lib/,base/sql"
 const sqlite3 = require('sqlite3')
 const {open} = require('sqlite')
 
