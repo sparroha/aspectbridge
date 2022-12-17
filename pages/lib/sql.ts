@@ -11,8 +11,8 @@ import { Hash } from 'crypto'
  */
 const unsafePool = mysql.createPool({
   host: process.env.MYSQL_HOST || 'db.700s.net',
-  database: process.env.MYSQL_DB || 'gg',
-  user: process.env.MYSQL_USER || 'gg',
+  database: process.env.MYSQL_DB || 'anthymn_aspect_bridge',
+  user: process.env.MYSQL_USER || 'keith',
   password: process.env.MYSQL_PASS,
 }).promise()
 
