@@ -66,6 +66,11 @@ export async function sqlConnection<T>(fun: (sql: Sql) => Promise<T>) {
 }
 //...................................................
 
+export type ActiveUser = {
+  username: string,
+  email: string,
+  access: number
+}
 /**
  * 
  * @returns response Object
@@ -105,11 +110,56 @@ export async function alterTable(){
  * @param email 
  * @param hash 
  * @param access 
- * @returns response Object
+ * @returns
  */
-export async function addUser(username: String, email: String, hash: String, access: Number) {
-  let query = await sql`INSERT INTO aspect_users_ (username, email, hash, access) values (${username}, ${email}, ${hash}, ${access});`
-  return query
+export const addUser = async (username: String, email: String, hash: String, access: Number) => {
+  let [Q] = await sql`INSERT INTO aspect_users_ (username, email, hash, access) values (${username}, ${email}, ${hash}, ${access});`
+  if(Q) {
+    const user: ActiveUser = {
+        username: Q.username,
+        email: Q.email,
+        access: Q.access
+    }
+    return user
+}
+return false
+}
+/**
+ * 
+ * @param context 
+ * @returns 
+ */
+export const getUser = async (hash: String) => {
+  const [Q] = await sql`SELECT (username, email, access) FROM aspect_users_ WHERE hash = ${hash}`
+  if(Q) {
+      const user: ActiveUser = {
+          username: Q.username,
+          email: Q.email,
+          access: Q.access
+      }
+      return user
+  }
+  return false
+}
+/**
+ * 
+ * @param username 
+ * @param email 
+ * @param access 
+ * @param hash 
+ * @returns 
+ */
+export const updateUser = async (username: String, email: String, access: Number, newhash: String ,hash: String) => {
+  let [Q] = await sql`UPDATE aspect_users_ SET username=${username}, email=${email}, access=${access} hash=${newhash} WHERE hash=${hash};`
+  if(Q) {
+    const user: ActiveUser = {
+        username: Q.username,
+        email: Q.email,
+        access: Q.access
+    }
+    return user
+}
+return false
 }
 /**
  * 

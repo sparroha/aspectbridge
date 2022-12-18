@@ -3,30 +3,29 @@ import { Container } from 'react-bootstrap';
 import useLog from '../../components/conlog';
 import { sha256, sha224 } from 'js-sha256'
 import { GetServerSideProps } from 'next';
-import { addAnthymn, createUsersTableOnce, getAnthymn } from '../../lib/,base/sql';
+import { addAnthymn, addUser, createUsersTableOnce, getAnthymn } from '../../lib/,base/sql';
+import { getUser } from './[userlogin]';
 
-type Props = {}
+//STEP 1: Create a new user
+//STEP 2: Login with the new user
+//STEP 3: Update existing user
+
+type Props = {username: String}
 export default function UserLogin(props: Props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
-    //useLog(JSON.stringify(props.addUser('Anthymn', 'AnthymnGalaris@gmail.com', sha224('AnthymnGalaris@gmail.compassword'), 2)))
-    //useLog(JSON.stringify(props.getUserName('AnthymnGalaris@gmail.com', sha224("AnthymnGalaris@gmail.compassword"))))
-    // props.expectdWhatever
 
+    // props.expectdWhatever
     // always data just show data
 
     //OR
     // const {data, error} = useSWR('/api/whatever') // dependency swr
-
     // if error then show error, if data then show data, else show Loading... text
 
     // OR
     // const [data, setData] = useState()
     // useEffect(() => { fetch(...).then(data => setData(data))})
-
-        //let t = createTableOnce()
-        //let usersQ = getUsers()
     
     return(<Container>
             <h2>{props.username}</h2>
@@ -36,18 +35,39 @@ export default function UserLogin(props: Props) {
             </div>
             <div>
                 <label >password: </label>
-                <input onChange={()=>{setUsername(this.value)}} name="password" value={password}/>
+                <input onChange={()=>{setPassword(this.value)}} name="password" value={password}/>
             </div>
             <div>
-                <button onClick={()=>{}}>Login</button>    
+                <button onClick={()=>{validate(sha224(email+password))}}>Login</button>    
+            </div>
+            <hr></hr>
+            <div>
+                <label >username: </label>
+                <input onChange={()=>{setUsername(this.value)}} name="username" value={username}/>
             </div>
             <div>
-                <button onClick={()=>{}}>createTableOnce</button>    
+                <button onClick={()=>{register(username, email, sha224(email+password), 0)}}>Register</button>
+            </div>
+            <div>
+                <label >username: {username}</label>
             </div>
         </Container>
     )
 }
-
+async function register(usern: String, email: String, hash: String, access: Number){
+    const [username, setUsername] = useState('')
+    const userprops = await addUser(usern, email, hash, access)
+    if (userprops) {
+        setUsername(usern.toString())//? why .toString()
+    } else setUsername('failed to retrieve user name')
+}
+async function validate(hash: String){
+    const [username, setUsername] = useState('')
+    const userprops = await getUser(hash)
+    if (userprops) {
+        setUsername(userprops.username)
+    } else setUsername('failed to retrieve user name')
+}
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
     const [user] = await getAnthymn()
     //const user = addUser(username: String, email: String, hash: String, access: Number): Promise<Object>,
@@ -56,12 +76,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     if (user) {
         return {
           props: {
-            username: user.username,
+            username: JSON.stringify(user),
           },
         }
       } else return {
           props: {
-            table: 'fail',
+            username: 'failed to retrieve user name',
           },
         }
     /*const { req, res } = context
