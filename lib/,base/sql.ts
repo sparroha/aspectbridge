@@ -1,5 +1,5 @@
 import mysql from 'mysql2'
-import { PromiseReturn } from '../../pages/lib/type-util'
+import { PromiseReturn } from './type-util'
 
 /**
  * Underlying MySQL Connection Pool (no fool-proof SQL Injection protection)

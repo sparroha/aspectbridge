@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import useLog from '../../components/conlog';
-import sql, { createUsersTableOnce, getUserName, addUser } from '../../lib/,base/sql'
 import { sha256, sha224 } from 'js-sha256'
+import { GetServerSideProps } from 'next';
 
-type Props = {
-    createUsersTableOnce(): Promise<{table: any}>,
-    addUser(username: String, email: String, hash: String, access: Number): Promise<Object>,
-    getUserName(email: String, hash: String): Promise<Object>,
-}
+type Props = {}
 export default function UserLogin(props: Props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
-    useLog(props.createTableOnce)
-    useLog(props.alterTable)
     //useLog(JSON.stringify(props.addUser('Anthymn', 'AnthymnGalaris@gmail.com', sha224('AnthymnGalaris@gmail.compassword'), 2)))
     //useLog(JSON.stringify(props.getUserName('AnthymnGalaris@gmail.com', sha224("AnthymnGalaris@gmail.compassword"))))
     // props.expectdWhatever
@@ -52,3 +46,24 @@ export default function UserLogin(props: Props) {
     )
 }
 
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+    //const table = createUsersTableOnce(): Promise<{table: any}>,
+    //const user = addUser(username: String, email: String, hash: String, access: Number): Promise<Object>,
+    //getUserName(email: String, hash: String): Promise<Object>,
+    const { req, res } = context
+    return {
+        props: {
+            //table: table,
+            //user: user,
+            //getUserName: getUserName
+        }
+    }
+    /*const { req, res } = context
+    const { db } = await connectToDatabase()
+    const users = await db.collection('users').find({}).toArray()
+    return {
+        props: {
+            users: JSON.parse(JSON.stringify(users))
+        }
+    }*/
+}
