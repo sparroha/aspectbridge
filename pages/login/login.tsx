@@ -29,7 +29,7 @@ export default function UserLogin(props: Props) {
         //let usersQ = getUsers()
     
     return(<Container>
-            <h2>{props.user}</h2>
+            <h2>{props.username}</h2>
             <div className="add_book">
                 <label>email: </label>
                 <input onChange={()=>{setEmail(this.value)}} name="email" value={email}/>
@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     if (user) {
         return {
           props: {
-            user: user[0].username.json(),
+            username: user.username,
           },
         }
       } else return {
