@@ -71,25 +71,34 @@ export async function sqlConnection<T>(fun: (sql: Sql) => Promise<T>) {
  * @returns response Object
  */
 export async function createUsersTableOnce() {
-  let query = null
-  query = await sql`CREATE TABLE IF NOT EXISTS aspect_users_ (
+  let query = await sql`CREATE TABLE IF NOT EXISTS aspect_users_ (
                     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     username varchar(255),
                     email varchar(255),
                     hash varchar(255),
                     access int(2)
                 );`
-  return { table: query }
+
+    if (query) {
+      return {
+        props: {
+          table: 'success',
+        },
+      }
+    } else return {
+        props: {
+          table: 'fail',
+        },
+      }
 }
 /**
  * 
  * @returns response Object
  *
 export async function alterTable(){
-  let query = null
-  query = await sql`ALTER TABLE aspect_users_ DROP COLUMN userid, ADD (username varchar(255), access int(2));`
+  let query = await sql`ALTER TABLE aspect_users_ DROP COLUMN userid, ADD (username varchar(255), access int(2));`
   return query
-}*/
+}
 /**
  * 
  * @param username 
@@ -99,8 +108,7 @@ export async function alterTable(){
  * @returns response Object
  */
 export async function addUser(username: String, email: String, hash: String, access: Number) {
-  let query = null
-  query = await sql`INSERT INTO aspect_users_ (username, email, hash, access) values (${username}, ${email}, ${hash}, ${access});`
+  let query = await sql`INSERT INTO aspect_users_ (username, email, hash, access) values (${username}, ${email}, ${hash}, ${access});`
   return query
 }
 /**
@@ -110,17 +118,15 @@ export async function addUser(username: String, email: String, hash: String, acc
  * @returns response Object {username, access}
  */
 export async function getUserName(email: String, hash: String) {
-  let query = null
-  query = await sql`SELECT username, access FROM aspect_users_ WHERE email = ${email} AND hash = ${hash} ;`
+  let query = await sql`SELECT username, access FROM aspect_users_ WHERE email = ${email} AND hash = ${hash} ;`
   return query
 }
-export async function getAnthymn1() {
-  let query = null
-  query = await sql`SELECT * FROM aspect_users_;`
+export async function getAnthymn() {
+  let query = await sql`SELECT * FROM aspect_users_;`
   return query
-} export async function addAnthymn() {
-  let query = null
-  query = await sql`INSERT INTO aspect_users_ (username) values ("username");`
+}
+export async function addAnthymn() {
+  let query = await sql`INSERT INTO aspect_users_ (username) values ("Anthymn");`
   return query
 }
 

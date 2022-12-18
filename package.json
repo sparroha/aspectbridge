@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "node ./dbtest.js && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
