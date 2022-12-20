@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import useLog from '../../components/conlog';
 import { sha256, sha224 } from 'js-sha256'
 import { GetServerSideProps } from 'next';
-import { addAnthymn, addUser, createUsersTableOnce, getAnthymn } from '../../lib/,base/sql';
+import { addAnthymn, addUser, createUsersTableOnce, getAnthymn, updateUser } from '../../lib/,base/sql';
 import { getUser } from './[userlogin]';
 
 //STEP 1: Create a new user
@@ -13,6 +13,7 @@ import { getUser } from './[userlogin]';
 type Props = {username: String}
 export default function UserLogin(props: Props) {
     const [email, setEmail] = useState('')
+    const [newemail, setNewemail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
 
@@ -31,11 +32,11 @@ export default function UserLogin(props: Props) {
             <h2>{props.username}</h2>
             <div className="add_book">
                 <label>email: </label>
-                <input onChange={()=>{setEmail(this.value)}} name="email" value={email}/>
+                <input onChange={(e)=>{setEmail(e.target.value)}} name="email" value={email}/>
             </div>
             <div>
                 <label >password: </label>
-                <input onChange={()=>{setPassword(this.value)}} name="password" value={password}/>
+                <input onChange={(e)=>{setPassword(e.target.value)}} name="password" value={password}/>
             </div>
             <div>
                 <button onClick={()=>{validate(sha224(email+password))}}>Login</button>    
@@ -43,10 +44,18 @@ export default function UserLogin(props: Props) {
             <hr></hr>
             <div>
                 <label >username: </label>
-                <input onChange={()=>{setUsername(this.value)}} name="username" value={username}/>
+                <input onChange={(e)=>{setUsername(e.target.value)}} name="username" value={username}/>
             </div>
             <div>
-                <button onClick={()=>{register(username, email, sha224(email+password), 0)}}>Register</button>
+                <button onClick={()=>{setUsername(register(username, email, sha224(email+password), 0))}}>Register</button>
+            </div>
+            <hr></hr>
+            <div>
+                <label >newemail: </label>
+                <input onChange={(e)=>{setNewemail(e.target.value)}} name="username" value={newemail}/>
+            </div>
+            <div>
+                <button onClick={()=>{editSettings(username, newemail, sha224(newemail+password), sha224(email+password))}}>Register</button>
             </div>
             <div>
                 <label >username: {username}</label>
@@ -55,18 +64,25 @@ export default function UserLogin(props: Props) {
     )
 }
 async function register(usern: String, email: String, hash: String, access: Number){
-    const [username, setUsername] = useState('')
+    //const [username, setUsername] = useState('')
     const userprops = await addUser(usern, email, hash, access)
     if (userprops) {
-        setUsername(usern.toString())//? why .toString()
-    } else setUsername('failed to retrieve user name')
+        return usern.toString()//? why .toString()
+    } else return 'failed to register user'
 }
 async function validate(hash: String){
     const [username, setUsername] = useState('')
     const userprops = await getUser(hash)
     if (userprops) {
         setUsername(userprops.username)
-    } else setUsername('failed to retrieve user name')
+    } else setUsername('failed to validate user')
+}
+async function editSettings(usern: String, newemail: String, newhash: String,hash: String){
+    const [username, setUsername] = useState('')
+    const userprops = await updateUser(usern, newemail, 0, newhash, hash)
+    if (userprops) {
+        setUsername(userprops.username)
+    } else setUsername('failed to update user info')
 }
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
     const [user] = await getAnthymn()
