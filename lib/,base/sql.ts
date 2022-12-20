@@ -158,8 +158,8 @@ export const updateUser = async (username: String, newemail: String, access: Num
         access: Q.access
     }
     return user
-}
-return false
+  }
+  return false
 }
 /**
  * 

@@ -16,6 +16,7 @@ export default function UserLogin(props: Props) {
     const [newemail, setNewemail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
+    const [access, setAccess] = useState(0)
 
     // props.expectdWhatever
     // always data just show data
@@ -47,7 +48,7 @@ export default function UserLogin(props: Props) {
                 <input onChange={(e)=>{setUsername(e.target.value)}} name="username" value={username}/>
             </div>
             <div>
-                <button onClick={()=>{setUsername(register(username, email, sha224(email+password), 0))}}>Register</button>
+                <button onClick={()=>{register(username, email, sha224(email+password), 0)}}>Register</button>
             </div>
             <hr></hr>
             <div>
@@ -72,9 +73,11 @@ async function register(usern: String, email: String, hash: String, access: Numb
 }
 async function validate(hash: String){
     const [username, setUsername] = useState('')
-    const userprops = await getUser(hash)
+    const [access, setAccess] = useState(0)
+    const userprops = await getUser(hash)//fetch('/api/login/login')
     if (userprops) {
         setUsername(userprops.username)
+        setAccess(userprops.access)
     } else setUsername('failed to validate user')
 }
 async function editSettings(usern: String, newemail: String, newhash: String,hash: String){
