@@ -1,11 +1,12 @@
 import { Card, Nav } from "react-bootstrap"
+import SimpleNav from "../../../../components/simplenav"
 
 export default function Ashmore(){
     return <>
         this is cool
     </>
 }
-export function AshmoreNav(){
+export function AshmoreNavOld(){
     return <Card className={''}>
         <Card.Body className={''}>
             <Card.Title className={''}><Nav.Link href="/josh/ashmore" className="">Ashmore</Nav.Link></Card.Title>
@@ -17,4 +18,7 @@ export function AshmoreNav(){
             </Card.Text>
         </Card.Body>
     </Card>
+}
+export function AshmoreNav(){
+    return <SimpleNav {...{title: "ashmore", links: ["trenton", "ringgold", "calhoon"]}} />
 }

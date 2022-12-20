@@ -168,7 +168,9 @@ function DynamicInfo(){
                         break;
                     }
                 } break;
-                default: setBridge(<Placeholder />)
+                case 'api': //{router.push('/bridge/api/users.ts')}
+                break;
+                default: {setBridge(<Placeholder feed={dir}/>)}
                 break;
             }console.log('Client: '+dir+'|'+(aspect.length>1?aspect[0]:aspect)+' ./. Subdomain: '+sub+'|'+(aspect.length>1?aspect[1]:aspect))
         }
@@ -184,9 +186,10 @@ function DynamicInfo(){
                 <TLiterator />
             </Col>
 }
-function Placeholder(){
+function Placeholder(props){
     return <Row className={"h80"}>
             <Col md={12} className={"tcenter black-font"}>
+                <h1>{props.feed}</h1>
                 <p>14. The race of the dwarfs | in Dvalin's throng</p>
                 <p>Down to Lofar | the list must I tell;</p>
                 <p>The rocks they left, | and through wet lands</p>

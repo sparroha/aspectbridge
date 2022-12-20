@@ -215,20 +215,71 @@ a{
 .b10{
 	border:10;
 }
+.r1{
+	border-radius: 1px;
+}
+.r2{
+	border-radius: 2px;
+}
+.r3{
+	border-radius: 3px;
+}
+.r4{
+	border-radius: 4px;
+}
+.r5{
+	border-radius: 5px;
+}
+.r10{
+	border-radius: 10px;
+}
+.r15{
+	border-radius: 15px;
+}
+.r20{
+	border-radius: 20px;
+}
+.r25{
+	border-radius: 25px;
+}
+.r30{
+	border-radius: 30px;
+}
+.r35{
+	border-radius: 35px;
+}
+.r40{
+	border-radius: 40px;
+}
+.r45{
+	border-radius: 45px;
+}
+.r60{
+	border-radius: 60px;
+}
+.r90{/*circle*/
+	border-radius: 90px;
+}
 .p0{
 	padding:0;
 }
 .p1{
-	padding:1;
+	padding:1px;
 }
 .p2{
-	padding:2;
+	padding:2px;
+}
+.p3{
+	padding:3px;
+}
+.p4{
+	padding:4px;
 }
 .p5{
-	padding:5;
+	padding:5px;
 }
 .p10{
-	padding:10;
+	padding:10px;
 }
 .o0{
 	opacity:0.0;

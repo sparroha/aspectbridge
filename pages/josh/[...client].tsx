@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
 import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "react-bootstrap";
@@ -9,17 +9,19 @@ import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "r
 /**Custom Components */
 import jsObjs from '../../components/ll/jsobjs';
 import ClientInfoCard, { useInit } from '../../components/ll/client_info_card';
+import SimpleNav from '../../components/simplenav';
 //import { NavBarSelect } from '../../components/ll/navigation/navigaton';
-const jsObj = jsObjs();
 
+//const i = {path: {dir: '', sub : '', nest: ''}, data: {info: [], nav: [], subnav: []}}
+const jsObj = jsObjs();
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
  * @returns This web site
  */
 export default function Clients() {
-    //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: [], nav: [], subnav: []}}
-    const i = useInit()
+    //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: <></>, nav: <></>, subnav: <></>}}
+    const pageInfo = useInit()
     return <>
         <Headers />
         <Container className={'logan'}>
@@ -28,7 +30,7 @@ export default function Clients() {
             </Row>
             <Row id="">
                 <NavLeftDefault />
-                <ClientInfoCard />
+                <ClientInfoCard {...pageInfo}/>
             </Row>
             <Row id="footer">
                 <Col sm={4} >
@@ -86,5 +88,6 @@ function NavLeftDefault(){
     const i = useInit();
     return <Col md={2} id="nav-client">
                 {i.data.nav}
+                <SimpleNav {...{title: "dashboard", links: []}}/>
             </Col>
 }
