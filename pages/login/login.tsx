@@ -3,15 +3,16 @@ import { Container } from 'react-bootstrap';
 import useLog from '../../components/conlog';
 import { sha256, sha224 } from 'js-sha256'
 import { GetServerSideProps } from 'next';
-import { addAnthymn, addUser, createUsersTableOnce, getAnthymn, updateUser } from '../../lib/,base/sql';
-import { getUser } from './[userlogin]';
+import sql, { addAnthymn, addUser, createUsersTableOnce, getAnthymn, setAccess, updAnthymn, updateUser } from '../../lib/,base/sql';
+import { NextRouter, useRouter } from 'next/router';
 
 //STEP 1: Create a new user
 //STEP 2: Login with the new user
 //STEP 3: Update existing user
 
-type Props = {username: String}
+type Props = {result: string}
 export default function UserLogin(props: Props) {
+    const router = useRouter()
     const [email, setEmail] = useState('')
     const [newemail, setNewemail] = useState('')
     const [password, setPassword] = useState('')
@@ -30,7 +31,7 @@ export default function UserLogin(props: Props) {
     // useEffect(() => { fetch(...).then(data => setData(data))})
     
     return(<Container>
-            <h2>{props.username}</h2>
+            <h2>{username}</h2>
             <div className="add_book">
                 <label>email: </label>
                 <input onChange={(e)=>{setEmail(e.target.value)}} name="email" value={email}/>
@@ -40,7 +41,7 @@ export default function UserLogin(props: Props) {
                 <input onChange={(e)=>{setPassword(e.target.value)}} name="password" value={password}/>
             </div>
             <div>
-                <button onClick={()=>{validate(sha224(email+password))}}>Login</button>    
+                <button onClick={()=>{validate(sha224(email+password), router)}}>Login</button>    
             </div>
             <hr></hr>
             <div>
@@ -48,7 +49,7 @@ export default function UserLogin(props: Props) {
                 <input onChange={(e)=>{setUsername(e.target.value)}} name="username" value={username}/>
             </div>
             <div>
-                <button onClick={()=>{register(username, email, sha224(email+password), 0)}}>Register</button>
+                <button onClick={()=>{register(username, email, sha224(email+password), router)}}>Register</button>
             </div>
             <hr></hr>
             <div>
@@ -64,51 +65,32 @@ export default function UserLogin(props: Props) {
         </Container>
     )
 }
-async function register(usern: String, email: String, hash: String, access: Number){
-    //const [username, setUsername] = useState('')
-    const userprops = await addUser(usern, email, hash, access)
-    if (userprops) {
-        return usern.toString()//? why .toString()
-    } else return 'failed to register user'
+async function register(usernane: string, email: string, hash: string, router: NextRouter){
+    router.push('/login/register?username='+usernane+'&email='+email+'&hash='+hash)
 }
-async function validate(hash: String){
-    const [username, setUsername] = useState('')
-    const [access, setAccess] = useState(0)
-    const userprops = await getUser(hash)//fetch('/api/login/login')
-    if (userprops) {
-        setUsername(userprops.username)
-        setAccess(userprops.access)
-    } else setUsername('failed to validate user')
+async function validate(hash: string, router: NextRouter){
+    router.push('/login/validate?hash='+hash)
 }
-async function editSettings(usern: String, newemail: String, newhash: String,hash: String){
+async function editSettings(usern: string, newemail: string, newhash: string, hash: string){
     const [username, setUsername] = useState('')
     const userprops = await updateUser(usern, newemail, 0, newhash, hash)
     if (userprops) {
         setUsername(userprops.username)
     } else setUsername('failed to update user info')
 }
+
+//TEMPLATE
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-    const [user] = await getAnthymn()
-    //const user = addUser(username: String, email: String, hash: String, access: Number): Promise<Object>,
-    //getUserName(email: String, hash: String): Promise<Object>,
-    const { req, res } = context
-    if (user) {
+    const Q = await setAccess('Anthymn', 2)
+    if (Q) {
         return {
           props: {
-            username: JSON.stringify(user),
+            result: JSON.stringify(Q),
           },
         }
       } else return {
           props: {
-            username: 'failed to retrieve user name',
+            result: 'failed to retrieve user name',
           },
         }
-    /*const { req, res } = context
-    const { db } = await connectToDatabase()
-    const users = await db.collection('users').find({}).toArray()
-    return {
-        props: {
-            users: JSON.parse(JSON.stringify(users))
-        }
-    }*/
 }

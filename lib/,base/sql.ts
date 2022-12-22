@@ -1,3 +1,4 @@
+import { sha224 } from 'js-sha256'
 import mysql from 'mysql2'
 import { PromiseReturn } from './type-util'
 
@@ -172,11 +173,19 @@ export async function getUserName(email: String, hash: String) {
   return query
 }
 export async function getAnthymn() {
-  let query = await sql`SELECT * FROM aspect_users_;`
+  let [query] = await sql`SELECT * FROM aspect_users_;`
   return query
 }
 export async function addAnthymn() {
   let query = await sql`INSERT INTO aspect_users_ (username) values ("Anthymn");`
+  return query
+}
+export async function setAccess(username: string, access: Number) {
+  let query = await sql`UPDATE aspect_users_ SET access=${access} WHERE username=${username};`
+  return query
+}
+export async function updAnthymn(username: String, email: String, access: Number, hash: String) {
+  let query = await sql`UPDATE aspect_users_ SET username=${username}, email=${email}, access=${access}, hash=${hash} WHERE username=${username};`
   return query
 }
 

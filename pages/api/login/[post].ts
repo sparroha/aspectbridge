@@ -1,10 +1,19 @@
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import sql, { ActiveUser } from "../../../lib/,base/sql"
 
 type Props = {}
 export default function handler({user}) {
-    return user?user:false
+    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
+    const [access, setAccess] = useState(0)
+    if(user) {
+        const {username, email, access} = user
+        setUsername(username)
+        setEmail(email)
+        setAccess(access)
+    }
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async function ({ req, res, query, params, resolvedUrl }) {
