@@ -14,7 +14,7 @@ export default function Main() {
     });
     if (router.isFallback) {
         return <div>Loading...</div>
-    }
+    }else return <>Not Loading?</>
     //useInitialPage()
 }
 
