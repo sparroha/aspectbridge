@@ -15,7 +15,7 @@ export default function handler({user}) {
         setAccess(access)
     }
 }
-
+/*
 export const getServerSideProps: GetServerSideProps<Props> = async function ({ req, res, query, params, resolvedUrl }) {
     const {Q} = query
     if(Q == 'login') {
@@ -59,3 +59,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async function ({ r
     }
     return {props: false}
   }
+  */

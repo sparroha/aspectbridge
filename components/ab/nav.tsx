@@ -50,6 +50,8 @@ export default function NavIndex() {
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="https://www.freesqldatabase.com/account/" disabled>DB Account</NavDropdown.Item>
                             </NavDropdown>{' '}
+
+                            <Nav.Link  href="/login/login">Login</Nav.Link>{' '}
                             
                         </Nav>{' '}
                         <Form className="d-flex">
