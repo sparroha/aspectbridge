@@ -70,7 +70,7 @@ export async function sqlConnection<T>(fun: (sql: Sql) => Promise<T>) {
 export type ActiveUser = {
   username: string,
   email: string,
-  access: number
+  access: string
 }
 /**
  * 
@@ -151,7 +151,7 @@ export const getUser = async (hash: String) => {
  * @returns 
  */
 export const updateUser = async (username: String, newemail: String, access: Number, newhash: String ,hash: String) => {
-  let [Q] = await sql`UPDATE aspect_users_ SET username=${username}, email=${newemail}, access=${access} hash=${newhash} WHERE hash=${hash};`
+  let [Q] = await sql`UPDATE aspect_users_ SET username=${username}, email=${newemail}, access=${access}, hash=${newhash} WHERE hash=${hash};`
   if(Q) {
     const user: ActiveUser = {
         username: Q.username,
