@@ -38,7 +38,7 @@ export default function UserLogin(props: Props) {
             </div>
             <div>
                 <label >password: </label>
-                <input onChange={(e)=>{setPassword(e.target.value)}} name="password" value={password}/>
+                <input onChange={(e)=>{setPassword(e.target.value)}} name="password" type="password" value={password}/>
             </div>
             <div>
                 <button onClick={()=>{validate(sha224(email+password), router)}}>Login</button>    
@@ -57,26 +57,22 @@ export default function UserLogin(props: Props) {
                 <input onChange={(e)=>{setNewemail(e.target.value)}} name="username" value={newemail}/>
             </div>
             <div>
-                <button onClick={()=>{editSettings(username, newemail, sha224(newemail+password), sha224(email+password))}}>Register</button>
+                <button onClick={()=>{editSettings(username, newemail, sha224(newemail+password), sha224(email+password), router)}}>Update Email</button>
             </div>
             <div>
-                <label >username: {username}</label>
+                <label >Note: {username}, Each button requires all previous fields to be filled in order to work properly</label>
             </div>
         </Container>
     )
 }
-async function register(usernane: string, email: string, hash: string, router: NextRouter){
-    router.push('/login/register?username='+usernane+'&email='+email+'&hash='+hash)
+async function register(username: string, email: string, hash: string, router: NextRouter){
+    router.push('/login/register?username='+username+'&email='+email+'&hash='+hash)
 }
 async function validate(hash: string, router: NextRouter){
     router.push('/login/validate?hash='+hash)
 }
-async function editSettings(usern: string, newemail: string, newhash: string, hash: string){
-    const [username, setUsername] = useState('')
-    const userprops = await updateUser(usern, newemail, 0, newhash, hash)
-    if (userprops) {
-        setUsername(userprops.username)
-    } else setUsername('failed to update user info')
+async function editSettings(username: string, newemail: string, newhash: string, hash: string, router: NextRouter){
+    router.push('/login/update?username='+username+'&email='+newemail+'&newhash='+newhash+'&hash='+hash)
 }
 
 //TEMPLATE
