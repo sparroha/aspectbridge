@@ -3,7 +3,6 @@ import { Container } from 'react-bootstrap';
 import useLog from '../../components/conlog';
 import { sha256, sha224 } from 'js-sha256'
 import { GetServerSideProps } from 'next';
-import sql, { addAnthymn, addUser, createUsersTableOnce, getAnthymn, setAccess, updAnthymn, updateUser } from '../../lib/,base/sql';
 import { NextRouter, useRouter } from 'next/router';
 
 //STEP 1: Create a new user
@@ -76,6 +75,7 @@ async function editSettings(username: string, newemail: string, newhash: string,
 }
 
 //TEMPLATE
+/*
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
     const Q = await setAccess('Anthymn', 2)
     if (Q) {
@@ -89,4 +89,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
             result: 'failed to retrieve user name',
           },
         }
-}
+}*/

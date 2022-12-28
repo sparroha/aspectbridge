@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
 import { getDomain } from "../domain";
 
-export default function NavIndex() {
+export default function NavIndex(props) {
     const domain = getDomain()
     const [local, setLocal] = useState(null)
     useEffect(()=>{
@@ -51,7 +51,7 @@ export default function NavIndex() {
                                 <NavDropdown.Item href="https://www.freesqldatabase.com/account/" disabled>DB Account</NavDropdown.Item>
                             </NavDropdown>{' '}
 
-                            <Nav.Link  href="/login/login">Login</Nav.Link>{' '}
+                            <Nav.Link  href={props.username?"/login/"+props.username:"/login/login"}>{props.username?props.username:'Login'}</Nav.Link>{' '}
                             
                         </Nav>{' '}
                         <Form className="d-flex">
