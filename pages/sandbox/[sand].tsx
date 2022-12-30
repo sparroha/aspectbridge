@@ -14,6 +14,7 @@ export default function Sand(food: Ingredients) {
     const router = useRouter()
     const urlParams = router.query
     const [message, setMessage] = useState(food.message)
+
     if(!message || message == '') {
         useEffect(() => { router.push({pathname: '/sandbox/message', query: {
         message: 'this message is auto gener...statically stored and retrieved for your viewing: from urlParams',
@@ -21,15 +22,22 @@ export default function Sand(food: Ingredients) {
         [message])
     }else useLog('message: '+message)
 
-    return <>
-        <h2>
-        {(message && message!='')?JSON.stringify(urlParams):JSON.stringify(urlParams.message)}
-        </h2>
+    let processedFood = <Landscape>
+        <p>Message From URL reads: {JSON.stringify(urlParams.message)}</p>
+        <p>Message From PROPS reads: {food.message}</p>
+        <hr></hr>
         <ElementFunction urlP={urlParams} message={message}/>
-        </>
+    </Landscape>
+
+    let poop = processedFood
+    return poop
 }
 function ElementFunction(food: any){
-    return <>{food.urlP.message+' \n& '+food.message}</>
+    return <>
+        <>{'URL: '+food.urlP.message}</>
+        <br></br>
+        <>{'PROPS: '+food.message}</>
+    </>
 }
 export const getServerSideProps: GetServerSideProps<Ingredients> = async (context) => {
     const urlParams = context.query
