@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { Container } from "react-bootstrap"
 import useLog from "../../components/conlog"
 import Landscape from "../../components/ll/css/layout"
 

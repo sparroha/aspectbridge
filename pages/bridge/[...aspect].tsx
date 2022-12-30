@@ -132,20 +132,7 @@ function Footer(){
  * 
  * This section between the <Card.Text> tags chooses what Page loads determined by the url
  * 
- * {() => {switch(client){
- *             case 'ashmore': {
- *                 if(client){
- *                     switch(sub){
- *                         case 'yards': return YardsAshmore();
- *                         case 'trimmings': return TrimmingsAshmore();
- *                         case 'hardees': return HardeesAshmore();
- *                         default: return Ashmore();
- *                     }}}
- *             case 'bill': {return Bill();}
- *             default: {return <></>;}
- *         }}}
- * 
- * @returns Client Info Box
+ * @returns DynamicInfo
  */
 function DynamicInfo(args){
     const router = useRouter()
