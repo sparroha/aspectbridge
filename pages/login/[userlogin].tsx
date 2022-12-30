@@ -17,7 +17,7 @@ const debugAccess='2'
 export default function UserLogin(props: ActiveUser) {
     //TODO add cookies to carry information across pages and sessions
     const router = useRouter()
-    const rQ = router.query
+    const urlParams = router.query
     const [newemail, setNewEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -33,32 +33,32 @@ export default function UserLogin(props: ActiveUser) {
     }
 
     return <Container>
-        {access==debugAccess?JSON.stringify(rQ):JSON.stringify(rQ.access)}
+        {access==debugAccess?JSON.stringify(urlParams):JSON.stringify(urlParams.access)}
         <h2>USERNAME: {username}</h2>
         <h2>EMAIL: {email}</h2>
         <h2>SITE_ACCESS: {access}</h2>
         <h2>Message: {message}</h2>
-        <LoginForm rq={rQ} access={access}/>
-        <RegisterForm rq={rQ} access={access}/>
+        <LoginForm urlParams={urlParams} access={access}/>
+        <RegisterForm urlParams={urlParams} access={access}/>
         </Container>
 }
-function LoginForm(args: any){
-    if (args.rq.submit == 'login' || args.rq.userlogin == 'login')
+function LoginForm(elements: any){
+    if (elements.urlParams.submit == 'login' || elements.urlParams.userlogin == 'login')
     return <Form>
         <h2>
           Form Data:
         </h2>
         <h3>
-          {args.access.toString()==debugAccess?JSON.stringify(args):args.access.toString()}
+          {elements.access.toString()==debugAccess?JSON.stringify(elements):elements.access.toString()}
         </h3>
         Form Under Construction
         <Form.Group controlId="formUsername">
             <Form.Label>Username</Form.Label>
-            <Form.Control type="text" name="username" placeholder={args.username?JSON.stringify(args.username):"username"}/>
+            <Form.Control type="text" name="username" placeholder={elements.username?JSON.stringify(elements.username):"username"}/>
         </Form.Group>OR
         <Form.Group controlId="formEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" name="email" placeholder={args.email?JSON.stringify(args.email):"email"}/>
+            <Form.Control type="email" name="email" placeholder={elements.email?JSON.stringify(elements.email):"email"}/>
         </Form.Group>
         <Form.Group controlId="formPassword">
             <Form.Label>Password</Form.Label>
@@ -71,22 +71,22 @@ function LoginForm(args: any){
             Register New User
         </Button>
     </Form>
-    else return <>{args.rq.submit}</>
+    else return <>{elements.urlParams.submit || elements.urlParams.userlogin}</>
 }
 //username, email, password = sha224(email+password)*auto generated*, access = 0
-function RegisterForm(args: any){
-    if (args.rq.submit === 'registernew')
+function RegisterForm(elements: any){
+    if (elements.urlParams.submit === 'registernew')
     return <Form>
         Form Under Construction
         <Form.Group controlId="formUsername">
             <Form.Label>Username</Form.Label>
-            <Form.Control type="text" name="username" placeholder={args.username?JSON.stringify(args.username):"username"}/>
+            <Form.Control type="text" name="username" placeholder={elements.username?JSON.stringify(elements.username):"username"}/>
         </Form.Group>OR
         <Form.Group controlId="formEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" name="email" placeholder={args.email?JSON.stringify(args.email):"email"}/>
+            <Form.Control type="email" name="email" placeholder={elements.email?JSON.stringify(elements.email):"email"}/>
         </Form.Group>
-        {args.access.toString()==debugAccess?JSON.stringify(args):JSON.stringify(args.access)}
+        {elements.access.toString()==debugAccess?JSON.stringify(elements):JSON.stringify(elements.access)}
         <Form.Group controlId="formPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" name="password" placeholder="password"/>
@@ -95,7 +95,7 @@ function RegisterForm(args: any){
             Login
         </Button>
     </Form>
-    else return <>{args.rq.submit}</>
+    else return <>{elements.urlParams.submit}</>
 }
 function userOrEmail(e){
     if(e.includes('@')) return 'email'
