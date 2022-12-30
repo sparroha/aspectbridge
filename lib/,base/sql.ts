@@ -7,7 +7,7 @@ import { PromiseReturn } from './type-util'
  * @see https://www.npmjs.com/package/mysql2#using-connection-pools
  */
 const unsafePool = mysql.createPool({
-  host: process.env.MYSQL_HOST || 'db.700s.net',
+  host: process.env.MYSQL_HOST,
   database: process.env.MYSQL_DB || 'anthymn_aspectbridge',
   user: process.env.MYSQL_USER || 'anthymn_aspectbridge',
   password: process.env.MYSQL_PASS,
