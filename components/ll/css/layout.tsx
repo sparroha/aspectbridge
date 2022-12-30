@@ -3,5 +3,5 @@ import landscape from './landscape.module.css';
 export default function Landscape({ children }: {
   children: React.ReactNode
 }) {
-  return <section className={landscape.dashboard}></section>
+  return <section className={landscape.dashboard}>{ children }</section>
 }
