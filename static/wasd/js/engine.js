@@ -1,6 +1,6 @@
 
 //Engine Valiables
-var EngineScreen = $("#battlefield");
+EngineScreen = null
 //console.log($(EngineScreen))
 var maxX;
 var maxY;
@@ -83,13 +83,13 @@ $(function(){
         event = event || window.event; // IE-ism
         MOUSEPOS.x = event.clientX-objOffset(EngineScreen).x;
         MOUSEPOS.y = event.clientY-objOffset(EngineScreen).y;
-		console.log(MOUSEPOS.x+"|"+MOUSEPOS.y)
+		//console.log(MOUSEPOS.x+"|"+MOUSEPOS.y)
     }
 });
-function setMaxHeightWidth(){
+function setMaxXY(){
 	maxX = window.innerWidth-(window.innerWidth-$("#battlefield").width());
 	maxY = window.innerHeight-(window.innerHeight-$("#battlefield").height());
-	//console.log("@engine-92{ maxX: "+maxX+", maxY: "+maxY+"}")
+	return { width: maxX, height: maxY}
 	//console.log("@engine-93{ $('#battlefield').width()): "+$("#battlefield").width()+", $('#battlefield').height()): "+$("#battlefield").height()+"}");
 }
 function objOffset(obj){

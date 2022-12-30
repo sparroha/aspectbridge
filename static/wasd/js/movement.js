@@ -64,19 +64,19 @@ function scanForCollisionAt(obj,vec){
 	var x = parseFloat($(obj).css('left'))+parseFloat($(obj).css('width'))/2;
 	var y = parseFloat($(obj).css('top'))+parseFloat($(obj).css('height'))/2;
 	var top,bottom,left,right,ret = false;
-	EngineScreen.find('.collide').each(function(){
+	$('#battlefield').find('.collider-obj').each(function(collider){
 		/*console.log('x:'+x+';y:'+y+
 			';collide-x:'+parseFloat($(this).css('left'))+'&'+(parseFloat($(this).css('left'))+parseFloat($(this).css('width')))+
 			';collide-y:'+parseFloat($(this).css('top'))+'&'+(parseFloat($(this).css('top'))+parseFloat($(this).css('height'))));*/
-		if($(this).attr('class')!==obj.attr('class')){
-			var objleft = parseFloat(obj.css('left'));
-			var objright = parseFloat(obj.css('left'))+parseFloat(obj.css('width'));
-			var objtop = parseFloat(obj.css('top'));
-			var objbottom = parseFloat(obj.css('top'))+parseFloat(obj.css('height'));
-			var thisleft = parseFloat($(this).css('left'));
-			var thisright = parseFloat($(this).css('left'))+parseFloat($(this).css('width'));
-			var thistop = parseFloat($(this).css('top'));
-			var thisbottom = parseFloat($(this).css('top'))+parseFloat($(this).css('height'));
+		if($(collider).attr('class')!==$(obj).attr('class')){
+			var objleft = parseFloat($(obj).css('left'));
+			var objright = parseFloat($(obj).css('left'))+parseFloat(obj.css('width'));
+			var objtop = parseFloat($(obj).css('top'));
+			var objbottom = parseFloat($(obj).css('top'))+parseFloat(obj.css('height'));
+			var thisleft = parseFloat($(collider).css('left'));
+			var thisright = parseFloat($(collider).css('left'))+parseFloat($(collider).css('width'));
+			var thistop = parseFloat($(collider).css('top'));
+			var thisbottom = parseFloat($(collider).css('top'))+parseFloat($(collider).css('height'));
 			
 			var xaligned = (objleft < thisright && thisright < objright)||(objleft < thisleft && thisleft < objright);
 			var yaligned = (objtop < thistop && thistop < objbottom)||(objtop < thisbottom && thisbottom < objbottom);
