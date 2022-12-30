@@ -5,8 +5,10 @@ New database setup
 ------------
 
 ```sql
-create database anthymn_aspect_bridge;
-use anthymn_aspect_bridge
+create database anthymn_aspectbridge;
+use anthymn_aspectbridge
+
+-- TODO any starter tables needed to be created?
 ```
 
 ### create database user ###
