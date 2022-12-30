@@ -7,7 +7,7 @@ export default function Main() {
         router.push('/bridge/dashboard')
     });
     if (router.isFallback) {
-        return <div>Loading...</div>
-    }else return <>Not Loading?</>
+        return <div>Bridge Loading...</div>
+    }else return <>Bridge Not Loading?</>
 }
 

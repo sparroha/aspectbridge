@@ -7,7 +7,7 @@ export default function Main() {
         router.push('/josh/dashboard')
     });
     if (router.isFallback) {
-        return <div>Loading...</div>
-    }else return <>Not Loading?</>
+        return <div>Josh Loading...</div>
+    }else return <>Josh Not Loading?</>
 }
 
