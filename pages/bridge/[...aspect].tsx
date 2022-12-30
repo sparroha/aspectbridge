@@ -49,7 +49,7 @@ export default function AspectBridge(props: ActiveUser) {
  */
 function Headers(){
     return <Head>
-                <title>Sunrise Landscapes</title>
+                <title>Aspect Bridge</title>
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
