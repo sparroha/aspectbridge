@@ -18,7 +18,6 @@ import '../static/josh/css/landscape.css'
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
 Router.events.on('routeChangeError', () => NProgress.done())
-
 export type CommonProps = {
     //commonProps: ApiCommonProps,
 }
@@ -64,7 +63,7 @@ function App(props: CustomAppProps) {
             location.replace(`/login#` + location.pathname.substring(1) + location.search + location.hash)
     })*/
     useEffect(() => {
-        //require("bootstrap/dist/js/bootstrap.bundle.min.js");
+        
     }, []);
 
     if ('_app_RenderNot' in pageProps || '_app_RedirectToLogin' in pageProps || '_app_RedirectShallow' in pageProps)
