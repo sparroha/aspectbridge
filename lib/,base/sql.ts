@@ -1,3 +1,4 @@
+import { sha224 } from 'js-sha256'
 import mysql from 'mysql2'
 import { PromiseReturn } from './type-util'
 
@@ -6,7 +7,7 @@ import { PromiseReturn } from './type-util'
  * @see https://www.npmjs.com/package/mysql2#using-connection-pools
  */
 const unsafePool = mysql.createPool({
-  host: process.env.MYSQL_HOST || 'db.700s.net',
+  host: process.env.MYSQL_HOST,
   database: process.env.MYSQL_DB || 'anthymn_aspectbridge',
   user: process.env.MYSQL_USER || 'anthymn_aspectbridge',
   password: process.env.MYSQL_PASS,
@@ -66,11 +67,6 @@ export async function sqlConnection<T>(fun: (sql: Sql) => Promise<T>) {
 }
 //...................................................
 
-export type ActiveUser = {
-  username: string,
-  email: string,
-  access: number
-}
 /**
  * 
  * @returns response Object
@@ -111,7 +107,7 @@ export async function alterTable(){
  * @param hash 
  * @param access 
  * @returns
- */
+ *
 export const addUser = async (username: String, email: String, hash: String, access: Number) => {
   let [Q] = await sql`INSERT INTO aspect_users_ (username, email, hash, access) values (${username}, ${email}, ${hash}, ${access});`
   if(Q) {
@@ -128,7 +124,7 @@ return false
  * 
  * @param context 
  * @returns 
- */
+ *
 export const getUser = async (hash: String) => {
   const [Q] = await sql`SELECT (username, email, access) FROM aspect_users_ WHERE hash = ${hash}`
   if(Q) {
@@ -148,9 +144,9 @@ export const getUser = async (hash: String) => {
  * @param access 
  * @param hash 
  * @returns 
- */
+ *
 export const updateUser = async (username: String, newemail: String, access: Number, newhash: String ,hash: String) => {
-  let [Q] = await sql`UPDATE aspect_users_ SET username=${username}, email=${newemail}, access=${access} hash=${newhash} WHERE hash=${hash};`
+  let [Q] = await sql`UPDATE aspect_users_ SET username=${username}, email=${newemail}, access=${access}, hash=${newhash} WHERE hash=${hash};`
   if(Q) {
     const user: ActiveUser = {
         username: Q.username,
@@ -158,25 +154,33 @@ export const updateUser = async (username: String, newemail: String, access: Num
         access: Q.access
     }
     return user
-}
-return false
+  }
+  return false
 }
 /**
  * 
  * @param email 
  * @param hash 
  * @returns response Object {username, access}
- */
+ *
 export async function getUserName(email: String, hash: String) {
   let query = await sql`SELECT username, access FROM aspect_users_ WHERE email = ${email} AND hash = ${hash} ;`
   return query
 }
 export async function getAnthymn() {
-  let query = await sql`SELECT * FROM aspect_users_;`
+  let [query] = await sql`SELECT * FROM aspect_users_;`
   return query
 }
 export async function addAnthymn() {
   let query = await sql`INSERT INTO aspect_users_ (username) values ("Anthymn");`
+  return query
+}
+export async function setAccess(username: string, access: Number) {
+  let query = await sql`UPDATE aspect_users_ SET access=${access} WHERE username=${username};`
+  return query
+}
+export async function updAnthymn(username: String, email: String, access: Number, hash: String) {
+  let query = await sql`UPDATE aspect_users_ SET username=${username}, email=${email}, access=${access}, hash=${hash} WHERE username=${username};`
   return query
 }
 

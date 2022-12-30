@@ -4,9 +4,10 @@ import Head from "next/head";
 import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import NavIndex from '../../components/ab/nav';
 import navCcomponentObject from '../../components/ab/navigaton';
+import { GetServerSideProps } from 'next';
+import { ActiveUser } from '../login/[userlogin]';
 
 /**CSS module *//not working/
 
@@ -21,14 +22,18 @@ const componentObject = navCcomponentObject()
  * 
  * @returns This web site
  */
-export default function AspectBridge() {
+export default function AspectBridge(props: ActiveUser) {
+    const [email, setEmail] = useState(props.email)
+    const [username, setUsername] = useState(props.username)
+    const [access, setAccess] = useState(props.access)
+    const [message, setMessage] = useState(props.message)
     return <>
         <Headers />
         <Container className={'aspect h100'}>
-            <ContainerHeader />
+            <ContainerHeader username={username}/>
             <Row id="content" className={"h70"}>
                 <NavLeftDefault />
-                    <DynamicInfo />
+                    <DynamicInfo username={username}/>
                 <NavRightDefault />
             </Row>
             <Footer />
@@ -61,11 +66,11 @@ function Headers(){
  * 
  * @returns Title bar and Navbar
  */
-function ContainerHeader(){
+function ContainerHeader(args){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
-                    <NavIndex />
+                    <NavIndex username={args.username}/>
                 </Col>
             </Row>
 }
@@ -142,16 +147,16 @@ function Footer(){
  * 
  * @returns Client Info Box
  */
-function DynamicInfo(){
+function DynamicInfo(args){
     const router = useRouter()
     const { aspect } = router.query //query url props
     const [bridge, setBridge] = useState(<></>)
-    const [dir, setDir] = useState('dashboard')
+    const [dir, setDir] = useState(args.username?args.username:'dashboard')
     const [sub, setSub] = useState('')
     const [nest, setNest] = useState('')
     function handleBridgePassage(){
         if(aspect){
-            let dir = (aspect.length>1?aspect[0]:aspect).toString()
+            let dir = args.username?args.username:(aspect.length>1?aspect[0]:aspect).toString()
             let sub = (aspect.length>1?aspect[1]:aspect).toString()
             let nest = (aspect.length>2?aspect[2]:(aspect.length>1?aspect[1]:aspect)).toString()
             setDir(dir)
@@ -180,7 +185,7 @@ function DynamicInfo(){
         return handleBridgePassage()
     }, [aspect])
     return <Col md={10} id='home' className={"well-sm white-back scroll"}>
-                <Row className={"h10"}><h3 className={'img-banner'}>{dir}</h3></Row>
+                <Row className={"h10"}><h3 className={'img-banner'}>{args.username?args.username:dir}</h3></Row>
                 <hr />
                 {bridge}
                 <TLiterator />
@@ -215,4 +220,13 @@ function TLiterator(){
             </Col>
             <Col sm={3}></Col>
         </Row>
+}
+export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
+    const userProps: ActiveUser = {
+        username: context.query.username?context.query.username.toString():'login',
+        email: context.query.email?context.query.email.toString():'',
+        access: context.query.access?context.query.access.toString():'0',
+        message: context.query.message?context.query.message.toString():'Do you need to login?'
+    }
+    return {props: userProps}
 }

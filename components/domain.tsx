@@ -18,9 +18,9 @@ export default function useDomainRoot(){
              */
             if(domain != 'localhost:3000'){
                 //if loading from 'aspectbridge.' or 'www.' then redirect to [...aspect]
-                if(domain == "aspectbridge" || "www"){router.push('/bridge/dashboard')}
+                if(domain == "aspectbridge" || "www"){router.push({pathname: '/bridge/dashboard', query: router.query})}
                 //if loading from 'logan.' then redirect to [josh/[...client]...aspect]
-                else if(domain == "logan"){router.push('/josh/dashboard')}
+                else if(domain == "logan"){router.push({pathname: '/josh/dashboard', query: router.query})}
             }
         }
     }, [domain]);
