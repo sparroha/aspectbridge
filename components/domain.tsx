@@ -7,19 +7,17 @@ export default function useDomainRoot(){
     useEffect(() => {
         setDomain(/:\/\/([^\.]+)/.exec(window.location.href)[1])
         console.log('@useDomainRoot('+domain+'||'+window.location.href+')')
-        
         return ()=> {
             /**
              * In this configuration, the only accessable pages are the root [...slug] pages
              */
-            if(domain != 'localhost:3000'){
-                //if loading from 'aspectbridge.' or 'www.' then redirect to [...aspect]
-                if(domain == "aspectbridge" || domain == "www"){router.push({pathname: '/bridge/'+(domain?domain:''), query: router.query})}
-                //if loading from 'logan.' then redirect to [josh/[...client]...aspect]
-                else if(domain == "logan"){router.push({pathname: '/josh/'+(domain?domain:''), query: router.query})}
-            }
+            //if loading from 'aspectbridge.' or 'www.' then redirect to [...aspect]
+            if(domain == "aspectbridge" || domain == "www"){router.push({pathname: '/bridge/'+(domain?domain:''), query: router.query})}
+            //if loading from 'logan.' then redirect to [josh/[...client]...aspect]
+            else if(domain == "logan"){router.push({pathname: '/josh/'+(domain?domain:''), query: router.query})}
+            else alert('domain: '+domain)
         }
-    }, [domain]);
+    },[domain]);
 }
 export function getDomain(){
     const [domain, setDomain] = useState('')
