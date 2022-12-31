@@ -7,10 +7,11 @@ import { Button, Container, Form } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 
 export type ActiveUser = {
-  username: string,
-  email: string,
-  access: string,
-  message: string
+  username: string | string[],
+  email: string | string[],
+  access: string | string[],
+  message: string | string[],
+  homepage: string | string[]
 }
 const debugAccess='2'
 
@@ -25,6 +26,7 @@ export default function UserLogin(props: ActiveUser) {
     const [username, setUsername] = useState(props.username)
     const [access, setAccess] = useState(props.access)
     const [message, setMessage] = useState(props.message)
+    const [homepage, setHomepage] = useState(props.homepage)
     if(username && username != '') {
       useEffect(() => { router.push({pathname: '/', query: {
         username: username, email: email, access: access, message: message
@@ -34,10 +36,11 @@ export default function UserLogin(props: ActiveUser) {
 
     return <Container>
         {access==debugAccess?JSON.stringify(urlParams):JSON.stringify(urlParams.access)}
-        <h2>USERNAME: {username}</h2>
-        <h2>EMAIL: {email}</h2>
-        <h2>SITE_ACCESS: {access}</h2>
-        <h2>Message: {message}</h2>
+        <h3>USERNAME: {username}</h3>
+        <h3>EMAIL: {email}</h3>
+        <h3>SITE_ACCESS: {access}</h3>
+        <h3>Message: {message}</h3>
+        <h3>Homepage: {homepage}</h3>
         <LoginForm urlParams={urlParams} access={access}/>
         <RegisterForm urlParams={urlParams} access={access}/>
         </Container>
@@ -45,13 +48,7 @@ export default function UserLogin(props: ActiveUser) {
 function LoginForm(elements: any){
     if (elements.urlParams.submit == 'login' || elements.urlParams.userlogin == 'login')
     return <Form>
-        <h2>
-          Form Data:
-        </h2>
-        <h3>
-          {elements.access.toString()==debugAccess?JSON.stringify(elements):elements.access.toString()}
-        </h3>
-        Form Under Construction
+        {elements.access.toString()==debugAccess?<h3>JSON.stringify(elements)</h3>:''}
         <Form.Group controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control type="text" name="username" placeholder={elements.username?JSON.stringify(elements.username):"username"}/>
@@ -63,6 +60,9 @@ function LoginForm(elements: any){
         <Form.Group controlId="formPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" name="password" placeholder="password"/>
+        </Form.Group>
+        <Form.Group controlId="formHidden">
+            <Form.Control type="hidden" name="homepage" placeholder={elements.urlParams.homepage}/>
         </Form.Group>
         <Button variant="primary" type="submit" formAction={"/login/validate"}>
             Login
@@ -77,7 +77,6 @@ function LoginForm(elements: any){
 function RegisterForm(elements: any){
     if (elements.urlParams.submit === 'registernew')
     return <Form>
-        Form Under Construction
         <Form.Group controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control type="text" name="username" placeholder={elements.username?JSON.stringify(elements.username):"username"}/>
@@ -90,6 +89,9 @@ function RegisterForm(elements: any){
         <Form.Group controlId="formPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" name="password" placeholder="password"/>
+        </Form.Group>
+        <Form.Group controlId="formHidden">
+            <Form.Control type="hidden" name="homepage" placeholder={elements.urlParams.homepage}/>
         </Form.Group>
         <Button variant="primary" type="submit" formAction={"/login/register"}>
             Login
@@ -109,12 +111,13 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
     const hash = sha224(context.query.email+''+context.query.password)
     const newhash = sha224(context.query.newemail+''+context.query.password)
     const access = context.query.access
-    const password = context.query.password
+    const homepage = context.query.homepage
     let userProps: ActiveUser = {
         username: '',
         email: '',
         access: '0',
-        message: 'failed to retrieve user name'
+        message: 'failed to retrieve user name',
+        homepage: homepage
     }
 
     if(method === 'register'){

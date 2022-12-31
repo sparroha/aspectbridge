@@ -1,12 +1,15 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
 import { getDomain } from "../domain";
 
 export default function NavIndex(props) {
     const domain = getDomain()
+    const router = useRouter()
     const [local, setLocal] = useState(null)
+    const [homepage, setHomepage] = useState(router.pathname)
     useEffect(()=>{
-        return setLocal(domain=='localhost'?'true':'false')
+        return setLocal(domain=='localhost:3000/'?'true':'false')
     },[domain])
     function NavBrand(local){
         return local?
@@ -51,7 +54,7 @@ export default function NavIndex(props) {
                                 <NavDropdown.Item href="https://www.freesqldatabase.com/account/" disabled>DB Account</NavDropdown.Item>
                             </NavDropdown>{' '}
 
-                            <Nav.Link  href={props.username?"/login/"+props.username:"/login/login"}>{props.username?props.username:'Login'}</Nav.Link>{' '}
+                            <Nav.Link  href={props.username?"/login/"+props.username+'?homepage='+homepage:"/login/login"}>{props.username?props.username:'Login'}</Nav.Link>{' '}
                             
                         </Nav>{' '}
                         <Form className="d-flex">

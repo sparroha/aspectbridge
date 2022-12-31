@@ -213,7 +213,8 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         username: context.query.username?context.query.username.toString():'login',
         email: context.query.email?context.query.email.toString():'',
         access: context.query.access?context.query.access.toString():'0',
-        message: context.query.message?context.query.message.toString():'Do you need to login?'
+        message: context.query.message?context.query.message.toString():'Do you need to login?',
+        homepage: context.query.aspect?context.query.aspect.toString():"/"
     }
     return {props: userProps}
 }

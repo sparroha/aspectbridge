@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Nav, Button, Card, Col, Row } from 'react-bootstrap'
-import NavIndex from './navigation/nav'
 import NavClient from './navigation/nav_client'
 //const [client, setClient] = useState('');
 
