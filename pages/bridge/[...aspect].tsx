@@ -187,6 +187,12 @@ function Placeholder(props){
                 <p>The rocks they left, | and through wet lands</p>
                 <p>They sought a home | in the fields of sand.</p>
             </Col>
+            <Col md={12} className={"tcenter black-font"}>
+                <h3>Eye, Theou, Soul</h3>
+                <p>Egh: "I" live for 'Your' breath is in "me"</p>
+                <p>Tuh: "You" breathe life into 'me'</p>
+                <p>Swe: "Self" is 'Your' breath becoming 'me'</p>
+            </Col>
         </Row>
 }
 function TLiterator(){
