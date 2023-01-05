@@ -27,6 +27,11 @@ export default function AspectBridge(props: ActiveUser) {
     const [username, setUsername] = useState(props.username)
     const [access, setAccess] = useState(props.access)
     const [message, setMessage] = useState(props.message)
+    const router = useRouter()
+    if(props.username){
+        useEffect(() => {
+        }, [])
+    }
     return <>
         <Headers />
         <Container className={'aspect h100'}>
@@ -70,7 +75,7 @@ function ContainerHeader(args){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
-                    <NavIndex username={args.username}/>
+                    <NavIndex username={args.username} root={"bridge"}/>
                 </Col>
             </Row>
 }

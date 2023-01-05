@@ -27,8 +27,9 @@ export default function UserLogin(props: ActiveUser) {
     const [access, setAccess] = useState(props.access)
     const [message, setMessage] = useState(props.message)
     const [homepage, setHomepage] = useState(props.homepage)
-    if(username && username != '') {
-      useEffect(() => { router.push({pathname: '/', query: {
+    
+    if(username && username != '' && username != 'login') {
+      useEffect(() => { router.push({pathname: '/'+homepage+'/'+username, query: {
         username: username, email: email, access: access, message: message
       }})}, 
       [username])
@@ -62,7 +63,7 @@ function LoginForm(elements: any){
             <Form.Control type="password" name="password" placeholder="password"/>
         </Form.Group>
         <Form.Group controlId="formHidden">
-            <Form.Control type="hidden" name="homepage" placeholder={elements.urlParams.homepage}/>
+            <Form.Control type="hidden" name="homepage" value={elements.urlParams.homepage}/>
         </Form.Group>
         <Button variant="primary" type="submit" formAction={"/login/validate"}>
             Login

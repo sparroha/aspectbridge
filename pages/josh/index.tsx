@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 export default function Main() {
     const router = useRouter();
     useEffect(() => {
-        router.push('/josh/dashboard')
+        router.push({pathname: '/josh/dashboard', query: router.query})
     });
     if (router.isFallback) {
         return <div>Josh Loading...</div>

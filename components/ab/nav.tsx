@@ -7,7 +7,7 @@ export default function NavIndex(props) {
     const domain = getDomain()
     const router = useRouter()
     const [local, setLocal] = useState(null)
-    const [homepage, setHomepage] = useState(router.pathname)
+    const [homepage, setHomepage] = useState(props.root)
     useEffect(()=>{
         return setLocal(domain=='localhost:3000/'?'true':'false')
     },[domain])

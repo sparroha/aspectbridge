@@ -10,6 +10,8 @@ import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "r
 import jsObjs from '../../components/ll/jsobjs';
 import ClientInfoCard, { useInit } from '../../components/ll/client_info_card';
 import SimpleNav from '../../components/simplenav';
+import { GetServerSideProps } from 'next';
+import { ActiveUser } from '../login/[userlogin]';
 //import { NavBarSelect } from '../../components/ll/navigation/navigaton';
 
 //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: [], nav: [], subnav: []}}
@@ -19,7 +21,11 @@ const jsObj = jsObjs();
  * 
  * @returns This web site
  */
-export default function Clients() {
+export default function Clients(props) {
+    const [email, setEmail] = useState(props.email)
+    const [username, setUsername] = useState(props.username)
+    const [access, setAccess] = useState(props.access)
+    const [message, setMessage] = useState(props.message)
     //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: <></>, nav: <></>, subnav: <></>}}
     const pageInfo = useInit()
     return <>
@@ -29,7 +35,7 @@ export default function Clients() {
                 <ContainerHeader />
             </Row>
             <Row id="">
-                <NavLeftDefault />
+                <NavLeftDefault {...props}/>
                 <ClientInfoCard {...pageInfo}/>
             </Row>
             <Row id="footer">
@@ -84,10 +90,23 @@ function ContainerHeader(i){
  * 
  * @returns Client Navs
  */
-function NavLeftDefault(){
+function NavLeftDefault(props){
     const i = useInit();
     return <Col md={2} id="nav-client">
                 {i.data.nav}
-                <SimpleNav {...{title: "dashboard", links: []}}/>
+                <SimpleNav {...{root: "josh", title: "dashboard", links: [], args: ''}}/>
+                <SimpleNav {...{root: "login", title: props.username?props.username:"login", links: [], args: "?homepage=josh"}}/>
             </Col>
+}
+
+
+export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
+    const userProps: ActiveUser = {
+        username: context.query.username?context.query.username.toString():'login',
+        email: context.query.email?context.query.email.toString():'',
+        access: context.query.access?context.query.access.toString():'0',
+        message: context.query.message?context.query.message.toString():'Do you need to login?',
+        homepage: context.query.aspect?context.query.aspect.toString():"/"
+    }
+    return {props: userProps}
 }
