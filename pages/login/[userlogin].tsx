@@ -156,3 +156,19 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
     }
     return {props: userProps}
 }
+
+async function validate(userProps, hash) {
+  //const [Q] = await sql`SELECT username, email, access FROM aspect_users_ WHERE hash = ${hash}`
+  const Q = await fetch('/api/getuserdetails.ts', {headers: {hash: hash}})
+  useEffect(() => {
+    //setLoading(true)
+    fetch('/api/getuserdetails.ts', {headers: {hash: hash}})
+      .then((res) => res.json())
+      .then((user) => {
+        userProps.username = user.username
+        userProps.email = user.email
+        userProps.access = user.access
+        userProps.message = 'Welcome Back '+user.username+'!'
+      })
+  }, [])
+}
