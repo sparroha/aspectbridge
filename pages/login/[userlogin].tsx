@@ -37,11 +37,11 @@ export default function UserLogin(props: ActiveUser) {
 
     return <Container>
         {access==debugAccess?JSON.stringify(urlParams):JSON.stringify(urlParams.access)}
-        <h3>USERNAME: {username}</h3>
+        {/*<h3>USERNAME: {username}</h3>
         <h3>EMAIL: {email}</h3>
         <h3>SITE_ACCESS: {access}</h3>
         <h3>Message: {message}</h3>
-        <h3>Homepage: {homepage}</h3>
+        <h3>Homepage: {homepage}</h3>*/}
         <LoginForm urlParams={urlParams} access={access}/>
         <RegisterForm urlParams={urlParams} access={access}/>
         </Container>
@@ -113,12 +113,13 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
     const newhash = sha224(context.query.newemail+''+context.query.password)
     const access = context.query.access
     const homepage = context.query.homepage
+    const password = context.query.password
     let userProps: ActiveUser = {
         username: '',
         email: '',
         access: '0',
         message: 'failed to retrieve user name',
-        homepage: homepage
+        homepage: homepage?homepage:'bridge'
     }
 
     if(method === 'register'){
@@ -134,7 +135,9 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         else userProps.message = 'failed to register user'
       }
     }else if(method === 'validate') {
-      const [Q] = await sql`SELECT username, email, access FROM aspect_users_ WHERE hash = ${hash}`
+      let Q
+      if(email ?? email != '') Q = await getUserbyEmail(email, password)
+      else Q = await getUserbyUsername(username, password)
       if (Q) {//{"username":"Fore Getable","email":"forgettable","access":0}
         userProps.username = Q.username
         userProps.email = Q.email
@@ -171,4 +174,14 @@ async function validate(userProps, hash) {
         userProps.message = 'Welcome Back '+user.username+'!'
       })
   }, [])
+}
+async function getUserbyEmail(email, password){
+  const [Q] = await sql`SELECT username, email, access FROM aspect_users_ WHERE hash = ${sha224(email+''+password)}`
+  return Q
+
+}
+async function getUserbyUsername(username, password){
+  const [E] = await sql`SELECT email FROM aspect_users_ WHERE username = ${username}`
+  const Q = await getUserbyEmail(E.email, password)
+  return Q
 }
