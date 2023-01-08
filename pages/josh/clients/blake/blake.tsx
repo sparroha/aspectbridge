@@ -20,5 +20,5 @@ export function BlakeNavOld(){
 }
 
 export function BlakeNav(){
-    return <SimpleNav {...{title: "blake", links: ["trenton", "ringgold", "calhoon"]}} />
+    return <SimpleNav {...{root: 'josh', title: "blake", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
 }
