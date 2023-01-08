@@ -94,7 +94,7 @@ function NavLeftDefault({username}){
     const i = useInit();
     return <Col md={2} id="nav-client">
                 {i.data.nav}
-                <SimpleNav {...{root: "josh", title: "dashboard", links: [], args: ''}}/>
+                <SimpleNav {...{root: "josh", title: "dashboard", links: [], args: '?'}}/>
                 <SimpleNav {...{root: "login", title: username?username:"login", links: [], args: "?homepage=josh"}}/>
             </Col>
 }
