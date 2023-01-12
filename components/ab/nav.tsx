@@ -6,18 +6,19 @@ import { getDomain } from "../domain";
 export default function NavIndex(props) {
     const domain = getDomain()
     const router = useRouter()
-    const [access, setAccess] = useState('0')
     const [local, setLocal] = useState(null)
     const [homepage, setHomepage] = useState(props.root)
+    const [search, setSearch] = useState('')
+    const {username, access} = props
     useEffect(()=>{
         return setLocal(domain=='localhost:3000/'?'true':'false')
     },[domain])
-    function NavBrand(local){
+    function NavBrand(){
         return local?
         <Navbar.Brand as={Nav.Link} href="https://aspectbridge.com/dashboard" id="brandaspect" >Aspect Bridge</Navbar.Brand>
         :<Navbar.Brand as={Nav.Link} href="/dashboard" id="brandaspect" disabled>Aspect Bridge</Navbar.Brand>
     }
-    function NavPartners(local){
+    function NavPartners(){
         return local?(
             <NavDropdown title="Partners" id="navbarPartnersDropdown">
                 <Nav.Link href="https://logan.aspectbridge.com/josh">Logan's Landscapes</Nav.Link>
@@ -29,8 +30,8 @@ export default function NavIndex(props) {
             <Nav.Link href="/josh">Logan's Landscapes</Nav.Link>
         </NavDropdown>)
     }
-    function NavProjects(access){
-        return access='2'?(
+    function NavProjects(){
+        return access=='2'?(
             <NavDropdown title="Projects" id="navbarProjectsDropdown">
                 <Nav.Link href="/grid/index.html">Grid</Nav.Link>
                 <NavDropdown.Divider />
@@ -46,33 +47,37 @@ export default function NavIndex(props) {
             <NavDropdown.Item href="https://www.freesqldatabase.com/account/" disabled>DB Account</NavDropdown.Item>
         </NavDropdown>
     }
+    function Search(){
+        return <Form className="d-flex">
+            <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+                onChange={(e)=>{setSearch(e.target.value)}}
+            />
+            <Button variant="primary" type="submit" formAction={'./search'} name="search" value={search}>Search</Button>
+        </Form>
+    }
     return (
         <>
             <Navbar bg="" variant="dark" expand="lg" id="navaspect">
                 <Container fluid>
-                    <NavBrand local={local} />
+                    <NavBrand />
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }}>
 
                             <Nav.Link href="/dashboard">Home</Nav.Link>{' '}
-                            <Nav.Link  href="/about">About</Nav.Link>{' '}
-                            <NavPartners local={local} />{' '}
-                            <NavProjects access={access} />{' '}
+                            <Nav.Link href="/about">About</Nav.Link>{' '}
+                            <NavPartners />{' '}
+                            <NavProjects />{' '}
                             <NavResources />{' '}
-                            <Nav.Link  href={props.username?"/login/"+props.username+'?homepage='+homepage:"/login/login"}>{props.username?props.username:'Login'}</Nav.Link>{' '}
+                            <Nav.Link href={"/login/"+username+'?homepage='+homepage}>{username}</Nav.Link>{' '}
                             
                         </Nav>{' '}
-                        <Form className="d-flex">
-                            <Form.Control
-                                type="search"
-                                placeholder="Search"
-                                className="me-2"
-                                aria-label="Search"
-                            />
-                            <Button variant="primary">Search</Button>
-                        </Form>
                     </Navbar.Collapse>
+                    <Search />
                 </Container>
             </Navbar>
         </>

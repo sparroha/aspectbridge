@@ -28,18 +28,17 @@ export default function AspectBridge(props: ActiveUser) {
     const [access, setAccess] = useState(props.access)
     const [message, setMessage] = useState(props.message)
     const router = useRouter()
-    if(username != 'login'){
-        useEffect(() => {
-            router.push('./'+username)
-        }, [username])
-    }
+    if(username != 'Login'){
+    useEffect(() => {
+        router.push('./'+username)
+    }, [username])}
     return <>
         <Headers />
         <Container className={'aspect h100'}>
-            <ContainerHeader username={username}/>
+            <ContainerHeader username={username} access={access}/>
             <Row id="content" className={"h70"}>
                 <NavLeftDefault />
-                    <DynamicInfo/>
+                    <DynamicInfo />
                 <NavRightDefault />
             </Row>
             <Footer />
@@ -72,11 +71,11 @@ function Headers(){
  * 
  * @returns Title bar and Navbar
  */
-function ContainerHeader(args){
+function ContainerHeader(props){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
-                    <NavIndex username={args.username} root={"bridge"}/>
+                    <NavIndex username={props.username} access={props.access} root={"bridge"}/>
                 </Col>
             </Row>
 }
@@ -221,12 +220,13 @@ function TLiterator(){
         </Row>
 }
 export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
+    const query = context.query
     const userProps: ActiveUser = {
-        username: context.query.username?context.query.username.toString():'login',
-        email: context.query.email?context.query.email.toString():'',
-        access: context.query.access?context.query.access.toString():'0',
-        message: context.query.message?context.query.message.toString():'Do you need to login?',
-        homepage: context.query.aspect?context.query.aspect.toString():"/"
+        username: query.username&&query.username!=undefined?query.username:'Login',
+        email: query.email?query.email:'',
+        access: query.access?query.access:'0',
+        message: query.message?query.message:'Do you need to login?',
+        homepage: query.aspect?query.aspect:"/"
     }
     return {props: userProps}
 }
