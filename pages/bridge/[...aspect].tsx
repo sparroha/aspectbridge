@@ -28,9 +28,10 @@ export default function AspectBridge(props: ActiveUser) {
     const [access, setAccess] = useState(props.access)
     const [message, setMessage] = useState(props.message)
     const router = useRouter()
-    if(props.username){
+    if(username != 'login'){
         useEffect(() => {
-        }, [])
+            router.push('./'+username)
+        }, [username])
     }
     return <>
         <Headers />
@@ -38,7 +39,7 @@ export default function AspectBridge(props: ActiveUser) {
             <ContainerHeader username={username}/>
             <Row id="content" className={"h70"}>
                 <NavLeftDefault />
-                    <DynamicInfo username={username}/>
+                    <DynamicInfo/>
                 <NavRightDefault />
             </Row>
             <Footer />
@@ -143,7 +144,7 @@ function DynamicInfo(args){
     const router = useRouter()
     const { aspect } = router.query //query url props
     const [bridge, setBridge] = useState(<></>)
-    const [dir, setDir] = useState(args.username?args.username:'dashboard')
+    const [dir, setDir] = useState('')
     const [sub, setSub] = useState('')
     const [nest, setNest] = useState('')
     function handleBridgePassage(){

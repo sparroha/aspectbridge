@@ -27,7 +27,16 @@ export default function UserLogin(props: ActiveUser) {
     const [access, setAccess] = useState(props.access)
     const [message, setMessage] = useState(props.message)
     const [homepage, setHomepage] = useState(props.homepage)
+    //new
+    const [user, setUser] = useState({
+      username: username || '',
+      email: email || '',
+      access: access || '0',
+      message: message || 'failed to retrieve user name',
+      homepage: homepage?homepage:'bridge'
+    })
     
+    //if the username already exists and has been validated, redirect to homepage
     if(username && username != '' && username != 'login') {
       useEffect(() => { router.push({pathname: '/'+homepage+'/'+username, query: {
         username: username, email: email, access: access, message: message
@@ -42,21 +51,21 @@ export default function UserLogin(props: ActiveUser) {
         <h3>SITE_ACCESS: {access}</h3>
         <h3>Message: {message}</h3>
         <h3>Homepage: {homepage}</h3>*/}
-        <LoginForm urlParams={urlParams} access={access}/>
+        <LoginForm urlParams={urlParams} user={user} setuser={setUser}/>
         <RegisterForm urlParams={urlParams} access={access}/>
         </Container>
 }
 function LoginForm(elements: any){
     if (elements.urlParams.submit == 'login' || elements.urlParams.userlogin == 'login')
     return <Form>
-        {elements.access.toString()==debugAccess?<h3>JSON.stringify(elements)</h3>:''}
+        {elements.user.access.toString()==debugAccess?<h3>JSON.stringify(elements)</h3>:''}
         <Form.Group controlId="formUsername">
             <Form.Label>Username</Form.Label>
-            <Form.Control type="text" name="username" placeholder={elements.username?JSON.stringify(elements.username):"username"}/>
+            <Form.Control type="text" name="username" placeholder={elements.user.username?JSON.stringify(elements.user.username):"username"}/>
         </Form.Group>OR
         <Form.Group controlId="formEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" name="email" placeholder={elements.email?JSON.stringify(elements.email):"email"}/>
+            <Form.Control type="email" name="email" placeholder={elements.user.email?JSON.stringify(elements.user.email):"email"}/>
         </Form.Group>
         <Form.Group controlId="formPassword">
             <Form.Label>Password</Form.Label>
@@ -134,7 +143,7 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         }
         else userProps.message = 'failed to register user'
       }
-    }else if(method === 'validate') {
+    }else if(method === 'validate') {//old
       let Q
       if(email ?? email != '') Q = await getUserbyEmail(email, password)
       else Q = await getUserbyUsername(username, password)
@@ -159,19 +168,22 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
     }
     return {props: userProps}
 }
-
-async function validate(userProps, hash) {
+//new
+async function validate(hash, setUser) {
   //const [Q] = await sql`SELECT username, email, access FROM aspect_users_ WHERE hash = ${hash}`
-  const Q = await fetch('/api/getuserdetails.ts', {headers: {hash: hash}})
+  //const Q = await fetch('/api/getuserdetails.ts', {headers: {hash: hash}})
   useEffect(() => {
     //setLoading(true)
     fetch('/api/getuserdetails.ts', {headers: {hash: hash}})
       .then((res) => res.json())
       .then((user) => {
-        userProps.username = user.username
-        userProps.email = user.email
-        userProps.access = user.access
-        userProps.message = 'Welcome Back '+user.username+'!'
+        let userP: ActiveUser = {
+        username: user.username,
+        email: user.email,
+        access: user.access,
+        message: 'Welcome Back '+user.username+'!',
+        homepage: ''}
+        setUser(userP)
       })
   }, [])
 }
