@@ -1,2 +1,30 @@
 ground 0,0
 above = 0,1
+function=nutrients
+function=ph
+function=drainage
+function=retention 
+nutrients=18
+primary nutrients = nitrogen,phosphorus,potassium
+primary nutrients > quantities than other nutrients.
+Law of the Minimum = if any nutrient is < nutrual0
+//any essential nutrient can become the controlling force in crop yield. 
+
+//Of all the essential nutrients, nitrogen is required by plants in the largest quantity and 
+//is most frequently the limiting factor in crop productivity.
+
+//In plant tissue, the nitrogen content ranges from 1 and 6%.
+//Proper management of nitrogen is important because it is often the most limiting nutrient in crop production 
+//and easily lost from the soil system.
+//Nitrogen Forms and Function
+//Forms of nitrogen available for plant uptake
+//Ammonium
+//Nitrate
+//Functions of nitrogen in plants
+//Nitrogen is an essential element of all amino acids. Amino acids are the building blocks of proteins.
+//Nitrogen is also a component of nucleic acids, which form the DNA of all living things and holds the genetic code.
+//Nitrogen is a component of chlorophyll, which is the site of carbohydrate formation (photosynthesis).
+//Chlorophyll is also the substance that gives plants their green color.
+//Photosynthesis occurs at high rates when there is sufficient nitrogen.
+//A plant receiving sufficient nitrogen will typically exhibit vigorous plant growth. 
+// Leaves will also develop a dark green color.
