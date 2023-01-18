@@ -8,8 +8,11 @@ import NavIndex from '../../components/ab/nav';
 import navCcomponentObject from '../../components/ab/navigaton';
 import { GetServerSideProps } from 'next';
 import { ActiveUser } from '../login/[userlogin]';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 /**CSS module *//not working/
+//TODO is working
 
 /**Custom Components */
 
@@ -38,12 +41,29 @@ export default function AspectBridge(props: ActiveUser) {
             <ContainerHeader username={username} access={access}/>
             <Row id="content" className={"h70"}>
                 <NavLeftDefault />
+                    <CalendarTab />
                     <DynamicInfo />
                 <NavRightDefault />
             </Row>
             <Footer />
         </Container>
     </>
+}
+function CalendarTab(){
+    const [date, setDate] = useState(new Date());
+
+    return (
+        <div className='calendar'>
+            <h1 className='text-center'>React Calendar</h1>
+            <div className='calendar-container'>
+                <Calendar onChange={setDate} value={date} />
+            </div>
+            <p className='text-center'>
+                <span className='bold'>Selected Date:</span>{' '}
+                {date.toDateString()}
+            </p>
+        </div>
+    );
 }
 
 /**
@@ -97,7 +117,7 @@ function NavRightDefault(){
             </Col>
 }
 function Footer(){
-    return <Row id="footer" className={"safe-size"}>
+    return <Row id="footer" className={"h10"}>
                 <Col sm={3} >
                     <Card className={'gray-back'}>
                         <Card.Body>
