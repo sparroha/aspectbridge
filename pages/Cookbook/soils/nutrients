@@ -1,0 +1,14 @@
+const nutrients = {
+primary: [
+nitrogen, phosphorus, potassium
+],
+secondary: [
+sulfur, magnesium, calcium
+]
+mains: []
+}
+const measurements = {
+    [precentage, ppm]
+} 
+secondary+precentage
+mains+ppm
