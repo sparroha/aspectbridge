@@ -1,3 +1,6 @@
+import { isNullOrUndefined } from "util"
+import { Z_NEED_DICT } from "zlib"
+
 //expanded array format
 const soilNutrientMap =[
     [
@@ -23,32 +26,39 @@ const soilNutrientMapObj = {
 } //expanded array format
 console.log(soilNutrientMap[0][0]) //prints "nuetral"
 console.log(soilNutrientMapObj.cultivation.tools[7]) //prints "shovel"
-
+//function=ph 
 type PH = {
-    nutrient: 7.7,
+    balance: 10.10,
     value
 }
-//positive = 0,1
-//function=nutrients [10,10]
-const nitrogenObj ={protoncount:"7"}
-19
-15
-//function=ph is sour
-//function=drainage
-//function=retention 
-//nutrients=18
-//primary nutrients = nitrogen,phosphorus,potassium
-//primary nutrients > quantities than other nutrients.
-//Law of the Minimum = if any nutrient is < nutrual = 0
-//any nutrient amounts = limits for yields.
+
+
 const nutrientQuanta = ""
 const data_base = ""
 const _table = ""
 var somethingElse
 
+//example initial function. loads when page is accessed.
 export default function Default (){
-    return <></>
+    return <>
+        <JSXfunction />{/**onChange: rerenders only this elememnt */}
+        {regularFunction() /**onChange: rerenders entire page */}
+    </>
 }
+
+//onChange: rerenders only this elememnt
+export function JSXfunction(){
+    return <>
+        <div></div>
+    </>
+}
+//onChange: rerenders entire page
+function regularFunction(){
+    return <>
+        <div></div>
+    </>
+}
+
 
 //Of all the essential nutrients, nitrogen is required by plants in the largest quantity and 
 //is most frequently the limiting factor in crop productivity.
