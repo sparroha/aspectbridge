@@ -236,7 +236,6 @@ function TLiterator(props){
     const [tlword, setTLWord] = useState('Inavtive')
     const word = 'Inavtive'
 
-    //init();
     function tl(e) {
         e.preventDefault();
         setTLWord(translit(e.target.value))
