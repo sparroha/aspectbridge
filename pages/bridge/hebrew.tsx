@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 export default function Hebrew() {
     init();
+    return <></>
 }
 export const alephbeth = {
     aleph: {
