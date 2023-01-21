@@ -94,7 +94,7 @@ export const grammar = {
         fplural: 'ot',
     }
 }
-export default function init(){
+export function init(){
     useEffect(() => {
         $("#word").submit(function(e) {
             e.preventDefault();
