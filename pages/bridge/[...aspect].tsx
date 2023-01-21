@@ -12,7 +12,7 @@ import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
 import SimpleNav from '../../components/simplenav';
-import init, { translit } from './hebrew';
+import { translit } from './hebrew';
 
 /**CSS module *//not working/
 //TODO is working
