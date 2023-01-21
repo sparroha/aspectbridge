@@ -32,11 +32,12 @@ type PH = {
     value
 }
 
-
-const nutrientQuanta = ""
-const data_base = ""
-const _table = ""
-var somethingElse
+/*bookma[r]k{e}
+camelCase
+PascalCase
+snake_case
+kebab-case
+*/
 
 //example initial function. loads when page is accessed.
 export default function Default (){
@@ -59,7 +60,7 @@ function regularFunction(){
     </>
 }
 
-
+export function drainage (){}
 //Of all the essential nutrients, nitrogen is required by plants in the largest quantity and 
 //is most frequently the limiting factor in crop productivity.
 

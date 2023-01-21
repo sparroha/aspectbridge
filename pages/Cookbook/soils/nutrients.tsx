@@ -1,17 +1,9 @@
-const nutrients = {
-primary: [
-nitrogen, phosphorus, potassium
-],
-secondary: [
-sulfur, magnesium, calcium
-]
-mains: []
+import { Col } from "react-bootstrap"
+import SimpleNav from "../../../components/simplenav"
+
+export default function Nutrients (){
+    return <Col md={3}><SimpleNav title={'nutrients'} links={['nitrogen', 'potassium', 'phosphorus']} /></Col>
 }
-const measurements = {
-    [precentage, ppm]
-} 
-secondary+precentage
-mains+ppm
 
 //function=nutrients [10,10]
 const nitrogenObj ={protoncount:"7"}
