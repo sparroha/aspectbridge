@@ -1,5 +1,7 @@
 import { useEffect } from "react";
-
+export default function Hebrew() {
+    init();
+}
 export const alephbeth = {
     aleph: {
         uni: '\u05D0',
@@ -150,6 +152,7 @@ export function translit(str){
     //s = s.replaceAll('s',alephbeth.samec.uni);
     s = s.replaceAll('o',alephbeth.ain.uni);
     s = s.replaceAll('p',alephbeth.pe.uni);
+    s = s.replaceAll('f',alephbeth.pe_suph.uni);
     //s = s.replaceAll('s',alephbeth.tzadi.uni);
     s = s.replaceAll('q',alephbeth.qoph.uni);
     s = s.replaceAll('r',alephbeth.resh.uni);
