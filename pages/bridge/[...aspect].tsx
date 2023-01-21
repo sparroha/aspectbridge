@@ -5,11 +5,14 @@ import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
 import { useRouter } from 'next/router';
 import NavIndex from '../../components/ab/nav';
-import navCcomponentObject from '../../components/ab/navigaton';
+import navComponentObject from '../../components/ab/navigaton';
 import { GetServerSideProps } from 'next';
 import { ActiveUser } from '../login/[userlogin]';
 import Calendar from 'react-calendar';
+import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
+import SimpleNav from '../../components/simplenav';
+import init, { translit } from './hebrew';
 
 /**CSS module *//not working/
 //TODO is working
@@ -18,7 +21,7 @@ import 'react-calendar/dist/Calendar.css';
 
 
 /*THERE'S A BETTER WAY THAN THIS*/
-const componentObject = navCcomponentObject()
+const componentObject = navComponentObject()
 
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
@@ -37,13 +40,15 @@ export default function AspectBridge(props: ActiveUser) {
     }, [username])}
     return <>
         <Headers />
-        <Container className={'aspect h100'}>
+        <Container className={'aspect'}>
             <ContainerHeader username={username} access={access}/>
-            <Row id="content" className={"h70"}>
+            <Row id="content" className={""}>
                 <NavLeftDefault />
-                    <CalendarTab />
                     <DynamicInfo />
                 <NavRightDefault />
+            </Row>
+            <Row>
+                <CalendarTab />
             </Row>
             <Footer />
         </Container>
@@ -53,7 +58,7 @@ function CalendarTab(){
     const [date, setDate] = useState(new Date());
 
     return (
-        <div className='calendar'>
+        <div className='calendar grey-back'>
             <h1 className='text-center'>React Calendar</h1>
             <div className='calendar-container'>
                 <Calendar onChange={setDate} value={date} />
@@ -109,6 +114,7 @@ function ContainerHeader(props){
 function NavLeftDefault(){  
     return <Col md={1} id="nav-left" className={"well-sm grey-back o7"}>
             {componentObject.navcards.aspects}
+            <SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]} args={""}/>
             </Col>
 }
 function NavRightDefault(){  
@@ -117,7 +123,7 @@ function NavRightDefault(){
             </Col>
 }
 function Footer(){
-    return <Row id="footer" className={"h10"}>
+    return <Row id="footer" className={""}>
                 <Col sm={3} >
                     <Card className={'gray-back'}>
                         <Card.Body>
@@ -139,14 +145,14 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={3} >
+                <Col sm={3} ><div>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>News</Card.Title>
                             <hr />
                             <Card.Text>"Lorem ipsum dolor sit amet,</Card.Text>
                         </Card.Body>
-                    </Card>
+                    </Card></div>
                 </Col>
             </Row>
 }
@@ -197,14 +203,14 @@ function DynamicInfo(args){
         return handleBridgePassage()
     }, [aspect])
     return <Col md={10} id='home' className={"well-sm white-back scroll"}>
-                <Row className={"h10"}><h3 className={'img-banner'}>{args.username?args.username:dir}</h3></Row>
+                <Row className={""}><h3 className={'img-banner'}>{args.username?args.username:dir}</h3></Row>
                 <hr />
                 {bridge}
                 <TLiterator />
             </Col>
 }
 function Placeholder(props){
-    return <Row className={"h80"}>
+    return <Row className={""}>
             <Col md={12} className={"tcenter black-font"}>
                 <h1>{props.feed}</h1>
                 <p>14. The race of the dwarfs | in Dvalin's throng</p>
@@ -218,20 +224,34 @@ function Placeholder(props){
                 <p>Tuh: "You" breathe life into 'me'</p>
                 <p>Swe: "Self" is 'Your' breath becoming 'me'</p>
             </Col>
+            <Col md={12} className={"tcenter black-font"}>
+                <h3>Egg, Two, Schwa</h3>
+                <p>Egh: Add 1 egg</p>
+                <p>Tuh: Add another egg</p>
+                <p>Swe: Stir</p>
+            </Col>
         </Row>
 }
-function TLiterator(){
+function TLiterator(props){
+    const [tlword, setTLWord] = useState('Inavtive')
     const word = 'Inavtive'
-    return <Row className={"h30"}>
+
+    //init();
+    function tl(e) {
+        e.preventDefault();
+        setTLWord(translit(e.target.value))
+      }
+
+    return <Row className={""}>
             <Col sm={3}></Col>
             <Col sm={6} id="content">
                 <Form id="tLit" className="vcenter tcenter">
                     <Form.Group>
                         <Form.Label>Input</Form.Label>
-                        <Form.Control  type="text" id="word" name="word" placeholder="Enter word" />
+                        <Form.Control  type="text" id="word" name="word" placeholder="Enter word" onChange={tl} />
                         <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
-                        <Form.Text className="text-muted"><h1 id="hbru">{word}</h1></Form.Text>
-                        <Form.Control  type="submit" />
+                        <Form.Text className="text-muted"><h1 id="hbru">{tlword}</h1></Form.Text>
+                        {/*<Form.Control  type="submit"/>*/}
                     </Form.Group>
                 
                 </Form>
@@ -242,11 +262,11 @@ function TLiterator(){
 export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
     const query = context.query
     const userProps: ActiveUser = {
-        username: query.username&&query.username!=undefined?query.username:'Login',
+        username: query.username&&query.username!=undefined?query.username:'login',
         email: query.email?query.email:'',
         access: query.access?query.access:'0',
         message: query.message?query.message:'Do you need to login?',
-        homepage: query.aspect?query.aspect:"/"
+        homepage: query.aspect?query.aspect:""
     }
     return {props: userProps}
 }
