@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-export function TLiterator(props){
+export default function TLiterator(props){
     const [tlword, setTLWord] = useState('')
 
     return <Form id="tLit" className="vcenter tcenter">

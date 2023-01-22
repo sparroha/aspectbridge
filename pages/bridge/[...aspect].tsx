@@ -12,8 +12,8 @@ import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
 import SimpleNav from '../../components/simplenav';
-import { TLiterator, translit } from './hebrew';
 import DiceWidget from '../../components/dice';
+import TLiterator from '../../components/hebrew';
 
 /**CSS module *//not working/
 //TODO is working
