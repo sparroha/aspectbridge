@@ -12,7 +12,7 @@ import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
 import SimpleNav from '../../components/simplenav';
-import { translit } from './hebrew';
+import { TLiterator, translit } from './hebrew';
 import DiceWidget from '../../components/dice';
 
 /**CSS module *//not working/
@@ -124,7 +124,7 @@ function NavLeftDefault(){
 function NavRightDefault(props){  
     const [hide, setHide] = useState('hidden')
     return <Col md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative'}}>
-                <div style={{visibility: (hide), position: 'absolute'}}>{/**this error is invalid. visibility still works */}
+                <div style={{visibility: 'visible', position: 'absolute'}}>{/**this error is invalid. visibility still works */}
                     Username: {props.props.username} <br />
                     Access: {props.props.access} <br />
                     Message: {props.props.message} <br />
@@ -216,7 +216,7 @@ function DynamicInfo(props){
                 User Notification: {props.props.message}
                 <hr />
                 {bridge/**page content */}
-                <TLiterator />
+                <Row><Col sm={4}></Col><Col sm={4}><TLiterator /></Col><Col sm={4}></Col></Row>
             </Col>
 }
 function Placeholder(props){
@@ -242,31 +242,7 @@ function Placeholder(props){
             </Col>
         </Row>
 }
-function TLiterator(props){
-    const [tlword, setTLWord] = useState('')
 
-    function tl(e: { preventDefault: () => void; target: { value: any; }; }) {
-        e.preventDefault();
-        setTLWord(translit(e.target.value))
-      }
-
-    return <Row className={""}>
-            <Col sm={3}></Col>
-            <Col sm={6} id="content">
-                <Form id="tLit" className="vcenter tcenter">
-                    <Form.Group>
-                        <Form.Label>Input</Form.Label>
-                        <Form.Control  type="text" id="word" name="word" placeholder="Enter word" onChange={tl} />
-                        <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
-                        <Form.Text className="text-muted"><h1 id="hbru">{tlword}</h1></Form.Text>
-                        {/*<Form.Control  type="submit"/>*/}
-                    </Form.Group>
-                
-                </Form>
-            </Col>
-            <Col sm={3}></Col>
-        </Row>
-}
 export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
     //TODO: get user data from cookie
     const query = context.query

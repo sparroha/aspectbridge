@@ -1,7 +1,17 @@
-import { useEffect } from "react";
-export default function Hebrew() {
-    init();
-    return <></>
+import { useEffect, useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
+export function TLiterator(props){
+    const [tlword, setTLWord] = useState('')
+
+    return <Form id="tLit" className="vcenter tcenter">
+                <Form.Group>
+                    <Form.Label>Input</Form.Label>
+                    <Form.Control  type="text" id="word" name="word" placeholder="Enter word" onChange={(e)=>setTLWord(translit(e.target.value))} />
+                    <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
+                    <Form.Text className="text-muted"><h1 id="hbru">{tlword}</h1></Form.Text>
+                    {/*<Form.Control  type="submit"/>*/}
+                </Form.Group>
+            </Form>
 }
 export const alephbeth = {
     aleph: {
@@ -96,16 +106,6 @@ export const grammar = {
         mplural: 'im',
         fplural: 'ot',
     }
-}
-export function init(){
-    useEffect(() => {
-        $("#word").submit(function(e) {
-            e.preventDefault();
-        });
-    }, []);
-    useEffect(() => {
-        $('#aspectnav').html('Aspect '+translit('Aspect')+' Bridge');
-    }, []);
 }
 export function translit(str){
     let s = str.toLowerCase();
