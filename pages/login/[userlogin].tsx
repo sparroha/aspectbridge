@@ -37,7 +37,7 @@ export default function UserLogin(props: ActiveUser) {
     })
     
     //if the username already exists and has been validated, redirect to homepage
-    if(username && username != '' && username != 'login') {
+    if(username && username != null && username != '' && username != 'login') {
       useEffect(() => { router.push({pathname: '/'+homepage+'/'+username, query: {
         username: username, email: email, access: access, message: message
       }})}, 

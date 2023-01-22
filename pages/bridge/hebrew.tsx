@@ -128,6 +128,7 @@ export function translit(str){
     s = s.replaceAll('ck',alephbeth.keth.uni);
     s = s.replaceAll('ch',alephbeth.keth.uni);
     s = s.replaceAll('kh',alephbeth.keth.uni);
+    s = s.replaceAll('x',alephbeth.keth.uni);
     s = s.replaceAll('sh',alephbeth.shin.uni);
 
     s = s.replaceAll('a',alephbeth.aleph.uni);

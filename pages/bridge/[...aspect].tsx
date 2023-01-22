@@ -13,6 +13,7 @@ import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
 import SimpleNav from '../../components/simplenav';
 import { translit } from './hebrew';
+import DiceWidget from '../../components/dice';
 
 /**CSS module *//not working/
 //TODO is working
@@ -34,7 +35,7 @@ export default function AspectBridge(props: ActiveUser) {
     const [access, setAccess] = useState(props.access)
     const [message, setMessage] = useState(props.message)
     const router = useRouter()
-    if(username != 'Login'){
+    if(username){
     useEffect(() => {
         router.push('./'+username)
     }, [username])}
@@ -44,8 +45,8 @@ export default function AspectBridge(props: ActiveUser) {
             <ContainerHeader username={username} access={access}/>
             <Row id="content" className={""}>
                 <NavLeftDefault />
-                    <DynamicInfo />
-                <NavRightDefault />
+                    <DynamicInfo props={{username: username, access: access, message: message}}/>
+                <NavRightDefault props={{username: username, access: access, message: message}}/>
             </Row>
             <Row>
                 <CalendarTab />
@@ -96,7 +97,7 @@ function Headers(){
  * 
  * @returns Title bar and Navbar
  */
-function ContainerHeader(props){
+function ContainerHeader(props: { username: any; access: any; }){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
@@ -112,14 +113,23 @@ function ContainerHeader(props){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col md={1} id="nav-left" className={"well-sm grey-back o7"}>
-            {componentObject.navcards.aspects}
-            <SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]} args={""}/>
+    return <Col md={1} id="nav-left" className={"well-sm p0"} style={{position: 'relative'}}>
+                <div className={'w100 h100'} style={{position: 'absolute'}}>
+                    <SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]} args={""}/>
+                    <DiceWidget />
+                </div>
+                <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
             </Col>
 }
-function NavRightDefault(){  
-    return <Col md={1} id="nav-right" className={"well-sm grey-back o7"}>
-            {componentObject.navcards.air}
+function NavRightDefault(props){  
+    const [hide, setHide] = useState('hidden')
+    return <Col md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative'}}>
+                <div style={{visibility: (hide), position: 'absolute'}}>{/**this error is invalid. visibility still works */}
+                    Username: {props.props.username} <br />
+                    Access: {props.props.access} <br />
+                    Message: {props.props.message} <br />
+                </div>
+                <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
             </Col>
 }
 function Footer(){
@@ -165,23 +175,24 @@ function Footer(){
  * 
  * @returns DynamicInfo
  */
-function DynamicInfo(args){
+function DynamicInfo(props){
     const router = useRouter()
     const { aspect } = router.query //query url props
     const [bridge, setBridge] = useState(<></>)
+    //these 3 are redundant useage because they are contained within args(props).query
     const [dir, setDir] = useState('')
     const [sub, setSub] = useState('')
     const [nest, setNest] = useState('')
     function handleBridgePassage(){
         if(aspect){
-            let dir = args.username?args.username:(aspect.length>1?aspect[0]:aspect).toString()
-            let sub = (aspect.length>1?aspect[1]:aspect).toString()
-            let nest = (aspect.length>2?aspect[2]:(aspect.length>1?aspect[1]:aspect)).toString()
-            setDir(dir)
+            let dir = (aspect.length>1?aspect[0]:aspect).toString() //"/:dir/:sub/:nest"
+            let sub = (aspect.length>1?aspect[1]:'').toString()
+            let nest = (aspect.length>2?aspect[2]:'').toString()
+            setDir(dir) 
             setSub(sub)
             setNest(nest)            
             switch(dir){
-                case 'dashboard': setBridge(<>DASHBOARD</>)
+                case 'login': setBridge(<></>)
                 break;
                 case 'q': {
                     switch(sub){
@@ -191,11 +202,9 @@ function DynamicInfo(args){
                         break;
                     }
                 } break;
-                case 'api': //{router.push('/bridge/api/users.ts')}
-                break;
                 default: {setBridge(<Placeholder feed={dir}/>)}
                 break;
-            }console.log('Client: '+dir+'|'+(aspect.length>1?aspect[0]:aspect)+' ./. Subdomain: '+sub+'|'+(aspect.length>1?aspect[1]:aspect))
+            }//console.log('Client: '+dir+'|'+(aspect.length>1?aspect[0]:aspect)+' ./. Subdomain: '+sub+'|'+(aspect.length>1?aspect[1]:aspect))
         }
     }
     useEffect(() => {
@@ -203,9 +212,10 @@ function DynamicInfo(args){
         return handleBridgePassage()
     }, [aspect])
     return <Col md={10} id='home' className={"well-sm white-back scroll"}>
-                <Row className={""}><h3 className={'img-banner'}>{args.username?args.username:dir}</h3></Row>
+                <h3 className={'img-banner'}>{props.username}</h3>
+                User Notification: {props.props.message}
                 <hr />
-                {bridge}
+                {bridge/**page content */}
                 <TLiterator />
             </Col>
 }
@@ -233,10 +243,9 @@ function Placeholder(props){
         </Row>
 }
 function TLiterator(props){
-    const [tlword, setTLWord] = useState('Inavtive')
-    const word = 'Inavtive'
+    const [tlword, setTLWord] = useState('')
 
-    function tl(e) {
+    function tl(e: { preventDefault: () => void; target: { value: any; }; }) {
         e.preventDefault();
         setTLWord(translit(e.target.value))
       }
@@ -259,13 +268,14 @@ function TLiterator(props){
         </Row>
 }
 export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
+    //TODO: get user data from cookie
     const query = context.query
     const userProps: ActiveUser = {
-        username: query.username&&query.username!=undefined?query.username:'login',
-        email: query.email?query.email:'',
-        access: query.access?query.access:'0',
-        message: query.message?query.message:'Do you need to login?',
-        homepage: query.aspect?query.aspect:""
+        username: query.username!=undefined?query.username:null,
+        email: query.email!=undefined?query.email:'',
+        access: query.access!=undefined?query.access:'0',
+        message: query.message!=undefined?query.message:'Do you need to login?',
+        homepage: query.aspect!=undefined?query.aspect:""
     }
-    return {props: userProps}
+    return {props: userProps} 
 }

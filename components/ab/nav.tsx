@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
 import { getDomain } from "../domain";
 
-export default function NavIndex(props) {
+export default function NavIndex(props: { root?: any; username?: any; access?: any; }) {
     const domain = getDomain()
     const router = useRouter()
-    const [local, setLocal] = useState(null)
-    const [homepage, setHomepage] = useState(props.root)
+    const [local, setLocal] = useState(domain=='localhost:3000/'?'true':'false')
+    const [homepage, setHomepage] = useState(props.root || router.pathname)
     const [search, setSearch] = useState('')
     const {username, access} = props
-    useEffect(()=>{
+    /*useEffect(()=>{
         return setLocal(domain=='localhost:3000/'?'true':'false')
-    },[domain])
+    },[domain])*/
     function NavBrand(){
         return local?
         <Navbar.Brand as={Nav.Link} href="https://aspectbridge.com/dashboard" id="brandaspect" >Aspect Bridge</Navbar.Brand>
@@ -73,7 +73,7 @@ export default function NavIndex(props) {
                             <NavPartners />{' '}
                             <NavProjects />{' '}
                             <NavResources />{' '}
-                            <Nav.Link href={"/login/"+username+'?homepage='+homepage}>{username}</Nav.Link>{' '}
+                            <Nav.Link href={"/login/"+(username?username:'login')+'?homepage='+homepage}>{username?username:'Login'}</Nav.Link>{' '}
                             
                         </Nav>{' '}
                     </Navbar.Collapse>
