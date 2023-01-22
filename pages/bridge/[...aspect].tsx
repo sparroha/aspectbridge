@@ -116,7 +116,7 @@ function NavLeftDefault(){
     return <Col md={1} id="nav-left" className={"well-sm p0"} style={{position: 'relative'}}>
                 <div className={'w100 h100'} style={{position: 'absolute', zIndex: '5'}}>
                     <SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]} args={""}/>
-                    <DiceWidget />
+                    <DiceWidget style={{position: 'absolute', zIndex: 10}}/>
                 </div>
                 <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
             </Col>
