@@ -114,7 +114,7 @@ function ContainerHeader(props: { username: any; access: any; }){
  */
 function NavLeftDefault(){  
     return <Col md={1} id="nav-left" className={"well-sm p0"} style={{position: 'relative'}}>
-                <div className={'w100 h100'} style={{position: 'absolute'}}>
+                <div className={'w100 h100'} style={{position: 'absolute', zIndex: '5'}}>
                     <SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]} args={""}/>
                     <DiceWidget />
                 </div>
@@ -123,7 +123,7 @@ function NavLeftDefault(){
 }
 function NavRightDefault(props){  
     const [hide, setHide] = useState('hidden')
-    return <Col md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative'}}>
+    return <Col md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative', zIndex: '5'}}>
                 <div style={{visibility: 'visible', position: 'absolute'}}>{/**this error is invalid. visibility still works */}
                     Username: {props.props.username} <br />
                     Access: {props.props.access} <br />
