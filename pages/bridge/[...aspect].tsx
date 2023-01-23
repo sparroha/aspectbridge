@@ -113,7 +113,7 @@ function ContainerHeader(props: { username: any; access: any; }){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col md={1} id="nav-left" className={"well-sm p0"} style={{position: 'relative'}}>
+    return <Col sm={3} md={1} id="nav-left" className={"well-sm p0"} style={{position: 'relative'}}>
                 <div className={'w100 h100'} style={{position: 'absolute', zIndex: '5'}}>
                     <SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]} args={""}/>
                     <DiceWidget style={{position: 'absolute', zIndex: 10}}/>
@@ -123,7 +123,7 @@ function NavLeftDefault(){
 }
 function NavRightDefault(props){  
     const [hide, setHide] = useState('hidden')
-    return <Col md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative', zIndex: '5'}}>
+    return <Col sm={3} md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative', zIndex: '5'}}>
                 <div style={{visibility: 'visible', position: 'absolute'}}>{/**this error is invalid. visibility still works */}
                     Username: {props.props.username} <br />
                     Access: {props.props.access} <br />
@@ -134,7 +134,7 @@ function NavRightDefault(props){
 }
 function Footer(){
     return <Row id="footer" className={""}>
-                <Col sm={3} >
+                <Col sm={4} md={3} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>Contact Us</Card.Title>
@@ -143,7 +143,7 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={6} >
+                <Col sm={4} md={6} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>About...Upon</Card.Title>
@@ -155,14 +155,14 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={3} ><div>
+                <Col sm={4} md={3} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>News</Card.Title>
                             <hr />
                             <Card.Text>"Lorem ipsum dolor sit amet,</Card.Text>
                         </Card.Body>
-                    </Card></div>
+                    </Card>
                 </Col>
             </Row>
 }
@@ -211,7 +211,7 @@ function DynamicInfo(props){
         handleBridgePassage()
         return handleBridgePassage()
     }, [aspect])
-    return <Col md={10} id='home' className={"well-sm white-back scroll"}>
+    return <Col sm={6} md={10} id='home' className={"well-sm white-back scroll"} style={{position: 'relative'}}>
                 <h3 className={'img-banner'}>{props.username}</h3>
                 User Notification: {props.props.message}
                 <hr />
