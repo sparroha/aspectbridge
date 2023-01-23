@@ -113,8 +113,8 @@ function ContainerHeader(props: { username: any; access: any; }){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col sm={3} md={1} id="nav-left" className={"well-sm p0"} style={{position: 'relative'}}>
-                <div className={'w100 h100'} style={{position: 'absolute', zIndex: '5'}}>
+    return <Col xs={12} sm={3} md={1} id="nav-left" className={"well-sm p0"} style={{position: 'relative'}}>
+                <div className={'w100 h100'} style={{position: 'relative', zIndex: '5'}}>
                     <SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]} args={""}/>
                     <DiceWidget style={{position: 'absolute', zIndex: 10}}/>
                 </div>
@@ -123,8 +123,8 @@ function NavLeftDefault(){
 }
 function NavRightDefault(props){  
     const [hide, setHide] = useState('hidden')
-    return <Col sm={3} md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative', zIndex: '5'}}>
-                <div style={{visibility: 'visible', position: 'absolute'}}>{/**this error is invalid. visibility still works */}
+    return <Col xs={12} sm={3} md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative'}}>
+                <div style={{visibility: 'visible', position: 'relative', zIndex: '5'}}>{/**this error is invalid. visibility still works */}
                     Username: {props.props.username} <br />
                     Access: {props.props.access} <br />
                     Message: {props.props.message} <br />
@@ -134,7 +134,7 @@ function NavRightDefault(props){
 }
 function Footer(){
     return <Row id="footer" className={""}>
-                <Col sm={4} md={3} style={{position: 'relative'}}>
+                <Col xs={6} sm={4} md={3} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>Contact Us</Card.Title>
@@ -143,7 +143,7 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={4} md={6} style={{position: 'relative'}}>
+                <Col xs={6} sm={4} md={6} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>About...Upon</Card.Title>
@@ -155,7 +155,7 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={4} md={3} style={{position: 'relative'}}>
+                <Col xs={12} sm={4} md={3} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>News</Card.Title>
@@ -211,7 +211,7 @@ function DynamicInfo(props){
         handleBridgePassage()
         return handleBridgePassage()
     }, [aspect])
-    return <Col sm={6} md={10} id='home' className={"well-sm white-back scroll"} style={{position: 'relative'}}>
+    return <Col xs={12} sm={6} md={10} id='home' className={"well-sm white-back scroll"} style={{position: 'relative'}}>
                 <h3 className={'img-banner'}>{props.username}</h3>
                 User Notification: {props.props.message}
                 <hr />
