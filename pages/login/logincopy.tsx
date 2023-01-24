@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { Button, Container, Form } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
+import { Route, Routes, BrowserRouter } from "react-router-dom"
 
 export type ActiveUser = {
   username: string | string[],
@@ -20,22 +21,7 @@ export default function UserLogin(props: ActiveUser) {
     //TODO add cookies to carry information across pages and sessions
     const router = useRouter()
     const [homepage, setHomepage] = useState(props.homepage)
-    const [hash, setHash] = useState('')
     const [user, setUser] = useState(null)
-    const styleLogin = {
-      backgroundColor: '#0c0',
-      padding: '10px',
-      paddingLeft: '20px',
-      paddingRight: '20px',
-      borderRadius: '10px'
-    }
-    const styleRegister = {
-      backgroundColor: '#cc0',
-      padding: '10px',
-      paddingLeft: '20px',
-      paddingRight: '20px',
-      borderRadius: '10px'
-    }
     
     useEffect(() => { 
       if(user)router.push({pathname: '/'+homepage+'/'+user.username, query: {
@@ -44,34 +30,64 @@ export default function UserLogin(props: ActiveUser) {
     )},[user])
 
     return <Container>
-            <Profile hash={hash} setUser={setUser}/>
-            <div style={styleLogin}>
-            {router.query.userlogin === 'login'?
-            <LoginForm props={props} setHash={setHash}/>
-            :<Form><Button variant="primary" type="submit" formAction={"/login/login"}>Back to Login</Button></Form>}
-            </div>
-            <div style={styleRegister}>
-            {router.query.userlogin === 'registernew'?
-            <RegisterForm homepage={homepage?homepage:'bridge'}/>
-            :<Form><Button variant="primary" type="submit" formAction={"/login/registernew"}>Register New User</Button></Form>}
-            </div>
-          </Container>
+            <h3>
+              USERNAME: {user?user.username:''}<br/>
+              EMAIL: {user?user.email:''}<br/>
+              SITE_ACCESS: {user?user.access:''}
+            </h3>
+            <BrowserRouter><Routes>
+                <Route 
+                  path="/login/login"
+                  loader={({params})=>{}/**client */}
+                  action={({params})=>{}/**fetch  */}
+                  element={<LoginForm props={props} setUser={setUser}/>}
+                />
+                <Route 
+                  path="/login/register"
+                  element={<LoginForm props={props}/>}
+                />
+                <Route 
+                  path="/login/registernew"
+                  loader={({params})=>{}/**client */}
+                  action={async ({params, request})=>{/**fetch  */
+                    const formData = await request.formData()
+                    return setUser(formData)
+                  }}
+                  element={<RegisterForm props={props}/>
+                }
+                />
+            </Routes></BrowserRouter></Container>
 }
-function LoginForm(props: any){
+function LoginForm(props){
   const router = useRouter()
-  const urlParams = router.query
   const [email, setEmail] = useState(props.props.email)
   const [username, setUsername] = useState(props.props.username)
   const [access, setAccess] = useState(props.props.access)
   const [message, setMessage] = useState(props.props.message)
   const [homepage, setHomepage] = useState(props.props.homepage)
-  const [password, setPassword] = useState(props.props.password)
+  const [password, setPassword] = useState(null)
+  const [hash, setHash] = useState('')
+  //const [user, setUser] = useState(null)
+  
+  
+  /*useEffect(() => { 
+    if(user)router.push({pathname: '/'+homepage+'/'+user.username, query: {
+      username: user.username, email: user.email, access: user.access, message: 'Welcome back '
+    }}
+  )},[user])*/
 
-  return <Form onSubmit={(event) => {event.preventDefault();props.setHash(sha224(email+''+password))}} >
-      {/*<Form.Group controlId="formUsername">
+  return <Form onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password))}} >
+      {access.toString()==debugAccess?<h3>JSON.stringify(elements)</h3>:''
+      }
+      <hr/>
+      <Profile hash={hash} setUser={props.setUser}/>
+      {//<PullEmail username={username} setEmail={setEmail}/>
+      }
+      <hr/>
+      <Form.Group controlId="formUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control type="text" name="username" disabled placeholder={"username"} onChange={(e)=>setUsername(e.target.value)}/>
-      </Form.Group>OR*/}
+      </Form.Group>OR
       <Form.Group controlId="formEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" name="email" placeholder={"email"} autoComplete={email} onChange={(e)=>setEmail(e.target.value)}/>
@@ -81,15 +97,23 @@ function LoginForm(props: any){
           <Form.Control type="password" name="password" placeholder="password" onChange={(e)=>setPassword(e.target.value)}/>
       </Form.Group>
       <Form.Group controlId="formHidden">
-          <Form.Control type="hidden" name="homepage" value={urlParams.homepage}/>
+          <Form.Control type="hidden" name="homepage" value={homepage}/>
       </Form.Group>
       {//<Button variant="primary" type="submit" formAction={"/login/validate"}>
-      }<Button variant="primary" type="submit" >Login</Button>
+      }<Button variant="primary" type="submit" >
+      
+          Login
+      </Button>
+      <Button variant="primary" type="submit" formAction={"/login/registernew"} name="submit" value="registernew">
+          Register New User
+      </Button>
   </Form>
 }
 //username, email, password = sha224(email+password)*auto generated*, access = 0
-function RegisterForm({homepage}){
-  return <Form>
+function RegisterForm(props: any){
+  
+    const [homepage, setHomepage] = useState(props.props.homepage)
+    return <Form>
         <Form.Group controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control type="text" name="username" placeholder={"username"}/>
@@ -105,7 +129,9 @@ function RegisterForm({homepage}){
         <Form.Group controlId="formHidden">
             <Form.Control type="hidden" name="homepage" placeholder={homepage}/>
         </Form.Group>
-        <Button variant="primary" type="submit" formAction={"/login/register"}>Register</Button>
+        <Button variant="primary" type="submit" formAction={"/login/register"}>
+            Login
+        </Button>
     </Form>
 }
 function userOrEmail(e){
@@ -113,7 +139,7 @@ function userOrEmail(e){
     else return 'username'
 }
 export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
-    const method = context.query.userlogin
+    const method = context.query.userlogin //'/login/[userlogin]'
     const username = context.query.username
     const email = context.query.email
     const newemail = context.query.newemail
@@ -142,7 +168,7 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         }
         else userProps.message = 'failed to register user'
       }
-    }else if(method === 'validate') {//secondary
+    }/*else if(method === 'validate') {//secondary
       if(hash){
         const [Q2] = await sql`SELECT username, email, access FROM aspect_users_ WHERE hash = ${hash}`
         if (Q2) {//{"username":"Fore Getable","email":"forgettable","access":0}
@@ -160,7 +186,8 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         userProps.access = Q.access
         userProps.message = 'Welcome Back '+Q.username+'!'
       }
-    }else if(method === 'update') {
+    }*/
+    /*else if(method === 'update') {
       const Q1 = await sql`UPDATE aspect_users_ SET username=${username}, email=${newemail}, access=${access=='1'||access=='2'?access:'0'}, hash=${newhash} WHERE hash=${hash};`
       if (Q1) {//"fieldCount":0,"affectedRows":1,"insertId":30,"info":"","serverStatus":2,"warningStatus":0}
         userProps.email = JSON.stringify(Q1)
@@ -172,7 +199,7 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         }
         else userProps.message = 'failed to update user'
       }
-    }
+    }*/
     return {props: userProps}
 }
 async function getUserbyEmail(email, password){
@@ -194,7 +221,7 @@ async function getEmailbyUsername(username){
 function Profile(props) {
   const { data, error } = useSWR('../api/getuserdetails?hash='+props.hash, { revalidateOnFocus: false })
   //const { data, error } = useSWR('../api/getemailbyusername?username='+props.username, { revalidateOnFocus: false })
-  if (error) return <div style={{visibility: 'hidden'}}>{error}:No such user</div>
+  if (error) return <div>{error}:No such user</div>
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data
