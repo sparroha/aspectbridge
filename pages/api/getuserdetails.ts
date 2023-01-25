@@ -1,4 +1,3 @@
-import { createWriteStream } from "fs";
 import sql from "../../lib/,base/sql";
 
 export default async function getUserDetails(req, res) {

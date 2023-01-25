@@ -18,7 +18,6 @@ export type ActiveUser = {
 const debugAccess='2'
 
 export default function UserLogin({ip, homepage}) {
-    //TODO add cookies to carry information across pages and sessions
     const router = useRouter()
     const [method, setMethod] = useState(router.query.userlogin)
     const [hash, setHash] = useState('')
@@ -57,7 +56,7 @@ export default function UserLogin({ip, homepage}) {
 
             <div style={registerLayout}>{
               method === 'registernew'?
-              <RegisterForm homepage={homepage?homepage:'bridge'}/>
+              <RegisterForm homepage={homepage}/>
               :<Button variant="primary" type="submit" onClick={() => {setMethod('registernew')}}>Register New User</Button>
             }</div>
 
@@ -67,7 +66,7 @@ function LoginForm({setHash}){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  return <Form onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password))}} >
+  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password))}} >
       <Form.Group controlId="formEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
@@ -79,9 +78,9 @@ function LoginForm({setHash}){
       <Button type="submit" >Login</Button>
   </Form>
 }
-//username, email, password = sha224(email+password)*auto generated*, access = 0
+
 function RegisterForm({homepage}){
-  return <Form>
+  return <Form id={'registerForm'}>
         <Form.Group controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control type="text" name="username" placeholder={"username"}/>
@@ -95,29 +94,25 @@ function RegisterForm({homepage}){
             <Form.Control type="password" name="password" placeholder="password"/>
         </Form.Group>
         <Form.Group controlId="formHidden">
-            <Form.Control type="hidden" name="homepage" placeholder={homepage}/>
+            <Form.Control type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
         </Form.Group>
         <Button variant="primary" type="submit" formAction={"/login/register"}>Register</Button>
     </Form>
-}
-function userOrEmail(e){
-    if(e.includes('@')) return 'email'
-    else return 'username'
 }
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
     const method = query.userlogin
     const username = query.username
     const email = query.email
     const hash = sha224(query.email+''+query.password)
-    const homepage = query.homepage
+    const homepage = query.homepage!=undefined?query.homepage:'bridge'
     const ip = await requestIp.getClientIp(req)
     if(method === 'logout'){
       await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
     }
     if(method === 'register'){
-      const Q1 = await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
+      await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
     }
-    return {props: {ip: ip=='::1'?'localhost':ip, homepage: homepage}}
+    return {props: {ip: ip, homepage: homepage}}
 }
 
 export function Profile({hash, ip, setUser}) {

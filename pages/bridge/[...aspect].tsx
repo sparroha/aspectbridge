@@ -241,5 +241,5 @@ function Placeholder({user}){
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = context.query
     const ip = await requestIp.getClientIp(context.req)
-    return {props: {ip: ip=='::1'?'localhost':ip}} 
+    return {props: {ip: ip}} 
 }
