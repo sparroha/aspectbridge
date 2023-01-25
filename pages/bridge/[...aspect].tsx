@@ -252,7 +252,7 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         access: query.access!=undefined?query.access:'0',
         message: query.message!=undefined?query.message:'Do you need to login?',
         homepage: query.aspect!=undefined?query.aspect:"",
-        ip: query.aspect!=undefined?query.ip:""
+        ip: query.ip!=undefined?query.ip:""
     }
     return {props: userProps} 
 }
