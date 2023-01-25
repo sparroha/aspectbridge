@@ -1,5 +1,5 @@
 import { sha224 } from "js-sha256"
-import { GetServerSideProps, NextApiRequest } from "next"
+import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
@@ -110,7 +110,9 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
       await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
     }
     if(method === 'register'){
-      await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
+      const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${hash}`
+      //next line untested
+      if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
     }
     return {props: {ip: ip, homepage: homepage}}
 }
