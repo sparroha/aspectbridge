@@ -1,17 +1,19 @@
 import { sha224 } from "js-sha256"
-import { GetServerSideProps } from "next"
+import { GetServerSideProps, NextApiRequest } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Button, Container, Form } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
+import requestIp from 'request-ip'
 
 export type ActiveUser = {
   username: string | string[],
   email: string | string[],
   access: string | string[],
   message: string | string[],
-  homepage: string | string[]
+  homepage: string | string[],
+  ip: string | string[]
 }
 const debugAccess='2'
 
@@ -44,7 +46,7 @@ export default function UserLogin(props: ActiveUser) {
     )},[user])
 
     return <Container>
-
+            {props.ip}
             <Profile hash={hash} setUser={setUser}/>
 
             <div style={loginLayout}>{
@@ -108,12 +110,15 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
     const email = context.query.email
     const hash = sha224(context.query.email+''+context.query.password)
     const homepage = context.query.homepage
+    const ip = await requestIp.getClientIp(context.req)
+
     let userProps: ActiveUser = {
         username: '',
         email: '',
         access: '0',
         message: 'failed to retrieve user name',
-        homepage: homepage?homepage:'bridge'
+        homepage: homepage?homepage:'bridge',
+        ip: ip
     }
 
     if(method === 'register'){
