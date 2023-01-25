@@ -108,9 +108,9 @@ function ContainerHeader({ user }){
  */
 function NavLeftDefault(){  
     return <Col xs={12} sm={3} md={2} id="nav-left" className={"p0 'w100 h100'"}>
-                <Row className={'w100 h100'} style={{position: 'relative', zIndex: '5'}}>
-                    <Col xs={8} sm={12}><SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]}/></Col>
-                    <Col xs={4} sm={12}><DiceWidget/></Col>
+                <Row className={'w100 h100'} style={{position: 'relative'}}>
+                    <Col xs={8} sm={12} style={{zIndex: '5'}}><SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]}/></Col>
+                    <Col xs={4} sm={12} style={{zIndex: '5'}}><DiceWidget/></Col>
                     <div className={'grey-back o4 w100 h100'} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
                 </Row>
             </Col>
@@ -119,7 +119,7 @@ function NavRightDefault({user}){
     const [hide, setHide] = useState('hidden')
     return <Col xs={12} sm={3} md={2} id="nav-right" className={"p0"}>
                 <Row className={'w100 h100'} style={{visibility: 'visible', position: 'relative', zIndex: '5', color: 'white'}}>{/**this error is invalid. visibility still works */}
-                    <Col>
+                    <Col style={{zIndex: '5'}}>
                         Username: {user?user.username:''} <br />
                         Access: {user?user.access:''} <br />
                         Message: {user?user.message:''} <br />
