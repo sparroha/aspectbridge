@@ -131,14 +131,14 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
     }
     return {props: userProps}
 }
-function Profile(props) {
-  const { data, error } = useSWR('../api/getuserdetails?hash='+props.hash, { revalidateOnFocus: false })
+function Profile({hash, setUser}) {
+  const { data, error } = useSWR('../api/getuserdetails?hash='+hash, { revalidateOnFocus: false })
   //const { data, error } = useSWR('../api/getemailbyusername?username='+props.username, { revalidateOnFocus: false })
   if (error) return <div style={{visibility: 'hidden'}}>{error}:No such user</div>
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data
-    props.setUser(data)
+    setUser(data)
     return <div>hello {username}!{`\<${email}\>`} Your access level is {access}.</div>
   }
 }
