@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
+import requestIp from 'request-ip';
 import { Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar } from "react-bootstrap";
 
 /**CSS module *//not working//*/I did it wrong
@@ -11,7 +12,7 @@ import jsObjs from '../../components/ll/jsobjs';
 import ClientInfoCard, { useInit } from '../../components/ll/client_info_card';
 import SimpleNav from '../../components/simplenav';
 import { GetServerSideProps } from 'next';
-import { ActiveUser } from '../login/[userlogin]';
+import { ProfileByIp } from '../login/[userlogin]';
 //import { NavBarSelect } from '../../components/ll/navigation/navigaton';
 
 //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: [], nav: [], subnav: []}}
@@ -21,21 +22,20 @@ const jsObj = jsObjs();
  * 
  * @returns This web site
  */
-export default function Clients(props) {
-    const [email, setEmail] = useState(props.email)
-    const [username, setUsername] = useState(props.username)
-    const [access, setAccess] = useState(props.access)
-    const [message, setMessage] = useState(props.message)
+export default function Clients({ip}) {
+
+    const [user, setUser] = useState(null)
     //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: <></>, nav: <></>, subnav: <></>}}
     const pageInfo = useInit()
     return <>
+        <ProfileByIp ip={ip} setUser={setUser}/>
         <Headers />
         <Container className={'logan'}>
             <Row id="header" className={'tcenter'}>
                 <ContainerHeader />
             </Row>
             <Row id="">
-                <NavLeftDefault {...props}/>
+                <NavLeftDefault user={user}/>
                 <ClientInfoCard {...pageInfo}/>
             </Row>
             <Row id="footer">
@@ -90,24 +90,18 @@ function ContainerHeader(i){
  * 
  * @returns Client Navs
  */
-function NavLeftDefault({username}){
+function NavLeftDefault({user}){
     const i = useInit();
     return <Col md={2} id="nav-client">
                 {i.data.nav}
                 <SimpleNav {...{root: "josh", title: "dashboard", links: [], args: '?'}}/>
-                <SimpleNav {...{root: "login", title: username?username:"login", links: [], args: "?homepage=josh"}}/>
+                <SimpleNav {...{root: "login", title: user?'logout '+user.username:"login", links: [], args: "?homepage=josh"}}/>
             </Col>
 }
 
 
-export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
-    const userProps: ActiveUser = {
-        username: context.query.username?context.query.username.toString():'login',
-        email: context.query.email?context.query.email.toString():'',
-        access: context.query.access?context.query.access.toString():'0',
-        message: context.query.message?context.query.message.toString():'Do you need to login?',
-        homepage: context.query.client?context.query.client.toString():"/",
-        ip: context.query.ip?context.query.ip.toString():"/"
-    }
-    return {props: userProps}
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const query = context.query
+    const ip = await requestIp.getClientIp(context.req)
+    return {props: {ip:'::1'?'localhost':ip}} 
 }

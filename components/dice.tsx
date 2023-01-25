@@ -23,7 +23,7 @@ export default function DiceWidget(rand){
         return () => clearInterval(i)
     }, [sides, roller])
 
-    return <div className={'dice-widget'}>
+    return <div className={'dice-widget text-white'}>
         <select value={sides} onChange={e => selectSides(Number(e.target.value))}>
             {dice.map((side, index) => <option key={index} value={side}>{side}</option>)}
         </select>

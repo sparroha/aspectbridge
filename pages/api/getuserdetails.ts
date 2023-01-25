@@ -4,7 +4,7 @@ import sql from "../../lib/,base/sql";
 export default async function getUserDetails(req, res) {
     const { email, username, hash, ip } = req.query;
     let user = null
-    if ( ip ) user = await getUserByIp(ip)
+    if ( !hash && ip ) user = await getUserByIp(ip)
     else if ( hash ) user = await getUserByHash(hash, ip)
     else if( email ) user = await getUserByEmail(email)
     else if( username ) user = await getUserByUsername(username)
@@ -30,5 +30,5 @@ async function getHashByIp(ip) {
 }
 async function getUserByIp(ip) {
     const [user] = await sql`SELECT username, email, access FROM aspect_users_ WHERE ip = ${ip}`
-    return user
+    return user || await getUserByHash(await getHashByIp(ip), ip)
 }

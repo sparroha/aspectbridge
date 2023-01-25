@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
 import { getDomain } from "../domain";
 
-export default function NavIndex(props: { root?: any; username?: any; access?: any; }) {
+export default function NavIndex({ user, root }) {
     const domain = getDomain()
     const router = useRouter()
     const [local, setLocal] = useState(domain=='localhost:3000/'?'true':'false')
-    const [homepage, setHomepage] = useState(props.root || router.pathname)
+    const [homepage, setHomepage] = useState(root || router.pathname)
     const [search, setSearch] = useState('')
-    const {username, access} = props
     /*useEffect(()=>{
         return setLocal(domain=='localhost:3000/'?'true':'false')
     },[domain])*/
@@ -30,8 +29,8 @@ export default function NavIndex(props: { root?: any; username?: any; access?: a
             <Nav.Link href="/josh">Logan's Landscapes</Nav.Link>
         </NavDropdown>)
     }
-    function NavProjects(){
-        return access=='2'?(
+    function NavProjects({user}){
+        return user&&user.access=='2'?(
             <NavDropdown title="Projects" id="navbarProjectsDropdown">
                 <Nav.Link href="/grid/index.html">Grid</Nav.Link>
                 <NavDropdown.Divider />
@@ -71,9 +70,9 @@ export default function NavIndex(props: { root?: any; username?: any; access?: a
                             <Nav.Link href="/dashboard">Home</Nav.Link>{' '}
                             <Nav.Link href="/about">About</Nav.Link>{' '}
                             <NavPartners />{' '}
-                            <NavProjects />{' '}
+                            <NavProjects user={user}/>{' '}
                             <NavResources />{' '}
-                            <Nav.Link href={"/login/"+(username?'logout':'login')+'?homepage='+homepage+(username?'&username='+username:'')}>{username?('Logout '+username):'Login'}</Nav.Link>{' '}
+                            <Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+homepage+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}
                             
                         </Nav>{' '}
                     </Navbar.Collapse>

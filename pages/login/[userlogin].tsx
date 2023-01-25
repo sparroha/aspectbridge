@@ -2,7 +2,7 @@ import { sha224 } from "js-sha256"
 import { GetServerSideProps, NextApiRequest } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { Button, Container, Form } from "react-bootstrap"
+import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
@@ -42,14 +42,14 @@ export default function UserLogin(props: ActiveUser) {
     
     useEffect(() => { 
       if(user)router.push({pathname: '/'+homepage+'/'+user.username, query: {
-        username: user.username, email: user.email, access: user.access, message: 'Welcome back '+user.username
+        username: user.username, email: user.email, access: user.access, message: user.message
       }}
     )},[user])
 
     return <Container>
       {ip}
             <ProfileByIp ip={ip} setUser={setUser}/>
-            <Profile hash={hash} setUser={setUser}/>
+            <Profile hash={hash} ip={ip} setUser={setUser}/>
 
             <div style={loginLayout}>{
               method === 'login'?
@@ -119,7 +119,7 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         access: '0',
         message: 'failed to retrieve user name',
         homepage: homepage?homepage:'bridge',
-        ip: ip
+        ip: ip=='::1'?'localhost':ip
     }
     if(method === 'logout'){
       await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
@@ -141,23 +141,25 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
     }
     return {props: userProps}
 }
-function Profile({hash, setUser}) {
-  const { data, error } = useSWR('../api/getuserdetails?hash='+hash, { revalidateOnFocus: false })
+export function Profile({hash, ip, setUser}) {
+  const { data, error } = useSWR('../api/getuserdetails?hash='+hash+'&ip='+ip, { revalidateOnFocus: false })
   if (error) return <div style={{visibility: 'visible'}}>{JSON.stringify(error)}:No such user</div>
   if (!data) return <div>loading...</div>
   else {
-    let {username, email, access, ip} = data
+    let {username, email, access} = data
+    data.message = 'Welcome back '+data.username+'!'
     setUser(data)
     return <div>hello {username}!{`\<${email}\>`} Your access level is {access}. IP: {ip}</div>
   }
 }
-function ProfileByIp({ip, setUser}) {
+export function ProfileByIp({ip, setUser}) {
   const { data, error } = useSWR('../api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
   if (error) return <div style={{visibility: 'visible'}}>{JSON.stringify(error)}:No such user</div>
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data
+    data.message = 'Welcome back '+data.username+'!'
     setUser(data)
-    return <div>hello {username}!{`\<${email}\>`} Your access level is {access}.</div>
+    return <Row><Col sm={12} className={'tcenter'} style={{color: 'white'}}>hello {username}!{`\<${email}\>`} Your access level is {access}.</Col></Row>
   }
 }

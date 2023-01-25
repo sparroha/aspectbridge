@@ -7,13 +7,14 @@ import { useRouter } from 'next/router';
 import NavIndex from '../../components/ab/nav';
 import navComponentObject from '../../components/ab/navigaton';
 import { GetServerSideProps } from 'next';
-import { ActiveUser } from '../login/[userlogin]';
+import { ActiveUser, ProfileByIp } from '../login/[userlogin]';
 import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
 import SimpleNav from '../../components/simplenav';
 import DiceWidget from '../../components/dice';
 import TLiterator from '../../components/hebrew';
+import requestIp from 'request-ip';
 
 /**CSS module *//not working/
 //TODO is working
@@ -29,24 +30,17 @@ const componentObject = navComponentObject()
  * 
  * @returns This web site
  */
-export default function AspectBridge(props: ActiveUser) {
-    const [email, setEmail] = useState(props.email)
-    const [username, setUsername] = useState(props.username)
-    const [access, setAccess] = useState(props.access)
-    const [message, setMessage] = useState(props.message)
-    const router = useRouter()
-    if(username){
-    useEffect(() => {
-        router.push('./'+username)
-    }, [username])}
+export default function AspectBridge({ip}) {
+    const [user, setUser] = useState(null)
     return <>
+        <ProfileByIp ip={ip} setUser={setUser}/>
         <Headers />
         <Container className={'aspect'}>
-            <ContainerHeader username={username} access={access}/>
+            <ContainerHeader user={user?user:null}/>
             <Row id="content" className={""}>
                 <NavLeftDefault />
-                    <DynamicInfo props={{username: username, access: access, message: message}}/>
-                <NavRightDefault props={{username: username, access: access, message: message}}/>
+                    <DynamicInfo user={user}/>
+                <NavRightDefault user={user}/>
             </Row>
             <Row>
                 <CalendarTab />
@@ -97,11 +91,11 @@ function Headers(){
  * 
  * @returns Title bar and Navbar
  */
-function ContainerHeader(props: { username: any; access: any; }){
+function ContainerHeader({ user }){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
-                    <NavIndex username={props.username} access={props.access} root={"bridge"}/>
+                    <NavIndex user={user} root={"bridge"}/>
                 </Col>
             </Row>
 }
@@ -113,23 +107,25 @@ function ContainerHeader(props: { username: any; access: any; }){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col xs={12} sm={3} md={1} id="nav-left" className={"well-sm p0"} style={{position: 'relative'}}>
-                <div className={'w100 h100'} style={{position: 'relative', zIndex: '5'}}>
-                    <SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]} args={""}/>
-                    <DiceWidget style={{position: 'absolute', zIndex: 10}}/>
-                </div>
-                <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
+    return <Col xs={12} sm={3} md={2} id="nav-left" className={"p0 'w100 h100'"}>
+                <Row className={'w100 h100'} style={{position: 'relative', zIndex: '5'}}>
+                    <Col xs={8} sm={12}><SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]}/></Col>
+                    <Col xs={4} sm={12}><DiceWidget/></Col>
+                    <div className={'grey-back o4 w100 h100'} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
+                </Row>
             </Col>
 }
-function NavRightDefault(props){  
+function NavRightDefault({user}){  
     const [hide, setHide] = useState('hidden')
-    return <Col xs={12} sm={3} md={1} id="nav-right" className={"well-sm p0"} style={{position: 'relative'}}>
-                <div style={{visibility: 'visible', position: 'relative', zIndex: '5'}}>{/**this error is invalid. visibility still works */}
-                    Username: {props.props.username} <br />
-                    Access: {props.props.access} <br />
-                    Message: {props.props.message} <br />
-                </div>
-                <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
+    return <Col xs={12} sm={3} md={2} id="nav-right" className={"p0"}>
+                <Row className={'w100 h100'} style={{visibility: 'visible', position: 'relative', zIndex: '5', color: 'white'}}>{/**this error is invalid. visibility still works */}
+                    <Col>
+                        Username: {user?user.username:''} <br />
+                        Access: {user?user.access:''} <br />
+                        Message: {user?user.message:''} <br />
+                    </Col>
+                    <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
+                </Row>
             </Col>
 }
 function Footer(){
@@ -175,7 +171,7 @@ function Footer(){
  * 
  * @returns DynamicInfo
  */
-function DynamicInfo(props){
+function DynamicInfo({user}){
     const router = useRouter()
     const { aspect } = router.query //query url props
     const [bridge, setBridge] = useState(<></>)
@@ -202,7 +198,7 @@ function DynamicInfo(props){
                         break;
                     }
                 } break;
-                default: {setBridge(<Placeholder feed={dir}/>)}
+                default: {setBridge(<Placeholder user={user}/>)}
                 break;
             }//console.log('Client: '+dir+'|'+(aspect.length>1?aspect[0]:aspect)+' ./. Subdomain: '+sub+'|'+(aspect.length>1?aspect[1]:aspect))
         }
@@ -211,18 +207,17 @@ function DynamicInfo(props){
         handleBridgePassage()
         return handleBridgePassage()
     }, [aspect])
-    return <Col xs={12} sm={6} md={10} id='home' className={"well-sm white-back scroll"} style={{position: 'relative'}}>
-                <h3 className={'img-banner'}>{props.username}</h3>
-                User Notification: {props.props.message}
+    return <Col xs={12} sm={6} md={8} id='home' className={"white-back scroll"}>
+                <h3 className={'img-banner'}>{user?user.username:'No user'}</h3>
+                User Notification: {user?user.message:'No message'}
                 <hr />
                 {bridge/**page content */}
-                <Row><Col sm={4}></Col><Col sm={4}><TLiterator /></Col><Col sm={4}></Col></Row>
+                <Row><Col md={4}></Col><Col sm={12} md={4}><TLiterator /></Col><Col md={4}></Col></Row>
             </Col>
 }
-function Placeholder(props){
+function Placeholder({user}){
     return <Row className={""}>
             <Col md={12} className={"tcenter black-font"}>
-                <h1>{props.feed}</h1>
                 <p>14. The race of the dwarfs | in Dvalin's throng</p>
                 <p>Down to Lofar | the list must I tell;</p>
                 <p>The rocks they left, | and through wet lands</p>
@@ -243,16 +238,17 @@ function Placeholder(props){
         </Row>
 }
 
-export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
     //TODO: get user data from cookie
     const query = context.query
-    const userProps: ActiveUser = {
+    const ip = await requestIp.getClientIp(context.req)
+    /*const userProps: ActiveUser = {
         username: query.username!=undefined?query.username:null,
         email: query.email!=undefined?query.email:'',
         access: query.access!=undefined?query.access:'0',
         message: query.message!=undefined?query.message:'Do you need to login?',
         homepage: query.aspect!=undefined?query.aspect:"",
-        ip: query.ip!=undefined?query.ip:""
-    }
-    return {props: userProps} 
+        ip: ip=='::1'?'localhost':ip
+    }*/
+    return {props: {ip:'::1'?'localhost':ip}} 
 }
