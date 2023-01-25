@@ -14,6 +14,7 @@ use anthymn_aspectbridge
                     username varchar(255),
                     email varchar(255),
                     hash varchar(255),
+                    ip varchar(255),
                     access int(2)
                 );`
 ```

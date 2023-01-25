@@ -23,6 +23,7 @@ export default function UserLogin(props: ActiveUser) {
     const [homepage, setHomepage] = useState(props.homepage)
     const [hash, setHash] = useState('')
     const [user, setUser] = useState(null)
+    const [ip, setIp] = useState(props.ip||null)
     const [method, setMethod] = useState(router.query.userlogin)
     const loginLayout = {
       backgroundColor: '#0c0',
@@ -46,7 +47,8 @@ export default function UserLogin(props: ActiveUser) {
     )},[user])
 
     return <Container>
-            {props.ip}
+      {ip}
+            <ProfileByIp ip={ip} setUser={setUser}/>
             <Profile hash={hash} setUser={setUser}/>
 
             <div style={loginLayout}>{
@@ -111,7 +113,6 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
     const hash = sha224(context.query.email+''+context.query.password)
     const homepage = context.query.homepage
     const ip = await requestIp.getClientIp(context.req)
-
     let userProps: ActiveUser = {
         username: '',
         email: '',
@@ -120,15 +121,19 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
         homepage: homepage?homepage:'bridge',
         ip: ip
     }
-
+    if(method === 'logout'){
+      await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
+    }
+    else
     if(method === 'register'){
-      const Q1 = await sql`INSERT INTO aspect_users_ (username, email, hash, access) values (${username}, ${email}, ${hash}, 0);`
+      const Q1 = await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
       if (Q1) {//"fieldCount":0,"affectedRows":1,"insertId":30,"info":"","serverStatus":2,"warningStatus":0}
         userProps.email = JSON.stringify(Q1)
-        const [Q2] = await sql`SELECT username, email, access FROM aspect_users_ WHERE hash = ${hash}`
+        const [Q2] = await sql`SELECT username, email, access, ip FROM aspect_users_ WHERE hash = ${hash}`
         if (Q2) {//{"username":"Fore Getable","email":"forgettable","access":0}
           userProps.username = JSON.stringify(Q2)
           userProps.access = '0'
+          userProps.ip = JSON.stringify(Q2.ip)
           userProps.message = 'Welcome '+JSON.stringify(Q2.username)+'!'
         }
         else userProps.message = 'failed to register user'
@@ -138,8 +143,17 @@ export const getServerSideProps: GetServerSideProps<ActiveUser> = async (context
 }
 function Profile({hash, setUser}) {
   const { data, error } = useSWR('../api/getuserdetails?hash='+hash, { revalidateOnFocus: false })
-  //const { data, error } = useSWR('../api/getemailbyusername?username='+props.username, { revalidateOnFocus: false })
-  if (error) return <div style={{visibility: 'hidden'}}>{error}:No such user</div>
+  if (error) return <div style={{visibility: 'visible'}}>{JSON.stringify(error)}:No such user</div>
+  if (!data) return <div>loading...</div>
+  else {
+    let {username, email, access, ip} = data
+    setUser(data)
+    return <div>hello {username}!{`\<${email}\>`} Your access level is {access}. IP: {ip}</div>
+  }
+}
+function ProfileByIp({ip, setUser}) {
+  const { data, error } = useSWR('../api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
+  if (error) return <div style={{visibility: 'visible'}}>{JSON.stringify(error)}:No such user</div>
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data

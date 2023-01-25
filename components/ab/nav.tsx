@@ -73,7 +73,7 @@ export default function NavIndex(props: { root?: any; username?: any; access?: a
                             <NavPartners />{' '}
                             <NavProjects />{' '}
                             <NavResources />{' '}
-                            <Nav.Link href={"/login/"+(username?username:'login')+'?homepage='+homepage}>{username?username:'Login'}</Nav.Link>{' '}
+                            <Nav.Link href={"/login/"+(username?'logout':'login')+'?homepage='+homepage+(username?'&username='+username:'')}>{username?('Logout '+username):'Login'}</Nav.Link>{' '}
                             
                         </Nav>{' '}
                     </Navbar.Collapse>
