@@ -46,33 +46,31 @@ export default function UserLogin({ip, homepage}) {
     return <Container>
             {/**ProfileByIp is used to login if session ip is saved */}
             {/**ProfileByIp will not work if user has logged out */}
-            {ip}<ProfileByIp ip={ip} setUser={setUser}/>
+            <ProfileByIp ip={ip} setUser={setUser}/>
             {/**Profile is used to login if session is not saved */}
-            {ip}<Profile hash={hash} ip={ip} setUser={setUser}/>
+            <Profile hash={hash} ip={ip} setUser={setUser}/>
 
             <div style={loginLayout}>{
-              method === 'login'?
-              <LoginForm setHash={setHash}/>
+              method === 'login'?<LoginForm setHash={setHash}/>
               :<Button variant="primary" type="submit" onClick={() => {setMethod('login')}}>Back to Login</Button>
             }</div>
-            {/*<Method method={'registernew'} name={'Register New User'} setMethod={setMethod}>
-              <RegisterForm homepage={homepage}/>
-          </Method>*/}
+
             <div style={registerLayout}>{
               method === 'registernew'?
               <RegisterForm homepage={homepage}/>
               :<Button variant="primary" type="submit" onClick={() => {setMethod('registernew')}}>Register New User</Button>
             }</div>
+
           </Container>
 }
-
-export function Method( {method, name, setMethod, children}){
-  return <div>{
-    method === method?
-    {children}
-    :<Button onClick={() => {setMethod(method)}}>{name}</Button>
+/*
+export function Wrapper( {children, name, style, onclick}){
+  return <div style={style}>{
+    true?
+    children
+    :<Button onClick={onclick}>{name}</Button>
   }</div>
-}
+}*/
 
 function LoginForm({setHash}){
   const [email, setEmail] = useState('')
@@ -130,7 +128,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
 
 export function Profile({hash, ip, setUser}) {
   const { data, error } = useSWR('../api/getuserdetails?hash='+hash+'&ip='+ip, { revalidateOnFocus: false })
-  if (error) return <div style={{visibility: 'visible'}}>{JSON.stringify(error)}:No such user</div>
+  if (error) return <div style={{visibility: 'hidden', position: 'absolute'}}>{JSON.stringify(error)}:No such user</div>
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data
@@ -141,7 +139,7 @@ export function Profile({hash, ip, setUser}) {
 }
 export function ProfileByIp({ip, setUser}) {
   const { data, error } = useSWR('../api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
-  if (error) return <div style={{visibility: 'visible'}}>{JSON.stringify(error)}:User not cached. Please login or register.</div>
+  if (error) return <div style={{visibility: 'hidden', position: 'absolute'}}>{JSON.stringify(error)}:User not cached. Please login or register.</div>
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data
