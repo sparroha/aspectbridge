@@ -239,16 +239,7 @@ function Placeholder({user}){
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    //TODO: get user data from cookie
     const query = context.query
     const ip = await requestIp.getClientIp(context.req)
-    /*const userProps: ActiveUser = {
-        username: query.username!=undefined?query.username:null,
-        email: query.email!=undefined?query.email:'',
-        access: query.access!=undefined?query.access:'0',
-        message: query.message!=undefined?query.message:'Do you need to login?',
-        homepage: query.aspect!=undefined?query.aspect:"",
-        ip: ip=='::1'?'localhost':ip
-    }*/
-    return {props: {ip:'::1'?'localhost':ip}} 
+    return {props: {ip: ip=='::1'?'localhost':ip}} 
 }

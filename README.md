@@ -13,7 +13,7 @@ use anthymn_aspectbridge
                     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     username varchar(255),
                     email varchar(255),
-                    hash varchar(255),
+                    hash varchar(255) NOT NULL UNIQUE,
                     ip varchar(255),
                     access int(2)
                 );`
