@@ -6,6 +6,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
+import SimpleNav from "../../components/simplenav"
 
 export type ActiveUser = {
   username: string | string[],
@@ -22,6 +23,7 @@ export default function UserLogin({ip, homepage}) {
     const [method, setMethod] = useState(router.query.userlogin)
     const [hash, setHash] = useState('')
     const [user, setUser] = useState(null)
+    const [menu, setMenu] = useState('show')
     const loginLayout = {
       backgroundColor: '#0c0',
       padding: '10px',
@@ -31,6 +33,13 @@ export default function UserLogin({ip, homepage}) {
     }
     const registerLayout = {
       backgroundColor: '#cc0',
+      padding: '10px',
+      paddingLeft: '20px',
+      paddingRight: '20px',
+      borderRadius: '10px'
+    }
+    const menuLayout = {
+      backgroundColor: '#c0c',
       padding: '10px',
       paddingLeft: '20px',
       paddingRight: '20px',
@@ -50,6 +59,14 @@ export default function UserLogin({ip, homepage}) {
             {/**Profile is used to login if session is not saved */}
             <Profile hash={hash} ip={ip} setUser={setUser}/>
 
+            <div style={menuLayout}>{
+              menu === 'show'?<>
+                <Button onClick={() => {setMenu('hide')}}>{'\u21E3'}</Button>
+                <SimpleNav root={"./"} title={"login/login"} links={["login", "logout", "registernew"]} args={''}/>
+              </>
+              :<Button onClick={() => {setMenu('show')}}>{'\u2911'}</Button>
+            }</div>
+
             <div style={loginLayout}>{
               method === 'login'?<LoginForm setHash={setHash}/>
               :<Button variant="primary" type="submit" onClick={() => {setMethod('login')}}>Back to Login</Button>
@@ -63,12 +80,13 @@ export default function UserLogin({ip, homepage}) {
 
           </Container>
 }
-/*
-export function Wrapper( {children, name, style, onclick}){
+
+/*good example but doesnt work
+export function StateToggle( {setState, state, key, name, style, children}){
   return <div style={style}>{
-    true?
+    state===key?
     children
-    :<Button onClick={onclick}>{name}</Button>
+    :<Button onClick={setState(key)}>{name}</Button>
   }</div>
 }*/
 
