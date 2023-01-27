@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import useSWR from "swr";
 
 export default function ClientForm(){
@@ -13,7 +13,7 @@ export default function ClientForm(){
     const [street2, setStreet2] = useState('')
     const [update, setUpdate] = useState(false)
   
-    return <><Form id={'clientForm'} onSubmit={(event) => {event.preventDefault();setUpdate(true)}} >
+    return <Container><Form id={'clientForm'} onSubmit={(event) => {event.preventDefault();setUpdate(true)}} >
         <Form.Group controlId="formClient">
             <Form.Label>Client</Form.Label>
             <Form.Control required type="text" name="clientname" placeholder={"clientname"} onChange={(e)=>setClientName(e.target.value)}/>
@@ -36,7 +36,7 @@ export default function ClientForm(){
         </Form.Group>
         <Form.Group controlId="formState">
             <Form.Label>State</Form.Label>
-            <select required name="state" placeholder={"state"} onChange={(e)=>{setState(e.target.options[e.target.selectedIndex].value);setStateCode(e.target.options[e.target.selectedIndex].value)}}>
+            <Form.Select required name="state" placeholder={"state"} onChange={(e)=>{setState(e.target.options[e.target.selectedIndex].value);setStateCode(e.target.options[e.target.selectedIndex].value)}}>
                 <option value="">- Select -</option>
                 <option value="AL">AL - Alabama</option>
                 <option value="AK">AK - Alaska</option>
@@ -101,16 +101,16 @@ export default function ClientForm(){
                 <option value="AE">AE - Armed Forces Europe</option>
                 <option value="AE">AE - Armed Forces Middle East</option>
                 <option value="AP">AP - Armed Forces Pacific</option>
-            </select>
+            </Form.Select>
         </Form.Group>
         <Form.Group controlId="formZip">
             <Form.Label>ZIP</Form.Label>
             <Form.Control required type="number" name="zip" placeholder={"zip"} onChange={(e)=>setZip(e.target.value)}/>
         </Form.Group>
-        <Button type="submit" >Login</Button>
+        <Button type="submit" >Update Client</Button>
     </Form>
     <DisplayClient cliN={clientname} E={email} S1={street1} S2={street2} C={city} S={state} SC={statecode} Z={zip} U={update} setUpdate={setUpdate}/>
-    </>
+    </Container>
   }
   export function DisplayClient({cliN, E, S1, S2, C, S, SC, Z, U, setUpdate}) {
     const { data, error } = useSWR('../api/database/updateclientdetails?clientname='+cliN+'&email='+E+'&street1='+S1+'&street2='+S2+'&city='+C+'&state='+S+'&statecode='+SC+'&zip='+Z+'&update='+U, { revalidateOnFocus: false })
@@ -123,13 +123,13 @@ export default function ClientForm(){
       }
       //data.message = 'Welcome back '+data.username+'!'
       return <>{message}<Row>
-            <Col sm={3} className={'tcenter'} style={{color: 'black'}}>Client: {clientname}</Col>
-            <Col sm={3} className={'tcenter'} style={{color: 'black'}}>Email: {email}</Col>
-            <Col sm={3} className={'tcenter'} style={{color: 'black'}}>Street 1: {street1}</Col>
-            <Col sm={3} className={'tcenter'} style={{color: 'black'}}>Street 2: {street2}</Col>
-            <Col sm={3} className={'tcenter'} style={{color: 'black'}}>City: {city}</Col>
-            <Col sm={3} className={'tcenter'} style={{color: 'black'}}>State: {statecode} - {state}</Col>
-            <Col sm={3} className={'tcenter'} style={{color: 'black'}}>Zip: {zip}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Client: </b>{clientname}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Email: </b>{email}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Street 1: </b>{street1}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Street 2: </b>{street2}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>City: </b>{city}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>State - Code: </b>{statecode} - {state}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Zip: </b>{zip}</Col>
         </Row></>
     }
   }

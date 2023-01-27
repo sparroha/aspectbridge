@@ -18,7 +18,10 @@ export default async function updateClientDetails(req, res) {
         await sql`Update logan_clients_ SET email = ${email}, street1 = ${street1}, street2 = ${street2}, city = ${city}, state = ${state}, statecode = ${statecode}, zip = ${zip} WHERE clientname = ${clientname}`
         res.status(200).json({clientname: clientname, email: email, street1: street1, street2: street2, city: city, state: state, statecode: statecode, zip: zip, updated: true});
     }
-    else return res.status(200).json({message: 'Standby...'})
+    else {
+        const [client] = await sql`SELECT * FROM logan_clients_ WHERE clientname = ${clientname}`
+        return res.status(200).json(client)
+    }
 }/*
 async function getUserByHash(hash, ip) {
     const [user] = await sql`SELECT username, email, access FROM aspect_users_ WHERE hash = ${hash}`
