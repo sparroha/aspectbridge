@@ -2,8 +2,8 @@ import sql from "../../../lib/,base/sql";
 
 export default async function updateClientDetails(req, res) {
     const {clientname, email, street1, street2, city, state, statecode, zip, update} = req.query;
-    const [count] = await sql`SELECT Count(*) as c FROM logan_clients_ WHERE clientname = ${clientname}`
     if ( update == 'true' ) {
+        const [count] = await sql`SELECT Count(*) as c FROM logan_clients_ WHERE clientname = ${clientname}`
         if (count.c == 0) {await sql`INSERT INTO logan_clients_ (clientname, email, street1, street2, city, state, statecode, zip) values (${clientname}, ${email}, ${street1}, ${street2}, ${city}, ${state}, ${statecode}, ${zip});`}
         const [client] = await sql`SELECT * FROM logan_clients_ WHERE clientname = ${clientname}`
         /*if(client.clientname != clientname) await sql`Update logan_clients_ SET clientname = ${clientname} WHERE clientname = ${clientname}`

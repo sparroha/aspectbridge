@@ -13,6 +13,7 @@ import ClientInfoCard, { useInit } from '../../components/ll/client_info_card';
 import SimpleNav from '../../components/simplenav';
 import { GetServerSideProps } from 'next';
 import { ProfileByIp } from '../login/[userlogin]';
+import { DisplayClientByName } from '../../components/ll/clientform';
 //import { NavBarSelect } from '../../components/ll/navigation/navigaton';
 
 //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: [], nav: [], subnav: []}}

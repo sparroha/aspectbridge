@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import useSWR from "swr";
 
@@ -12,7 +12,10 @@ export default function ClientForm(){
     const [street1, setStreet1] = useState('')
     const [street2, setStreet2] = useState('')
     const [update, setUpdate] = useState(false)
-  
+    const [client, setClient] = useState(null)
+    useEffect(() => {
+        return
+    },[client])
     return <Container><Form id={'clientForm'} onSubmit={(event) => {event.preventDefault();setUpdate(true)}} >
         <Form.Group controlId="formClient">
             <Form.Label>Client</Form.Label>
@@ -20,11 +23,11 @@ export default function ClientForm(){
         </Form.Group>
         <Form.Group controlId="formEmail">
             <Form.Label>Email</Form.Label>
-            <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
+            <Form.Control type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
         </Form.Group>
         <Form.Group controlId="formStreet1">
             <Form.Label>Street 1</Form.Label>
-            <Form.Control required type="text" name="street1" placeholder={"Street 1"} onChange={(e)=>setStreet1(e.target.value)}/>
+            <Form.Control type="text" name="street1" placeholder={"Street 1"} onChange={(e)=>setStreet1(e.target.value)}/>
         </Form.Group>
         <Form.Group controlId="formStreet2">
             <Form.Label>Street 2</Form.Label>
@@ -32,11 +35,11 @@ export default function ClientForm(){
         </Form.Group>
         <Form.Group controlId="formCity">
             <Form.Label>City</Form.Label>
-            <Form.Control required type="text" name="city" placeholder={"password"} onChange={(e)=>setCity(e.target.value)}/>
+            <Form.Control type="text" name="city" placeholder={"city"} onChange={(e)=>setCity(e.target.value)}/>
         </Form.Group>
         <Form.Group controlId="formState">
             <Form.Label>State</Form.Label>
-            <Form.Select required name="state" placeholder={"state"} onChange={(e)=>{setState(e.target.options[e.target.selectedIndex].value);setStateCode(e.target.options[e.target.selectedIndex].value)}}>
+            <Form.Select name="state" placeholder={"state"} onChange={(e)=>{setState(e.target.options[e.target.selectedIndex].value);setStateCode(e.target.options[e.target.selectedIndex].value)}}>
                 <option value="">- Select -</option>
                 <option value="AL">AL - Alabama</option>
                 <option value="AK">AK - Alaska</option>
@@ -105,15 +108,15 @@ export default function ClientForm(){
         </Form.Group>
         <Form.Group controlId="formZip">
             <Form.Label>ZIP</Form.Label>
-            <Form.Control required type="number" name="zip" placeholder={"zip"} onChange={(e)=>setZip(e.target.value)}/>
+            <Form.Control type="number" name="zip" placeholder={"zip"} onChange={(e)=>setZip(e.target.value)}/>
         </Form.Group>
         <Button type="submit" >Update Client</Button>
     </Form>
-    <DisplayClient cliN={clientname} E={email} S1={street1} S2={street2} C={city} S={state} SC={statecode} Z={zip} U={update} setUpdate={setUpdate}/>
+    <DisplayClient cliN={clientname} E={email} S1={street1} S2={street2} C={city} S={state} SC={statecode} Z={zip} U={update} setUpdate={setUpdate} setClient={setClient}/>
     </Container>
   }
-  export function DisplayClient({cliN, E, S1, S2, C, S, SC, Z, U, setUpdate}) {
-    const { data, error } = useSWR('../api/database/updateclientdetails?clientname='+cliN+'&email='+E+'&street1='+S1+'&street2='+S2+'&city='+C+'&state='+S+'&statecode='+SC+'&zip='+Z+'&update='+U, { revalidateOnFocus: false })
+  export function DisplayClient({cliN, E, S1, S2, C, S, SC, Z, U, setUpdate, setClient}) {
+    const { data, error } = useSWR('../api/database/updateclientdetails?clientname='+cliN+'&email='+E+'&street1='+S1+'&street2='+S2+'&city='+C+'&state='+S+'&statecode='+SC+'&zip='+(Z?Z:'00000')+'&update='+U, { revalidateOnFocus: false })
     if (error) return <div style={{visibility: 'visible', position: 'absolute'}}>{JSON.stringify(error)}:Client not loaded.</div>
     if (!data) return <div>loading...</div>
     else {
@@ -121,6 +124,27 @@ export default function ClientForm(){
       if (updated) {
         setUpdate(false)
       }
+      setClient(data)
+      //data.message = 'Welcome back '+data.username+'!'
+      return <>{message}<Row>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Client: </b>{clientname}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Email: </b>{email}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Street 1: </b>{street1}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Street 2: </b>{street2}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>City: </b>{city}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>State - Code: </b>{statecode} - {state}</Col>
+            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Zip: </b>{zip}</Col>
+        </Row></>
+    }
+  }
+  export function DisplayClientByName({cliN}) {
+    //const [client, setClient] = useState({})
+    const { data, error } = useSWR('../api/database/updateclientdetails?clientname='+cliN, { revalidateOnFocus: false })
+    if (error) return <div style={{visibility: 'visible', position: 'relative'}}>{JSON.stringify(error)}{cliN}:Client not loaded.</div>
+    if (!data) return <div>loading...</div>
+    else {
+      let {clientname, email, street1, street2, city, state, statecode, zip, updated, message} = data
+      //setClient(data)
       //data.message = 'Welcome back '+data.username+'!'
       return <>{message}<Row>
             <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Client: </b>{clientname}</Col>
