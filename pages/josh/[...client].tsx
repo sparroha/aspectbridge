@@ -28,6 +28,8 @@ export default function Clients({ip}) {
     //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: <></>, nav: <></>, subnav: <></>}}
     const pageInfo = useInit()
     return <>
+        {/**ProfileByIp is used to login if session ip is saved */}
+        {/**ProfileByIp will not work if user has logged out */}
         <ProfileByIp ip={ip} setUser={setUser}/>
         <Headers />
         <Container className={'logan'}>

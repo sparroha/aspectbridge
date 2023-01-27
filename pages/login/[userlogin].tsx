@@ -59,6 +59,7 @@ export default function UserLogin({ip, homepage}) {
             {/**Profile is used to login if session is not saved */}
             <Profile hash={hash} ip={ip} setUser={setUser}/>
 
+            {/**Menu Dropdown example*/}
             <div style={menuLayout}>{
               menu === 'show'?<>
                 <Button onClick={() => {setMenu('hide')}}>{'\u21E3'}</Button>
@@ -97,11 +98,11 @@ function LoginForm({setHash}){
   return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password))}} >
       <Form.Group controlId="formEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
+          <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
       </Form.Group>
       <Form.Group controlId="formPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" name="password" placeholder={"password"} onChange={(e)=>setPassword(e.target.value)}/>
+          <Form.Control required type="password" name="password" placeholder={"password"} onChange={(e)=>setPassword(e.target.value)}/>
       </Form.Group>
       <Button type="submit" >Login</Button>
   </Form>
@@ -111,18 +112,18 @@ function RegisterForm({homepage}){
   return <Form id={'registerForm'}>
         <Form.Group controlId="formUsername">
             <Form.Label>Username</Form.Label>
-            <Form.Control type="text" name="username" placeholder={"username"}/>
+            <Form.Control required type="text" name="username" placeholder={"username"}/>
         </Form.Group>
         <Form.Group controlId="formEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" name="email" placeholder={"email"}/>
+            <Form.Control required type="email" name="email" placeholder={"email"}/>
         </Form.Group>
         <Form.Group controlId="formPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" name="password" placeholder="password"/>
+            <Form.Control required type="password" name="password" placeholder="password"/>
         </Form.Group>
         <Form.Group controlId="formHidden">
-            <Form.Control type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
+            <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
         </Form.Group>
         <Button variant="primary" type="submit" formAction={"/login/register"}>Register</Button>
     </Form>
