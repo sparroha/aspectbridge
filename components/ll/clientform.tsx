@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import useSWR from "swr";
+const style = {
+    clientList: {
+        color: 'black',
+        backgroundColor: 'lightgray',
+        border: 'solid 1px rgba(0, 0, 0)'
+    },
+}
 
 export default function ClientForm(){
     const [clientname, setClientName] = useState('')
@@ -126,14 +133,14 @@ export default function ClientForm(){
       }
       setClient(data)
       //data.message = 'Welcome back '+data.username+'!'
-      return <>{message}<Row>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Client: </b>{clientname}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Email: </b>{email}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Street 1: </b>{street1}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Street 2: </b>{street2}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>City: </b>{city}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>State - Code: </b>{statecode} - {state}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Zip: </b>{zip}</Col>
+      return <>{message}<Row className={""}>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Client: </b>{clientname}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Email: </b>{email}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Street 1: </b>{street1}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Street 2: </b>{street2}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>City: </b>{city}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>State - Code: </b>{statecode} - {state}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Zip: </b>{zip}</Col>
         </Row></>
     }
   }
@@ -147,13 +154,13 @@ export default function ClientForm(){
       //setClient(data)
       //data.message = 'Welcome back '+data.username+'!'
       return <>{message}<Row>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Client: </b>{clientname}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Email: </b>{email}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Street 1: </b>{street1}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Street 2: </b>{street2}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>City: </b>{city}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>State - Code: </b>{statecode} - {state}</Col>
-            <Col sm={6} className={'tcenter r90'} style={{color: 'black', backgroundColor: 'lightgray'}}><b>Zip: </b>{zip}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Client: </b>{clientname}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Email: </b>{email}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Street 1: </b>{street1}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Street 2: </b>{street2}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>City: </b>{city}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>State - Code: </b>{statecode} - {state}</Col>
+            <Col sm={6} className={'tcenter r90'} style={style.clientList}><b>Zip: </b>{zip}</Col>
         </Row></>
     }
   }
