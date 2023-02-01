@@ -100,8 +100,9 @@ export default function WASD() {
 
             //debug
             let feed = debugfeed;
-            let length = feed.push("@index-engine-77-feedw {events:keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode+"}")
-            let df = debugfeed[length]
+            let old = feed.shift()
+            let length = feed.push("@index-engine-77-feedw {events:keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode+" feedLength = "+feed.length+"}")
+            let df = debugfeed[length-1]
             setDebugfeed(feed)
         };  
         window.onkeyup = function handleKeyUp(event) {
@@ -348,7 +349,7 @@ export default function WASD() {
      */
     return <Container id={'body'}>
                 <Row className={'tcenter'}>
-                    <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>{mousepos.x+'/'+mousepos.y}<br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}</Col>
+                    <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>{Math.floor(mousepos.x)+'/'+Math.floor(mousepos.y)}<br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}</Col>
                     <Col sm={'3'}><h4 className={'col-sm-6'}><b>Control the Object With "W/A/S/D". Press 1 - 3 to file.</b></h4></Col>
                     <Col sm={'3'} id={"ups"} style={{position: 'relative', visibility: 'visible'}}>{'u/s='+updates+' s='+seconds+' width='+maxX+' height='+maxY}</Col>
                 </Row>
