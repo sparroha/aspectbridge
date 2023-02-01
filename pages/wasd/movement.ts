@@ -1,5 +1,7 @@
 import { cleanArrayNulls } from ".";
 
+export default function(){return null}
+
 export function vec(x,y){
 	return {x: x, y: y}
 }

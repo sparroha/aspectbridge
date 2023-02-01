@@ -1,5 +1,6 @@
 import { vec, vecObj } from "./movement";
 
+export default function(){return null}
 //newProjectile(fireball(),$('caster'),new vec(target.x,target.y))
 export function newProjectile(vecObjs, setVecObjs, entity,caster,target,maxlife,size,speed?){
 	maxlife = maxlife||200;
