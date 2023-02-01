@@ -75,6 +75,7 @@ export default function WASD() {
     }, []);
 
     useEffect(() => {
+        //TODO develope better key tracker
         window.onkeydown = function handleKeyDown(event) {
             event = event || window.event;
             setKeyDown(event.keyIdentifier||event.keyCode);
@@ -354,8 +355,9 @@ export default function WASD() {
 * * * CONTEXT MENUS * * *
 * require within ueEffect
 */
+let password = 'password';
 function NI(){
-    if(prompt('Not Implemented')=='password'){
+    if(prompt('Not Implemented: Enter "password" in the box to continue.')==password){
         window.oncontextmenu = function handleContextMenue(event) {
             return true;
         }
