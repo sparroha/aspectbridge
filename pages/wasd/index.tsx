@@ -29,7 +29,7 @@ export default function WASD() {
     const [east, setEast] = useState(false);
     const [south, setSouth] = useState(false);
     const [west, setWest] = useState(false);
-    var KEYS = {
+    var KEYS = useRef({
         NORTH: {UNI:"U+0057", DECI: "87", DOWN: false},
         SOUTH: {UNI:"U+0053", DECI: "83", DOWN: false},
         EAST: {UNI:"U+0044", DECI: "68", DOWN: false},
@@ -66,7 +66,7 @@ export default function WASD() {
         NUMDIVIDE: {UNI:"U+004F", DECI: "111", DOWN: false},
         
         F12: {UNI:"F12", DECI: "123", DOWN: false},
-    };
+    });
 
     /**
      * * * INITIAL SETUP * * *
@@ -97,7 +97,6 @@ export default function WASD() {
         window.onkeydown = function handleKeyDown(event) {
             event = event || window.event;
             OnKeyDown(event);
-
             //debug
             let feed = debugfeed;
             let old = feed.shift()
@@ -218,34 +217,34 @@ export default function WASD() {
     function OnKeyDown(e)
     {
         if(e === null)e = window.event;
-        if(e.keyIdentifier==KEYS.ONE.UNI||e.keyCode==KEYS.ONE.DECI){KEYS.ONE.DOWN=true;onKeyDown1();}
-        if(e.keyIdentifier==KEYS.TWO.UNI||e.keyCode==KEYS.TWO.DECI){KEYS.TWO.DOWN=true;onKeyDown2();}
-        if(e.keyIdentifier==KEYS.THREE.UNI||e.keyCode==KEYS.THREE.DECI){KEYS.THREE.DOWN=true;onKeyDown3();}
-        if(e.keyIdentifier==KEYS.FOUR.UNI||e.keyCode==KEYS.FOUR.DECI){KEYS.FOUR.DOWN=true;onKeyDown4();}
-        if(e.keyIdentifier==KEYS.FIVE.UNI||e.keyCode==KEYS.FIVE.DECI){KEYS.FIVE.DOWN=true;onKeyDown5();}
-        if(e.keyIdentifier==KEYS.SIX.UNI||e.keyCode==KEYS.SIX.DECI){KEYS.SIX.DOWN=true;onKeyDown6();}
-        if(e.keyIdentifier==KEYS.SEVEN.UNI||e.keyCode==KEYS.SEVEN.DECI){KEYS.SEVEN.DOWN=true;onKeyDown7();}
-        if(e.keyIdentifier==KEYS.EIGHT.UNI||e.keyCode==KEYS.EIGHT.DECI){KEYS.EIGHT.DOWN=true;onKeyDown8();}
-        if(e.keyIdentifier==KEYS.NINE.UNI||e.keyCode==KEYS.NINE.DECI){KEYS.NINE.DOWN=true;onKeyDown9();}
-        if(e.keyIdentifier==KEYS.ZERO.UNI||e.keyCode==KEYS.ZERO.DECI){KEYS.ZERO.DOWN=true;onKeyDown0();}
-        if(e.keyIdentifier==KEYS.NORTH.UNI||e.keyCode==KEYS.NORTH.DECI){
-            KEYS.NORTH.DOWN = true;
+        if(e.keyIdentifier==KEYS.current.ONE.UNI||e.keyCode==KEYS.current.ONE.DECI){KEYS.current.ONE.DOWN=true;onKeyDown1();}
+        if(e.keyIdentifier==KEYS.current.TWO.UNI||e.keyCode==KEYS.current.TWO.DECI){KEYS.current.TWO.DOWN=true;onKeyDown2();}
+        if(e.keyIdentifier==KEYS.current.THREE.UNI||e.keyCode==KEYS.current.THREE.DECI){KEYS.current.THREE.DOWN=true;onKeyDown3();}
+        if(e.keyIdentifier==KEYS.current.FOUR.UNI||e.keyCode==KEYS.current.FOUR.DECI){KEYS.current.FOUR.DOWN=true;onKeyDown4();}
+        if(e.keyIdentifier==KEYS.current.FIVE.UNI||e.keyCode==KEYS.current.FIVE.DECI){KEYS.current.FIVE.DOWN=true;onKeyDown5();}
+        if(e.keyIdentifier==KEYS.current.SIX.UNI||e.keyCode==KEYS.current.SIX.DECI){KEYS.current.SIX.DOWN=true;onKeyDown6();}
+        if(e.keyIdentifier==KEYS.current.SEVEN.UNI||e.keyCode==KEYS.current.SEVEN.DECI){KEYS.current.SEVEN.DOWN=true;onKeyDown7();}
+        if(e.keyIdentifier==KEYS.current.EIGHT.UNI||e.keyCode==KEYS.current.EIGHT.DECI){KEYS.current.EIGHT.DOWN=true;onKeyDown8();}
+        if(e.keyIdentifier==KEYS.current.NINE.UNI||e.keyCode==KEYS.current.NINE.DECI){KEYS.current.NINE.DOWN=true;onKeyDown9();}
+        if(e.keyIdentifier==KEYS.current.ZERO.UNI||e.keyCode==KEYS.current.ZERO.DECI){KEYS.current.ZERO.DOWN=true;onKeyDown0();}
+        if(e.keyIdentifier==KEYS.current.NORTH.UNI||e.keyCode==KEYS.current.NORTH.DECI){
+            KEYS.current.NORTH.DOWN = true;
             //console.log('north_true: '+KEYS.NORTH.DOWN)
             setNorth(true);
             onKeyDownW();
         }
-        if(e.keyIdentifier==KEYS.WEST.UNI||e.keyCode==KEYS.WEST.DECI){
-            KEYS.WEST.DOWN = true;
+        if(e.keyIdentifier==KEYS.current.WEST.UNI||e.keyCode==KEYS.current.WEST.DECI){
+            KEYS.current.WEST.DOWN = true;
             setWest(true);
             onKeyDownA();
         }
-        if(e.keyIdentifier==KEYS.SOUTH.UNI||e.keyCode==KEYS.SOUTH.DECI){
-            KEYS.SOUTH.DOWN = true;
+        if(e.keyIdentifier==KEYS.current.SOUTH.UNI||e.keyCode==KEYS.current.SOUTH.DECI){
+            KEYS.current.SOUTH.DOWN = true;
             setSouth(true);
             onKeyDownS();
         }
-        if(e.keyIdentifier==KEYS.EAST.UNI||e.keyCode==KEYS.EAST.DECI){
-            KEYS.EAST.DOWN = true;
+        if(e.keyIdentifier==KEYS.current.EAST.UNI||e.keyCode==KEYS.current.EAST.DECI){
+            KEYS.current.EAST.DOWN = true;
             setEast(true);
             onKeyDownD();
         }
@@ -254,34 +253,34 @@ export default function WASD() {
     function OnKeyUp(e)
     {
         if(e === null)e = window.event;	
-        if(e.keyIdentifier==KEYS.ONE.UNI||e.keyCode==KEYS.ONE.DECI){KEYS.ONE.DOWN=false;onKeyUp1();}
-        if(e.keyIdentifier==KEYS.TWO.UNI||e.keyCode==KEYS.TWO.DECI){KEYS.TWO.DOWN=false;onKeyUp2();}
-        if(e.keyIdentifier==KEYS.THREE.UNI||e.keyCode==KEYS.THREE.DECI){KEYS.THREE.DOWN=false;onKeyUp3();}
-        if(e.keyIdentifier==KEYS.FOUR.UNI||e.keyCode==KEYS.FOUR.DECI){KEYS.FOUR.DOWN=false;onKeyUp4();}
-        if(e.keyIdentifier==KEYS.FIVE.UNI||e.keyCode==KEYS.FIVE.DECI){KEYS.FIVE.DOWN=false;onKeyUp5();}
-        if(e.keyIdentifier==KEYS.SIX.UNI||e.keyCode==KEYS.SIX.DECI){KEYS.SIX.DOWN=false;onKeyUp6();}
-        if(e.keyIdentifier==KEYS.SEVEN.UNI||e.keyCode==KEYS.SEVEN.DECI){KEYS.SEVEN.DOWN=false;onKeyUp7();}
-        if(e.keyIdentifier==KEYS.EIGHT.UNI||e.keyCode==KEYS.EIGHT.DECI){KEYS.EIGHT.DOWN=false;onKeyUp8();}
-        if(e.keyIdentifier==KEYS.NINE.UNI||e.keyCode==KEYS.NINE.DECI){KEYS.NINE.DOWN=false;onKeyUp9();}
-        if(e.keyIdentifier==KEYS.ZERO.UNI||e.keyCode==KEYS.ZERO.DECI){KEYS.ZERO.DOWN=false;onKeyUp0();}
-        if(e.keyIdentifier==KEYS.NORTH.UNI||e.keyCode==KEYS.NORTH.DECI){
-            KEYS.NORTH.DOWN = false;
+        if(e.keyIdentifier==KEYS.current.ONE.UNI||e.keyCode==KEYS.current.ONE.DECI){KEYS.current.ONE.DOWN=false;onKeyUp1();}
+        if(e.keyIdentifier==KEYS.current.TWO.UNI||e.keyCode==KEYS.current.TWO.DECI){KEYS.current.TWO.DOWN=false;onKeyUp2();}
+        if(e.keyIdentifier==KEYS.current.THREE.UNI||e.keyCode==KEYS.current.THREE.DECI){KEYS.current.THREE.DOWN=false;onKeyUp3();}
+        if(e.keyIdentifier==KEYS.current.FOUR.UNI||e.keyCode==KEYS.current.FOUR.DECI){KEYS.current.FOUR.DOWN=false;onKeyUp4();}
+        if(e.keyIdentifier==KEYS.current.FIVE.UNI||e.keyCode==KEYS.current.FIVE.DECI){KEYS.current.FIVE.DOWN=false;onKeyUp5();}
+        if(e.keyIdentifier==KEYS.current.SIX.UNI||e.keyCode==KEYS.current.SIX.DECI){KEYS.current.SIX.DOWN=false;onKeyUp6();}
+        if(e.keyIdentifier==KEYS.current.SEVEN.UNI||e.keyCode==KEYS.current.SEVEN.DECI){KEYS.current.SEVEN.DOWN=false;onKeyUp7();}
+        if(e.keyIdentifier==KEYS.current.EIGHT.UNI||e.keyCode==KEYS.current.EIGHT.DECI){KEYS.current.EIGHT.DOWN=false;onKeyUp8();}
+        if(e.keyIdentifier==KEYS.current.NINE.UNI||e.keyCode==KEYS.current.NINE.DECI){KEYS.current.NINE.DOWN=false;onKeyUp9();}
+        if(e.keyIdentifier==KEYS.current.ZERO.UNI||e.keyCode==KEYS.current.ZERO.DECI){KEYS.current.ZERO.DOWN=false;onKeyUp0();}
+        if(e.keyIdentifier==KEYS.current.NORTH.UNI||e.keyCode==KEYS.current.NORTH.DECI){
+            KEYS.current.NORTH.DOWN = false;
             //console.log('north_false: '+KEYS.NORTH.DOWN)
             setNorth(false);
             onKeyUpW();
         }
-        if(e.keyIdentifier==KEYS.WEST.UNI||e.keyCode==KEYS.WEST.DECI){
-            KEYS.WEST.DOWN = false;
+        if(e.keyIdentifier==KEYS.current.WEST.UNI||e.keyCode==KEYS.current.WEST.DECI){
+            KEYS.current.WEST.DOWN = false;
             setWest(false);
             onKeyUpA();
         }
-        if(e.keyIdentifier==KEYS.SOUTH.UNI||e.keyCode==KEYS.SOUTH.DECI){
-            KEYS.SOUTH.DOWN = false;
+        if(e.keyIdentifier==KEYS.current.SOUTH.UNI||e.keyCode==KEYS.current.SOUTH.DECI){
+            KEYS.current.SOUTH.DOWN = false;
             setSouth(false);
             onKeyUpS();
         }
-        if(e.keyIdentifier==KEYS.EAST.UNI||e.keyCode==KEYS.EAST.DECI){
-            KEYS.EAST.DOWN = false;
+        if(e.keyIdentifier==KEYS.current.EAST.UNI||e.keyCode==KEYS.current.EAST.DECI){
+            KEYS.current.EAST.DOWN = false;
             setEast(false);
             onKeyUpD();
         }
@@ -366,11 +365,13 @@ export default function WASD() {
                     </Col>
                 </Row>
                 <Row style={{overflow: 'auto', height: '70%', background: '#CCC'}}>
-                    <Col id="battlefield" style={{position: 'relative', overflow: 'auto', height: '70%', background: '#CCC'}}>
-                        <div id="player" className={"player collider-obj"} style={{borderRadius: '90px', position: "absolute", left: `${locplayerLeft}px`, top: `${locplayerTop}px`}}>
-                            <img src="./assets/binary2.png" height="50px" width="50px"/>
-                        </div>
-                        <div id="wall" className={"wall collide"} style={{position: 'absolute', overflow: 'hidden', width: '20px', height: '400px', top: '50px', left: '100px', background: '#333'}}>
+                    <Col sm={12}>
+                        <div id="battlefield" style={{position: 'relative', overflow: 'clip', height: '100%', background: '#CCC'}}>
+                            <div id="player" className={"player collider-obj"} style={{borderRadius: '90px', position: "absolute", left: `${locplayerLeft}px`, top: `${locplayerTop}px`}}>
+                                <img src="./assets/binary2.png" height="50px" width="50px"/>
+                            </div>
+                            <div id="wall" className={"wall collide"} style={{position: 'absolute', overflow: 'hidden', width: '20px', height: '400px', top: '50px', left: '100px', background: '#333'}}>
+                            </div>
                         </div>
                     </Col>
                 </Row>
