@@ -17,7 +17,7 @@ export function vecObj(obj,vec,speed,life,decay){
 }
 //returns collision target = boolean
 export function vecMoveObj(obj: HTMLMapElement,vec,maxX,maxY){
-	let collisionTarget = false//scanForCollisionAt(obj,vec);
+	let collisionTarget = false//<<<for testing//scanForCollisionAt(obj,vec);
 	//console.log(obj.style.top);
 	if(collisionTarget){
 		/////////why no work?/////////

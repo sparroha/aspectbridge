@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { fireball, icicle, missile, newProjectile } from "./entity";
 import { arrayMoveObj, moveClientObj, vec } from "./movement";
 //engine.js + game.ts + index.html from old version
 export default function WASD() {
+    const [debugfeed, setDebugfeed] = useState(['initial']);
     const [maxX , setMaxX] = useState(0);
     const [maxY , setMaxY] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [updates, setUpdates] = useState(0);
+    var updateRef = useRef(0);
     const [localPlayer, setLocalPlayer] = useState(null);
     const [locplayerLeft, setLocplayerLeft] = useState(0);
     const [locplayerTop, setLocplayerTop] = useState(0);
@@ -67,32 +69,53 @@ export default function WASD() {
     };
 
     /**
-    * * * EVENT HANDLERS * * *
-    */
+     * * * INITIAL SETUP * * *
+     */
     useEffect(() => {
         setEngineScreen(document.querySelector("#battlefield"))
         setLocalPlayer(document.querySelector("#player"))
     }, []);
+    useEffect(() => {
+        if(enginescreen!=null){
+            setMaxX(window.innerWidth-(window.innerWidth-enginescreen.clientWidth));
+            setMaxY(window.innerHeight-(window.innerHeight-enginescreen.clientHeight));
+        }
+    }, [enginescreen]);
+    useEffect(() => {//not setting player change
+        setLocplayerLeft(maxX/2);
+        setLocplayerTop(maxY/2);
+        console.log('startX = '+maxX/2)
+        console.log('startY = '+maxY/2)
+    }, [maxX,maxY]);
 
+    /**
+    * * * EVENT HANDLERS * * *
+    */
+    //MOUSE CLICK
     useEffect(() => {
         //TODO develope better key tracker
         window.onkeydown = function handleKeyDown(event) {
             event = event || window.event;
-            setKeyDown(event.keyIdentifier||event.keyCode);
             OnKeyDown(event);
-            //console.log("@engine-67 {events:keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode+"}");
+
+            //debug
+            let feed = debugfeed;
+            let length = feed.push("@index-engine-77-feedw {events:keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode+"}")
+            let df = debugfeed[length]
+            setDebugfeed(feed)
         };  
         window.onkeyup = function handleKeyUp(event) {
             event = event || window.event; // IE-ism
-            setKeyUp(event.keyIdentifier||event.keyCode);
-            if(keyDown==keyUp)setKeyDown("");
+            //setKeyUp(event.keyIdentifier||event.keyCode);
+            //if(keyDown==keyUp)setKeyDown("");
             OnKeyUp(event);
-            setKeyUp("");
+            //setKeyUp("");
         };
         window.oncontextmenu = function handleContextMenue(event) {
             NI();return false;
         };
     }, []);
+    //MOUSE MOVE
     useEffect(() => {
         window.onmousemove = (event) => {
             if(enginescreen!=null){
@@ -105,67 +128,59 @@ export default function WASD() {
             }
         }
     }, [enginescreen]);
-    useEffect(() => {
-        if(enginescreen!=null){
-            setMaxX(window.innerWidth-(window.innerWidth-enginescreen.clientWidth));
-            setMaxY(window.innerHeight-(window.innerHeight-enginescreen.clientHeight));
-        }
-    }, [enginescreen]);
 
     /**
      * * * GAME LOOP * * *
-     * game.ts
      */
     useEffect(() => {
         if(enginescreen!=null&&localPlayer!=null&&mousepos!=null&&mousepos!=undefined){
-            const gameloop = setInterval(() => {
-                console.log('enginescreen = '+enginescreen.id)
-                console.log('localPlayer = '+localPlayer.id)
+            const gameloopSeconds = setInterval(() => {
+                let log = true;
+                if(!log)console.log('@gameloopSeconds: '
+                    +JSON.stringify({
+                    enginescreenID: enginescreen.id,
+                    localPlayer: localPlayer.id,
+                    localLeft: localPlayer.clientLeft,
+                    localTop: localPlayer.clientTop,  
+                }))
                 setSeconds(new Date().getSeconds())
-                let startX = (maxX)
-                console.log('startX = '+startX)
-                let startY = (maxY)
-                console.log('startX = '+startY)
-                setLocplayerLeft(startX);
-                setLocplayerTop(startY);
-                console.log('clientPlayer = '+localPlayer.clientLeft)
-                console.log('clientPlayer = '+localPlayer.clientTop)
+                setUpdates(updateRef.current)
+                updateRef.current = 0;
             },1000);
             
-            const loop = setInterval(()=>{
+            const gameloopTicks = setInterval(()=>{
+                //Called every game tick to update local player location.
+                //Another function will eventuially run with this to update
+                //environmental changes from server.
                 moveClientObj(localPlayer, 5, maxX, maxY, {
                     NORTH: north,
                     EAST: east,
                     SOUTH: south,
                     WEST: west,
                 });
+                //Called every game tick to update positions of other moving entities.
                 setVecObjs(arrayMoveObj(vecObjs, maxX, maxY));
                 debug();
             },gamespeed);
         return () => {
-            clearInterval(gameloop)
-            clearInterval(loop)
+            clearInterval(gameloopSeconds)
+            clearInterval(gameloopTicks)
         }}
     }, [enginescreen, maxX, maxY]);
     
     /**
     * * * FRAME RATE * * *
     */
-    useEffect(() => {
-        debug()
-    }, [seconds]);
     function debug(){
         var s = new Date().getSeconds();
-        //updates per second
-        setUpdates(updates+1);
+        updateRef.current++
+        //console.log('@gameloopTicks.debug(): '+updates)
         if(s == seconds+1||s==seconds-59){
-            document.querySelector("#ups").innerHTML = ('u/s='+updates+' width='+maxX+' height='+maxY);
-            setUpdates(0);
+            //do this every 60 seconds
         }
-        setSeconds(s);
     }
     /**
-    * key move functions
+    * * * KEY PRESS FUNCTIONS * * *
     */
     function onKeyDown1(){actionKey1()}
     function onKeyUp1(){}
@@ -202,32 +217,33 @@ export default function WASD() {
     function OnKeyDown(e)
     {
         if(e === null)e = window.event;
-        if(keyDown==KEYS.ONE.UNI||keyDown==KEYS.ONE.DECI){KEYS.ONE.DOWN=true;onKeyDown1();}
-        if(keyDown==KEYS.TWO.UNI||keyDown==KEYS.TWO.DECI){KEYS.TWO.DOWN=true;onKeyDown2();}
-        if(keyDown==KEYS.THREE.UNI||keyDown==KEYS.THREE.DECI){KEYS.THREE.DOWN=true;onKeyDown3();}
-        if(keyDown==KEYS.FOUR.UNI||keyDown==KEYS.FOUR.DECI){KEYS.FOUR.DOWN=true;onKeyDown4();}
-        if(keyDown==KEYS.FIVE.UNI||keyDown==KEYS.FIVE.DECI){KEYS.FIVE.DOWN=true;onKeyDown5();}
-        if(keyDown==KEYS.SIX.UNI||keyDown==KEYS.SIX.DECI){KEYS.SIX.DOWN=true;onKeyDown6();}
-        if(keyDown==KEYS.SEVEN.UNI||keyDown==KEYS.SEVEN.DECI){KEYS.SEVEN.DOWN=true;onKeyDown7();}
-        if(keyDown==KEYS.EIGHT.UNI||keyDown==KEYS.EIGHT.DECI){KEYS.EIGHT.DOWN=true;onKeyDown8();}
-        if(keyDown==KEYS.NINE.UNI||keyDown==KEYS.NINE.DECI){KEYS.NINE.DOWN=true;onKeyDown9();}
-        if(keyDown==KEYS.ZERO.UNI||keyDown==KEYS.ZERO.DECI){KEYS.ZERO.DOWN=true;onKeyDown0();}
-        if(keyDown==KEYS.NORTH.UNI||keyDown==KEYS.NORTH.DECI){
+        if(e.keyIdentifier==KEYS.ONE.UNI||e.keyCode==KEYS.ONE.DECI){KEYS.ONE.DOWN=true;onKeyDown1();}
+        if(e.keyIdentifier==KEYS.TWO.UNI||e.keyCode==KEYS.TWO.DECI){KEYS.TWO.DOWN=true;onKeyDown2();}
+        if(e.keyIdentifier==KEYS.THREE.UNI||e.keyCode==KEYS.THREE.DECI){KEYS.THREE.DOWN=true;onKeyDown3();}
+        if(e.keyIdentifier==KEYS.FOUR.UNI||e.keyCode==KEYS.FOUR.DECI){KEYS.FOUR.DOWN=true;onKeyDown4();}
+        if(e.keyIdentifier==KEYS.FIVE.UNI||e.keyCode==KEYS.FIVE.DECI){KEYS.FIVE.DOWN=true;onKeyDown5();}
+        if(e.keyIdentifier==KEYS.SIX.UNI||e.keyCode==KEYS.SIX.DECI){KEYS.SIX.DOWN=true;onKeyDown6();}
+        if(e.keyIdentifier==KEYS.SEVEN.UNI||e.keyCode==KEYS.SEVEN.DECI){KEYS.SEVEN.DOWN=true;onKeyDown7();}
+        if(e.keyIdentifier==KEYS.EIGHT.UNI||e.keyCode==KEYS.EIGHT.DECI){KEYS.EIGHT.DOWN=true;onKeyDown8();}
+        if(e.keyIdentifier==KEYS.NINE.UNI||e.keyCode==KEYS.NINE.DECI){KEYS.NINE.DOWN=true;onKeyDown9();}
+        if(e.keyIdentifier==KEYS.ZERO.UNI||e.keyCode==KEYS.ZERO.DECI){KEYS.ZERO.DOWN=true;onKeyDown0();}
+        if(e.keyIdentifier==KEYS.NORTH.UNI||e.keyCode==KEYS.NORTH.DECI){
             KEYS.NORTH.DOWN = true;
+            //console.log('north_true: '+KEYS.NORTH.DOWN)
             setNorth(true);
             onKeyDownW();
         }
-        if(keyDown==KEYS.WEST.UNI||keyDown==KEYS.WEST.DECI){
+        if(e.keyIdentifier==KEYS.WEST.UNI||e.keyCode==KEYS.WEST.DECI){
             KEYS.WEST.DOWN = true;
             setWest(true);
             onKeyDownA();
         }
-        if(keyDown==KEYS.SOUTH.UNI||keyDown==KEYS.SOUTH.DECI){
+        if(e.keyIdentifier==KEYS.SOUTH.UNI||e.keyCode==KEYS.SOUTH.DECI){
             KEYS.SOUTH.DOWN = true;
             setSouth(true);
             onKeyDownS();
         }
-        if(keyDown==KEYS.EAST.UNI||keyDown==KEYS.EAST.DECI){
+        if(e.keyIdentifier==KEYS.EAST.UNI||e.keyCode==KEYS.EAST.DECI){
             KEYS.EAST.DOWN = true;
             setEast(true);
             onKeyDownD();
@@ -237,32 +253,33 @@ export default function WASD() {
     function OnKeyUp(e)
     {
         if(e === null)e = window.event;	
-        if(keyUp==KEYS.ONE.UNI||keyUp==KEYS.ONE.DECI){KEYS.ONE.DOWN=false;onKeyUp1();}
-        if(keyUp==KEYS.TWO.UNI||keyUp==KEYS.TWO.DECI){KEYS.TWO.DOWN=false;onKeyUp2();}
-        if(keyUp==KEYS.THREE.UNI||keyUp==KEYS.THREE.DECI){KEYS.THREE.DOWN=false;onKeyUp3();}
-        if(keyUp==KEYS.FOUR.UNI||keyUp==KEYS.FOUR.DECI){KEYS.FOUR.DOWN=false;onKeyUp4();}
-        if(keyUp==KEYS.FIVE.UNI||keyUp==KEYS.FIVE.DECI){KEYS.FIVE.DOWN=false;onKeyUp5();}
-        if(keyUp==KEYS.SIX.UNI||keyUp==KEYS.SIX.DECI){KEYS.SIX.DOWN=false;onKeyUp6();}
-        if(keyUp==KEYS.SEVEN.UNI||keyUp==KEYS.SEVEN.DECI){KEYS.SEVEN.DOWN=false;onKeyUp7();}
-        if(keyUp==KEYS.EIGHT.UNI||keyUp==KEYS.EIGHT.DECI){KEYS.EIGHT.DOWN=false;onKeyUp8();}
-        if(keyUp==KEYS.NINE.UNI||keyUp==KEYS.NINE.DECI){KEYS.NINE.DOWN=false;onKeyUp9();}
-        if(keyUp==KEYS.ZERO.UNI||keyUp==KEYS.ZERO.DECI){KEYS.ZERO.DOWN=false;onKeyUp0();}
-        if(keyUp==KEYS.NORTH.UNI||keyUp==KEYS.NORTH.DECI){
+        if(e.keyIdentifier==KEYS.ONE.UNI||e.keyCode==KEYS.ONE.DECI){KEYS.ONE.DOWN=false;onKeyUp1();}
+        if(e.keyIdentifier==KEYS.TWO.UNI||e.keyCode==KEYS.TWO.DECI){KEYS.TWO.DOWN=false;onKeyUp2();}
+        if(e.keyIdentifier==KEYS.THREE.UNI||e.keyCode==KEYS.THREE.DECI){KEYS.THREE.DOWN=false;onKeyUp3();}
+        if(e.keyIdentifier==KEYS.FOUR.UNI||e.keyCode==KEYS.FOUR.DECI){KEYS.FOUR.DOWN=false;onKeyUp4();}
+        if(e.keyIdentifier==KEYS.FIVE.UNI||e.keyCode==KEYS.FIVE.DECI){KEYS.FIVE.DOWN=false;onKeyUp5();}
+        if(e.keyIdentifier==KEYS.SIX.UNI||e.keyCode==KEYS.SIX.DECI){KEYS.SIX.DOWN=false;onKeyUp6();}
+        if(e.keyIdentifier==KEYS.SEVEN.UNI||e.keyCode==KEYS.SEVEN.DECI){KEYS.SEVEN.DOWN=false;onKeyUp7();}
+        if(e.keyIdentifier==KEYS.EIGHT.UNI||e.keyCode==KEYS.EIGHT.DECI){KEYS.EIGHT.DOWN=false;onKeyUp8();}
+        if(e.keyIdentifier==KEYS.NINE.UNI||e.keyCode==KEYS.NINE.DECI){KEYS.NINE.DOWN=false;onKeyUp9();}
+        if(e.keyIdentifier==KEYS.ZERO.UNI||e.keyCode==KEYS.ZERO.DECI){KEYS.ZERO.DOWN=false;onKeyUp0();}
+        if(e.keyIdentifier==KEYS.NORTH.UNI||e.keyCode==KEYS.NORTH.DECI){
             KEYS.NORTH.DOWN = false;
+            //console.log('north_false: '+KEYS.NORTH.DOWN)
             setNorth(false);
             onKeyUpW();
         }
-        if(keyUp==KEYS.WEST.UNI||keyUp==KEYS.WEST.DECI){
+        if(e.keyIdentifier==KEYS.WEST.UNI||e.keyCode==KEYS.WEST.DECI){
             KEYS.WEST.DOWN = false;
             setWest(false);
             onKeyUpA();
         }
-        if(keyUp==KEYS.SOUTH.UNI||keyUp==KEYS.SOUTH.DECI){
+        if(e.keyIdentifier==KEYS.SOUTH.UNI||e.keyCode==KEYS.SOUTH.DECI){
             KEYS.SOUTH.DOWN = false;
             setSouth(false);
             onKeyUpS();
         }
-        if(keyUp==KEYS.EAST.UNI||keyUp==KEYS.EAST.DECI){
+        if(e.keyIdentifier==KEYS.EAST.UNI||e.keyCode==KEYS.EAST.DECI){
             KEYS.EAST.DOWN = false;
             setEast(false);
             onKeyUpD();
@@ -289,7 +306,9 @@ export default function WASD() {
         setTimeout(()=> clearInterval(i), 8000);
     }
 
-
+    /**
+     * * * STYLES INLINE * * *
+     */
     const style = {
         actions_li: {
             position: 'relative',
@@ -316,16 +335,22 @@ export default function WASD() {
             border: '0',
         },
     }
+    /**
+     * * * ACTIONS * * *
+     */
     const actions = [
         {id: 1, name: '1', img: './assets/binary2.png'},
         {id: 2, name: '2', img: './assets/binary2.png'},
         {id: 3, name: '3', img: './assets/binary2.png'},
     ]
+    /**
+     * * * RENDER * * *
+     */
     return <Container id={'body'}>
                 <Row className={'tcenter'}>
-                    <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>{mousepos.x+'/'+mousepos.y}</Col>
+                    <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>{mousepos.x+'/'+mousepos.y}<br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}</Col>
                     <Col sm={'3'}><h4 className={'col-sm-6'}><b>Control the Object With "W/A/S/D". Press 1 - 3 to file.</b></h4></Col>
-                    <Col sm={'3'} id={"ups"} style={{position: 'relative', visibility: 'visible'}}>u/s= 0</Col>
+                    <Col sm={'3'} id={"ups"} style={{position: 'relative', visibility: 'visible'}}>{'u/s='+updates+' s='+seconds+' width='+maxX+' height='+maxY}</Col>
                 </Row>
                 <Row id={'actions'} style={{height: '90px'}}>
                     <Col sm={12}>
@@ -355,8 +380,8 @@ export default function WASD() {
 * * * CONTEXT MENUS * * *
 * require within ueEffect
 */
-let password = 'password';
 function NI(){
+    let password = 'password';
     if(prompt('Not Implemented: Enter "password" in the box to continue.')==password){
         window.oncontextmenu = function handleContextMenue(event) {
             return true;
