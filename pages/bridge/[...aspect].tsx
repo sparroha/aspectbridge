@@ -39,7 +39,7 @@ export default function AspectBridge({ip}) {
             <ContainerHeader user={user?user:null}/>
             <Row id="content" className={""}>
                 <NavLeftDefault />
-                    <DynamicInfo user={user}/>
+                <DynamicInfo user={user}/>
                 <NavRightDefault user={user}/>
             </Row>
             <Row>
