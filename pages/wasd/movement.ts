@@ -2,42 +2,49 @@ import { cleanArrayNulls } from ".";
 
 export default function(){return null}
 
-export function vec(x,y){
-	return {x: x, y: y}
+export type vec = {
+	x: number,
+	y: number
 }
 //aiObjs.push(new vecObj(newMovingElement(id,startx,starty),new vec(x,y),speed,life,decay))
 //vecObjs.push(new vecObj(newMovingElement(id,startx,starty),new vec(x,y),speed,life,decay))
-export function vecObj(obj,vec,speed,life,decay){
-	this.obj = obj;
-	this.vec = vec;
-	this.speed = speed;
-	this.life = life;
-	this.decay = decay;
-	this.target = false;
+export type vecObj = {
+	obj: HTMLElement,
+	vec: vec,
+	speed: number,
+	life: number,
+	decay: number,
+	target: boolean,
 }
 //returns collision target = boolean
-export function vecMoveObj(obj: HTMLMapElement,vec,maxX,maxY){
-	let collisionTarget = false//<<<for testing//scanForCollisionAt(obj,vec);
-	//console.log(obj.style.top);
+export function vecMoveObj(obj: HTMLMapElement,vec: vec, maxX,maxY,setLeft,setTop){
+	let collisionTarget = scanForCollisionAt(obj,vec);
+    console.log('move'+obj.style.top);
 	if(collisionTarget){
 		/////////why no work?/////////
-		obj.style.top = (Math.max(0,Math.min(maxY-obj.clientHeight),obj.clientTop) - vec.y)+'px';
-		obj.style.left = (Math.max(0,Math.min(maxX-obj.clientWidth),obj.clientLeft) - vec.x)+'px';
+		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, obj.clientTop - vec.y));
+		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, obj.clientLeft - vec.x));
+		console.log('top: '+Math.min(maxY - obj.clientHeight, obj.clientTop - vec.y)+' left: '+newLeft)
+		setTop(newTop);
+		setLeft(newLeft);
 		return collisionTarget;
 	}
 	else if(!collisionTarget){
 		/////////why no work?/////////
-		obj.style.top = (Math.max(0,Math.min(maxY-obj.clientHeight),obj.clientTop) + vec.y)+'px';
-		obj.style.left = (Math.max(0,Math.min(maxX-obj.clientWidth),obj.clientLeft) + vec.x)+'px';
+		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, obj.clientTop + vec.y));
+		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, obj.clientLeft + vec.x));
+		console.log('maxY - obj.clientHeight: '+(maxY - obj.clientHeight)+'/\nobj.clientTop + vec.y:'+ (obj.clientTop + vec.y)+'/\nobj.clientTop: '+obj.clientTop+'\nVec: '+JSON.stringify(vec))
+		setTop(newTop);
+		setLeft(newLeft);
 		return collisionTarget;
 	}
 	//console.log(obj.style.top);
 }
 //returns objArray
-export function arrayMoveObj(objArray,maxX,maxY){
+export function arrayMoveObj(objArray,maxX,maxY,setLeft,setTop){
 	for(var x=0;x<objArray.length;x++){
 		if(objArray[x].life>0||isNaN(objArray[x].life)){
-			objArray[x].target = vecMoveObj(objArray[x].obj,objArray[x].vec,maxX,maxY);
+			objArray[x].target = vecMoveObj(objArray[x].obj,objArray[x].vec,maxX,maxY,setLeft,setTop);
 			if(objArray[x].target){
 				try{
 					objArray[x].obj.collision(objArray[x].target);
@@ -54,17 +61,22 @@ export function arrayMoveObj(objArray,maxX,maxY){
 	}
 	return objArray;
 }
-export function moveClientObj(clientObj,speed,maxX,maxY, direction){
+export function moveClientObj(clientObj,speed,maxX,maxY,setLeft,setTop, direction){
+	console.log('direction: '+JSON.stringify(direction))
+	let {NORTH, SOUTH, EAST, WEST} = direction
 	return vecMoveObj(
 			clientObj,
-			vec((direction.WEST?-speed:0)+(direction.EAST?speed:0),
-			(direction.NORTH?-speed:0)+(direction.SOUTH?speed:0)),
+			{x: (WEST?-speed:0)+(EAST?speed:0),
+			y: (NORTH?-speed:0)+(SOUTH?speed:0)},
 			maxX,
-			maxY
+			maxY,
+			setLeft,
+			setTop
 		);
 	//console.log(collisionTarget);
 }
 export function scanForCollisionAt(obj,vec){
+	console.log('scanForCollision');
 	var x = obj.clientLeft+obj.clientWidth/2;
 	var y = obj.clientTop+obj.clientHeight/2;
 	var top,bottom,left,right,ret = false;
@@ -88,6 +100,7 @@ export function scanForCollisionAt(obj,vec){
 			if(objbottom > thistop && objbottom < thisbottom){top=true;}else{top=false;}//colide on $(this).top;
 			
 			if((right||left)&&(top||bottom)){
+				console.log('collision');
 				ret = true;//////?????what is being returned here?
 			}
 		}

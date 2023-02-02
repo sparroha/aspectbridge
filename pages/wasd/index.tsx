@@ -82,10 +82,11 @@ export default function WASD() {
         }
     }, [enginescreen]);
     useEffect(() => {//not setting player change
-        setLocplayerLeft(maxX/2);
-        setLocplayerTop(maxY/2);
+        if(locplayerLeft==0||locplayerTop==0){
+        setLocplayerLeft((maxX/2));
+        setLocplayerTop((maxY/2));
         console.log('startX = '+maxX/2)
-        console.log('startY = '+maxY/2)
+        console.log('startY = '+maxY/2)}
     }, [maxX,maxY]);
 
     /**
@@ -152,22 +153,24 @@ export default function WASD() {
                 //Called every game tick to update local player location.
                 //Another function will eventuially run with this to update
                 //environmental changes from server.
-                moveClientObj(localPlayer, 5, maxX, maxY, {
-                    NORTH: north,
-                    EAST: east,
-                    SOUTH: south,
-                    WEST: west,
-                });
+                moveClientObj(localPlayer, 5, maxX, maxY, setLocplayerLeft, setLocplayerTop, getDirection());
                 //Called every game tick to update positions of other moving entities.
-                setVecObjs(arrayMoveObj(vecObjs, maxX, maxY));
+                setVecObjs(arrayMoveObj(vecObjs, maxX, maxY, setLocplayerLeft, setLocplayerTop));
                 debug();
             },gamespeed);
         return () => {
             clearInterval(gameloopSeconds)
             clearInterval(gameloopTicks)
         }}
-    }, [enginescreen, maxX, maxY]);
-    
+    }, [enginescreen, maxX, maxY, north, east, south, west]);
+    function getDirection(){
+        return {
+            NORTH: north,
+            EAST: east,
+            SOUTH: south,
+            WEST: west,
+        }
+    }
     /**
     * * * FRAME RATE * * *
     */
@@ -291,17 +294,17 @@ export default function WASD() {
     //var keynum = [[],[],()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{}];
     var keyF = ['','','','','','','','','','','','',''];
     function actionKey1(){
-        let p = newProjectile(vecObjs,setVecObjs,fireball,localPlayer,vec(mousepos.x,mousepos.y),1000,4);
+        let p = newProjectile(vecObjs,setVecObjs,fireball,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
         let i = setInterval(()=> p, 200);
         setTimeout(()=> clearInterval(i), 8000);
     }
     function actionKey2(){
-        let p = newProjectile(vecObjs,setVecObjs,icicle,localPlayer,vec(mousepos.x,mousepos.y),1000,4);
+        let p = newProjectile(vecObjs,setVecObjs,icicle,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
         let i = setInterval(()=> p, 200);
         setTimeout(()=> clearInterval(i), 8000);
     }
     function actionKey3(){
-        let p = newProjectile(vecObjs,setVecObjs,missile,localPlayer,vec(mousepos.x,mousepos.y),1000,4);
+        let p = newProjectile(vecObjs,setVecObjs,missile,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
         let i = setInterval(()=> p, 200);
         setTimeout(()=> clearInterval(i), 8000);
     }
@@ -350,7 +353,7 @@ export default function WASD() {
                 <Row className={'tcenter'}>
                     <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>{Math.floor(mousepos.x)+'/'+Math.floor(mousepos.y)}<br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}</Col>
                     <Col sm={'3'}><h4 className={'col-sm-6'}><b>Control the Object With "W/A/S/D". Press 1 - 3 to file.</b></h4></Col>
-                    <Col sm={'3'} id={"ups"} style={{position: 'relative', visibility: 'visible'}}>{'u/s='+updates+' s='+seconds+' width='+maxX+' height='+maxY}</Col>
+                    <Col sm={'3'} id={"ups"} style={{position: 'relative', visibility: 'visible'}}>{'u/s='+updates+' s='+seconds+' width='+maxX+' height='+maxY}<br/>{'N: '+north+' / E: '+east+' / S: '+south+' / W: '+west}</Col>
                 </Row>
                 <Row id={'actions'} style={{height: '90px'}}>
                     <Col sm={12}>
@@ -367,15 +370,20 @@ export default function WASD() {
                 <Row style={{overflow: 'auto', height: '70%', background: '#CCC'}}>
                     <Col sm={12}>
                         <div id="battlefield" style={{position: 'relative', overflow: 'clip', height: '100%', background: '#CCC'}}>
-                            <div id="player" className={"player collider-obj"} style={{borderRadius: '90px', position: "absolute", left: `${locplayerLeft}px`, top: `${locplayerTop}px`}}>
-                                <img src="./assets/binary2.png" height="50px" width="50px"/>
-                            </div>
+                            <Player id={'player'} left={locplayerLeft} top={locplayerTop} img={'./assets/binary2.png'}/>
                             <div id="wall" className={"wall collide"} style={{position: 'absolute', overflow: 'hidden', width: '20px', height: '400px', top: '50px', left: '100px', background: '#333'}}>
                             </div>
                         </div>
                     </Col>
                 </Row>
     </Container>
+}
+export function Player(props){
+
+    return <div id={props.id} className={"player collider-obj"} style={{borderRadius: '90px', position: "absolute", left: `${props.left}px`, top: `${props.top}px`}}>
+            <img src={props.img} height="50px" width="50px"/>{props.left}|{props.top}
+        </div>
+    
 }
 
 /**
