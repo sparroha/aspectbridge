@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { fireball, icicle, missile, newProjectile } from "./entity";
-import { arrayMoveObj, moveClientObj, vec } from "./movement";
+import { arrayMoveObj, moveClientObj, vec, vecObj } from "./movement";
 //engine.js + game.ts + index.html from old version
 export default function WASD() {
     const [debugfeed, setDebugfeed] = useState(['initial']);
@@ -11,10 +11,10 @@ export default function WASD() {
     const [updates, setUpdates] = useState(0);
     var updateRef = useRef(0);
     const [localPlayer, setLocalPlayer] = useState(null);
-    const [locplayerLeft, setLocplayerLeft] = useState(0);
-    const [locplayerTop, setLocplayerTop] = useState(0);
+    //const [locplayerLeft, setLocplayerLeft] = useState(0);
+    //const [locplayerTop, setLocplayerTop] = useState(0);
     const [gamespeed, setGamespeed] = useState(1000/20);
-    const [vecObjs, setVecObjs] = useState([]);
+    var vecObjs: vecObj[] = [];
     
     //Engine Valiables
     //todo
@@ -82,11 +82,12 @@ export default function WASD() {
         }
     }, [enginescreen]);
     useEffect(() => {//not setting player change
-        if(locplayerLeft==0||locplayerTop==0){
-        setLocplayerLeft((maxX/2));
-        setLocplayerTop((maxY/2));
-        console.log('startX = '+maxX/2)
-        console.log('startY = '+maxY/2)}
+        if(localPlayer&&(localPlayer.style.left==0||localPlayer.style.top==0)){
+            localPlayer.style.left = maxX/2;
+            localPlayer.style.top = maxY/2;
+            console.log('startX = '+maxX/2)
+            console.log('startY = '+maxY/2)
+        }
     }, [maxX,maxY]);
 
     /**
@@ -137,13 +138,13 @@ export default function WASD() {
         if(enginescreen!=null&&localPlayer!=null&&mousepos!=null&&mousepos!=undefined){
             const gameloopSeconds = setInterval(() => {
                 let log = true;
-                if(!log)console.log('@gameloopSeconds: '
+                /*if(!log)console.log('@gameloopSeconds: '
                     +JSON.stringify({
                     enginescreenID: enginescreen.id,
                     localPlayer: localPlayer.id,
                     localLeft: localPlayer.clientLeft,
                     localTop: localPlayer.clientTop,  
-                }))
+                }))*/
                 setSeconds(new Date().getSeconds())
                 setUpdates(updateRef.current)
                 updateRef.current = 0;
@@ -153,9 +154,9 @@ export default function WASD() {
                 //Called every game tick to update local player location.
                 //Another function will eventuially run with this to update
                 //environmental changes from server.
-                moveClientObj(localPlayer, 5, maxX, maxY, setLocplayerLeft, setLocplayerTop, getDirection());
+                moveClientObj(localPlayer, 5, maxX, maxY, getDirection());
                 //Called every game tick to update positions of other moving entities.
-                setVecObjs(arrayMoveObj(vecObjs, maxX, maxY, setLocplayerLeft, setLocplayerTop));
+                vecObjs = arrayMoveObj(vecObjs, maxX, maxY);
                 debug();
             },gamespeed);
         return () => {
@@ -294,17 +295,17 @@ export default function WASD() {
     //var keynum = [[],[],()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{}];
     var keyF = ['','','','','','','','','','','','',''];
     function actionKey1(){
-        let p = newProjectile(vecObjs,setVecObjs,fireball,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+        let p = newProjectile(vecObjs,fireball,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
         let i = setInterval(()=> p, 200);
         setTimeout(()=> clearInterval(i), 8000);
     }
     function actionKey2(){
-        let p = newProjectile(vecObjs,setVecObjs,icicle,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+        let p = newProjectile(vecObjs,icicle,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
         let i = setInterval(()=> p, 200);
         setTimeout(()=> clearInterval(i), 8000);
     }
     function actionKey3(){
-        let p = newProjectile(vecObjs,setVecObjs,missile,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+        let p = newProjectile(vecObjs,missile,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
         let i = setInterval(()=> p, 200);
         setTimeout(()=> clearInterval(i), 8000);
     }
@@ -370,7 +371,7 @@ export default function WASD() {
                 <Row style={{overflow: 'auto', height: '70%', background: '#CCC'}}>
                     <Col sm={12}>
                         <div id="battlefield" style={{position: 'relative', overflow: 'clip', height: '100%', background: '#CCC'}}>
-                            <Player id={'player'} left={locplayerLeft} top={locplayerTop} img={'./assets/binary2.png'}/>
+                            <Player id={'player'} img={'./assets/binary2.png'}/>
                             <div id="wall" className={"wall collide"} style={{position: 'absolute', overflow: 'hidden', width: '20px', height: '400px', top: '50px', left: '100px', background: '#333'}}>
                             </div>
                         </div>
@@ -380,7 +381,7 @@ export default function WASD() {
 }
 export function Player(props){
 
-    return <div id={props.id} className={"player collider-obj"} style={{borderRadius: '90px', position: "absolute", left: `${props.left}px`, top: `${props.top}px`}}>
+    return <div id={props.id} className={"player collider-obj"} style={{borderRadius: '90px', position: "absolute", left: '5px', top: '5px'}}>
             <img src={props.img} height="50px" width="50px"/>{props.left}|{props.top}
         </div>
     
@@ -402,7 +403,7 @@ function NI(){
         }
     }
 }
-function objOffset(obj: HTMLElement){
+function objOffset(obj: HTMLMapElement){
     var left = 0;
     var top = 0;
     if (obj.offsetParent) {

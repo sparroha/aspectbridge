@@ -9,7 +9,7 @@ export type vec = {
 //aiObjs.push(new vecObj(newMovingElement(id,startx,starty),new vec(x,y),speed,life,decay))
 //vecObjs.push(new vecObj(newMovingElement(id,startx,starty),new vec(x,y),speed,life,decay))
 export type vecObj = {
-	obj: HTMLElement,
+	obj: HTMLMapElement,
 	vec: vec,
 	speed: number,
 	life: number,
@@ -17,69 +17,71 @@ export type vecObj = {
 	target: boolean,
 }
 //returns collision target = boolean
-export function vecMoveObj(obj: HTMLMapElement,vec: vec, maxX,maxY,setLeft,setTop){
-	let collisionTarget = scanForCollisionAt(obj,vec);
-    console.log('move'+obj.style.top);
+export function vecMoveObj(obj: HTMLMapElement,vec: vec, maxX: number,maxY: number){
+	let collisionTarget = false//scanForCollisionAt(obj,vec);
+    //console.log('move'+obj.style.top);
 	if(collisionTarget){
 		/////////why no work?/////////
-		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, obj.clientTop - vec.y));
-		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, obj.clientLeft - vec.x));
-		console.log('top: '+Math.min(maxY - obj.clientHeight, obj.clientTop - vec.y)+' left: '+newLeft)
-		setTop(newTop);
-		setLeft(newLeft);
+		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, parseInt(obj.style.top) - vec.y));
+		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, parseInt(obj.style.left) - vec.x));
+		//console.log('top: '+Math.min(maxY - obj.clientHeight, obj.clientTop - vec.y)+' left: '+newLeft)
+		//setTop(newTop);
+		obj.style.top = newTop+'px'
+		//setLeft(newLeft);
+		obj.style.left = newLeft+'px'
 		return collisionTarget;
 	}
 	else if(!collisionTarget){
 		/////////why no work?/////////
-		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, obj.clientTop + vec.y));
-		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, obj.clientLeft + vec.x));
+		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, parseInt(obj.style.top) + vec.y));console.log('obj.clientHeight: '+obj.clientHeight+'\nobj.clientTop: '+obj.clientTop)
+		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, parseInt(obj.style.left) + vec.x));
 		console.log('maxY - obj.clientHeight: '+(maxY - obj.clientHeight)+'/\nobj.clientTop + vec.y:'+ (obj.clientTop + vec.y)+'/\nobj.clientTop: '+obj.clientTop+'\nVec: '+JSON.stringify(vec))
-		setTop(newTop);
-		setLeft(newLeft);
+		//setTop(newTop);
+		obj.style.top = newTop+'px'
+		//setLeft(newLeft);
+		obj.style.left = newLeft+'px'
 		return collisionTarget;
 	}
 	//console.log(obj.style.top);
 }
 //returns objArray
-export function arrayMoveObj(objArray,maxX,maxY,setLeft,setTop){
+export function arrayMoveObj(objArray: vecObj[], maxX: number, maxY: number): vecObj[]{
 	for(var x=0;x<objArray.length;x++){
 		if(objArray[x].life>0||isNaN(objArray[x].life)){
-			objArray[x].target = vecMoveObj(objArray[x].obj,objArray[x].vec,maxX,maxY,setLeft,setTop);
-			if(objArray[x].target){
+			objArray[x].target = vecMoveObj(objArray[x].obj,objArray[x].vec,maxX,maxY);
+			/*if(objArray[x].target){
 				try{
 					objArray[x].obj.collision(objArray[x].target);
 				}catch(e){
 					console.log('error: '+e);
 				}
-			}else{/*console.log('arrayMoveObj false');*/}
+			}else{console.log('arrayMoveObj false');}*/
 			objArray[x].life-=isNaN(objArray[x].decay)?1:objArray[x].decay;
 		}else{
 			objArray[x].obj.remove();
-			objArray[x]="";
+			objArray[x]=null;
 			objArray = cleanArrayNulls(objArray);
 		}
 	}
 	return objArray;
 }
-export function moveClientObj(clientObj,speed,maxX,maxY,setLeft,setTop, direction){
-	console.log('direction: '+JSON.stringify(direction))
+export function moveClientObj(clientObj: HTMLMapElement,speed: number,maxX: number,maxY: number, direction: { NORTH: any; EAST: any; SOUTH: any; WEST: any; }){
+	//console.log('direction: '+JSON.stringify(direction))
 	let {NORTH, SOUTH, EAST, WEST} = direction
 	return vecMoveObj(
 			clientObj,
 			{x: (WEST?-speed:0)+(EAST?speed:0),
 			y: (NORTH?-speed:0)+(SOUTH?speed:0)},
 			maxX,
-			maxY,
-			setLeft,
-			setTop
+			maxY
 		);
 	//console.log(collisionTarget);
 }
-export function scanForCollisionAt(obj,vec){
+export function scanForCollisionAt(obj: HTMLMapElement,vec: vec){
 	console.log('scanForCollision');
 	var x = obj.clientLeft+obj.clientWidth/2;
 	var y = obj.clientTop+obj.clientHeight/2;
-	var top,bottom,left,right,ret = false;
+	var top: boolean,bottom: boolean,left: boolean,right: boolean,ret = false;
 	document.querySelectorAll('#battlefield').forEach(function(collider){
 		if(collider.getAttribute('class')!==obj.getAttribute('class')){
 			var objleft = obj.clientLeft;
