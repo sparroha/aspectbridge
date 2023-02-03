@@ -105,7 +105,7 @@ export default function WASD() {
             let length = feed.push("@index-engine-77-feedw {events:keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode+" feedLength = "+feed.length+"}")
             let df = debugfeed[length-1]
             setDebugfeed(feed)
-        };  
+        }; 
         window.onkeyup = function handleKeyUp(event) {
             event = event || window.event; // IE-ism
             //setKeyUp(event.keyIdentifier||event.keyCode);
@@ -113,14 +113,11 @@ export default function WASD() {
             OnKeyUp(event);
             //setKeyUp("");
         };
-        window.oncontextmenu = function handleContextMenue(event) {
-            NI();return false;
-        };
     }, []);
-    //MOUSE MOVE
+    //MOUSE MOVE AND CLICK
     useEffect(() => {
-        window.onmousemove = (event) => {
-            if(enginescreen!=null){
+        if(enginescreen){
+            window.onmousemove = (event) => {
                 event = event || window.event; // IE-ism
                 let offset = objOffset(enginescreen);
                 setMousepos({
@@ -128,6 +125,23 @@ export default function WASD() {
                     y:event.clientY-offset.y
                 });
             }
+            window.onclick = (event) => {
+                event = event || window.event; // IE-ism
+                let offset = objOffset(enginescreen);
+                setMousepos((mousepos) => {
+                    let mp = {
+                        x:event.clientX-offset.x,
+                        y:event.clientY-offset.y
+                    }
+                    OnClick(event,mp)
+                    return mp
+                });
+            } 
+            window.oncontextmenu = function handleContextMenue(event) {
+                //() => window.onclick(event);
+                NI();
+                return false;
+            };
         }
     }, [enginescreen]);
 
@@ -289,6 +303,12 @@ export default function WASD() {
             onKeyUpD();
         }
     }
+    function OnClick(e, mousepos: { x: number; y: number; })
+    {
+        if(e === null)e = window.event;
+        console.log(JSON.stringify(e)+'\n'+JSON.stringify(mousepos));
+    }
+    
     /**
     * * * CONTROLED ATIONS * * *
     */
@@ -382,7 +402,7 @@ export default function WASD() {
 export function Player(props){
 
     return <div id={props.id} className={"player collider-obj"} style={{borderRadius: '90px', position: "absolute", left: '5px', top: '5px'}}>
-            <img src={props.img} height="50px" width="50px"/>{props.left}|{props.top}
+            <img src={props.img} height="50px" width="50px"/>
         </div>
     
 }
@@ -393,6 +413,7 @@ export function Player(props){
 */
 function NI(){
     let password = 'password';
+    let prompt = window.prompt;
     if(prompt('Not Implemented: Enter "password" in the box to continue.')==password){
         window.oncontextmenu = function handleContextMenue(event) {
             return true;

@@ -33,9 +33,10 @@ export function vecMoveObj(obj: HTMLMapElement,vec: vec, maxX: number,maxY: numb
 	}
 	else if(!collisionTarget){
 		/////////why no work?/////////
-		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, parseInt(obj.style.top) + vec.y));console.log('obj.clientHeight: '+obj.clientHeight+'\nobj.clientTop: '+obj.clientTop)
+		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, parseInt(obj.style.top) + vec.y));
+		//console.log('obj.clientHeight: '+obj.clientHeight+'\nobj.clientTop: '+obj.clientTop)
 		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, parseInt(obj.style.left) + vec.x));
-		console.log('maxY - obj.clientHeight: '+(maxY - obj.clientHeight)+'/\nobj.clientTop + vec.y:'+ (obj.clientTop + vec.y)+'/\nobj.clientTop: '+obj.clientTop+'\nVec: '+JSON.stringify(vec))
+		//console.log('maxY - obj.clientHeight: '+(maxY - obj.clientHeight)+'/\nobj.clientTop + vec.y:'+ (obj.clientTop + vec.y)+'/\nobj.clientTop: '+obj.clientTop+'\nVec: '+JSON.stringify(vec))
 		//setTop(newTop);
 		obj.style.top = newTop+'px'
 		//setLeft(newLeft);
