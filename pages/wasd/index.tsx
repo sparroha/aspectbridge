@@ -20,6 +20,8 @@ export default function WASD() {
     //todo
     const [enginescreen, setEngineScreen] = useState(null);
     const [mousepos, setMousepos] = useState({x:0,y:0});
+    const [clickmove, setClickmove] = useState(false);
+    const [clickpos, setClickpos] = useState({x:0,y:0});
     //console.log($(EngineScreen))
     const [objOldZIndex, setObjOldZIndex] = useState(0);
     const [keyDown, setKeyDown] = useState("");//only allows 1 key at a time
@@ -95,28 +97,30 @@ export default function WASD() {
     */
     //MOUSE CLICK
     useEffect(() => {
-        //TODO develope better key tracker
-        window.onkeydown = function handleKeyDown(event) {
-            event = event || window.event;
-            OnKeyDown(event);
-            //debug
-            let feed = debugfeed;
-            let old = feed.shift()
-            let length = feed.push("@index-engine-77-feedw {events:keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode+" feedLength = "+feed.length+"}")
-            let df = debugfeed[length-1]
-            setDebugfeed(feed)
-        }; 
-        window.onkeyup = function handleKeyUp(event) {
-            event = event || window.event; // IE-ism
-            //setKeyUp(event.keyIdentifier||event.keyCode);
-            //if(keyDown==keyUp)setKeyDown("");
-            OnKeyUp(event);
-            //setKeyUp("");
-        };
-    }, []);
+        if(localPlayer){
+            //TODO develope better key tracker
+            window.onkeydown = function handleKeyDown(event) {
+                event = event || window.event;
+                OnKeyDown(event);
+                //debug
+                let feed = debugfeed;
+                let old = feed.shift()
+                let length = feed.push("@index-engine-77-feedw {events:keyIdentifier = "+event.keyIdentifier+" keyCode = "+event.keyCode+" feedLength = "+feed.length+"}")
+                let df = debugfeed[length-1]
+                setDebugfeed(feed)
+            }; 
+            window.onkeyup = function handleKeyUp(event) {
+                event = event || window.event; // IE-ism
+                //setKeyUp(event.keyIdentifier||event.keyCode);
+                //if(keyDown==keyUp)setKeyDown("");
+                OnKeyUp(event);
+                //setKeyUp("");
+            };
+        }
+    }, [localPlayer]);
     //MOUSE MOVE AND CLICK
     useEffect(() => {
-        if(enginescreen){
+        if(enginescreen&&localPlayer){
             window.onmousemove = (event) => {
                 event = event || window.event; // IE-ism
                 let offset = objOffset(enginescreen);
@@ -133,6 +137,7 @@ export default function WASD() {
                         x:event.clientX-offset.x,
                         y:event.clientY-offset.y
                     }
+                    setClickpos(mp);
                     OnClick(event,mp)
                     return mp
                 });
@@ -143,7 +148,7 @@ export default function WASD() {
                 return false;
             };
         }
-    }, [enginescreen]);
+    }, [enginescreen,localPlayer]);
 
     /**
      * * * GAME LOOP * * *
@@ -303,10 +308,14 @@ export default function WASD() {
             onKeyUpD();
         }
     }
-    function OnClick(e, mousepos: { x: number; y: number; })
+    function OnClick(e: Event, mousepos: { x: number; y: number; })
     {
         if(e === null)e = window.event;
-        console.log(JSON.stringify(e)+'\n'+JSON.stringify(mousepos));
+        //console.log(JSON.stringify(e)+'\n'+JSON.stringify(mousepos));
+        //TODO
+        let f = (e: Event)=>{/* * * 8 SECOND LOOP * * */}
+        let i = setInterval(()=> f, 200);
+        setTimeout(()=> clearInterval(i), 8000);
     }
     
     /**
@@ -315,19 +324,25 @@ export default function WASD() {
     //var keynum = [[],[],()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{},()=>{}];
     var keyF = ['','','','','','','','','','','','',''];
     function actionKey1(){
-        let p = newProjectile(vecObjs,fireball,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
-        let i = setInterval(()=> p, 200);
-        setTimeout(()=> clearInterval(i), 8000);
+        if(localPlayer){
+            let p = newProjectile(vecObjs,fireball,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+            let i = setInterval(()=> p, 200);
+            setTimeout(()=> clearInterval(i), 8000);
+        }
     }
     function actionKey2(){
-        let p = newProjectile(vecObjs,icicle,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
-        let i = setInterval(()=> p, 200);
-        setTimeout(()=> clearInterval(i), 8000);
+        if(localPlayer){
+            let p = newProjectile(vecObjs,icicle,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+            let i = setInterval(()=> p, 200);
+            setTimeout(()=> clearInterval(i), 8000);
+        }
     }
     function actionKey3(){
-        let p = newProjectile(vecObjs,missile,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
-        let i = setInterval(()=> p, 200);
-        setTimeout(()=> clearInterval(i), 8000);
+        if(localPlayer){
+            let p = newProjectile(vecObjs,missile,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+            let i = setInterval(()=> p, 200);
+            setTimeout(()=> clearInterval(i), 8000);
+        }console.log('localPlayer: '+localPlayer)
     }
 
     /**
@@ -372,7 +387,7 @@ export default function WASD() {
      */
     return <Container id={'body'}>
                 <Row className={'tcenter'}>
-                    <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>{Math.floor(mousepos.x)+'/'+Math.floor(mousepos.y)}<br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}</Col>
+                    <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>{Math.floor(mousepos.x)+'/'+Math.floor(mousepos.y)}<br/>Last clicked: {Math.floor(clickpos.x)+'/'+Math.floor(clickpos.y)}<br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}</Col>
                     <Col sm={'3'}><h4 className={'col-sm-6'}><b>Control the Object With "W/A/S/D". Press 1 - 3 to file.</b></h4></Col>
                     <Col sm={'3'} id={"ups"} style={{position: 'relative', visibility: 'visible'}}>{'u/s='+updates+' s='+seconds+' width='+maxX+' height='+maxY}<br/>{'N: '+north+' / E: '+east+' / S: '+south+' / W: '+west}</Col>
                 </Row>
@@ -413,8 +428,8 @@ export function Player(props){
 */
 function NI(){
     let password = 'password';
-    let prompt = window.prompt;
-    if(prompt('Not Implemented: Enter "password" in the box to continue.')==password){
+    let prompt = window.prompt('Not Implemented: Enter "password" in the box to continue.', 'password');
+    if(prompt==password){
         window.oncontextmenu = function handleContextMenue(event) {
             return true;
         }

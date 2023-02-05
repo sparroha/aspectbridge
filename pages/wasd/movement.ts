@@ -14,13 +14,13 @@ export type vecObj = {
 	speed: number,
 	life: number,
 	decay: number,
-	target: boolean,
+	target: vec,
 }
 //returns collision target = boolean
 export function vecMoveObj(obj: HTMLMapElement,vec: vec, maxX: number,maxY: number){
-	let collisionTarget = false//scanForCollisionAt(obj,vec);
+	let collisionTarget = scanForCollisionAt(obj,vec);
     //console.log('move'+obj.style.top);
-	if(collisionTarget){
+	if(collisionTarget!=null){
 		/////////why no work?/////////
 		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, parseInt(obj.style.top) - vec.y));
 		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, parseInt(obj.style.left) - vec.x));
@@ -49,7 +49,8 @@ export function vecMoveObj(obj: HTMLMapElement,vec: vec, maxX: number,maxY: numb
 export function arrayMoveObj(objArray: vecObj[], maxX: number, maxY: number): vecObj[]{
 	for(var x=0;x<objArray.length;x++){
 		if(objArray[x].life>0||isNaN(objArray[x].life)){
-			objArray[x].target = vecMoveObj(objArray[x].obj,objArray[x].vec,maxX,maxY);
+			let targetEl: Element = vecMoveObj(objArray[x].obj,objArray[x].vec,maxX,maxY);
+			objArray[x].target = {x: targetEl.clientLeft+targetEl.clientWidth/2, y: targetEl.clientTop+targetEl.clientHeight/2}
 			/*if(objArray[x].target){
 				try{
 					objArray[x].obj.collision(objArray[x].target);
@@ -79,11 +80,12 @@ export function moveClientObj(clientObj: HTMLMapElement,speed: number,maxX: numb
 	//console.log(collisionTarget);
 }
 export function scanForCollisionAt(obj: HTMLMapElement,vec: vec){
-	console.log('scanForCollision');
+	//console.log('scanForCollision');
 	var x = obj.clientLeft+obj.clientWidth/2;
 	var y = obj.clientTop+obj.clientHeight/2;
-	var top: boolean,bottom: boolean,left: boolean,right: boolean,ret = false;
+	var top: boolean,bottom: boolean,left: boolean,right: boolean = false;
 	document.querySelectorAll('#battlefield').forEach(function(collider){
+		if(collider===obj) return null
 		if(collider.getAttribute('class')!==obj.getAttribute('class')){
 			var objleft = obj.clientLeft;
 			var objright = obj.clientLeft+obj.clientWidth;
@@ -98,17 +100,18 @@ export function scanForCollisionAt(obj: HTMLMapElement,vec: vec){
 			var yaligned = (objtop < thistop && thistop < objbottom)||(objtop < thisbottom && thisbottom < objbottom);
 			
 			if(objleft < thisright && objleft > thisleft){right=true;}else{right=false;}//colide on $(this).right;
-			if(objright >thisleft && objright < thisright){left=true;}else{left=false;}//colide on $(this).left;
+			if(objright > thisleft && objright < thisright){left=true;}else{left=false;}//colide on $(this).left;
 			if(objtop < thisbottom && objtop > thistop){bottom=true;}else{bottom=false;}//colide on $(this).bottom;
 			if(objbottom > thistop && objbottom < thisbottom){top=true;}else{top=false;}//colide on $(this).top;
 			
 			if((right||left)&&(top||bottom)){
-				console.log('collision');
-				ret = true;//////?????what is being returned here?
+				//Not Working Right
+				//console.log('collision: '+ right +'|'+ left +'|'+ top +'|'+ bottom);
+				return collider
 			}
 		}
 	});
-	return ret;
+	return null;
 }
 
 /*function handleAI(){
