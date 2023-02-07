@@ -18,9 +18,11 @@ export type vecObj = {
 }
 //returns collision target = boolean
 export function vecMoveObj(obj: HTMLMapElement,vec: vec, maxX: number,maxY: number){
+	if(!obj) return null;
 	let collisionTarget = scanForCollisionAt(obj,vec);
     //console.log('move'+obj.style.top);
 	if(collisionTarget!=null){
+		obj.style.top = 0+'px'
 		/////////why no work?/////////
 		let newTop = Math.max(0,Math.min(maxY - obj.clientHeight, parseInt(obj.style.top) - vec.y));
 		let newLeft = Math.max(0,Math.min(maxX - obj.clientWidth, parseInt(obj.style.left) - vec.x));
@@ -86,7 +88,7 @@ export function scanForCollisionAt(obj: HTMLMapElement,vec: vec){
 	var top: boolean,bottom: boolean,left: boolean,right: boolean = false;
 	document.querySelectorAll('#battlefield').forEach(function(collider){
 		if(collider===obj) return null
-		if(collider.getAttribute('class')!==obj.getAttribute('class')){
+		if(collider.classList!==obj.classList){
 			var objleft = obj.clientLeft;
 			var objright = obj.clientLeft+obj.clientWidth;
 			var objtop = obj.clientTop;
