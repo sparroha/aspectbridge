@@ -1,4 +1,19 @@
-const alephbeth = {
+import { useEffect, useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
+export default function TLiterator(props){
+    const [tlword, setTLWord] = useState('')
+
+    return <Form id="tLit" className="vcenter tcenter">
+                <Form.Group>
+                    <Form.Label>Input</Form.Label>
+                    <Form.Control  type="text" id="word" name="word" placeholder="Enter word" onChange={(e)=>setTLWord(translit(e.target.value))} />
+                    <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
+                    <Form.Text className="text-muted"><h1 id="hbru">{tlword}</h1></Form.Text>
+                    {/*<Form.Control  type="submit"/>*/}
+                </Form.Group>
+            </Form>
+}
+export const alephbeth = {
     aleph: {
         uni: '\u05D0',
         char: 'א'
@@ -82,7 +97,7 @@ const alephbeth = {
         uni: '\u05EA'
     }
 }
-const grammar = {
+export const grammar = {
     pre: {
         exown: 'i',
     },
@@ -92,11 +107,7 @@ const grammar = {
         fplural: 'ot',
     }
 }
-$("#word").submit(function(e) {
-    e.preventDefault();
-});
-$('#aspectnav').html('Aspect '+translit('Aspect')+' Bridge');
-function translit(str){
+export function translit(str){
     let s = str.toLowerCase();
     let a = str.split("");
 
@@ -117,6 +128,7 @@ function translit(str){
     s = s.replaceAll('ck',alephbeth.keth.uni);
     s = s.replaceAll('ch',alephbeth.keth.uni);
     s = s.replaceAll('kh',alephbeth.keth.uni);
+    s = s.replaceAll('x',alephbeth.keth.uni);
     s = s.replaceAll('sh',alephbeth.shin.uni);
 
     s = s.replaceAll('a',alephbeth.aleph.uni);
@@ -142,6 +154,7 @@ function translit(str){
     //s = s.replaceAll('s',alephbeth.samec.uni);
     s = s.replaceAll('o',alephbeth.ain.uni);
     s = s.replaceAll('p',alephbeth.pe.uni);
+    s = s.replaceAll('f',alephbeth.pe_suph.uni);
     //s = s.replaceAll('s',alephbeth.tzadi.uni);
     s = s.replaceAll('q',alephbeth.qoph.uni);
     s = s.replaceAll('r',alephbeth.resh.uni);
