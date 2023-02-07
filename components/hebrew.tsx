@@ -16,85 +16,139 @@ export default function TLiterator(props){
 export const alephbeth = {
     aleph: {
         uni: '\u05D0',
+        number: 1,
+        order: 1,
         char: 'א'
     },
     beth: {
-        uni: '\u05D1'
+        uni: '\u05D1',
+        number: 2,
+        order: 2,
     },
     gimel: {
-        uni: '\u05D2'
+        uni: '\u05D2',
+        number: 3,
+        order: 3,
     },
     daleth: {
-        uni: '\u05D3'
+        uni: '\u05D3',
+        number: 4,
+        order: 4,
     },
     hey: {
-        uni: '\u05D4'
+        uni: '\u05D4',
+        number: 5,
+        order: 5,
     },
     vav: {
-        uni: '\u05D5'
+        uni: '\u05D5',
+        number: 6,
+        order: 6,
     },
     zain: {
-        uni: '\u05D6'
+        uni: '\u05D6',
+        number: 7,
+        order: 7,
     },
     keth: {
-        uni: '\u05D7'
+        uni: '\u05D7',
+        number: 8,
+        order: 8,
     },
     teth: {
-        uni: '\u05D8'
+        uni: '\u05D8',
+        number: 9,
+        order: 9,
     },
     yod: {
-        uni: '\u05D9'
+        uni: '\u05D9',
+        number: 10,
+        order: 10,
     },
     caph_suph: {
-        uni: '\u05DA'
+        uni: '\u05DA',
+        number: 500,
+        order: 23,
     },
     caph: {
-        uni: '\u05DB'
+        uni: '\u05DB',
+        number: 20,
+        order: 11,
     },
     lamed: {
-        uni: '\u05DC'
+        uni: '\u05DC',
+        number: 30,
+        order: 12,
     },
     mem_suph: {
-        uni: '\u05DD'
+        uni: '\u05DD',
+        number: 600,
+        order: 24,
     },
     mem: {
-        uni: '\u05DE'
+        uni: '\u05DE',
+        number: 40,
+        order: 13,
     },
     nun_suph: {
-        uni: '\u05DF'
+        uni: '\u05DF',
+        number: 700,
+        order: 25,
     },
     nun: {
-        uni: '\u05E0'
+        uni: '\u05E0',
+        number: 50,
+        order: 14,
     },
     samec: {
-        uni: '\u05E1'
+        uni: '\u05E1',
+        number: 60,
+        order: 15,
     },
     ain: {
-        uni: '\u05E2'
+        uni: '\u05E2',
+        number: 70,
+        order: 16,
     },
     pe_suph: {
-        uni: '\u05E3'
+        uni: '\u05E3',
+        number: 800,
+        order: 26,
     },
     pe: {
-        uni: '\u05E4'
+        uni: '\u05E4',
+        number: 80,
+        order: 17,
     },
     tzadi_suph: {
-        uni: '\u05E5'
+        uni: '\u05E5',
+        number: 900,
+        order: 27,
     },
     tzadi: {
-        uni: '\u05E6'
+        uni: '\u05E6',
+        number: 90,
+        order: 18,
     },
     qoph: {
-        uni: '\u05E7'
+        uni: '\u05E7',
+        number: 100,
+        order: 19,
     },
     resh: {
-        uni: '\u05E8'
+        uni: '\u05E8',
+        number: 200,
+        order: 20,
     },
     shin: {
-        uni: '\u05E9'
+        uni: '\u05E9',
+        number: 300,
+        order: 21,
     },
     tav: {
-        uni: '\u05EA'
+        uni: '\u05EA',
+        number: 400,
+        order: 22,
     }
 }
 export const grammar = {

@@ -14,7 +14,7 @@ export default function WASD() {
     //const [locplayerLeft, setLocplayerLeft] = useState(0);
     //const [locplayerTop, setLocplayerTop] = useState(0);
     const [gamespeed, setGamespeed] = useState(1000/20);
-    var vecObjs: vecObj[] = [];
+    const [vecObjs, setVecObjs] = useState([]);
     
     //Engine Valiables
     //todo
@@ -165,8 +165,9 @@ export default function WASD() {
                     localTop: localPlayer.clientTop,  
                 }))*/
                 setSeconds(new Date().getSeconds())
-                setUpdates(updateRef.current)
-                updateRef.current = 0;
+                setUpdates((updates)=>updates-updates)//lol factor
+                //setUpdates(updateRef.current)
+                //updateRef.current = 0;
             },1000);
             
             const gameloopTicks = setInterval(()=>{
@@ -175,7 +176,7 @@ export default function WASD() {
                 //environmental changes from server.
                 moveClientObj(localPlayer, 5, maxX, maxY, getDirection());
                 //Called every game tick to update positions of other moving entities.
-                vecObjs = arrayMoveObj(vecObjs, maxX, maxY);
+                setVecObjs((vos)=>arrayMoveObj(vos, maxX, maxY));
                 debug();
             },gamespeed);
         return () => {
@@ -196,7 +197,8 @@ export default function WASD() {
     */
     function debug(){
         var s = new Date().getSeconds();
-        updateRef.current++
+        setUpdates((updates)=>updates+1)
+        //updateRef.current++
         //console.log('@gameloopTicks.debug(): '+updates)
         if(s == seconds+1||s==seconds-59){
             //do this every 60 seconds
@@ -326,6 +328,7 @@ export default function WASD() {
     function actionKey1(){
         if(localPlayer){
             let p = newProjectile(vecObjs,fireball,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+            //setEntities((e)=>{e.push(p);return e;})
             let i = setInterval(()=> p, 200);
             setTimeout(()=> clearInterval(i), 8000);
         }

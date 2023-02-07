@@ -29,10 +29,10 @@ export function newProjectile(vecObjs: vecObj[], entity,caster: HTMLMapElement,t
 	vecObjs.push({ obj: entity(caster.id,startX,startY,size||1,angle), vec: vec, speed: size||1, life: life, decay: decay, target: target});
 	//setVecObjs(vecObjs);
 }
-export function missile(id,startx,starty,size,angle,screen)
+export function missile(id,startx,starty,size,angle,screen, img?)
 {
 	const style = {
-		position: 'absolute',
+		Position: "absolute",
 		transform: "rotate("+angle+"deg)",
 		width: 20*size+"px",
 		height: 20*size+"px",
@@ -46,8 +46,9 @@ export function missile(id,startx,starty,size,angle,screen)
 		alert('THIS IS WHAT IT"S LIKE WHEN WORLDS COLLIDE!');
 	};
 	angle=angle+90;// rotates spin left/right to spin up/down 
-	var img = './../assets/binary2.png'
-	var newObj = <div id={'missile_'+(id!==""?id:"")} className={'projectile'} style={[style]}><img src={img} width={'100%'} /></div>
+	img = img || './../assets/binary2.png'
+	let mid = "missile_"+(id!==""?id:"");
+	var newObj = <div id={mid} className={'projectile'} style={style}><img src={img} width={'100%'} /></div>
 
 	return newObj;
 }
