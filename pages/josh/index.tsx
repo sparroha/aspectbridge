@@ -1,20 +1,13 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router';
 
-/*function useInitialPage() {
-    const router = useRouter();
-    useEffect(() => {
-        router.push('/josh/dashboard')
-    });
-}*/
 export default function Main() {
     const router = useRouter();
     useEffect(() => {
-        router.push('/josh/dashboard')
+        router.push({pathname: '/josh/dashboard', query: router.query})
     });
     if (router.isFallback) {
-        return <div>Loading...</div>
-    }
-    //useInitialPage()
+        return <div>Josh Loading...</div>
+    }else return <>Josh Not Loading?</>
 }
 

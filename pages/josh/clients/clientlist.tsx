@@ -123,7 +123,7 @@ export function DashNav(){
     //let l = clientlist.map((client) => {<Nav.Link href={"/josh/"+(client.name?client.name:'')+""}>{client.dname}</Nav.Link>})
     return <Card className={''}>
         <Card.Body className={'p0'}>
-            <Card.Title className={''}><Nav.Link href="/josh" className="">Clients</Nav.Link></Card.Title>
+            <Card.Title className={''}><Nav.Link href="/josh/clients" className="">Clients</Nav.Link></Card.Title>
             <hr />
             <Nav>
                 <Row><ClientList /></Row>

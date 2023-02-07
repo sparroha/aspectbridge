@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import { Button, Col, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink, Row} from "react-bootstrap";
 import { getDomain } from "../../domain";
 const aspect = '';
-export default function NavIndex() {
+export default function NavIndex(props) {
     const domain = getDomain()
+    const router = useRouter()
     const [local, setLocal] = useState(null)
+    const [homepage, setHomepage] = useState(router.pathname)
     useEffect(()=>{
         setLocal(domain=='localhost'?'true':'false')
     },[domain])
@@ -47,6 +49,7 @@ export default function NavIndex() {
                                     </NavDropdown></Col>
                                     <Col><Nav.Link href="/josh/assistant" >Assistant</Nav.Link></Col>
                                     <Col><Nav.Link href="/josh/employees" >Employees</Nav.Link></Col>
+                                    <Col><Nav.Link  href={props.username?"/login/"+props.username+'?homepage='+homepage:"/login/login"}>{props.username?props.username:'Login'}</Nav.Link></Col>
                                     <Col><NavDropdown title="External" id="navbarPartnersDropdown">
                                         <Nav.Link href="https://aspectbridge.com">AspectBridge</Nav.Link>
                                     </NavDropdown></Col>

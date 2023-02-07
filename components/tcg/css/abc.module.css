@@ -1,0 +1,29 @@
+.card {
+    display: inline-block;
+    width: 100px;
+    height: 140px;
+    margin: 5px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px #000;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.deck{
+    display: inline-block;
+    margin: 5px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px #000;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.deck, .hand, .field, .graveyard, .exile{
+    position: relative;
+}
+.dragable{
+    cursor: move;
+    position: absolute;
+}

@@ -2,6 +2,7 @@ import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"
 import { Card, Col } from "react-bootstrap"
 import useLog from "../conlog"
+import { DisplayClientByName } from "./clientform"
 import getClientInfo from "./navigation/clientinfo"
 
 
@@ -17,7 +18,8 @@ export default function ClientInfoCard(pageInfo){
                         <Card.Title className={'img-banner'}>{i.path.dir}</Card.Title>
                         <hr />
                         <Card.Text>
-                            {i.data.info}
+                            {/*i.data.info*/}
+                            <DisplayClientByName cliN={i.path.dir}/>
                         </Card.Text>
                     </Card.Body>
                 </Card>

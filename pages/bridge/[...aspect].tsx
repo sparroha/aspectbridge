@@ -4,36 +4,66 @@ import Head from "next/head";
 import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import NavIndex from '../../components/ab/nav';
-import navCcomponentObject from '../../components/ab/navigaton';
+import navComponentObject from '../../components/ab/navigaton';
+import { GetServerSideProps } from 'next';
+import { ActiveUser, ProfileByIp } from '../login/[userlogin]';
+import Calendar from 'react-calendar';
+import 'components/calendar.module.css';
+import 'react-calendar/dist/Calendar.css';
+import SimpleNav from '../../components/simplenav';
+import DiceWidget from '../../components/dice';
+import TLiterator from '../../components/hebrew';
+import requestIp from 'request-ip';
 
 /**CSS module *//not working/
+//TODO is working
 
 /**Custom Components */
 
 
 /*THERE'S A BETTER WAY THAN THIS*/
-const componentObject = navCcomponentObject()
+const componentObject = navComponentObject()
 
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
  * @returns This web site
  */
-export default function AspectBridge() {
+export default function AspectBridge({ip}) {
+    const [user, setUser] = useState(null)
     return <>
+        <ProfileByIp ip={ip} setUser={setUser}/>
         <Headers />
-        <Container className={'aspect h100'}>
-            <ContainerHeader />
-            <Row id="content" className={"h70"}>
+        <Container className={'aspect'}>
+            <ContainerHeader user={user?user:null}/>
+            <Row id="content" className={""}>
                 <NavLeftDefault />
-                    <DynamicInfo />
-                <NavRightDefault />
+                <DynamicInfo user={user}/>
+                <NavRightDefault user={user}/>
+            </Row>
+            <Row>
+                <CalendarTab />
             </Row>
             <Footer />
         </Container>
     </>
+}
+function CalendarTab(){
+    const [date, setDate] = useState(new Date());
+
+    return (
+        <div className='calendar grey-back'>
+            <h1 className='text-center'>React Calendar</h1>
+            <div className='calendar-container'>
+                <Calendar onChange={setDate} value={date} />
+            </div>
+            <p className='text-center'>
+                <span className='bold'>Selected Date:</span>{' '}
+                {date.toDateString()}
+            </p>
+        </div>
+    );
 }
 
 /**
@@ -44,7 +74,7 @@ export default function AspectBridge() {
  */
 function Headers(){
     return <Head>
-                <title>Sunrise Landscapes</title>
+                <title>Aspect Bridge</title>
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
@@ -61,11 +91,11 @@ function Headers(){
  * 
  * @returns Title bar and Navbar
  */
-function ContainerHeader(){
+function ContainerHeader({ user }){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
-                    <NavIndex />
+                    <NavIndex user={user} root={"bridge"}/>
                 </Col>
             </Row>
 }
@@ -77,18 +107,30 @@ function ContainerHeader(){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
-    return <Col md={1} id="nav-left" className={"well-sm grey-back o7"}>
-            {componentObject.navcards.aspects}
+    return <Col xs={12} sm={3} md={2} id="nav-left" className={"p0 'w100 h100'"}>
+                <Row className={'w100 h100'} style={{position: 'relative'}}>
+                    <Col xs={8} sm={12} style={{zIndex: '5'}}><SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]}/></Col>
+                    <Col xs={4} sm={12} style={{zIndex: '5'}}><DiceWidget/></Col>
+                    <div className={'grey-back o4 w100 h100'} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
+                </Row>
             </Col>
 }
-function NavRightDefault(){  
-    return <Col md={1} id="nav-right" className={"well-sm grey-back o7"}>
-            {componentObject.navcards.air}
+function NavRightDefault({user}){  
+    const [hide, setHide] = useState('hidden')
+    return <Col xs={12} sm={3} md={2} id="nav-right" className={"p0"}>
+                <Row className={'w100 h100'} style={{visibility: 'visible', position: 'relative', zIndex: '5', color: 'white'}}>{/**this error is invalid. visibility still works */}
+                    <Col style={{zIndex: '5'}}>
+                        Username: {user?user.username:''} <br />
+                        Access: {user?user.access:''} <br />
+                        Message: {user?user.message:''} <br />
+                    </Col>
+                    <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
+                </Row>
             </Col>
 }
 function Footer(){
-    return <Row id="footer" className={"safe-size"}>
-                <Col sm={3} >
+    return <Row id="footer" className={""}>
+                <Col xs={6} sm={4} md={3} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>Contact Us</Card.Title>
@@ -97,7 +139,7 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={6} >
+                <Col xs={6} sm={4} md={6} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>About...Upon</Card.Title>
@@ -109,7 +151,7 @@ function Footer(){
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col sm={3} >
+                <Col xs={12} sm={4} md={3} style={{position: 'relative'}}>
                     <Card className={'gray-back'}>
                         <Card.Body>
                             <Card.Title className={'img-banner'}>News</Card.Title>
@@ -127,38 +169,26 @@ function Footer(){
  * 
  * This section between the <Card.Text> tags chooses what Page loads determined by the url
  * 
- * {() => {switch(client){
- *             case 'ashmore': {
- *                 if(client){
- *                     switch(sub){
- *                         case 'yards': return YardsAshmore();
- *                         case 'trimmings': return TrimmingsAshmore();
- *                         case 'hardees': return HardeesAshmore();
- *                         default: return Ashmore();
- *                     }}}
- *             case 'bill': {return Bill();}
- *             default: {return <></>;}
- *         }}}
- * 
- * @returns Client Info Box
+ * @returns DynamicInfo
  */
-function DynamicInfo(){
+function DynamicInfo({user}){
     const router = useRouter()
     const { aspect } = router.query //query url props
     const [bridge, setBridge] = useState(<></>)
-    const [dir, setDir] = useState('dashboard')
+    //these 3 are redundant useage because they are contained within args(props).query
+    const [dir, setDir] = useState('')
     const [sub, setSub] = useState('')
     const [nest, setNest] = useState('')
     function handleBridgePassage(){
         if(aspect){
-            let dir = (aspect.length>1?aspect[0]:aspect).toString()
-            let sub = (aspect.length>1?aspect[1]:aspect).toString()
-            let nest = (aspect.length>2?aspect[2]:(aspect.length>1?aspect[1]:aspect)).toString()
-            setDir(dir)
+            let dir = (aspect.length>1?aspect[0]:aspect).toString() //"/:dir/:sub/:nest"
+            let sub = (aspect.length>1?aspect[1]:'').toString()
+            let nest = (aspect.length>2?aspect[2]:'').toString()
+            setDir(dir) 
             setSub(sub)
             setNest(nest)            
             switch(dir){
-                case 'dashboard': setBridge(<>DASHBOARD</>)
+                case 'login': setBridge(<></>)
                 break;
                 case 'q': {
                     switch(sub){
@@ -168,48 +198,48 @@ function DynamicInfo(){
                         break;
                     }
                 } break;
-                default: setBridge(<Placeholder />)
+                default: {setBridge(<Placeholder user={user}/>)}
                 break;
-            }console.log('Client: '+dir+'|'+(aspect.length>1?aspect[0]:aspect)+' ./. Subdomain: '+sub+'|'+(aspect.length>1?aspect[1]:aspect))
+            }//console.log('Client: '+dir+'|'+(aspect.length>1?aspect[0]:aspect)+' ./. Subdomain: '+sub+'|'+(aspect.length>1?aspect[1]:aspect))
         }
     }
     useEffect(() => {
         handleBridgePassage()
         return handleBridgePassage()
     }, [aspect])
-    return <Col md={10} id='home' className={"well-sm white-back scroll"}>
-                <Row className={"h10"}><h3 className={'img-banner'}>{dir}</h3></Row>
+    return <Col xs={12} sm={6} md={8} id='home' className={"white-back scroll"}>
+                <h3 className={'img-banner'}>{user?user.username:'No user'}</h3>
+                User Notification: {user?user.message:'No message'}
                 <hr />
-                {bridge}
-                <TLiterator />
+                {bridge/**page content */}
+                <Row><Col md={4}></Col><Col sm={12} md={4}><TLiterator /></Col><Col md={4}></Col></Row>
             </Col>
 }
-function Placeholder(){
-    return <Row className={"h80"}>
+function Placeholder({user}){
+    return <Row className={""}>
             <Col md={12} className={"tcenter black-font"}>
                 <p>14. The race of the dwarfs | in Dvalin's throng</p>
                 <p>Down to Lofar | the list must I tell;</p>
                 <p>The rocks they left, | and through wet lands</p>
                 <p>They sought a home | in the fields of sand.</p>
             </Col>
+            <Col md={12} className={"tcenter black-font"}>
+                <h3>Eye, Theou, Soul</h3>
+                <p>Egh: "I" live for 'Your' breath is in "me"</p>
+                <p>Tuh: "You" breathe life into 'me'</p>
+                <p>Swe: "Self" is 'Your' breath becoming 'me'</p>
+            </Col>
+            <Col md={12} className={"tcenter black-font"}>
+                <h3>Egg, Two, Schwa</h3>
+                <p>Egh: Add 1 egg</p>
+                <p>Tuh: Add another egg</p>
+                <p>Swe: Stir</p>
+            </Col>
         </Row>
 }
-function TLiterator(){
-    const word = 'Inavtive'
-    return <Row className={"h30"}>
-            <Col sm={3}></Col>
-            <Col sm={6} id="content">
-                <Form id="tLit" className="vcenter tcenter">
-                    <Form.Group>
-                        <Form.Label>Input</Form.Label>
-                        <Form.Control  type="text" id="word" name="word" placeholder="Enter word" />
-                        <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
-                        <Form.Text className="text-muted"><h1 id="hbru">{word}</h1></Form.Text>
-                        <Form.Control  type="submit" />
-                    </Form.Group>
-                
-                </Form>
-            </Col>
-            <Col sm={3}></Col>
-        </Row>
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const query = context.query
+    const ip = await requestIp.getClientIp(context.req)
+    return {props: {ip: ip}} 
 }
