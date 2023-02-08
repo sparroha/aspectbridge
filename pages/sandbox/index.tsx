@@ -24,17 +24,17 @@ export type GameProps = {
 }
 export default function Sandbox(props: GameProps) {
     return <>
-        <Row style={{height:'400px'}}>
-          <Col sm={3}>Opponent Discard<br/><ABDeck deckProps={props.deckProps}/></Col>
+        <Row style={{height:'350px'}}>
+          <Col sm={3}>Opponent Discard<br/><ABDeck deckProps={props.deckProps}></ABDeck></Col>
           <Col sm={6}>Opponent Hand<br/><ABHand handProps={props.handProps}/></Col>
           <Col sm={3}>Opponent Deck<br/><ABDeck deckProps={props.deckProps}/></Col>
         </Row>
-        <Row style={{height:'600px'}}>
+        <Row style={{height:'500px'}}>
           <Col sm={1}>Opponent Stats<br/></Col>
           <Col sm={10}>Field<br/></Col>
           <Col sm={1}>Stats<br/></Col>
         </Row>
-        <Row style={{height:'400px'}}>
+        <Row style={{height:'350px'}}>
           <Col sm={3}>Deck<br/><ABDeck deckProps={props.deckProps}/></Col>
           <Col sm={6}>Hand<br/><ABHand handProps={props.handProps}/></Col>
           <Col sm={3}>Discard<br/><ABDeck deckProps={props.deckProps}/></Col>
@@ -44,6 +44,7 @@ export default function Sandbox(props: GameProps) {
 function ABDeck(props: {deckProps: DeckProps}) {
   return <>
       <Button id={props.deckProps.deckid} className={abclayout.card} onClick={()=>{/*draw card*/}}>
+        Deck ID
       </Button>
   </>
 }
@@ -51,9 +52,10 @@ function ABHand(props: {handProps: HandProps}) {
   return <>
       <Row id={props.handProps.handid} className={abclayout.hand}>
           {props.handProps.handArray.map((cardname: string, index: number) => {
-            return <Col sm={1} className={abclayout.cardcontainer+' '+abclayout.draggable}>
+            return <>{index%10==0?<><Col sm={1}></Col><Col sm={1}></Col></>:<></>}
+            <Col sm={1} className={abclayout.cardcontainer+' '+abclayout.draggable}>
               <ABCard key={index} cardname={cardname} use={getCardUse(cardname)}/>
-              </Col>
+              </Col></>
             })}
       </Row>
   </>
