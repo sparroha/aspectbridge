@@ -3,18 +3,6 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import useLog from "../../components/conlog"
 import Landscape from "../../components/ll/css/layout"
-
-export type Ingredients = {
-    message: string | string[]
-}
-
-export default function Sand(food: Ingredients) {
-    //TODO add cookies to carry information across pages and sessions
-    const router = useRouter()
-    //router is a home router, useRouter grabs url obj
-    const urlParams = router.query
-    //this is the actual stuff
-    const [message, setMessage] = useState(food.message)
 import sql from "../../lib/,base/sql"
 
 export type Game = {
@@ -64,13 +52,6 @@ export default function Sand(game: Game) {
         [message])
     }else useLog('message: '+message)
 
-<<<<<<< HEAD
-    let processedFood = <Landscape>
-        <p>Message From URL reads: {JSON.stringify(urlParams.message)}</p>
-        <p>Message From PROPS reads: {food.message}</p>
-        <hr></hr>
-        <ElementFunction urlP={urlParams} message={message}/>
-=======
     useEffect(() => {ann_pr.action(instance, setInstance)}, [])
 
     let processedFood = <Landscape>
@@ -80,31 +61,11 @@ export default function Sand(game: Game) {
         <ElementFunction game={instance} />
         
         <div></div>
->>>>>>> main
     </Landscape>
 
     let poop = processedFood
     return poop
 }
-<<<<<<< HEAD
-function ElementFunction(food: any){
-    return <>
-        <>{'URL: '+food.urlP.message}</>
-        <br></br>
-        <>{'PROPS: '+food.message}</>
-    </>
-}
-export const getServerSideProps: GetServerSideProps<Ingredients> = async (context) => {
-    const urlParams = context.query
-    const message = urlParams.message
-    let food: Ingredients = {
-        message: '',
-    }
-    if(message) {
-        food.message = message+': from props'
-    }
-    return {props: food}
-=======
 function ElementFunction(game: {game: Game}){
     return <>
         {game.game.discard.map((c) => <>{c}</>)}
@@ -127,5 +88,4 @@ export const getServerSideProps: GetServerSideProps<Game> = async (context) => {
         previousTokenCount: 0,
     }
     return {props: game}
->>>>>>> main
 }
