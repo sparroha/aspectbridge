@@ -24,20 +24,20 @@ export type GameProps = {
 }
 export default function Sandbox(props: GameProps) {
     return <>
-        <Row style={{height:'350px'}}>
-          <Col sm={3}>Opponent Discard<br/><ABDeck deckProps={props.deckProps}></ABDeck></Col>
-          <Col sm={6}>Opponent Hand<br/><ABHand handProps={props.handProps}/></Col>
-          <Col sm={3}>Opponent Deck<br/><ABDeck deckProps={props.deckProps}/></Col>
+        <Row>
+          <Col sm={3} style={{textAlign: 'center'}}>Opponent Discard<br/><ABDeck deckProps={props.deckProps}></ABDeck></Col>
+          <Col sm={6} style={{textAlign: 'center'}}>Opponent Hand<br/><ABHand handProps={props.handProps}/></Col>
+          <Col sm={3} style={{textAlign: 'center'}}>Opponent Deck<br/><ABDeck deckProps={props.deckProps}/></Col>
         </Row>
-        <Row style={{height:'500px'}}>
-          <Col sm={1}>Opponent Stats<br/></Col>
-          <Col sm={10}>Field<br/></Col>
-          <Col sm={1}>Stats<br/></Col>
+        <Row style={{height:'300px'}}>
+          <Col sm={1} style={{textAlign: 'center'}}>Opponent Stats<br/></Col>
+          <Col sm={10} style={{textAlign: 'center'}}>Field<br/></Col>
+          <Col sm={1} style={{textAlign: 'center'}}>Stats<br/></Col>
         </Row>
-        <Row style={{height:'350px'}}>
-          <Col sm={3}>Deck<br/><ABDeck deckProps={props.deckProps}/></Col>
-          <Col sm={6}>Hand<br/><ABHand handProps={props.handProps}/></Col>
-          <Col sm={3}>Discard<br/><ABDeck deckProps={props.deckProps}/></Col>
+        <Row>
+          <Col sm={3} style={{textAlign: 'center'}}>Deck<br/><ABDeck deckProps={props.deckProps}/></Col>
+          <Col sm={6} style={{textAlign: 'center'}}>Hand<br/><ABHand handProps={props.handProps}/></Col>
+          <Col sm={3} style={{textAlign: 'center'}}>Discard<br/><ABDeck deckProps={props.deckProps}/></Col>
         </Row>
         </>
 }
@@ -50,12 +50,13 @@ function ABDeck(props: {deckProps: DeckProps}) {
 }
 function ABHand(props: {handProps: HandProps}) {
   return <>
-      <Row id={props.handProps.handid} className={abclayout.hand}>
+      <Row id={props.handProps.handid}>
           {props.handProps.handArray.map((cardname: string, index: number) => {
-            return <>{index%10==0?<><Col sm={1}></Col><Col sm={1}></Col></>:<></>}
-            <Col sm={1} className={abclayout.cardcontainer+' '+abclayout.draggable}>
-              <ABCard key={index} cardname={cardname} use={getCardUse(cardname)}/>
-              </Col></>
+            return <>{index%10==0&&index>=10?<><Col sm={1}></Col><Col sm={1}></Col></>:<></>}
+                <Col sm={1} className={abclayout.cardcontainer+' '+abclayout.draggable}>
+                  <ABCard key={index} cardname={cardname} use={getCardUse(cardname)}/>
+                </Col>
+              </>
             })}
       </Row>
   </>
