@@ -2,7 +2,7 @@ import { vec, vecObj } from "./movement";
 
 export default function Null(){return null}
 //newProjectile(fireball(),$('caster'),new vec(target.x,target.y))
-export function newProjectile(vecObjs: vecObj[], entity,caster: HTMLMapElement,target: vec,maxlife,size?,speed?){
+export function newProjectile(setVecObjs, entity,caster: HTMLMapElement,target: vec,maxlife,size?,speed?){
 	maxlife = maxlife||200;
 	speed = speed||5;
 	//let vecObjs //placeholder
@@ -26,7 +26,7 @@ export function newProjectile(vecObjs: vecObj[], entity,caster: HTMLMapElement,t
 	var stepY = vec.y/time;
 	var decay = Math.sqrt(Math.pow(stepX,2)+Math.pow(stepY,2));
 	//remaining life = life - decay
-	vecObjs.push({ obj: entity(caster.id,startX,startY,size||1,angle), vec: vec, speed: size||1, life: life, decay: decay, target: target});
+	setVecObjs((vecObjs)=> vecObjs.push({ obj: entity(caster.id,startX,startY,size||1,angle), vec: vec, speed: size||1, life: life, decay: decay, target: target}))
 	//setVecObjs(vecObjs);
 }
 export function missile(id,startx,starty,size,angle,screen, img?)
@@ -48,9 +48,10 @@ export function missile(id,startx,starty,size,angle,screen, img?)
 	angle=angle+90;// rotates spin left/right to spin up/down 
 	img = img || './../assets/binary2.png'
 	let mid = "missile_"+(id!==""?id:"");
-	var newObj = <div id={mid} className={'projectile'} style={style}><img src={img} width={'100%'} /></div>
+	//var newObj = <div id={mid} className={'projectile'} style={style}><img src={img} width={'100%'} /></div>
+	var dataobj = {id: mid, className: 'projectile', style: style, img: img, width: '100%'}
 
-	return newObj;
+	return dataobj;
 }
 export function fireball(id,startx,starty,size,angle,screen){
 	this.collision = function(target){};

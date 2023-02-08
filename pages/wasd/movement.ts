@@ -9,7 +9,7 @@ export type vec = {
 //aiObjs.push(new vecObj(newMovingElement(id,startx,starty),new vec(x,y),speed,life,decay))
 //vecObjs.push(new vecObj(newMovingElement(id,startx,starty),new vec(x,y),speed,life,decay))
 export type vecObj = {
-	obj: HTMLMapElement,
+	obj: {id: string, className: string, style: {}, img: string, width: string},
 	vec: vec,
 	speed: number,
 	life: number,
@@ -51,8 +51,8 @@ export function vecMoveObj(obj: HTMLMapElement,vec: vec, maxX: number,maxY: numb
 export function arrayMoveObj(objArray: vecObj[], maxX: number, maxY: number): vecObj[]{
 	for(var x=0;x<objArray.length;x++){
 		if(objArray[x].life>0||isNaN(objArray[x].life)){
-			let targetEl: Element = vecMoveObj(objArray[x].obj,objArray[x].vec,maxX,maxY);
-			objArray[x].target = {x: targetEl.clientLeft+targetEl.clientWidth/2, y: targetEl.clientTop+targetEl.clientHeight/2}
+			let targetEl: boolean = vecMoveObj(document.querySelector(objArray[x].obj.id),objArray[x].vec,maxX,maxY);
+			//broken//objArray[x].target = {x: targetEl.clientLeft+targetEl.clientWidth/2, y: targetEl.clientTop+targetEl.clientHeight/2}
 			/*if(objArray[x].target){
 				try{
 					objArray[x].obj.collision(objArray[x].target);
@@ -62,7 +62,7 @@ export function arrayMoveObj(objArray: vecObj[], maxX: number, maxY: number): ve
 			}else{console.log('arrayMoveObj false');}*/
 			objArray[x].life-=isNaN(objArray[x].decay)?1:objArray[x].decay;
 		}else{
-			objArray[x].obj.remove();
+			//objArray[x].remove();
 			objArray[x]=null;
 			objArray = cleanArrayNulls(objArray);
 		}

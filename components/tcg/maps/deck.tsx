@@ -9,16 +9,26 @@ export type DeckProps = {
     deckName: string,
     deckArray: string[],
 }
+export type HandProps = {
+    deckid: string,
+    deckName: string,
+    deckArray: string[],
+}
 
 export default function ABDeck(props: {deckProps: DeckProps}) {
     return <>
-        <h2>{props.deckProps.deckName || 'unknown'}</h2>
+        <h2 className={abclayout.cardtitle}>{props.deckProps.deckName || 'unknown'}</h2>
         <div id={props.deckProps.deckid} className={'deck'}>
-            {props.deckProps.deckArray.map((cardname: string, index: number) => {return <ABCard key={index} cardname={cardname} className={abclayout.dragable} />})}
+            {props.deckProps.deckArray.map((cardname: string, index: number) => {return <ABCard key={index} cardname={cardname} className={abclayout.card+' '+abclayout.draggable} use={getCardUse(cardname)}/>})}
         </div>
     </>
 }
 
+function getCardUse(name: string) {
+    return function() {
+        console.log(name);
+    }
+}
 /*export const getServerSideProps: GetServerSideProps<DeckProps> = async (context) => {
     const deckProps: DeckProps = {
         deckid: '1',

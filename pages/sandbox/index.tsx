@@ -1,8 +1,9 @@
 import { GetServerSideProps } from "next";
-import ABDeck, { DeckProps } from "../../components/tcg/maps/deck";
+import ABDeck, { DeckProps, HandProps } from "../../components/tcg/maps/deck";
 
 export type GameProps = {
     deckProps: DeckProps,
+    handProps: HandProps,
 
 }
 export default function Sandbox(props: GameProps) {
@@ -21,8 +22,14 @@ export const getServerSideProps: GetServerSideProps<GameProps> = async (context)
         deckName: 'Test Deck',
         deckArray: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20']
     }
+    const handProps: HandProps = {
+        deckid: '1',
+        deckName: 'Test Deck',
+        deckArray: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20']
+    }
     const gameProps: GameProps = {
         deckProps: deckProps,
+        handProps: handProps,
     }   
     return {props: gameProps}
 }

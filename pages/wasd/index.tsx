@@ -165,9 +165,9 @@ export default function WASD() {
                     localTop: localPlayer.clientTop,  
                 }))*/
                 setSeconds(new Date().getSeconds())
-                setUpdates((updates)=>updates-updates)//lol factor
-                //setUpdates(updateRef.current)
-                //updateRef.current = 0;
+                //setUpdates((updates)=>updates-updates)//lol factor
+                setUpdates(updateRef.current)
+                updateRef.current = 0;
             },1000);
             
             const gameloopTicks = setInterval(()=>{
@@ -197,8 +197,8 @@ export default function WASD() {
     */
     function debug(){
         var s = new Date().getSeconds();
-        setUpdates((updates)=>updates+1)
-        //updateRef.current++
+        //setUpdates((updates)=>updates+1)
+        updateRef.current++
         //console.log('@gameloopTicks.debug(): '+updates)
         if(s == seconds+1||s==seconds-59){
             //do this every 60 seconds
@@ -342,7 +342,7 @@ export default function WASD() {
     }
     function actionKey3(){
         if(localPlayer){
-            let p = newProjectile(vecObjs,missile,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+            let p = newProjectile(setVecObjs,missile,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
             let i = setInterval(()=> p, 200);
             setTimeout(()=> clearInterval(i), 8000);
         }console.log('localPlayer: '+localPlayer)
@@ -410,6 +410,7 @@ export default function WASD() {
                     <Col sm={12}>
                         <div id="battlefield" style={{position: 'relative', overflow: 'clip', height: '100%', background: '#CCC'}}>
                             <Player id={'player'} img={'./assets/binary2.png'}/>
+                            <Entities id={'entities'} entities={vecObjs}/>
                             <div id="wall" className={"wall collide"} style={{position: 'absolute', overflow: 'hidden', width: '20px', height: '400px', top: '50px', left: '100px', background: '#333'}}>
                             </div>
                         </div>
@@ -423,6 +424,15 @@ export function Player(props){
             <img src={props.img} height="50px" width="50px"/>
         </div>
     
+}
+export function Entities(props){
+    let entities: vecObj[] = props.entities;
+    return <>{entities.map((entity, index)=> {
+        const {id, className, style, img, width} = entity.obj;
+        return <div key={index} id={id} className={className} style={style}>
+            <img src={img} width={width} />
+        </div>
+    })}</>
 }
 
 /**
