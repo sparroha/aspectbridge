@@ -1,7 +1,13 @@
-.card {
-    position: absolute;
+.cardcontainer {
+    /*position: absolute;*/
     display: inline-block;
-    width: 300px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.card {
+    /*position: absolute;*/
+    display: inline-block;
+    width: 200px;
     height: 225px;
     margin: 5px;
     /*border: 1px solid #000;*/
@@ -17,10 +23,10 @@
     height: 20px;
     margin: 0;
     padding: 0;
-    border: 0;
+    border: 2px solid #000;
     border-radius: 15px;
-    background-color: #000;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
     text-align: center;
     font-size: 12px;
     font-weight: bold;
@@ -37,10 +43,22 @@
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
+.hand{
+    width: 100%;
+    display: inline-block;
+    margin: 5px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px #000;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
 .deck, .hand, .field, .graveyard, .exile{
     position: relative;
+    width: 100%;
 }
 .dragable{
     cursor: move;
-    position: absolute;
+    /*position: absolute;*/
 }
