@@ -31,7 +31,7 @@ export default function Sandbox(props: GameProps) {
         </Row>
         <Row style={{height:'300px'}}>
           <Col sm={1} style={{textAlign: 'center'}}>Opponent Stats<br/></Col>
-          <Col sm={10} style={{textAlign: 'center'}}>Field<br/></Col>
+          <Col sm={10} style={{textAlign: 'center', border: '5px outset gray'}}>Field<br/></Col>
           <Col sm={1} style={{textAlign: 'center'}}>Stats<br/></Col>
         </Row>
         <Row>
@@ -65,8 +65,9 @@ function ABCard(card: ABCard) {
   return <Button key={card.key} className={abclayout.card} onClick={card.use()}>
               <h2>Card: {card.cardname}</h2>
               <img src={'/images/cards/'+card.cardname+'.png'} alt={card.cardname} />
-              <p>{/*getCardText(card)*/}</p>
               <h2>Type: {getCardType(card.cardname)}</h2>
+              <p>{'Abilities'/*getCardText(card)*/}</p>
+              <p>FlavourText</p>
           </Button>
 }
 function getCardType(name: string) {
@@ -90,8 +91,8 @@ export const getServerSideProps: GetServerSideProps<GameProps> = async (context)
     }
     const handProps: HandProps = {
         handid: '1',
-        handName: 'Test Deck',
-        handArray: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20']
+        handName: 'Test Hand',
+        handArray: ['1','2','3','4','5','6','7']
     }
     const gameProps: GameProps = {
         deckProps: deckProps,
