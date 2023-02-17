@@ -1,6 +1,8 @@
 import { GetServerSideProps } from "next";
 import { Button, Col, Row } from "react-bootstrap";
 import abclayout from '../../components/tcg/css/abc.module.css';
+import sql from "../../lib/,base/sql";
+import requestIp from 'request-ip';
 
 
 export type ABCard = {
@@ -81,9 +83,12 @@ function getCardUse(name: string) {
 }
 
 export const getServerSideProps: GetServerSideProps<GameProps> = async (context) => {
-    const sessionid = context.req.cookies.sessionid;
-    const players: string[] = ['1','2','3','4'];
+    //const sessionid = context.req.cookies.sessionid;const query = context.query
+    const ip = await requestIp.getClientIp(context.req)
+    const username = await sql`SELECT username FROM aspect_users_ WHERE ip = ${ip}`
+    const sessionid = await sql`SELECT sessionid FROM sessions WHERE username = ${username}`
 
+    const players: string[] = ['1','2','3','4'];
     const deckProps: DeckProps = {
         deckid: '1',
         deckName: 'Test Deck',

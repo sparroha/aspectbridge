@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import Mouse, { useMousePosition } from "../../components/mouse";
 import { fireball, icicle, missile, newProjectile } from "./entity";
 import { arrayMoveObj, moveClientObj, vec, vecObj } from "./movement";
 //engine.js + game.ts + index.html from old version
@@ -19,9 +20,9 @@ export default function WASD() {
     //Engine Valiables
     //todo
     const [enginescreen, setEngineScreen] = useState(null);
-    const [mousepos, setMousepos] = useState({x:0,y:0});
+    //const [mousepos, setMousepos] = useState({x:0,y:0});
     const [clickmove, setClickmove] = useState(false);
-    const [clickpos, setClickpos] = useState({x:0,y:0});
+    //const [clickpos, setClickpos] = useState({x:0,y:0});
     //console.log($(EngineScreen))
     const [objOldZIndex, setObjOldZIndex] = useState(0);
     const [keyDown, setKeyDown] = useState("");//only allows 1 key at a time
@@ -95,7 +96,7 @@ export default function WASD() {
     /**
     * * * EVENT HANDLERS * * *
     */
-    //MOUSE CLICK
+    //KEYBOARD CLICK
     useEffect(() => {
         if(localPlayer){
             //TODO develope better key tracker
@@ -119,7 +120,8 @@ export default function WASD() {
         }
     }, [localPlayer]);
     //MOUSE MOVE AND CLICK
-    useEffect(() => {
+    const {mousepos, clickpos} = useMousePosition("#battlefield", OnClick, NI)
+    /*useEffect(() => {
         if(enginescreen&&localPlayer){
             window.onmousemove = (event) => {
                 event = event || window.event; // IE-ism
@@ -148,7 +150,7 @@ export default function WASD() {
                 return false;
             };
         }
-    }, [enginescreen,localPlayer]);
+    }, [enginescreen,localPlayer]);*/
 
     /**
      * * * GAME LOOP * * *
@@ -390,7 +392,10 @@ export default function WASD() {
      */
     return <Container id={'body'}>
                 <Row className={'tcenter'}>
-                    <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>{Math.floor(mousepos.x)+'/'+Math.floor(mousepos.y)}<br/>Last clicked: {Math.floor(clickpos.x)+'/'+Math.floor(clickpos.y)}<br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}</Col>
+                    <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>
+                        <Mouse mousepos={mousepos} clickpos={clickpos}/>
+                        <br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}
+                    </Col>
                     <Col sm={'3'}><h4 className={'col-sm-6'}><b>Control the Object With "W/A/S/D". Press 1 - 3 to file.</b></h4></Col>
                     <Col sm={'3'} id={"ups"} style={{position: 'relative', visibility: 'visible'}}>{'u/s='+updates+' s='+seconds+' width='+maxX+' height='+maxY}<br/>{'N: '+north+' / E: '+east+' / S: '+south+' / W: '+west}</Col>
                 </Row>
@@ -428,11 +433,12 @@ export function Player(props){
 export function Entities(props){
     let entities: vecObj[] = props.entities;
     return <>{entities.map((entity, index)=> {
-        const {id, className, style, img, width} = entity.obj;
-        return <div key={index} id={id} className={className} style={style}>
-            <img src={img} width={width} />
-        </div>
-    })}</>
+            const {id, className, style, img, width} = entity.obj;
+            return <div key={index} id={id} className={className} style={style}>
+                <img src={img} width={width} />
+            </div>
+        })
+    }</>
 }
 
 /**
@@ -451,25 +457,6 @@ function NI(){
             return false;
         }
     }
-}
-function objOffset(obj: HTMLMapElement){
-    var left = 0;
-    var top = 0;
-    if (obj.offsetParent) {
-        left += obj.getBoundingClientRect().left;
-        top  += obj.getBoundingClientRect().top;
-        return {
-            x : left,
-            y : top
-        };
-        //obj = obj.offsetParent;
-        //console.log("@engine-100{left: "+$(obj).offset().left+", top: "+top+", obj: "+obj+"}")
-    } 
-    
-    return {
-        x : left,
-        y : top
-    };
 }
 export function getAngle(rad,vecY){
     return -rad*180/Math.PI+(vecY<0?180:0);
