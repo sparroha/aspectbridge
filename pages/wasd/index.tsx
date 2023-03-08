@@ -26,7 +26,7 @@ export default function WASD() {
     //console.log($(EngineScreen))
     const [objOldZIndex, setObjOldZIndex] = useState(0);
     const [keyDown, setKeyDown] = useState("");//only allows 1 key at a time
-    const [keyUp, setKeyUp] = useState("");//doesnt really hasve a use
+    const [keyUp, setKeyUp] = useState("");//doesnt really have a use
 
     const [north, setNorth] = useState(false);
     const [east, setEast] = useState(false);

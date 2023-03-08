@@ -15,6 +15,7 @@ import SimpleNav from '../../components/simplenav';
 import DiceWidget from '../../components/dice';
 import TLiterator from '../../components/hebrew';
 import requestIp from 'request-ip';
+import { Clock } from '../../components/clock';
 
 /**CSS module *//not working/
 //TODO is working
@@ -43,7 +44,7 @@ export default function AspectBridge({ip}) {
                 <NavRightDefault user={user}/>
             </Row>
             <Row>
-                <CalendarTab />
+                <Col sm={5}><CalendarTab /></Col>
             </Row>
             <Footer />
         </Container>
@@ -53,9 +54,9 @@ function CalendarTab(){
     const [date, setDate] = useState(new Date());
 
     return (
-        <div className='calendar grey-back'>
+        <div className='calendar grey-back' style={{borderRadius: '15px'}}>
             <h1 className='text-center'>React Calendar</h1>
-            <div className='calendar-container'>
+            <div className='calendar-container text-center'>
                 <Calendar onChange={setDate} value={date} />
             </div>
             <p className='text-center'>
@@ -109,8 +110,9 @@ function ContainerHeader({ user }){
 function NavLeftDefault(){  
     return <Col xs={12} sm={3} md={2} id="nav-left" className={"p0 'w100 h100'"}>
                 <Row className={'w100 h100'} style={{position: 'relative'}}>
-                    <Col xs={8} sm={12} style={{zIndex: '5'}}><SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]}/></Col>
-                    <Col xs={4} sm={12} style={{zIndex: '5'}}><DiceWidget/></Col>
+                    <Col xs={12} sm={12} style={{zIndex: '5'}}><SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]}/></Col>
+                    <Col xs={2} sm={6} md={8} lg={6}><Clock /></Col>
+                    <Col xs={12} sm={12} md={6} style={{zIndex: '5'}}><DiceWidget/></Col>
                     <div className={'grey-back o4 w100 h100'} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
                 </Row>
             </Col>
