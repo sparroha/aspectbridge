@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
@@ -11,6 +11,7 @@ export default function NetDragons({ip, M}){
 //<ProfileByIp ip={ip} setUser={setUser}/>
     return <div className={'net-dragons'}>
         <h1>Net Dragons</h1>
+        <Nav><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/newdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
         <ProfileByIp ip={ip} setUser={setUser}/>
         <Row>
             <Col xs={12} sm={3}>
@@ -67,7 +68,7 @@ export function Map({M, pP}){
         {M?.map((row, i) => {if(pP.z==i) {return <Row key={i}>Floor {i}<Col xs={12}>
             {row.map((col, j) => <Row key={j}>
                 {col.map((cell, k) => <Col key={k} xs={2}>
-                    <Button variant={'primary'} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {k}:{j}<br/>{cell}</Button>
+                    <Button variant={'primary'} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {k}:{j}<br/>{pP.x==j&&pP.y==k?cell:''}</Button>
                 </Col>)}
             </Row>)}
         </Col></Row>}})}

@@ -159,7 +159,7 @@ export function Profile({hash, ip, setUser}) {
 export function ProfileByIp({ip, setUser}) {
   const { data, error } = useSWR('../api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
   useEffect(() => { setUser(data) },[data])
-  if (error) return <div style={{visibility: 'hidden', position: 'absolute'}}>{JSON.stringify(error)}:User not cached. Please login or register.</div>
+  if (error) return <div style={{visibility: 'visible', position: 'absolute'}}>{JSON.stringify(error)}:User not cached. Please login or register.</div>
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data
