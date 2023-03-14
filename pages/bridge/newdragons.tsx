@@ -13,10 +13,10 @@ export default function NetDragons({ip, M}){
         <h1>Net Dragons</h1>
         <ProfileByIp ip={ip} setUser={setUser}/>
         <Row>
-            <Col sm={3}>
+            <Col xs={3}>
                 <Controls sPP={setPlayerPosition}/>
             </Col>
-            <Col sm={6}>
+            <Col xs={12} sm={6}>
                 <Map M={M} pP={playerPosition}/>
             </Col>
         </Row>
@@ -27,24 +27,24 @@ export default function NetDragons({ip, M}){
 export function Controls({sPP}){
     return <div className={'net-dragons-controls'}>
         <Row>
-            <Col sm={3}>
+            <Col xs={3}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<4)?1:0)}})}>Up</Button>
             </Col>
-            <Col sm={3}>
+            <Col xs={3}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x>0)?-1:0), y: pP.y, z: pP.z}})}>West</Button>
             </Col>
-            <Col sm={3}>
+            <Col xs={3}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z>0)?-1:0)}})}>Down</Button>
             </Col>
         </Row>
         <Row>
-            <Col sm={3}>
+            <Col xs={3}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y>0)?-1:0), z: pP.z}})}>North</Button>
             </Col>
-            <Col sm={3}>
+            <Col xs={3}>
                 <Button variant={'primary'}>Enter</Button>
             </Col>
-            <Col sm={3}>
+            <Col xs={3}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y<4)?1:0), z: pP.z}})}>South</Button>
             </Col>
         </Row>
