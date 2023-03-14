@@ -66,8 +66,8 @@ export function Map({M, pP}){
     return <div className={'net-dragons-map'}>
         {M?.map((row, i) => {if(pP.z==i) {return <Row key={i}>Floor {i}<Col xs={12}>
             {row.map((col, j) => <Row key={j}>
-                {col.map((cell, k) => <Col key={k} xs={2}>room {k}:{j}
-                    <Button variant={'primary'} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>{cell}</Button>
+                {col.map((cell, k) => <Col key={k} xs={2}>
+                    <Button variant={'primary'} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {k}:{j}<br/>{cell}</Button>
                 </Col>)}
             </Row>)}
         </Col></Row>}})}
