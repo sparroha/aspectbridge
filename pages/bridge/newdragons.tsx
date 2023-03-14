@@ -13,7 +13,7 @@ export default function NetDragons({ip, M}){
         <h1>Net Dragons</h1>
         <ProfileByIp ip={ip} setUser={setUser}/>
         <Row>
-            <Col xs={3}>
+            <Col xs={12} sm={3}>
                 <Controls sPP={setPlayerPosition}/>
             </Col>
             <Col xs={12} sm={6}>
@@ -27,35 +27,35 @@ export default function NetDragons({ip, M}){
 export function Controls({sPP}){
     return <div className={'net-dragons-controls'}>
         <Row>
-            <Col xs={3}>
+            <Col xs={4}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<4)?1:0)}})}>Up</Button>
             </Col>
-            <Col xs={3}>
+            <Col xs={4}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x>0)?-1:0), y: pP.y, z: pP.z}})}>West</Button>
             </Col>
-            <Col xs={3}>
+            <Col xs={4}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z>0)?-1:0)}})}>Down</Button>
             </Col>
         </Row>
         <Row>
-            <Col xs={3}>
+            <Col xs={4}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y>0)?-1:0), z: pP.z}})}>North</Button>
             </Col>
-            <Col xs={3}>
+            <Col xs={4}>
                 <Button variant={'primary'}>Enter</Button>
             </Col>
-            <Col xs={3}>
+            <Col xs={4}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y<4)?1:0), z: pP.z}})}>South</Button>
             </Col>
         </Row>
         <Row>
-            <Col sm={3}>
+            <Col xs={4}>
                 <Button variant={'primary'}>Fight</Button>
             </Col>
-            <Col sm={3}>
+            <Col xs={4}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x<4)?1:0), y: pP.y, z: pP.z}})}>East</Button>
             </Col>
-            <Col sm={3}>
+            <Col xs={4}>
                 <Button variant={'primary'}>Run</Button>
             </Col>
         </Row>
@@ -64,9 +64,9 @@ export function Controls({sPP}){
 
 export function Map({M, pP}){
     return <div className={'net-dragons-map'}>
-        {M?.map((row, i) => {if(pP.z==i) {return <Row key={i}>Floor {i}<Col sm={12}>
+        {M?.map((row, i) => {if(pP.z==i) {return <Row key={i}>Floor {i}<Col xs={12}>
             {row.map((col, j) => <Row key={j}>
-                {col.map((cell, k) => <Col key={k} sm={2}>room {k}:{j}
+                {col.map((cell, k) => <Col key={k} xs={2}>room {k}:{j}
                     <Button variant={'primary'} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>{cell}</Button>
                 </Col>)}
             </Row>)}
