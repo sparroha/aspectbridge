@@ -8,6 +8,6 @@ export function Clock(){
         return () => clearInterval(t)
     },[time])
     
-    return <div style={{color: 'white', background: 'gray', borderRadius: '15px'}}>{time.getHours() + ':' + time.getMinutes() +':'+ time.getSeconds()}</div>
+    return <div style={{color: 'white', background: 'gray', borderRadius: '15px', textAlign: 'center'}}>{time.getHours() + ':' + time.getMinutes() +':'+ time.getSeconds()}</div>
 }
     

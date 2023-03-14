@@ -1,27 +1,32 @@
+import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 
-export default function DiceWidget(rand){
+type diceProps = {
+    sides?: number,
+    speed?: number,
+    rand?: number,
+    value?: number,
+    setRoller?: Function,
+    selectSides?: Function,
+    setValue?: Function,
+    setSpeed?: Function,
+}
+export type diceInitProps = {
+    sides?: number,
+    speed?: number,
+    rand?: number,
+}
+export default function DiceWidget({udr}: {udr: Function}){
+    const {sides, speed, rand, value, setRoller, selectSides, setValue, setSpeed} = udr()
     const dice = [2,4,6,8,10,12,20,100]
-    const [sides, selectSides] = useState(0)
-    const [value, setValue] = useState(0)
-    const [roller, setRoller] = useState('false')
-    const [speed, setSpeed] = useState(5)
     
     useEffect(() => {
         if(sides==0){
-            let r = dice[Math.floor(Math.random()*8)]
+            let r = dice[Math.floor(rand*8)]
             selectSides(r)
-            setValue(Math.floor(Math.random()*r)+1)
+            setValue(Math.floor(rand*r)+1)
         }
     }, [])
-    useEffect(() => {
-        if(roller=='false') return
-        const i = setInterval(() => {
-            setValue(Math.floor(Math.random()*sides)+1);
-            console.log('dice roll every '+speed+' seconds!');
-        }, speed*1000);
-        return () => clearInterval(i)
-    }, [sides, roller])
 
     return <div className={'dice-widget text-white'}>
         <select value={sides} onChange={e => selectSides(Number(e.target.value))}>
@@ -42,6 +47,47 @@ export default function DiceWidget(rand){
             backgroundColor: 'silver',
             borderRadius: '25%',
             border: '5px outset lightgray',
-        }} onClick={() => setValue(Math.floor(Math.random()*sides)+1)}>{value}</button>
+        }} onClick={() => setValue(Math.floor(rand*sides)+1)}>{value}</button>
     </div>
 }
+export function useDiceRoll(props: diceInitProps): diceProps{
+    const rand = props.rand || Math.random();
+    const [sides, selectSides] = useState(props.sides || 0)
+    const [value, setValue] = useState(0)
+    const [roller, setRoller] = useState('false')
+    const [speed, setSpeed] = useState(props.speed || 5)
+    
+    useEffect(() => {
+        if(roller=='false') return
+        const i = setInterval(() => {
+            setValue(Math.floor(rand*sides)+1);
+            console.log('dice roll every '+speed+' seconds!');
+        }, speed*1000);
+        return () => clearInterval(i)
+    }, [sides, roller])
+
+    return props? props :{
+        sides: sides,
+        speed: speed,
+        rand: rand,
+        value: value,
+        setRoller: setRoller,
+        selectSides: selectSides,
+        setValue: setValue,
+        setSpeed: setSpeed,
+    }
+}
+
+/*export const getServerSideProps: GetServerSideProps<diceProps> = async (context) => {
+    const query = context.query
+    return {props: {
+        sides: query.sides ? Number(query.sides) : 0,
+        speed: query.speed ? Number(query.speed) : 5,
+        rand: query.rand ? Number(query.rand) : Math.random(),
+        value: query.value ? Number(query.value) : 0,
+        setRoller: query.setRoller ? Function(query.setRoller) : Function(),
+        selectSides: query.selectSides ? Function(query.selectSides) : Function(),
+        setValue: query.setValue ? Function(query.setValue) : Function(),
+        setSpeed: query.setSpeed ? Function(query.setSpeed) : Function(),
+    }} 
+}*/

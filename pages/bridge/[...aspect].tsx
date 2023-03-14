@@ -12,7 +12,7 @@ import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
 import SimpleNav from '../../components/simplenav';
-import DiceWidget from '../../components/dice';
+import DiceWidget, { diceInitProps, useDiceRoll } from '../../components/dice';
 import TLiterator from '../../components/hebrew';
 import requestIp from 'request-ip';
 import { Clock } from '../../components/clock';
@@ -56,7 +56,7 @@ function CalendarTab(){
     return (
         <div className='calendar grey-back' style={{borderRadius: '15px'}}>
             <h1 className='text-center'>React Calendar</h1>
-            <div className='calendar-container text-center'>
+            <div className='calendar-container'>
                 <Calendar onChange={setDate} value={date} />
             </div>
             <p className='text-center'>
@@ -108,11 +108,16 @@ function ContainerHeader({ user }){
  * @returns Client Navs
  */
 function NavLeftDefault(){  
+    const dip: diceInitProps = {
+        sides: 6,
+        speed: 5,
+        rand: Math.random()
+    }
     return <Col xs={12} sm={3} md={2} id="nav-left" className={"p0 'w100 h100'"}>
                 <Row className={'w100 h100'} style={{position: 'relative'}}>
                     <Col xs={12} sm={12} style={{zIndex: '5'}}><SimpleNav root={"bridge"} title={"aspects"} links={["air", "fire", "water", "earth"]}/></Col>
                     <Col xs={2} sm={6} md={8} lg={6}><Clock /></Col>
-                    <Col xs={12} sm={12} md={6} style={{zIndex: '5'}}><DiceWidget/></Col>
+                    <Col xs={12} sm={12} md={6} style={{zIndex: '5'}}><DiceWidget udr={()=> useDiceRoll(dip)}/></Col>
                     <div className={'grey-back o4 w100 h100'} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
                 </Row>
             </Col>
