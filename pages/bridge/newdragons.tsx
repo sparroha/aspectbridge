@@ -31,7 +31,7 @@ export function Controls({sPP}){
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<4)?1:0)}})}>Up</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x>0)?-1:0), y: pP.y, z: pP.z}})}>West</Button>
+                <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x>0)?-1:0), y: pP.y, z: pP.z}})}>North</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z>0)?-1:0)}})}>Down</Button>
@@ -39,13 +39,13 @@ export function Controls({sPP}){
         </Row>
         <Row>
             <Col xs={4}>
-                <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y>0)?-1:0), z: pP.z}})}>North</Button>
+                <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y>0)?-1:0), z: pP.z}})}>West</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'}>Enter</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y<4)?1:0), z: pP.z}})}>South</Button>
+                <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y<4)?1:0), z: pP.z}})}>East</Button>
             </Col>
         </Row>
         <Row>
@@ -53,7 +53,7 @@ export function Controls({sPP}){
                 <Button variant={'primary'}>Fight</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x<4)?1:0), y: pP.y, z: pP.z}})}>East</Button>
+                <Button variant={'primary'} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x<4)?1:0), y: pP.y, z: pP.z}})}>South</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'}>Run</Button>
