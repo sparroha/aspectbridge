@@ -29,13 +29,13 @@ export function Controls({sPP}){
     return <div className={'net-dragons-controls'}>
         <Row>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<4)?1:0)}})}>Up</Button>
+                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z>0)?-1:0)}})}>Down</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x>0)?-1:0), y: pP.y, z: pP.z}})}>North</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z>0)?-1:0)}})}>Down</Button>
+                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<4)?1:0)}})}>Up</Button>
             </Col>
         </Row>
         <Row>
@@ -51,13 +51,13 @@ export function Controls({sPP}){
         </Row>
         <Row>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}}>Fight</Button>
+                <Button variant={'primary'} style={{fontSize: '10px'}}>Run</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x<4)?1:0), y: pP.y, z: pP.z}})}>South</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}}>Run</Button>
+                <Button variant={'primary'} style={{fontSize: '10px'}}>Fight</Button>
             </Col>
         </Row>
     </div>
