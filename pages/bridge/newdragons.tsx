@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { useState } from "react";
-import { Button, Col, Nav, Row } from "react-bootstrap";
+import { Button, Col, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
@@ -91,10 +91,17 @@ export function Map({M, pP}){
     </div>
 }
 export function MapFollow({M, pP}){
+    const [vieDistance, setViewDistance] = useState(2)
     return <div className={'net-dragons-map'}>
+        View Distance:
+        <select value={vieDistance} onChange={e => setViewDistance(Number(e.target.value))}>
+            <option key={0} value={0}>0</option>
+            <option key={1} value={1}>1</option>
+            <option key={2} value={2}>2</option>
+        </select>
         {M?.map((row, i) => (pP.z==i)?<Row key={i}>Floor {i}<Col xs={12}>
-            {row.map((col, j) => (j>=(pP.x-2))&&(j<=(pP.x+2))?<Row key={j}><Col xs={12}>
-                {col.map((cell, k) => ((k>=pP.y-2)&&(k<=pP.y+2))?
+            {row.map((col, j) => (j>=(pP.x-vieDistance))&&(j<=(pP.x+vieDistance))?<Row key={j}><Col xs={12}>
+                {col.map((cell, k) => ((k>=pP.y-vieDistance)&&(k<=pP.y+vieDistance))?
                 <div key={k} style={{float: 'left'}}>
                     <Button variant={'primary'} style={square} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{pP.x==j&&pP.y==k?cell:''}</Button>
                 </div>:
