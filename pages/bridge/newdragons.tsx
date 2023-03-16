@@ -5,6 +5,22 @@ import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
 
+export const control = {
+    fontSize: '10px',
+    width: '48px',
+    height: '32px',
+    margin: '0px',
+    padding: '0px',
+    text: 'center'
+}
+export const square = {
+    fontSize: '12px',
+    width: '64px',
+    height: '64px',
+    margin: '0px',
+    padding: '0px',
+    text: 'center'
+}
 export default function NetDragons({ip, M}){
     const [user, setUser] = useState(null)
     const [playerPosition, setPlayerPosition] = useState({x: 0, y: 0, z: 0})
@@ -29,35 +45,35 @@ export function Controls({sPP}){
     return <div className={'net-dragons-controls'}>
         <Row>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z>0)?-1:0)}})}>Down</Button>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z>0)?-1:0)}})}>Down</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x>0)?-1:0), y: pP.y, z: pP.z}})}>North</Button>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x>0)?-1:0), y: pP.y, z: pP.z}})}>North</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<4)?1:0)}})}>Up</Button>
-            </Col>
-        </Row>
-        <Row>
-            <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y>0)?-1:0), z: pP.z}})}>West</Button>
-            </Col>
-            <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}}>Enter</Button>
-            </Col>
-            <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y<4)?1:0), z: pP.z}})}>East</Button>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<4)?1:0)}})}>Up</Button>
             </Col>
         </Row>
         <Row>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}}>Run</Button>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y>0)?-1:0), z: pP.z}})}>West</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x<4)?1:0), y: pP.y, z: pP.z}})}>South</Button>
+                <Button variant={'primary'} style={control}>Enter</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={{fontSize: '10px'}}>Fight</Button>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y<4)?1:0), z: pP.z}})}>East</Button>
+            </Col>
+        </Row>
+        <Row>
+            <Col xs={4}>
+                <Button variant={'primary'} style={control}>Run</Button>
+            </Col>
+            <Col xs={4}>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x<4)?1:0), y: pP.y, z: pP.z}})}>South</Button>
+            </Col>
+            <Col xs={4}>
+                <Button variant={'primary'} style={control}>Fight</Button>
             </Col>
         </Row>
     </div>
@@ -66,9 +82,9 @@ export function Controls({sPP}){
 export function Map({M, pP}){
     return <div className={'net-dragons-map'}>
         {M?.map((row, i) => {if(pP.z==i) {return <Row key={i}>Floor {i}<Col xs={12}>
-            {row.map((col, j) => <Row key={j} style={{fontSize: '12px', padding: '0px', margin: '0px'}}>
-                {col.map((cell, k) => <Col key={k} xs={2} style={{fontSize: '12px', padding: '0px', margin: '0px'}}>
-                    <Button variant={'primary'} style={{fontSize: '12px', padding: '0px', margin: '0px'}} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {k}:{j}<br/>{pP.x==j&&pP.y==k?cell:''}</Button>
+            {row.map((col, j) => <Row key={j}>
+                {col.map((cell, k) => <Col key={k} xs={2} >
+                    <Button variant={'primary'} style={square} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {k}:{j}<br/>{pP.x==j&&pP.y==k?cell:''}</Button>
                 </Col>)}
             </Row>)}
         </Col></Row>}})}
