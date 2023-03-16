@@ -34,7 +34,7 @@ export default function NetDragons({ip, M}){
                 <Controls M={M} sPP={setPlayerPosition}/>
             </Col>
             <Col xs={12} sm={8}>
-                <Map M={M} pP={playerPosition}/>
+                <MapFollow M={M} pP={playerPosition}/>
             </Col>
         </Row>
     </div>
@@ -88,6 +88,19 @@ export function Map({M, pP}){
                 </div>)}
             </Col></Row>)}
         </Col></Row>}})}
+    </div>
+}
+export function MapFollow({M, pP}){
+    return <div className={'net-dragons-map'}>
+        {M?.map((row, i) => (pP.z==i)?<Row key={i}>Floor {i}<Col xs={12}>
+            {row.map((col, j) => (j>=(pP.x-2))&&(j<=(pP.x+2))?<Row key={j}><Col xs={12}>
+                {col.map((cell, k) => ((k>=pP.y-2)&&(k<=pP.y+2))?
+                <div key={k} style={{float: 'left'}}>
+                    <Button variant={'primary'} style={square} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{pP.x==j&&pP.y==k?cell:''}</Button>
+                </div>:
+                null)}
+            </Col></Row>:null)}
+        </Col></Row>:null)}
     </div>
 }
 
