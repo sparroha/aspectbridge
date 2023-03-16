@@ -26,7 +26,7 @@ export default function NetDragons({ip, M}){
     const [playerPosition, setPlayerPosition] = useState({x: 0, y: 0, z: 0})
 //<ProfileByIp ip={ip} setUser={setUser}/>
     return <div className={'net-dragons'}>
-        <h1>Net Dragons</h1>
+        <h1>Next Dragons</h1>
         <Nav><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/newdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
         <ProfileByIp ip={ip} setUser={setUser}/>
         <Row>
