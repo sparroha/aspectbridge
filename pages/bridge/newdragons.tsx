@@ -30,10 +30,10 @@ export default function NetDragons({ip, M}){
         <Nav><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/newdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
         <ProfileByIp ip={ip} setUser={setUser}/>
         <Row>
-            <Col xs={12} sm={3}>
-                <Controls sPP={setPlayerPosition}/>
+            <Col xs={12} sm={2}>
+                <Controls M={M} sPP={setPlayerPosition}/>
             </Col>
-            <Col xs={12} sm={6}>
+            <Col xs={12} sm={8}>
                 <Map M={M} pP={playerPosition}/>
             </Col>
         </Row>
@@ -41,7 +41,7 @@ export default function NetDragons({ip, M}){
 }
 
 
-export function Controls({sPP}){
+export function Controls({M, sPP}){
     return <div className={'net-dragons-controls'}>
         <Row>
             <Col xs={4}>
@@ -51,7 +51,7 @@ export function Controls({sPP}){
                 <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x>0)?-1:0), y: pP.y, z: pP.z}})}>North</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<4)?1:0)}})}>Up</Button>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+((pP.z<M.length-1)?1:0)}})}>Up</Button>
             </Col>
         </Row>
         <Row>
@@ -62,7 +62,7 @@ export function Controls({sPP}){
                 <Button variant={'primary'} style={control}>Enter</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y<4)?1:0), z: pP.z}})}>East</Button>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x, y: pP.y+((pP.y<M[0][0].length-1)?1:0), z: pP.z}})}>East</Button>
             </Col>
         </Row>
         <Row>
@@ -70,7 +70,7 @@ export function Controls({sPP}){
                 <Button variant={'primary'} style={control}>Run</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x<4)?1:0), y: pP.y, z: pP.z}})}>South</Button>
+                <Button variant={'primary'} style={control} onClick={()=>sPP((pP)=>{return {x: pP.x+((pP.x<M[0].length-1)?1:0), y: pP.y, z: pP.z}})}>South</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control}>Fight</Button>
@@ -82,11 +82,11 @@ export function Controls({sPP}){
 export function Map({M, pP}){
     return <div className={'net-dragons-map'}>
         {M?.map((row, i) => {if(pP.z==i) {return <Row key={i}>Floor {i}<Col xs={12}>
-            {row.map((col, j) => <Row key={j}>
-                {col.map((cell, k) => <Col key={k} xs={2} >
-                    <Button variant={'primary'} style={square} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {k}:{j}<br/>{pP.x==j&&pP.y==k?cell:''}</Button>
-                </Col>)}
-            </Row>)}
+            {row.map((col, j) => <Row key={j}><Col xs={12}>
+                {col.map((cell, k) => <div key={k} style={{float: 'left'}}>
+                    <Button variant={'primary'} style={square} disabled={(pP.x==j&&pP.y==k&&pP.z==i?false:true)}>room {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{pP.x==j&&pP.y==k?cell:''}</Button>
+                </div>)}
+            </Col></Row>)}
         </Col></Row>}})}
     </div>
 }
@@ -94,41 +94,75 @@ export function Map({M, pP}){
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = context.query
     const ip = await requestIp.getClientIp(context.req)
+    const mapSmall = [
+        [
+            ['this','map','is','small'],
+            ['this','building','is','4^3'],
+            [0,0,0,0],
+            [0,0,0,0]
+        ],
+        [
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]
+        ],
+        [
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]
+        ],
+        [
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]
+        ]
+    ]
+
     const map = [
         [
-            [0,0,0,0,0],
-            [0,'shop',0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0]
+            ['this','map','is','medium','and tall',0,0],
+            ['this','building','is','5x5x6','tall and wide',0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0]
         ],
         [
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0]
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0]
         ],
         [
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,'market',0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0]
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,'market',0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0]
         ],
         [
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0]
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0]
         ],
         [
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0],
-            [0,0,0,0,0]
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0]
+        ],
+        [
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0]
         ]
     ]
     return {props: {ip: ip, M: map}} 
