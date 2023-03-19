@@ -43,10 +43,44 @@ export const wall = {
         text: 'center'
     }
 }
+export type Item = {
+    name: string,
+    description: string,
+    image: string,
+    weight: number,
+    value: number,
+    volume: number,
+    stackable: boolean,
+    stackSize: number,
+    stackCount: number,
+    use: Function,
+    useable: boolean,
+    equipable: boolean,
+    equipped: boolean,
+    equip: Function,
+    unequip: Function,
+    drop: Function,
+    droppable: boolean,
+    pickup: Function,
+    pickupable: boolean,
+    destroy: Function,
+    destroyable: boolean,
+    craft: Function,
+    craftable: boolean,
+    craftableWith: Item[],
+    craftableTo: Item[],
+    craftableFrom: Item[],
+    craftableFromCount: number,
+    craftableToCount: number,
+    craftableWithCount: number,
+    
+}
+
 export default function NetDragons({ip, M, E}){
     const [user, setUser] = useState(null)
     const [playerPosition, setPlayerPosition] = useState({x: 0, y: 0, z: 0})
     const map = useMap(M, playerPosition, E)
+    const inventory = useInventory({inventory: ['']})
 //<ProfileByIp ip={ip} setUser={setUser}/>
     return <div className={'net-dragons'}>
         <Nav><h3>Next Dragons</h3><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/newdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
@@ -56,6 +90,9 @@ export default function NetDragons({ip, M, E}){
             </Col>
             <Col xs={6} sm={2}>
                 <Controls M={map} sPP={setPlayerPosition}/>
+            </Col>
+            <Col xs={12} sm={2}>
+                <Inventory inventory={inventory}/>
             </Col>
             <Col xs={12} sm={8}>
                 <MapFollow M={map}/>
@@ -183,6 +220,30 @@ function Walls({paths}: {paths: number[]}){
         {paths[2]==1?<div style={{position: 'absolute', bottom: 0, right: 0, width: '100%', height: '5px', backgroundColor: 'black', zIndex: 1}}></div>:null}
         {paths[3]==1?<div style={{position: 'absolute', bottom: 0, left: 0, width: '5px', height: '100%', backgroundColor: 'black', zIndex: 1}}></div>:null}
     </div>
+}
+function Inventory({inventory}){
+    const {I, setI} = inventory
+    return <div className={'net-dragons-inventory'}>
+        {I.map((item, i) => <Button key={i} onClick={e => useItem(I, setI, item)}>{item}</Button>)}
+    </div>
+}
+function useInventory({inventory}){
+    const [I, setI] = useState(inventory)
+    return {I, setI}
+}
+function addItem(I, setI, item){
+    setI([...I, item])
+}
+function useItem(I, setI, item){
+    switch(item){
+        case 'hair':
+            setI(I.filter(i => i!=item))
+            addItem(I, setI, 'hair')
+            item.use()
+            break
+        default:
+            break
+    }
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
