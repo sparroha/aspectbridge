@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { useState } from "react";
-import { Button, Col, InputGroup, Nav, Row } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
@@ -48,6 +48,10 @@ export default function NetDragons({ip, M}){
         <ProfileByIp ip={ip} setUser={setUser}/>
         <Row>
             <Col xs={12} sm={2}>
+                <MapSettings map={map} sSP={setPlayerPosition}/>
+            </Col>
+            <Col xs={12} sm={2}>
+        
                 <Controls M={map} sPP={setPlayerPosition}/>
             </Col>
             <Col xs={12} sm={8}>
@@ -57,6 +61,36 @@ export default function NetDragons({ip, M}){
     </div>
 }
 
+function MapSettings({map, sSP}){
+    const [x, setX] = useState(0)
+    const [y, setY] = useState(0)
+    const [z, setZ] = useState(0)
+  
+    return <>
+        View Distance:
+        <select value={map.vieDistance} onChange={e => map.setViewDistance(Number(e.target.value))}>
+            <option key={0} value={0}>0</option>
+            <option key={1} value={1}>1</option>
+            <option key={2} value={2}>2</option>
+        </select>
+        <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();
+                if(typeof map.M[z] === 'undefined') return;
+                if(typeof map.M[z][x] === 'undefined') return;
+                if(typeof map.M[z][x][y] === 'undefined') return;
+                sSP({x: x, y: y, z: z})
+            }} >
+            <Form.Group controlId="formEmail">
+                <Form.Label>X</Form.Label>
+                <Form.Control required type="number" value={x} onChange={(e)=>setX(parseInt(e.target.value))}/>
+                <Form.Label>Y</Form.Label>
+                <Form.Control required type="number" value={y} onChange={(e)=>setY(parseInt(e.target.value))}/>
+                <Form.Label>Z</Form.Label>
+                <Form.Control required type="number" value={z} onChange={(e)=>setZ(parseInt(e.target.value))}/>
+            </Form.Group>
+            <Button type="submit" >Teleport</Button>
+        </Form>
+    </>
+  }
 
 export function Controls({M, sPP}){
     return <div className={'net-dragons-controls'}>
@@ -113,12 +147,6 @@ export function Map({M}){
 }
 export function MapFollow({M}){
     return <div className={'net-dragons-map'}>
-        View Distance:
-        <select value={M.vieDistance} onChange={e => M.setViewDistance(Number(e.target.value))}>
-            <option key={0} value={0}>0</option>
-            <option key={1} value={1}>1</option>
-            <option key={2} value={2}>2</option>
-        </select>
         {M.M?.map((row, i) => (M.pP.z==i)?<Row key={i}>Floor {i}<Col xs={12}>
             {row.map((col, j) => (j>=(M.pP.x-M.vieDistance))&&(j<=(M.pP.x+M.vieDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
                 {col.map((cell, k) => ((k>=M.pP.y-M.vieDistance)&&(k<=M.pP.y+M.vieDistance))?
