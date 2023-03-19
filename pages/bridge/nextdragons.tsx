@@ -13,8 +13,8 @@ export const portcontrol = {
 }
 export const control = {
     fontSize: '10px',
-    width: '48px',
-    height: '32px',
+    width: '36px',
+    height: '24px',
     margin: '0px',
     padding: '0px',
     text: 'center'
@@ -72,7 +72,7 @@ function MapSettings({map, sSP}){
     const [y, setY] = useState(0)
     const [z, setZ] = useState(0)
   
-    return <>
+    return <div style={portcontrol}>
         View Distance:
         <select value={map.vieDistance} onChange={e => map.setViewDistance(Number(e.target.value))}>
             <option key={0} value={0}>0</option>
@@ -93,9 +93,9 @@ function MapSettings({map, sSP}){
                 <Form.Label>Altitude</Form.Label>
                 <Form.Control style={portcontrol} required type="number" min={1} value={z+1} onChange={(e)=>setZ(parseInt(e.target.value)-1)}/>
             </Form.Group>
-            <Button type="submit" >Teleport</Button>
+            <Button style={portcontrol} type="submit" >Teleport</Button>
         </Form>
-    </>
+    </div>
   }
 
 export function Controls({M, sPP}){
@@ -153,7 +153,7 @@ export function Map({M}){
 }
 export function MapFollow({M}){
     return <div className={'net-dragons-map'}>
-        {M.M?.map((row, i) => (M.pP.z==i)?<Row key={i}>Floor {i}<Col xs={12}>
+        {M.M?.map((row, i) => (M.pP.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
             {row.map((col, j) => (j>=(M.pP.x-M.vieDistance))&&(j<=(M.pP.x+M.vieDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
                 {col.map((cell, k) => ((k>=M.pP.y-M.vieDistance)&&(k<=M.pP.y+M.vieDistance))?
                 <div key={k} style={{float: 'left', position: 'relative', ...square}}>
