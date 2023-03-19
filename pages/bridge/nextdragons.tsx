@@ -49,21 +49,19 @@ export default function NetDragons({ip, M}){
     const map = useMap(M, playerPosition)
 //<ProfileByIp ip={ip} setUser={setUser}/>
     return <div className={'net-dragons'}>
-        <h1>Next Dragons</h1>
-        <Nav><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/newdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
-        <ProfileByIp ip={ip} setUser={setUser}/>
+        <Nav><h3>Next Dragons</h3><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/newdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
         <Row>
-            <Col xs={12} sm={2}>
+            <Col xs={6} sm={2}>
                 <MapSettings map={map} sSP={setPlayerPosition}/>
             </Col>
-            <Col xs={12} sm={2}>
-        
+            <Col xs={6} sm={2}>
                 <Controls M={map} sPP={setPlayerPosition}/>
             </Col>
             <Col xs={12} sm={8}>
                 <MapFollow M={map}/>
             </Col>
         </Row>
+        <ProfileByIp ip={ip} setUser={setUser}/>
     </div>
 }
 
