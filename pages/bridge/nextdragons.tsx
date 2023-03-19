@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
@@ -43,10 +43,10 @@ export const wall = {
         text: 'center'
     }
 }
-export default function NetDragons({ip, M}){
+export default function NetDragons({ip, M, E}){
     const [user, setUser] = useState(null)
     const [playerPosition, setPlayerPosition] = useState({x: 0, y: 0, z: 0})
-    const map = useMap(M, playerPosition)
+    const map = useMap(M, playerPosition, E)
 //<ProfileByIp ip={ip} setUser={setUser}/>
     return <div className={'net-dragons'}>
         <Nav><h3>Next Dragons</h3><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/newdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
@@ -135,7 +135,10 @@ export function Controls({M, sPP}){
 }
 
 export function Map({M}){
-    return <div className={'net-dragons-map'}>
+    useEffect(()=>{
+        M.setE(M.events[Math.floor(Math.random()*M.events.length)])
+    },[M.pP])
+    return <div className={'net-dragons-map'}>Event: {M.E[0].title}{'\>'}{M.E[0].description}
         {M?.map((row, i) => {if(M.pP.z==i) {return <Row key={i}>Floor {i}<Col xs={12}>
             {row.map((col, j) => <Row key={j}><Col xs={12}>
                 {col.map((cell, k) => <div key={k} style={{float: 'left'}}>
@@ -150,7 +153,10 @@ export function Map({M}){
     </div>
 }
 export function MapFollow({M}){
-    return <div className={'net-dragons-map'}>
+    useEffect(()=>{
+        M.setE(M.events[Math.floor(Math.random()*M.events.length)])
+    },[M.pP])
+    return <div className={'net-dragons-map'}>Event:{'\['}{M.E.title}{': '}{M.E.description}{'\]'}
         {M.M?.map((row, i) => (M.pP.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
             {row.map((col, j) => (j>=(M.pP.x-M.vieDistance))&&(j<=(M.pP.x+M.vieDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
                 {col.map((cell, k) => ((k>=M.pP.y-M.vieDistance)&&(k<=M.pP.y+M.vieDistance))?
@@ -163,10 +169,11 @@ export function MapFollow({M}){
         </Col></Row>:null)}
     </div>
 }
-function useMap(map, pP){
+function useMap(map, pP, events){
     const [M, setM] = useState(map)
     const [vieDistance, setViewDistance] = useState(2)
-    return {M, pP, vieDistance, setViewDistance}
+    const [E, setE] = useState(events[0])
+    return {M, pP, events, E, setE, vieDistance, setViewDistance}
 }
 
 function Walls({paths}: {paths: number[]}){
@@ -181,38 +188,17 @@ function Walls({paths}: {paths: number[]}){
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = context.query
     const ip = await requestIp.getClientIp(context.req)
-    const mapSmall = [
-        [
-            [
-                {title: 'This', paths: [1,0,0,1]},
-                {title: 'map', paths: [1,0,0,0]},
-                {title: 'is', paths: [1,0,0,0]},
-                {title: 'small', paths: [1,1,0,0]}
-            ],
-            ['this','building','is','4^3'],
-            [0,0,0,0],
-            [0,0,0,0]
-        ],
-        [
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0]
-        ],
-        [
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0]
-        ],
-        [
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0],
-            [0,0,0,0]
-        ]
+    const eventsList = [
+        {title: 'nothing', description: 'nothing happens'},
+        {title: 'nothing', description: 'nothing happens'},
+        {title: 'nothing', description: 'nothing happens'},
+        {title: 'nothing', description: 'nothing happens'},
+        {title: 'item', description: 'you have discovered an item. click your location to pick it up'},
+        {title: 'bright idea', description: 'a wild hair has apeared up yours'},
+        {title: 'ambush', description: 'a wild wildabeast has apeared'},
+        {title: 'ambush', description: 'a tame guard dog has apeared'},
+        {title: 'trip', description: 'you ate some bad shooms bro'},
     ]
-
     const map = [
         [
             [
@@ -413,5 +399,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             ],
         ],
     ]
-    return {props: {ip: ip, M: map}} 
+    return {props: {ip: ip, M: map, E: eventsList}} 
 }
