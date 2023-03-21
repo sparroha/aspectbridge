@@ -45,11 +45,11 @@ export const wall = {
     }
 }
 
-export default function NetDragons({ip, M, E}: {ip: string, M: MapData, E: EventData}){
+export default function NetDragons({ip, M, E}: {ip: string, M: MapData, E: EventData[]}){
     const [user, setUser] = useState(null)
     const startPosition: Position = {x: 0, y: 0, z: 0, pixel:{x: 0, y: 0}}
     const [playerPosition, setPlayerPosition] = useState(startPosition)
-    const game: GameData = useGame([M], 0, playerPosition, setPlayerPosition, [E])
+    const game: GameData = useGame(M, 0, playerPosition, setPlayerPosition, E)
     const inventory = useInventory({inventory: ['']})
 //<ProfileByIp ip={ip} setUser={setUser}/>
     return <div className={'net-dragons'}>
@@ -165,39 +165,16 @@ export function Controls({game}: {game: GameData}){
     </div>
 }
 
-export function Map({game}: {game: GameData}){
-    useEffect(()=>{
-        game.setE(game.events[Math.floor(Math.random()*game.events.length)])
-    },[game.position])
-    return <div className={'net-dragons-map'}>Event: {game.E[0].title}{'\>'}{game.E[0].description}
-        {game.regions?.map((row, i) => {if(game.position.z==i) {return <Row key={i}>Floor {i}<Col xs={12}>
-            {row.map((col, j) => <Row key={j}><Col xs={12}>
-                {col.map((cell, k) => <div key={k} style={{float: 'left'}}>
-                    {()=>{
-                        /*if(typeof M.M[i] === 'undefined') return;
-                        if(typeof M.M[i][j] === 'undefined') return;
-                        if(typeof M.M[i][j][k] === 'undefined') return;*/
-                        return <Button variant={'primary'} style={square} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)}>
-
-                                    room {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{game.position.x==j&&game.position.y==k?cell:''}
-                                
-                        </Button>}
-                    }
-                </div>)}
-            </Col></Row>)}
-        </Col></Row>}})}
-    </div>
-}
 export function MapFollow({game}: {game: GameData}){
     useEffect(()=>{
-        game.setE(game.events[Math.floor(Math.random()*game.events.length)])
+        game.setEventIndex(Math.floor(Math.random()*game.events.length))
     },[game.position])
-    return <div className={'net-dragons-map'}>Event:{'\['}{game.E.name}{': '}{game.E.description}{'\]'}
-        {game.regions?.map((row, i) => (game.position?.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
-            {row.map((col, j) => (j>=(game.position?.x-game.viewDistance))&&(j<=(game.position?.x+game.viewDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
-                {col.map((cell, k) => ((k>=game.position?.y-game.viewDistance)&&(k<=game.position?.y+game.viewDistance))?
+    return <div className={'net-dragons-map'}>Event:{'\['}{game.events[game.eventIndex].name}{': '}{game.events[game.eventIndex].description}{'\]'}
+        {game.regions?.map((row, i) => (game.position.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
+            {row.map((col, j) => (j>=(game.position.x-game.viewDistance))&&(j<=(game.position.x+game.viewDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
+                {col.map((cell, k) => ((k>=game.position.y-game.viewDistance)&&(k<=game.position.y+game.viewDistance))?
                 <div key={k} style={{float: 'left', position: 'relative', ...square}}>
-                    <Button variant={'primary'} style={square} disabled={(game.position?.x==j&&game.position?.y==k&&game.position?.z==i?false:true)}>{cell.name} {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{game.position?.x==j&&game.position?.y==k?cell.name:''}</Button>
+                    <Button variant={'primary'} style={square} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)}>{cell.name} {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{game.position.x==j&&game.position.y==k?cell.name:''}</Button>
                     <Walls paths={cell.paths}/>
                 </div>:
                 null)}
@@ -205,12 +182,12 @@ export function MapFollow({game}: {game: GameData}){
         </Col></Row>:null)}
     </div>
 }
-function useGame(maps: MapData[], activeMapIndex: 0, pP: Position, sPP: Function, events: EventData[]): GameData{
-    const mapList = maps
-    const [activeMap, setActiveMap] = useState(mapList[activeMapIndex])
-    const [regionMap, setRegionMap] = useState(activeMap.regions)
+function useGame(map: MapData, activeMapIndex: 0, pP: Position, sPP: Function, events: EventData[]): GameData{
+    //const mapList = maps
+    //const [activeMap, setActiveMap] = useState(mapList[activeMapIndex])
+    const [regionMap, setRegionMap] = useState(map.regions)
     const [viewDistance, setViewDistance] = useState(2)
-    const [E, setE] = useState(events[0])
+    const [eventIndex, setEventIndex] = useState(0)
     const game: GameData = {
         name: 'placeholder',
         description: 'placeholder',
@@ -218,8 +195,8 @@ function useGame(maps: MapData[], activeMapIndex: 0, pP: Position, sPP: Function
         regions: regionMap,
         activeRegion: pP,
         events: events,
-        E: E,
-        setE: setE,
+        eventIndex: eventIndex,
+        setEventIndex: setEventIndex,
         viewDistance: viewDistance,
         setViewDistance: setViewDistance,
         position: pP,
@@ -276,213 +253,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         {name: 'ambush', description: 'a tame guard dog has apeared'},
         {name: 'trip', description: 'you ate some bad shooms bro'},
     ]
-    const grass: Region = {
-        name: 'grass',
-        paths: [1,1,1,1,1,1],
-        events: eventsList,
-    }
-    const regions: Region[][][] = [
-        [
-            [
-                {description: 'left', paths: [1,0,0,1,0,1]},
-                {description: 'mid', paths: [1,0,0,1,0,1]},
-                {description: 'mid', paths: [1,0,0,0,0,1]},
-                {description: 'right', paths: [1,1,0,0,0,1]},
-                grass
-            ],
-            [
-                {description: 'left', paths: [1,0,0,1,0,1]},
-                {description: 'mid', paths: [0,0,0,0,0,1]},
-                {description: 'mid', paths: [0,0,0,0,0,1]},
-                {description: 'right', paths: [0,0,0,0,0,1]},
-                {description: 'faright', paths: [1,1,1,0,0,1]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,1]},
-                {description: 'mid', paths: [0,0,0,0,0,1]},
-                {description: 'mid', paths: [0,0,0,0,0,1]},
-                {description: 'right', paths: [0,1,0,0,0,1]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,1]},
-                {description: 'mid', paths: [0,0,0,0,0,1]},
-                {description: 'mid', paths: [0,0,0,0,0,1]},
-                {description: 'right', paths: [0,1,0,0,0,1]},
-            ],
-            [
-                {description: 'left', paths: [0,0,1,1,0,1]},
-                {description: 'mid', paths: [0,0,1,0,0,1]},
-                {description: 'mid', paths: [0,0,1,0,0,1]},
-                {description: 'right', paths: [0,1,1,0,0,1]},
-            ],
-        ],
-        [
-            [
-                {description: 'left', paths: [1,0,0,1,0,0]},
-                {description: 'mid', paths: [1,0,0,0,0,0]},
-                {description: 'mid', paths: [1,0,0,0,0,0]},
-                {description: 'right', paths: [1,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,0,0,0,0,0]},
-                {description: 'faright', paths: [1,1,1,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,1,1,0,0]},
-                {description: 'mid', paths: [0,0,1,0,0,0]},
-                {description: 'mid', paths: [0,0,1,0,0,0]},
-                {description: 'right', paths: [0,1,1,0,0,0]},
-            ],
-        ],
-        [
-            [
-                {description: 'left', paths: [1,0,0,1,0,0]},
-                {description: 'mid', paths: [1,0,0,0,0,0]},
-                {description: 'mid', paths: [1,0,0,0,0,0]},
-                {description: 'right', paths: [1,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,0,0,0,0,0]},
-                {description: 'faright', paths: [1,1,1,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,1,1,0,0]},
-                {description: 'mid', paths: [0,0,1,0,0,0]},
-                {description: 'mid', paths: [0,0,1,0,0,0]},
-                {description: 'right', paths: [0,1,1,0,0,0]},
-            ],
-        ],
-        [
-            [
-                {description: 'left', paths: [1,0,0,1,0,0]},
-                {description: 'mid', paths: [1,0,0,0,0,0]},
-                {description: 'mid', paths: [1,0,0,0,0,0]},
-                {description: 'right', paths: [1,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,0,0,0,0,0]},
-                {description: 'faright', paths: [1,1,1,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,1,1,0,0]},
-                {description: 'mid', paths: [0,0,1,0,0,0]},
-                {description: 'mid', paths: [0,0,1,0,0,0]},
-                {description: 'right', paths: [0,1,1,0,0,0]},
-            ],
-        ],
-        [
-            [
-                {description: 'left', paths: [1,0,0,1,0,0]},
-                {description: 'mid', paths: [1,0,0,0,0,0]},
-                {description: 'mid', paths: [1,0,0,0,0,0]},
-                {description: 'right', paths: [1,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,0,0,0,0,0]},
-                {description: 'faright', paths: [1,1,1,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'mid', paths: [0,0,0,0,0,0]},
-                {description: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,1,1,0,0]},
-                {description: 'mid', paths: [0,0,1,0,0,0]},
-                {description: 'mid', paths: [0,0,1,0,0,0]},
-                {description: 'right', paths: [0,1,1,0,0,0]},
-            ],
-        ],
-        [
-            [
-                {description: 'left', paths: [1,0,0,1,1,0]},
-                {description: 'mid', paths: [1,0,0,0,1,0]},
-                {description: 'mid', paths: [1,0,0,0,1,0]},
-                {description: 'right', paths: [1,1,0,0,1,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,1,0]},
-                {description: 'mid', paths: [0,0,0,0,1,0]},
-                {description: 'mid', paths: [0,0,0,0,1,0]},
-                {description: 'right', paths: [0,0,0,0,1,0]},
-                {description: 'faright', paths: [1,1,1,0,1,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,1,0]},
-                {description: 'mid', paths: [0,0,0,0,1,0]},
-                {description: 'mid', paths: [0,0,0,0,1,0]},
-                {description: 'right', paths: [0,1,0,0,1,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,0,1,1,0]},
-                {description: 'mid', paths: [0,0,0,0,1,0]},
-                {description: 'mid', paths: [0,0,0,0,1,0]},
-                {description: 'right', paths: [0,1,0,0,1,0]},
-            ],
-            [
-                {description: 'left', paths: [0,0,1,1,1,0]},
-                {description: 'mid', paths: [0,0,1,0,1,0]},
-                {description: 'mid', paths: [0,0,1,0,1,0]},
-                {description: 'right', paths: [0,1,1,0,1,0]},
-            ],
-        ],
-    ]
-    const mapNew: MapData = {
+    const map: MapData = {
         name: 'tree',
         description: 'Tree of Life',
         background: 'tree.png',
@@ -491,5 +262,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         regions: treeOfLifeRegionMap,
         activeRegion: treeOfLifeRegionMap[0][0][0]
     }
-    return {props: {ip: ip, M: mapNew, E: eventsList}} 
+    return {props: {ip: ip, M: map, E: eventsList}} 
 }
