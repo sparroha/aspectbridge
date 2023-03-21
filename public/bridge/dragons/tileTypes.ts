@@ -1,4 +1,3 @@
-export default function(){}
 export type Item = {
     name: string,
     description: string,

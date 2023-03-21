@@ -4,7 +4,7 @@ import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
-import { EventData, eventsList, fallEvent, GameData, MapData, Position, Region, treeOfLifeRegionMap } from "./dragons/tileTypes";
+import { EventData, eventsList, fallEvent, GameData, MapData, Position, Region, treeOfLifeRegionMap } from "../../public/bridge/dragons/tileTypes";
 
 export const portcontrol = {
     fontSize: '10px',
