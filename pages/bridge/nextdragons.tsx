@@ -4,7 +4,7 @@ import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
-import { EventData, eventsList, GameData, MapData, Position, Region, treeOfLifeRegionMap } from "./dragons/tileTypes";
+import { EventData, eventsList, fallEvent, GameData, MapData, Position, Region, treeOfLifeRegionMap } from "./dragons/tileTypes";
 
 export const portcontrol = {
     fontSize: '10px',
@@ -168,6 +168,30 @@ export function Controls({game}: {game: GameData}){
 export function MapFollow({game}: {game: GameData}){
     useEffect(()=>{
         game.setEventIndex(Math.floor(Math.random()*game.events.length))
+        return game.regions[game.position.z][game.position.x][game.position.y].events?.forEach((event)=>{
+            switch(event.init){
+                case 'fall':
+                    fallEvent(game)
+                case 'fight':
+                    game.setEventIndex(Math.floor(Math.random()*game.events.length))
+                    break;
+                case 'item':
+                    game.setEventIndex(Math.floor(Math.random()*game.events.length))
+                    break;
+                case 'trap':
+                    game.setEventIndex(Math.floor(Math.random()*game.events.length))
+                    break;
+                case 'treasure':
+                    game.setEventIndex(Math.floor(Math.random()*game.events.length))
+                    break;
+                case 'event':
+                    game.setEventIndex(Math.floor(Math.random()*game.events.length))
+                    break;
+                default:
+                    game.setEventIndex(Math.floor(Math.random()*game.events.length))
+                    break;
+            }
+        })
     },[game.position])
     return <div className={'net-dragons-map'}>Event:{'\['}{game.events[game.eventIndex].name}{': '}{game.events[game.eventIndex].description}{'\]'}
         {game.regions?.map((row, i) => (game.position.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
