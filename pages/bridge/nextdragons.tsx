@@ -4,6 +4,7 @@ import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
+import { EventData, GameData, MapData, Position, Region, treeOfLifeRegionMap } from "./dragons/tileTypes";
 
 export const portcontrol = {
     fontSize: '10px',
@@ -43,91 +44,7 @@ export const wall = {
         text: 'center'
     }
 }
-export type Item = {
-    name: string,
-    description: string,
-    image: string,
-    weight: number,
-    value: number,
-    volume: number,
-    stackable: boolean,
-    stackSize: number,
-    stackCount: number,
-    use: Function,
-    useable: boolean,
-    equipable: boolean,
-    equipped: boolean,
-    equip: Function,
-    unequip: Function,
-    drop: Function,
-    droppable: boolean,
-    pickup: Function,
-    pickupable: boolean,
-    destroy: Function,
-    destroyable: boolean,
-    craft: Function,
-    craftable: boolean,
-    craftableWith: Item[],
-    craftableTo: Item[],
-    craftableFrom: Item[],
-    craftableFromCount: number,
-    craftableToCount: number,
-    craftableWithCount: number,
-    
-}
-type Position ={
-    x: number,
-    y: number,
-    z: number,
-    pixel: {
-        x: number,
-        y: number,
-    }
-}
-type Region = {
-    name?: string,
-    discription?: string,
-    image?: string,
-    paths: number[],//north, east, south, west, up, down
-    items?: Item[],//list of items that may apear in this region
-    monsters?: any[],//list of monsters that may apear in this region
-    events?: any[],//list of events that may apear in this region
-    destination?: Position,
-}
 
-type MapData = {
-    name?: string,
-    description?: string,
-    background?: string,
-    viewDistance: number,
-    setViewDistance: Function,
-    regions: Region[][][],
-    activeRegion: Region
-}
-type EventData = {
-    name: string,
-    description: string,
-}
-type Player = {
-    name?: string,
-    description?: string,
-    image?: string,
-    position: Position,
-}
-type GameData = {
-    name?: string,
-    description?: string,
-    background?: string,
-    regions: Region[][][],
-    activeRegion: Position,
-    events: EventData[],
-    E: EventData,
-    setE: Function,
-    viewDistance: number,
-    setViewDistance: Function,
-    position: Position,
-    setPosition: Function,
-}
 export default function NetDragons({ip, M, E}: {ip: string, M: MapData, E: EventData}){
     const [user, setUser] = useState(null)
     const startPosition: Position = {x: 0, y: 0, z: 0, pixel:{x: 0, y: 0}}
@@ -190,24 +107,44 @@ export function Controls({game}: {game: GameData}){
     return <div className={'net-dragons-controls'}>
         <Row>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>game.setPosition((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+(!(game.regions[pP.z][pP.x][pP.y].paths[5])?-1:0)}})}>Down</Button>
+                <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
+                    if(typeof game.regions[pP.z-1] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z-1][pP.x] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z-1][pP.x][pP.y] === 'undefined') return pP;
+                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.regions[pP.z][pP.x][pP.y].paths[5])?-1:0)}})}}>Down</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>game.setPosition((pP)=>{return {x: pP.x+(!(game.regions[pP.z][pP.x][pP.y].paths[0])?-1:0), y: pP.y, z: pP.z}})}>North</Button>
+                <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
+                    if(typeof game.regions[pP.z] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z][pP.x-1] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z][pP.x-1][pP.y] === 'undefined') return pP;
+                    return {x: pP.x+(!(game.regions[pP.z][pP.x][pP.y].paths[0])?-1:0), y: pP.y, z: pP.z}})}}>North</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>game.setPosition((pP)=>{return {x: pP.x, y: pP.y, z: pP.z+(!(game.regions[pP.z][pP.x][pP.y].paths[4])?1:0)}})}>Up</Button>
+                <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
+                    if(typeof game.regions[pP.z+1] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z+1][pP.x] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z+1][pP.x][pP.y] === 'undefined') return pP;
+                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.regions[pP.z][pP.x][pP.y].paths[4])?1:0)}})}}>Up</Button>
             </Col>
         </Row>
         <Row>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>game.setPosition((pP)=>{return {x: pP.x, y: pP.y+(!(game.regions[pP.z][pP.x][pP.y].paths[3])?-1:0), z: pP.z}})}>West</Button>
+                <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
+                    if(typeof game.regions[pP.z] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z][pP.x] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z][pP.x][pP.y-1] === 'undefined') return pP;
+                    return {x: pP.x, y: pP.y+(!(game.regions[pP.z][pP.x][pP.y].paths[3])?-1:0), z: pP.z}})}}>West</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control}>Enter</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>game.setPosition((pP)=>{return {x: pP.x, y: pP.y+(!(game.regions[pP.z][pP.x][pP.y].paths[1])?1:0), z: pP.z}})}>East</Button>
+                <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
+                    if(typeof game.regions[pP.z] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z][pP.x] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z][pP.x][pP.y+1] === 'undefined') return pP;
+                    return {x: pP.x, y: pP.y+(!(game.regions[pP.z][pP.x][pP.y].paths[1])?1:0), z: pP.z}})}}>East</Button>
             </Col>
         </Row>
         <Row>
@@ -215,7 +152,11 @@ export function Controls({game}: {game: GameData}){
                 <Button variant={'primary'} style={control}>Run</Button>
             </Col>
             <Col xs={4}>
-                <Button variant={'primary'} style={control} onClick={()=>game.setPosition((pP)=>{return {x: pP.x+(!(game.regions[pP.z][pP.x][pP.y].paths[2])?1:0), y: pP.y, z: pP.z}})}>South</Button>
+                <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
+                    if(typeof game.regions[pP.z] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z][pP.x+1] === 'undefined') return pP;
+                    if(typeof game.regions[pP.z][pP.x+1][pP.y] === 'undefined') return pP;
+                    return {x: pP.x+(!(game.regions[pP.z][pP.x][pP.y].paths[2])?1:0), y: pP.y, z: pP.z}})}}>South</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control}>Fight</Button>
@@ -252,11 +193,11 @@ export function MapFollow({game}: {game: GameData}){
         game.setE(game.events[Math.floor(Math.random()*game.events.length)])
     },[game.position])
     return <div className={'net-dragons-map'}>Event:{'\['}{game.E.name}{': '}{game.E.description}{'\]'}
-        {game.regions?.map((row, i) => (game.position.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
-            {row.map((col, j) => (j>=(game.position.x-game.viewDistance))&&(j<=(game.position.x+game.viewDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
-                {col.map((cell, k) => ((k>=game.position.y-game.viewDistance)&&(k<=game.position.y+game.viewDistance))?
+        {game.regions?.map((row, i) => (game.position?.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
+            {row.map((col, j) => (j>=(game.position?.x-game.viewDistance))&&(j<=(game.position?.x+game.viewDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
+                {col.map((cell, k) => ((k>=game.position?.y-game.viewDistance)&&(k<=game.position?.y+game.viewDistance))?
                 <div key={k} style={{float: 'left', position: 'relative', ...square}}>
-                    <Button variant={'primary'} style={square} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)}>{cell.name} {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{game.position.x==j&&game.position.y==k?cell.name:''}</Button>
+                    <Button variant={'primary'} style={square} disabled={(game.position?.x==j&&game.position?.y==k&&game.position?.z==i?false:true)}>{cell.name} {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{game.position?.x==j&&game.position?.y==k?cell.name:''}</Button>
                     <Walls paths={cell.paths}/>
                 </div>:
                 null)}
@@ -343,201 +284,201 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const regions: Region[][][] = [
         [
             [
-                {discription: 'left', paths: [1,0,0,1,0,1]},
-                {discription: 'mid', paths: [1,0,0,1,0,1]},
-                {discription: 'mid', paths: [1,0,0,0,0,1]},
-                {discription: 'right', paths: [1,1,0,0,0,1]},
+                {description: 'left', paths: [1,0,0,1,0,1]},
+                {description: 'mid', paths: [1,0,0,1,0,1]},
+                {description: 'mid', paths: [1,0,0,0,0,1]},
+                {description: 'right', paths: [1,1,0,0,0,1]},
                 grass
             ],
             [
-                {discription: 'left', paths: [1,0,0,1,0,1]},
-                {discription: 'mid', paths: [0,0,0,0,0,1]},
-                {discription: 'mid', paths: [0,0,0,0,0,1]},
-                {discription: 'right', paths: [0,0,0,0,0,1]},
-                {discription: 'faright', paths: [1,1,1,0,0,1]},
+                {description: 'left', paths: [1,0,0,1,0,1]},
+                {description: 'mid', paths: [0,0,0,0,0,1]},
+                {description: 'mid', paths: [0,0,0,0,0,1]},
+                {description: 'right', paths: [0,0,0,0,0,1]},
+                {description: 'faright', paths: [1,1,1,0,0,1]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,0,1]},
-                {discription: 'mid', paths: [0,0,0,0,0,1]},
-                {discription: 'mid', paths: [0,0,0,0,0,1]},
-                {discription: 'right', paths: [0,1,0,0,0,1]},
+                {description: 'left', paths: [0,0,0,1,0,1]},
+                {description: 'mid', paths: [0,0,0,0,0,1]},
+                {description: 'mid', paths: [0,0,0,0,0,1]},
+                {description: 'right', paths: [0,1,0,0,0,1]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,0,1]},
-                {discription: 'mid', paths: [0,0,0,0,0,1]},
-                {discription: 'mid', paths: [0,0,0,0,0,1]},
-                {discription: 'right', paths: [0,1,0,0,0,1]},
+                {description: 'left', paths: [0,0,0,1,0,1]},
+                {description: 'mid', paths: [0,0,0,0,0,1]},
+                {description: 'mid', paths: [0,0,0,0,0,1]},
+                {description: 'right', paths: [0,1,0,0,0,1]},
             ],
             [
-                {discription: 'left', paths: [0,0,1,1,0,1]},
-                {discription: 'mid', paths: [0,0,1,0,0,1]},
-                {discription: 'mid', paths: [0,0,1,0,0,1]},
-                {discription: 'right', paths: [0,1,1,0,0,1]},
-            ],
-        ],
-        [
-            [
-                {discription: 'left', paths: [1,0,0,1,0,0]},
-                {discription: 'mid', paths: [1,0,0,0,0,0]},
-                {discription: 'mid', paths: [1,0,0,0,0,0]},
-                {discription: 'right', paths: [1,1,0,0,0,0]},
-            ],
-            [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,0,0,0,0,0]},
-                {discription: 'faright', paths: [1,1,1,0,0,0]},
-            ],
-            [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {discription: 'left', paths: [0,0,1,1,0,0]},
-                {discription: 'mid', paths: [0,0,1,0,0,0]},
-                {discription: 'mid', paths: [0,0,1,0,0,0]},
-                {discription: 'right', paths: [0,1,1,0,0,0]},
+                {description: 'left', paths: [0,0,1,1,0,1]},
+                {description: 'mid', paths: [0,0,1,0,0,1]},
+                {description: 'mid', paths: [0,0,1,0,0,1]},
+                {description: 'right', paths: [0,1,1,0,0,1]},
             ],
         ],
         [
             [
-                {discription: 'left', paths: [1,0,0,1,0,0]},
-                {discription: 'mid', paths: [1,0,0,0,0,0]},
-                {discription: 'mid', paths: [1,0,0,0,0,0]},
-                {discription: 'right', paths: [1,1,0,0,0,0]},
+                {description: 'left', paths: [1,0,0,1,0,0]},
+                {description: 'mid', paths: [1,0,0,0,0,0]},
+                {description: 'mid', paths: [1,0,0,0,0,0]},
+                {description: 'right', paths: [1,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,0,0,0,0,0]},
-                {discription: 'faright', paths: [1,1,1,0,0,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,0,0,0,0,0]},
+                {description: 'faright', paths: [1,1,1,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,1,0,0,0,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,1,0,0,0,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,1,1,0,0]},
-                {discription: 'mid', paths: [0,0,1,0,0,0]},
-                {discription: 'mid', paths: [0,0,1,0,0,0]},
-                {discription: 'right', paths: [0,1,1,0,0,0]},
-            ],
-        ],
-        [
-            [
-                {discription: 'left', paths: [1,0,0,1,0,0]},
-                {discription: 'mid', paths: [1,0,0,0,0,0]},
-                {discription: 'mid', paths: [1,0,0,0,0,0]},
-                {discription: 'right', paths: [1,1,0,0,0,0]},
-            ],
-            [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,0,0,0,0,0]},
-                {discription: 'faright', paths: [1,1,1,0,0,0]},
-            ],
-            [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,1,0,0,0,0]},
-            ],
-            [
-                {discription: 'left', paths: [0,0,1,1,0,0]},
-                {discription: 'mid', paths: [0,0,1,0,0,0]},
-                {discription: 'mid', paths: [0,0,1,0,0,0]},
-                {discription: 'right', paths: [0,1,1,0,0,0]},
+                {description: 'left', paths: [0,0,1,1,0,0]},
+                {description: 'mid', paths: [0,0,1,0,0,0]},
+                {description: 'mid', paths: [0,0,1,0,0,0]},
+                {description: 'right', paths: [0,1,1,0,0,0]},
             ],
         ],
         [
             [
-                {discription: 'left', paths: [1,0,0,1,0,0]},
-                {discription: 'mid', paths: [1,0,0,0,0,0]},
-                {discription: 'mid', paths: [1,0,0,0,0,0]},
-                {discription: 'right', paths: [1,1,0,0,0,0]},
+                {description: 'left', paths: [1,0,0,1,0,0]},
+                {description: 'mid', paths: [1,0,0,0,0,0]},
+                {description: 'mid', paths: [1,0,0,0,0,0]},
+                {description: 'right', paths: [1,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,0,0,0,0,0]},
-                {discription: 'faright', paths: [1,1,1,0,0,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,0,0,0,0,0]},
+                {description: 'faright', paths: [1,1,1,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,1,0,0,0,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'mid', paths: [0,0,0,0,0,0]},
-                {discription: 'right', paths: [0,1,0,0,0,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,1,1,0,0]},
-                {discription: 'mid', paths: [0,0,1,0,0,0]},
-                {discription: 'mid', paths: [0,0,1,0,0,0]},
-                {discription: 'right', paths: [0,1,1,0,0,0]},
+                {description: 'left', paths: [0,0,1,1,0,0]},
+                {description: 'mid', paths: [0,0,1,0,0,0]},
+                {description: 'mid', paths: [0,0,1,0,0,0]},
+                {description: 'right', paths: [0,1,1,0,0,0]},
             ],
         ],
         [
             [
-                {discription: 'left', paths: [1,0,0,1,1,0]},
-                {discription: 'mid', paths: [1,0,0,0,1,0]},
-                {discription: 'mid', paths: [1,0,0,0,1,0]},
-                {discription: 'right', paths: [1,1,0,0,1,0]},
+                {description: 'left', paths: [1,0,0,1,0,0]},
+                {description: 'mid', paths: [1,0,0,0,0,0]},
+                {description: 'mid', paths: [1,0,0,0,0,0]},
+                {description: 'right', paths: [1,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,1,0]},
-                {discription: 'mid', paths: [0,0,0,0,1,0]},
-                {discription: 'mid', paths: [0,0,0,0,1,0]},
-                {discription: 'right', paths: [0,0,0,0,1,0]},
-                {discription: 'faright', paths: [1,1,1,0,1,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,0,0,0,0,0]},
+                {description: 'faright', paths: [1,1,1,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,1,0]},
-                {discription: 'mid', paths: [0,0,0,0,1,0]},
-                {discription: 'mid', paths: [0,0,0,0,1,0]},
-                {discription: 'right', paths: [0,1,0,0,1,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,0,1,1,0]},
-                {discription: 'mid', paths: [0,0,0,0,1,0]},
-                {discription: 'mid', paths: [0,0,0,0,1,0]},
-                {discription: 'right', paths: [0,1,0,0,1,0]},
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,1,0,0,0,0]},
             ],
             [
-                {discription: 'left', paths: [0,0,1,1,1,0]},
-                {discription: 'mid', paths: [0,0,1,0,1,0]},
-                {discription: 'mid', paths: [0,0,1,0,1,0]},
-                {discription: 'right', paths: [0,1,1,0,1,0]},
+                {description: 'left', paths: [0,0,1,1,0,0]},
+                {description: 'mid', paths: [0,0,1,0,0,0]},
+                {description: 'mid', paths: [0,0,1,0,0,0]},
+                {description: 'right', paths: [0,1,1,0,0,0]},
+            ],
+        ],
+        [
+            [
+                {description: 'left', paths: [1,0,0,1,0,0]},
+                {description: 'mid', paths: [1,0,0,0,0,0]},
+                {description: 'mid', paths: [1,0,0,0,0,0]},
+                {description: 'right', paths: [1,1,0,0,0,0]},
+            ],
+            [
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,0,0,0,0,0]},
+                {description: 'faright', paths: [1,1,1,0,0,0]},
+            ],
+            [
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,1,0,0,0,0]},
+            ],
+            [
+                {description: 'left', paths: [0,0,0,1,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'mid', paths: [0,0,0,0,0,0]},
+                {description: 'right', paths: [0,1,0,0,0,0]},
+            ],
+            [
+                {description: 'left', paths: [0,0,1,1,0,0]},
+                {description: 'mid', paths: [0,0,1,0,0,0]},
+                {description: 'mid', paths: [0,0,1,0,0,0]},
+                {description: 'right', paths: [0,1,1,0,0,0]},
+            ],
+        ],
+        [
+            [
+                {description: 'left', paths: [1,0,0,1,1,0]},
+                {description: 'mid', paths: [1,0,0,0,1,0]},
+                {description: 'mid', paths: [1,0,0,0,1,0]},
+                {description: 'right', paths: [1,1,0,0,1,0]},
+            ],
+            [
+                {description: 'left', paths: [0,0,0,1,1,0]},
+                {description: 'mid', paths: [0,0,0,0,1,0]},
+                {description: 'mid', paths: [0,0,0,0,1,0]},
+                {description: 'right', paths: [0,0,0,0,1,0]},
+                {description: 'faright', paths: [1,1,1,0,1,0]},
+            ],
+            [
+                {description: 'left', paths: [0,0,0,1,1,0]},
+                {description: 'mid', paths: [0,0,0,0,1,0]},
+                {description: 'mid', paths: [0,0,0,0,1,0]},
+                {description: 'right', paths: [0,1,0,0,1,0]},
+            ],
+            [
+                {description: 'left', paths: [0,0,0,1,1,0]},
+                {description: 'mid', paths: [0,0,0,0,1,0]},
+                {description: 'mid', paths: [0,0,0,0,1,0]},
+                {description: 'right', paths: [0,1,0,0,1,0]},
+            ],
+            [
+                {description: 'left', paths: [0,0,1,1,1,0]},
+                {description: 'mid', paths: [0,0,1,0,1,0]},
+                {description: 'mid', paths: [0,0,1,0,1,0]},
+                {description: 'right', paths: [0,1,1,0,1,0]},
             ],
         ],
     ]
@@ -547,8 +488,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         background: 'tree.png',
         viewDistance: 2,
         setViewDistance: null,
-        regions: regions,
-        activeRegion: regions[0][0][0]
+        regions: treeOfLifeRegionMap,
+        activeRegion: treeOfLifeRegionMap[0][0][0]
     }
     return {props: {ip: ip, M: mapNew, E: eventsList}} 
 }
