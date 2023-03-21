@@ -4,7 +4,7 @@ import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
-import { EventData, GameData, MapData, Position, Region, treeOfLifeRegionMap } from "./dragons/tileTypes";
+import { EventData, eventsList, GameData, MapData, Position, Region, treeOfLifeRegionMap } from "./dragons/tileTypes";
 
 export const portcontrol = {
     fontSize: '10px',
@@ -18,7 +18,8 @@ export const control = {
     height: '24px',
     margin: '0px',
     padding: '0px',
-    text: 'center'
+    text: 'center',
+    zIndex: '10'
 }
 export const square = {
     fontSize: '12px',
@@ -51,9 +52,8 @@ export default function NetDragons({ip, M, E}: {ip: string, M: MapData, E: Event
     const [playerPosition, setPlayerPosition] = useState(startPosition)
     const game: GameData = useGame(M, 0, playerPosition, setPlayerPosition, E)
     const inventory = useInventory({inventory: ['']})
-//<ProfileByIp ip={ip} setUser={setUser}/>
     return <div className={'net-dragons'}>
-        <Nav><h3>Next Dragons</h3><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/newdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
+        <Nav><h3>Next Dragons</h3><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/nextdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
         <Row>
             <Col xs={6} sm={2}>
                 <MapSettings game={game}/>
@@ -174,8 +174,9 @@ export function MapFollow({game}: {game: GameData}){
             {row.map((col, j) => (j>=(game.position.x-game.viewDistance))&&(j<=(game.position.x+game.viewDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
                 {col.map((cell, k) => ((k>=game.position.y-game.viewDistance)&&(k<=game.position.y+game.viewDistance))?
                 <div key={k} style={{float: 'left', position: 'relative', ...square}}>
-                    <Button variant={'primary'} style={square} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)}>{cell.name} {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{game.position.x==j&&game.position.y==k?cell.name:''}</Button>
-                    <Walls paths={cell.paths}/>
+                    <Walls paths={cell.paths}>
+                        <Button variant={'primary'} style={square} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)}>{cell.name} {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{game.position.x==j&&game.position.y==k?cell.name:''}</Button>
+                    </Walls>
                 </div>:
                 null)}
             </Col></Row>:null)}
@@ -206,8 +207,8 @@ function useGame(map: MapData, activeMapIndex: 0, pP: Position, sPP: Function, e
     return game
 }
 
-function Walls({paths}: {paths: number[]}){
-    return <div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1}}>
+function Walls({paths, children}: {paths: number[], children: any}){
+    return <div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1}}>{children}
         {paths[0]==1?<div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '5px', backgroundColor: 'black', zIndex: 1}}></div>:null}
         {paths[1]==1?<div style={{position: 'absolute', top: 0, right: 0, width: '5px', height: '100%', backgroundColor: 'black', zIndex: 1}}></div>:null}
         {paths[2]==1?<div style={{position: 'absolute', bottom: 0, right: 0, width: '100%', height: '5px', backgroundColor: 'black', zIndex: 1}}></div>:null}
@@ -242,17 +243,7 @@ function useItem(I, setI, item){
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = context.query
     const ip = await requestIp.getClientIp(context.req)
-    const eventsList: EventData[] = [
-        {name: 'nothing', description: 'nothing happens'},
-        {name: 'nothing', description: 'nothing happens'},
-        {name: 'nothing', description: 'nothing happens'},
-        {name: 'nothing', description: 'nothing happens'},
-        {name: 'item', description: 'you have discovered an item. click your location to pick it up'},
-        {name: 'bright idea', description: 'a wild hair has apeared up yours'},
-        {name: 'ambush', description: 'a wild wildabeast has apeared'},
-        {name: 'ambush', description: 'a tame guard dog has apeared'},
-        {name: 'trip', description: 'you ate some bad shooms bro'},
-    ]
+    const events = eventsList
     const map: MapData = {
         name: 'tree',
         description: 'Tree of Life',
@@ -262,5 +253,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         regions: treeOfLifeRegionMap,
         activeRegion: treeOfLifeRegionMap[0][0][0]
     }
-    return {props: {ip: ip, M: map, E: eventsList}} 
+    return {props: {ip: ip, M: map, E: events}} 
 }

@@ -47,7 +47,7 @@ export default function UserLogin({ip, homepage}) {
     }
     
     useEffect(() => { 
-      if(user)router.push({pathname: '/'+homepage+'/'+user.username, query: {
+      if(user)router.push({pathname: '/'+homepage/*+'/'+user.username*/, query: {
         username: user.username, email: user.email, access: user.access, message: user.message
       }}
     )},[user])

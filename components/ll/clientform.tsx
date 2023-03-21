@@ -8,7 +8,18 @@ const style = {
         border: 'solid 1px rgba(0, 0, 0)'
     },
 }
-
+type userProps = {
+    clientname: string,
+    email: string,
+    street1: string,
+    street2: string,
+    city: string,
+    state: string,
+    statecode: string,
+    zip: string,
+    updated: boolean,
+    message: string
+}
 export default function ClientForm(){
     const [clientname, setClientName] = useState('')
     const [email, setEmail] = useState('')
@@ -122,7 +133,8 @@ export default function ClientForm(){
     <DisplayClient cliN={clientname} E={email} S1={street1} S2={street2} C={city} S={state} SC={statecode} Z={zip} U={update} setUpdate={setUpdate} setClient={setClient}/>
     </Container>
   }
-  export function DisplayClient({cliN, E, S1, S2, C, S, SC, Z, U, setUpdate, setClient}) {
+  export function DisplayClient(props) {
+    const {cliN, E, S1, S2, C, S, SC, Z, U, setUpdate, setClient} = props
     const { data, error } = useSWR('../api/database/updateclientdetails?clientname='+cliN+'&email='+E+'&street1='+S1+'&street2='+S2+'&city='+C+'&state='+S+'&statecode='+SC+'&zip='+(Z?Z:'00000')+'&update='+U, { revalidateOnFocus: false })
     if (error) return <div style={{visibility: 'visible', position: 'absolute'}}>{JSON.stringify(error)}:Client not loaded.</div>
     if (!data) return <div>loading...</div>
@@ -146,11 +158,11 @@ export default function ClientForm(){
   }
   export function DisplayClientByName({cliN}) {
     //const [client, setClient] = useState({})
-    const { data, error } = useSWR('../api/database/updateclientdetails?clientname='+cliN, { revalidateOnFocus: false })
+    const { data, error }: {data?: userProps, error?: any} = useSWR('../api/database/updateclientdetails?clientname='+cliN, { revalidateOnFocus: false })
     if (error) return <div style={{visibility: 'visible', position: 'relative'}}>{JSON.stringify(error)}{cliN}:Client not loaded.</div>
     if (!data) return <div>loading...</div>
     else {
-      let {clientname, email, street1, street2, city, state, statecode, zip, updated, message} = data
+      let {clientname, email, street1, street2, city, state, statecode, zip, updated, message}: userProps = data
       //setClient(data)
       //data.message = 'Welcome back '+data.username+'!'
       return <>{message}<Row>
