@@ -32,6 +32,7 @@ export default function NavIndex({ user, root }) {
     function NavProjects({user}){
         return user&&user.access=='2'?(
             <NavDropdown title="Projects" id="navbarProjectsDropdown">
+                <Nav.Link href="/bridge/nextdragons">Next Dragons</Nav.Link>
                 <Nav.Link href="/grid/index.html">Grid</Nav.Link>
                 <NavDropdown.Divider />
                 <Nav.Link href="/sandbox/wasd" disabled>Sandbox: wasd</Nav.Link>
