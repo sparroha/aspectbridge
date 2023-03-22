@@ -4,7 +4,8 @@ import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
-import { EventData, eventsList, fallEvent, GameData, MapData, Player, Position, Region, treeOfLifeRegionMap } from "../../public/bridge/dragons/tileTypes";
+import { enterEvent, EventData, eventsList, exitEvent, fallEvent, GameData, MapData, Player, Position, Region, treeOfLifeRegionMap } from "../../public/bridge/dragons/tileTypes";
+import { mapValues } from "xstate/lib/utils";
 
 export const portcontrol = {
     fontSize: '10px',
@@ -46,9 +47,9 @@ export const wall = {
     }
 }
 
-export default function NetDragons({ip, M, E}: {ip: string, M: MapData, E: EventData[]}){
+export default function NetDragons({ip, M, E}: {ip: string, M: MapData[], E: EventData[]}){
     const [user, setUser] = useState(null)
-    const startPosition: Position = {x: 0, y: 0, z: 0, pixel:{x: 0, y: 0}}
+    const startPosition: Position = {x: 1, y: 1, z: 0, pixel:{x: 0, y: 0}}
     const [playerPosition, setPlayerPosition] = useState(startPosition)
     const player: Player = {name: user?.username, access: user?.access, position: playerPosition}
     const game: GameData = useGame(M, 0, playerPosition, setPlayerPosition, E, player)
@@ -88,11 +89,11 @@ function MapSettings({game}: {game: GameData}){
                 <><option key={3} value={3}>3</option>
                 <option key={4} value={4}>4</option></>
             ):(null)}
-        </select>
+        </select> 
         <Form id={'teleport'} style={portcontrol} onSubmit={(event) => {event.preventDefault();
-                if(typeof game.regions[z] === 'undefined') return;
-                if(typeof game.regions[z][x] === 'undefined') return;
-                if(typeof game.regions[z][x][y] === 'undefined'/*|| !game.regions[z][x][y].isValid*/) return;
+                if(typeof game.activeMap.regions[z] === 'undefined') return;
+                if(typeof game.activeMap.regions[z][x] === 'undefined') return;
+                if(typeof game.activeMap.regions[z][x][y] === 'undefined'/*|| !game.regions[z][x][y].isValid*/) return;
                 game.setPosition({x: x, y: y, z: z})
             }} >
             <Form.Group style={portcontrol} controlId="formEmail">
@@ -113,43 +114,43 @@ export function Controls({game}: {game: GameData}){
         <Row>
             <Col xs={4}>
                 <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
-                    if(typeof game.regions[pP.z-1] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z-1][pP.x] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z-1][pP.x][pP.y] === 'undefined') return pP;
-                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.regions[pP.z][pP.x][pP.y].paths[5])?-1:0)}})}}>Down</Button>
+                    if(typeof game.activeMap.regions[pP.z-1] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z-1][pP.x] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z-1][pP.x][pP.y] === 'undefined') return pP;
+                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[5])?-1:0)}})}}>Down</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
-                    if(typeof game.regions[pP.z] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z][pP.x-1] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z][pP.x-1][pP.y] === 'undefined') return pP;
-                    return {x: pP.x+(!(game.regions[pP.z][pP.x][pP.y].paths[0])?-1:0), y: pP.y, z: pP.z}})}}>North</Button>
+                    if(typeof game.activeMap.regions[pP.z] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z][pP.x-1] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z][pP.x-1][pP.y] === 'undefined') return pP;
+                    return {x: pP.x+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[0])?-1:0), y: pP.y, z: pP.z}})}}>North</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
-                    if(typeof game.regions[pP.z+1] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z+1][pP.x] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z+1][pP.x][pP.y] === 'undefined') return pP;
-                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.regions[pP.z][pP.x][pP.y].paths[4])?1:0)}})}}>Up</Button>
+                    if(typeof game.activeMap.regions[pP.z+1] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z+1][pP.x] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z+1][pP.x][pP.y] === 'undefined') return pP;
+                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[4])?1:0)}})}}>Up</Button>
             </Col>
         </Row>
         <Row>
             <Col xs={4}>
                 <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
-                    if(typeof game.regions[pP.z] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z][pP.x] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z][pP.x][pP.y-1] === 'undefined') return pP;
-                    return {x: pP.x, y: pP.y+(!(game.regions[pP.z][pP.x][pP.y].paths[3])?-1:0), z: pP.z}})}}>West</Button>
+                    if(typeof game.activeMap.regions[pP.z] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z][pP.x] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z][pP.x][pP.y-1] === 'undefined') return pP;
+                    return {x: pP.x, y: pP.y+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[3])?-1:0), z: pP.z}})}}>West</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control}>Enter</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
-                    if(typeof game.regions[pP.z] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z][pP.x] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z][pP.x][pP.y+1] === 'undefined') return pP;
-                    return {x: pP.x, y: pP.y+(!(game.regions[pP.z][pP.x][pP.y].paths[1])?1:0), z: pP.z}})}}>East</Button>
+                    if(typeof game.activeMap.regions[pP.z] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z][pP.x] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z][pP.x][pP.y+1] === 'undefined') return pP;
+                    return {x: pP.x, y: pP.y+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[1])?1:0), z: pP.z}})}}>East</Button>
             </Col>
         </Row>
         <Row>
@@ -158,10 +159,10 @@ export function Controls({game}: {game: GameData}){
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
-                    if(typeof game.regions[pP.z] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z][pP.x+1] === 'undefined') return pP;
-                    if(typeof game.regions[pP.z][pP.x+1][pP.y] === 'undefined') return pP;
-                    return {x: pP.x+(!(game.regions[pP.z][pP.x][pP.y].paths[2])?1:0), y: pP.y, z: pP.z}})}}>South</Button>
+                    if(typeof game.activeMap.regions[pP.z] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z][pP.x+1] === 'undefined') return pP;
+                    if(typeof game.activeMap.regions[pP.z][pP.x+1][pP.y] === 'undefined') return pP;
+                    return {x: pP.x+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[2])?1:0), y: pP.y, z: pP.z}})}}>South</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control}>Fight</Button>
@@ -173,10 +174,17 @@ export function Controls({game}: {game: GameData}){
 export function MapFollow({game}: {game: GameData}){
     useEffect(()=>{
         game.setEventIndex(Math.floor(Math.random()*game.events.length))
-        return game.regions[game.position.z][game.position.x][game.position.y].events?.forEach((event)=>{
+        return game.activeMap.regions[game.position.z][game.position.x][game.position.y].events?.forEach((event)=>{
             switch(event.init){
                 case 'fall':
                     fallEvent(game)
+                    break;
+                case 'enter':
+                    enterEvent(game)
+                    break;
+                case 'exit':
+                    exitEvent(game)
+                    break;
                 case 'fight':
                     game.setEventIndex(Math.floor(Math.random()*game.events.length))
                     break;
@@ -199,7 +207,7 @@ export function MapFollow({game}: {game: GameData}){
         })
     },[game.position])
     return <div className={'net-dragons-map'}>Event:{'\['}{game.events[game.eventIndex].name}{': '}{game.events[game.eventIndex].description}{'\]'}
-        {game.regions?.map((row, i) => (game.position.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
+        {game.activeMap.regions?.map((row, i) => (game.position.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
             {row.map((col, j) => (j>=(game.position.x-game.viewDistance))&&(j<=(game.position.x+game.viewDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
                 {col.map((cell, k) => ((k>=game.position.y-game.viewDistance)&&(k<=game.position.y+game.viewDistance))?
                 <div key={k} style={{float: 'left', position: 'relative', ...square}}>
@@ -212,18 +220,23 @@ export function MapFollow({game}: {game: GameData}){
         </Col></Row>:null)}
     </div>
 }
-function useGame(map: MapData, activeMapIndex: 0, pP: Position, sPP: Function, events: EventData[], player: Player): GameData{
+function useGame(maps: MapData[], activeMapIndex: number, pP: Position, sPP: Function, events: EventData[], player: Player): GameData{
     //const mapList = maps
-    //const [activeMap, setActiveMap] = useState(mapList[activeMapIndex])
-    const [regionMap, setRegionMap] = useState(map.regions)
+    const [activeMap, setActiveMap] = useState(maps[activeMapIndex])
+    const [previousMap, setPreviousMap] = useState(activeMap)
+    const [previousMapPos, setPreviousMapPos] = useState(pP)
     const [viewDistance, setViewDistance] = useState(2)
     const [eventIndex, setEventIndex] = useState(0)
     const game: GameData = {
         name: 'placeholder',
         description: 'placeholder',
         background: 'placeholder.png',
-        regions: regionMap,
-        activeRegion: pP,
+        previousMap: previousMap,
+        setPreviousMap: setPreviousMap,
+        previousMapPos: previousMapPos,
+        setPreviousMapPos: setPreviousMapPos,
+        activeMap: activeMap,
+        setActiveMap: setActiveMap,
         events: events,
         eventIndex: eventIndex,
         setEventIndex: setEventIndex,
@@ -281,7 +294,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         viewDistance: 2,
         setViewDistance: null,
         regions: treeOfLifeRegionMap,
-        activeRegion: treeOfLifeRegionMap[0][0][0]
     }
-    return {props: {ip: ip, M: map, E: events}} 
+    return {props: {ip: ip, M: [map,map], E: events}} 
 }

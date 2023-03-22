@@ -1,3 +1,5 @@
+import { getMap, reagionLibrary } from "./tiles"
+
 export type Item = {
     name: string,
     description: string,
@@ -48,6 +50,7 @@ export type Region = {
     monsters?: any[],//list of monsters that may apear in this region
     events?: any[],//list of events that may apear in this region
     destination?: Position,
+    destinationMap?: string,
 }
 export type MapData = {
     name?: string,
@@ -55,8 +58,7 @@ export type MapData = {
     background?: string,
     viewDistance: number,
     setViewDistance: Function,
-    regions: Region[][][],
-    activeRegion: Region
+    regions: Region[][][]
 }
 export type EventData = {
     name: string,
@@ -77,8 +79,12 @@ export type GameData = {
     name?: string,
     description?: string,
     background?: string,
-    regions: Region[][][],
-    activeRegion: Position,
+    previousMap?: MapData,
+    setPreviousMap?: Function,
+    previousMapPos?: Position,
+    setPreviousMapPos?: Function,
+    activeMap: MapData,
+    setActiveMap: Function,
     events: EventData[],
     eventIndex: number,
     setEventIndex: Function,
@@ -88,12 +94,9 @@ export type GameData = {
     setPosition: Function,
 }
 //events.ts
+export const exitEvent = (game: GameData)=>{game.setActiveMap(game.previousMap);let reg: Region = game.activeMap.regions[game.position.z][game.position.x][game.position.y];game.setPosition(reg.destination || game.previousMapPos/*(pos: Position)=>{return game.activeMap.regions[pos.z][pos.x][pos.y].destination}*/)}
+export const enterEvent = (game: GameData)=>{game.setPreviousMap(game.activeMap);game.setPreviousMapPos(game.position);let reg: Region = game.activeMap.regions[game.position.z][game.position.x][game.position.y];game.setActiveMap(getMap(reg.destinationMap));game.setPosition(reg.destination/*(pos: Position)=>{return game.activeMap.regions[pos.z][pos.x][pos.y].destination}*/)}
 export const fallEvent = (game: GameData)=>{game.setPosition((pos: Position)=>{return {x: pos.x, y: pos.y, z: pos.z+(pos.z>=1?-1:0)}})}
-const fall: EventData = {
-    name: 'fall',
-    description: 'you fell',
-    init: 'fall',
-}
 export const eventsList: EventData[] = [
     {name: 'nothing', description: 'nothing happens'},
     {name: 'nothing', description: 'nothing happens'},
@@ -105,187 +108,53 @@ export const eventsList: EventData[] = [
     {name: 'ambush', description: 'a tame guard dog has apeared'},
     {name: 'trip', description: 'you ate some bad shooms bro'}
 ]
-//tiles.ts
-const treeOfLife: Region = {
-    name: 'Tree of Life',
-    description: 'The Tree of Life is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
-    image: 'tree.png',
-    paths: [],
-    items: [],
-    monsters: [],
-    events: [],
-    destination: {x: 0, y: 0, z: 0}
-}
-const air: Region = {
-    name: 'Air',
-    description: 'gravity takes over',
-    image: 'air.png',
-    paths: [0,0,0,0,0,0],
-    items: [],
-    monsters: [],
-    events: [fall],
-    destination: {x: 0, y: 0, z: 0}
-}
-const branchNS: Region = {
-    name: 'NS Branch',
-    description: 'The Branch is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
-    image: 'branchNS.png',
-    paths: [0,1,0,1,1,1]
-}
-const branchNSE: Region = {
-    name: 'NSE Branch',
-    image: 'branchNSE.png',
-    paths: [0,0,0,1,1,1]
-}
-const branchNSW: Region = {
-    name: 'NSW Branch',
-    image: 'branchNSW.png',
-    paths: [0,1,0,0,1,1]
-}
-const branchNE: Region = {
-    name: 'NE Branch',
-    image: 'branchNE.png',
-    paths: [0,0,1,1,1,1]
-}
-const branchNW: Region = {
-    name: 'NW Branch',
-    image: 'branchNW.png',
-    paths: [0,1,1,0,1,1]
-}
-const branchSE: Region = {
-    name: 'SE Branch',
-    image: 'branchSE.png',
-    paths: [1,0,0,1,1,1]
-}
-const branchWE: Region = {
-    name: 'WE Branch',
-    image: 'branchWE.png',
-    paths: [1,0,1,0,1,1]
-}
-const branchWS: Region = {
-    name: 'WS Branch',
-    image: 'branchWS.png',
-    paths: [1,1,0,0,1,1]
-}
-const branchE: Region = {
-    name: 'E Branch',
-    image: 'branchE.png',
-    paths: [1,0,1,1,1,1]
-}
-const branchW: Region = {
-    name: 'W Branch',
-    image: 'branchW.png',
-    paths: [1,1,1,0,1,1]
-}
-const branchS: Region = {
-    name: 'S Branch',
-    image: 'branchS.png',
-    paths: [1,1,0,1,1,1]
-}
-const branchN: Region = {
-    name: 'N Branch',
-    image: 'branchN.png',
-    paths: [0,1,1,1,1,1]
-}
-const branchV: Region = {
-    name: 'Vertical Branch',
-    paths: [0,0,0,0,1,1]
-}
-const vineUp: Region = {
-    name: 'Vine Up',
-    paths: [1,1,0,1,0,1]
-}
-const vineDown: Region = {
-    name: 'Vine Down',
-    paths: [1,1,0,1,1,0]
-}
-const vineUpDown: Region = {
-    name: 'Vine Up and Down',
-    paths: [1,1,0,1,0,0]
-}
-const reagionLibrary = {
-    air: air,
-    treeOfLife: treeOfLife,
-    branchNS: branchNS,
-    branchNSE: branchNSE,
-    branchNSW: branchNSW,
-    branchNE: branchNE,
-    branchNW: branchNW,
-    branchSE: branchSE,
-    branchWE: branchWE,
-    branchWS: branchWS,
-    branchE: branchE,
-    branchW: branchW,
-    branchV: branchV,
-    branchS: branchS,
-    branchN: branchN,
-    vineUp: vineUp,
-    vineDown: vineDown,
-    vineUpDown: vineUpDown,
-}
+
 const rl = reagionLibrary;
+type Floor = Region[][];
+const treeTrunk: Floor = [
+    [rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air],
+    [rl.air, rl.air, rl.air, rl.air, {paths: [0,0,1,0,1,1], events: []}, rl.air, rl.air, rl.air],
+    [rl.air, rl.air, {paths: [0,1,0,0,1,1], events: []}, {paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], events: []}, rl.air],
+    [rl.air, rl.air, rl.air, {paths: [0,1,0,1,1,1]}, rl.vineUpDown, {paths: [0,1,0,1,1,1]}, rl.air, rl.air],
+    [rl.air, rl.air, {paths: [0,1,0,0,1,1], events: []}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], events: [rl.events.fall]}, rl.air],
+    [rl.air, rl.air, rl.air, {paths: [1,0,0,0,1,1], events: []}, rl.air, {paths: [1,0,0,0,1,1], events: []}, {paths: [0,0,0,0,1,1], events: []}, rl.air],
+    [rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air],
+    [rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air],
+]
 export const treeOfLifeRegionMap: Region[][][] = [
     [
-        [{paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [1,1,0,0,1,1]}],
-        [{paths: [0,1,0,1,1,1]}, rl.branchS, {paths: [0,1,1,1,1,1]}, rl.branchS, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,0,0,1,1]}],
-        [{paths: [0,1,0,1,1,1]}, rl.branchNE, {paths: [1,0,0,0,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [1,0,0,0,1,1]}, rl.branchW, {paths: [0,1,0,1,1,1]}],
-        [{paths: [0,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [0,1,0,0,1,1]}, rl.vineUp, {paths: [0,0,0,1,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [0,1,0,0,1,1]}],
-        [{paths: [0,1,0,1,1,1]}, rl.branchE, {paths: [0,0,0,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [0,1,0,0,1,1]}, {paths: [0,0,1,1,1,1]}, {paths: [0,1,0,0,1,1]}],
-        [{paths: [0,0,0,1,1,1]}, {paths: [1,1,0,0,1,1]}, rl.branchN, {paths: [0,1,0,1,1,1]}, rl.branchNE, rl.branchW, {paths: [0,1,0,1,1,1]}],
-        [{paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}],
+        [rl.exitWorldTree, {paths: [1,0,0,0,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [1,1,0,0,1,1]}],
+        [rl.exitWorldTree, {paths: [0,1,0,0,1,1]}, rl.branchS, {paths: [0,1,1,1,1,1]}, rl.branchS, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,0,0,1,1]}],
+        [rl.exitWorldTree, {paths: [0,1,0,0,1,1]}, rl.branchNE, {paths: [1,0,0,0,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [1,0,0,0,1,1]}, rl.branchW, {paths: [0,1,0,1,1,1]}],
+        [rl.exitWorldTree, {paths: [0,0,0,0,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [0,1,0,0,1,1]}, rl.treeOfLifeEntrance, {paths: [0,0,0,1,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [0,1,0,0,1,1]}],
+        [rl.exitWorldTree, {paths: [0,1,0,0,1,1]}, rl.branchE, {paths: [0,0,0,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [0,1,0,0,1,1]}, {paths: [0,0,1,1,1,1]}, {paths: [0,1,0,0,1,1]}],
+        [rl.exitWorldTree, {paths: [0,0,0,0,1,1]}, {paths: [1,1,0,0,1,1]}, rl.branchN, {paths: [0,1,0,1,1,1]}, rl.branchNE, rl.branchW, {paths: [0,1,0,1,1,1]}],
+        [rl.exitWorldTree, {paths: [0,0,0,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [1,0,0,0,1,1]}, {paths: [0,1,0,0,1,1]}],
+        [rl.exitWorldTree, rl.exitWorldTree, rl.exitWorldTree, rl.exitWorldTree, rl.exitWorldTree, rl.exitWorldTree, rl.exitWorldTree, rl.exitWorldTree],
     ],
+    treeTrunk,
+    treeTrunk,
+    treeTrunk,
+    treeTrunk,
+    treeTrunk,
     [
-        [air, air, air, air, air, air, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: []}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: []}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: []}, {paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], events: []}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,1,0,1,1,1]}, rl.vineUpDown, {paths: [0,1,0,1,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: []}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: []}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: []}, {paths: [0,0,0,0,1,1], events: []}, air],
-        [air, air, air, air, air, air, air],
-    ],
-    [
-        [air, air, air, air, air, air, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,1,0,1,1,1]}, rl.vineUpDown, {paths: [0,1,0,1,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [air, air, air, air, air, air, air],
-    ],
-    [
-        [air, air, air, air, air, air, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,1,0,1,1,1]}, rl.vineUpDown, {paths: [0,1,0,1,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [air, air, air, air, air, air, air],
-    ],
-    [
-        [air, air, air, air, air, air, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,1,0,1,1,1]}, rl.vineUpDown, {paths: [0,1,0,1,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [air, air, air, air, air, air, air],
-    ],
-    [
-        [air, air, air, air, air, air, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,1,0,1,1,1]}, rl.vineUpDown, {paths: [0,1,0,1,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [{paths: [0,0,0,1,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [air, air, air, air, air, air, air],
-    ],
-    [
-        [rl.branchE, rl.branchWS, rl.air, rl.branchSE, rl.branchW, rl.air, rl.branchS],
-        [rl.air, rl.branchNS, rl.air, rl.branchNS, rl.air, rl.air, rl.branchNS],
-        [rl.air, rl.branchNE, {paths: [1,0,0,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [1,0,0,0,1,1]}, rl.branchWE, rl.branchNW],
-        [rl.air, rl.air, {paths: [0,0,0,0,1,1]}, rl.vineDown, {paths: [0,0,0,0,1,1]}, rl.air, rl.air],
-        [rl.branchSE, rl.branchWE, {paths: [0,0,1,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [0,1,0,0,1,1]}, rl.air, rl.branchS],
-        [rl.branchNS, rl.air, rl.air, rl.air, rl.branchNSE, rl.branchWE, rl.branchNSW],
-        [rl.branchNE, rl.branchW, air, rl.branchE, rl.branchNW, air, rl.branchN],
+        [rl.air, rl.branchE, rl.branchWS, rl.air, rl.branchSE, rl.branchW, rl.air, rl.branchS],
+        [rl.air, rl.air, rl.branchNS, rl.air, rl.branchNS, rl.air, rl.air, rl.branchNS],
+        [rl.air, rl.air, rl.branchNE, {paths: [1,0,0,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [1,0,0,0,1,1]}, rl.branchWE, rl.branchNW],
+        [rl.air, rl.air, rl.air, {paths: [0,0,0,0,1,1]}, rl.vineDown, {paths: [0,0,0,0,1,1]}, rl.air, rl.air],
+        [rl.air, rl.branchSE, rl.branchWE, {paths: [0,0,1,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [0,1,0,0,1,1]}, rl.air, rl.branchS],
+        [rl.air, rl.branchNS, rl.air, rl.air, rl.air, rl.branchNSE, rl.branchWE, rl.branchNSW],
+        [rl.air, rl.branchNE, rl.branchW, rl.air, rl.branchE, rl.branchNW, rl.air, rl.branchN],
+        [rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air],
     ],
 ]
+
+
+export const treeOfLife: MapData = {
+    name: 'tree',
+    description: 'Tree of Life',
+    background: 'tree.png',
+    viewDistance: 2,
+    setViewDistance: null,
+    regions: treeOfLifeRegionMap,
+}
