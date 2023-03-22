@@ -69,9 +69,11 @@ export type Player = {
     name?: string,
     description?: string,
     image?: string,
-    position: Position,
+    access?: number,
+    position?: Position,
 }
 export type GameData = {
+    user?: Player,
     name?: string,
     description?: string,
     background?: string,
@@ -130,15 +132,40 @@ const branchNS: Region = {
     image: 'branchNS.png',
     paths: [0,1,0,1,1,1]
 }
+const branchNSE: Region = {
+    name: 'NSE Branch',
+    image: 'branchNSE.png',
+    paths: [0,0,0,1,1,1]
+}
+const branchNSW: Region = {
+    name: 'NSW Branch',
+    image: 'branchNSW.png',
+    paths: [0,1,0,0,1,1]
+}
 const branchNE: Region = {
     name: 'NE Branch',
     image: 'branchNE.png',
     paths: [0,0,1,1,1,1]
 }
+const branchNW: Region = {
+    name: 'NW Branch',
+    image: 'branchNW.png',
+    paths: [0,1,1,0,1,1]
+}
+const branchSE: Region = {
+    name: 'SE Branch',
+    image: 'branchSE.png',
+    paths: [1,0,0,1,1,1]
+}
 const branchWE: Region = {
     name: 'WE Branch',
     image: 'branchWE.png',
     paths: [1,0,1,0,1,1]
+}
+const branchWS: Region = {
+    name: 'WS Branch',
+    image: 'branchWS.png',
+    paths: [1,1,0,0,1,1]
 }
 const branchE: Region = {
     name: 'E Branch',
@@ -180,8 +207,13 @@ const reagionLibrary = {
     air: air,
     treeOfLife: treeOfLife,
     branchNS: branchNS,
+    branchNSE: branchNSE,
+    branchNSW: branchNSW,
     branchNE: branchNE,
+    branchNW: branchNW,
+    branchSE: branchSE,
     branchWE: branchWE,
+    branchWS: branchWS,
     branchE: branchE,
     branchW: branchW,
     branchV: branchV,
@@ -248,12 +280,12 @@ export const treeOfLifeRegionMap: Region[][][] = [
         [air, air, air, air, air, air, air],
     ],
     [
-        [air, air, air, air, air, air, air],
-        [air, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [0,0,1,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [air, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [1,0,0,1,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [air, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1]}, rl.vineDown, {paths: [0,0,0,0,1,1]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [air, {paths: [0,1,0,0,1,1], events: [fall]}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], events: [fall]}, air],
-        [air, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, {paths: [1,0,0,0,1,1], events: [fall]}, {paths: [0,0,0,0,1,1], events: [fall]}, air],
-        [air, air, air, air, air, air, air],
+        [rl.branchE, rl.branchWS, rl.air, rl.branchSE, rl.branchW, rl.air, rl.branchS],
+        [rl.air, rl.branchNS, rl.air, rl.branchNS, rl.air, rl.air, rl.branchNS],
+        [rl.air, rl.branchNE, {paths: [1,0,0,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [1,0,0,0,1,1]}, rl.branchWE, rl.branchNW],
+        [rl.air, rl.air, {paths: [0,0,0,0,1,1]}, rl.vineDown, {paths: [0,0,0,0,1,1]}, rl.air, rl.air],
+        [rl.branchSE, rl.branchWE, {paths: [0,0,1,0,1,1]}, {paths: [0,0,0,0,1,1]}, {paths: [0,1,0,0,1,1]}, rl.air, rl.branchS],
+        [rl.branchNS, rl.air, rl.air, rl.air, rl.branchNSE, rl.branchWE, rl.branchNSW],
+        [rl.branchNE, rl.branchW, air, rl.branchE, rl.branchNW, air, rl.branchN],
     ],
 ]

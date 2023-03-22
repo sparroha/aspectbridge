@@ -4,7 +4,7 @@ import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
-import { EventData, eventsList, fallEvent, GameData, MapData, Position, Region, treeOfLifeRegionMap } from "../../public/bridge/dragons/tileTypes";
+import { EventData, eventsList, fallEvent, GameData, MapData, Player, Position, Region, treeOfLifeRegionMap } from "../../public/bridge/dragons/tileTypes";
 
 export const portcontrol = {
     fontSize: '10px',
@@ -50,7 +50,8 @@ export default function NetDragons({ip, M, E}: {ip: string, M: MapData, E: Event
     const [user, setUser] = useState(null)
     const startPosition: Position = {x: 0, y: 0, z: 0, pixel:{x: 0, y: 0}}
     const [playerPosition, setPlayerPosition] = useState(startPosition)
-    const game: GameData = useGame(M, 0, playerPosition, setPlayerPosition, E)
+    const player: Player = {name: user?.username, access: user?.access, position: playerPosition}
+    const game: GameData = useGame(M, 0, playerPosition, setPlayerPosition, E, player)
     const inventory = useInventory({inventory: ['']})
     return <div className={'net-dragons'}>
         <Nav><h3>Next Dragons</h3><Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+'bridge/nextdragons'+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}</Nav>
@@ -83,6 +84,10 @@ function MapSettings({game}: {game: GameData}){
             <option key={0} value={0}>0</option>
             <option key={1} value={1}>1</option>
             <option key={2} value={2}>2</option>
+            {game.user.access==2?(
+                <><option key={3} value={3}>3</option>
+                <option key={4} value={4}>4</option></>
+            ):(null)}
         </select>
         <Form id={'teleport'} style={portcontrol} onSubmit={(event) => {event.preventDefault();
                 if(typeof game.regions[z] === 'undefined') return;
@@ -207,7 +212,7 @@ export function MapFollow({game}: {game: GameData}){
         </Col></Row>:null)}
     </div>
 }
-function useGame(map: MapData, activeMapIndex: 0, pP: Position, sPP: Function, events: EventData[]): GameData{
+function useGame(map: MapData, activeMapIndex: 0, pP: Position, sPP: Function, events: EventData[], player: Player): GameData{
     //const mapList = maps
     //const [activeMap, setActiveMap] = useState(mapList[activeMapIndex])
     const [regionMap, setRegionMap] = useState(map.regions)
@@ -224,6 +229,7 @@ function useGame(map: MapData, activeMapIndex: 0, pP: Position, sPP: Function, e
         setEventIndex: setEventIndex,
         viewDistance: viewDistance,
         setViewDistance: setViewDistance,
+        user: player,
         position: pP,
         setPosition: sPP,
     }
