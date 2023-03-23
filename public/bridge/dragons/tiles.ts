@@ -9,7 +9,7 @@ const enter: EventData = {
 const treeOfLifeEntrance: Region = {
     name: 'Tree of Life',
     description: 'The Tree of Life is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
-    image: 'tree.png',
+    image: '../../bridge/dragons/assets/tree.png',
     paths: [1,1,1,1,0,1],
     items: [],
     monsters: [],

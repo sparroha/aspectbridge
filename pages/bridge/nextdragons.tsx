@@ -22,8 +22,20 @@ export const control = {
     text: 'center',
     zIndex: '10'
 }
+export const background = {
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+}
 export const square = {
     fontSize: '12px',
+    width: '64px',
+    height: '64px',
+    margin: '0px',
+    padding: '0px',
+    text: 'center'
+}
+export const regionButton = {
+    fontSize: '10px',
     width: '64px',
     height: '64px',
     margin: '0px',
@@ -212,7 +224,19 @@ export function MapFollow({game}: {game: GameData}){
                 {col.map((cell, k) => ((k>=game.position.y-game.viewDistance)&&(k<=game.position.y+game.viewDistance))?
                 <div key={k} style={{float: 'left', position: 'relative', ...square}}>
                     <Walls paths={cell.paths}>
-                        <Button variant={'primary'} style={square} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)}>{cell.name} {1+k+j*col.length}:<br/>{(1+k)+'\/'+(1+j)}<br/>{game.position.x==j&&game.position.y==k?cell.name:''}</Button>
+                        <Button variant={'primary'} style={{...regionButton, ...background, position: 'relative', backgroundImage: `url(${cell.image})`}} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)}>
+                            <Row height={'33vh'}>
+                                <Col xs={12}>{cell.name}</Col>
+                            </Row>
+                            <Row height={'33vh'}>
+                                <Col xs={12}>{game.position.x==j&&game.position.y==k?cell.description:''}</Col>
+                            </Row>
+                            <Row height={'33vh'}>
+                                <Col xs={4}>{1+k+j*col.length}</Col>
+                                <Col xs={4}></Col>
+                                <Col xs={4}>{(1+k)+'\/'+(1+j)}</Col>
+                            </Row>
+                        </Button>
                     </Walls>
                 </div>:
                 null)}
