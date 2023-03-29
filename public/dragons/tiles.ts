@@ -1,13 +1,12 @@
-import { EventData } from "../../../pages/bridge/dragons/components/event"
-import { RegionData } from "../../../pages/bridge/dragons/components/region"
+import { EventData } from "../../pages/dragons/components/event"
+import { RegionData } from "../../pages/dragons/components/region"
 
-//tiles.ts
 const enter: EventData = {
     name: 'enter',
     description: 'you enter this region',
     init: 'enter',
 }
-const treeOfLifeEntrance: RegionData = {
+const treeOfLifeEntrance: RegionData  = {
     name: 'Tree of Life',
     description: 'The Tree of Life is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
     image: '../../bridge/dragons/assets/tree.png',
@@ -135,7 +134,7 @@ const vineUpDown: RegionData = {
     name: 'Vine Up and Down',
     paths: [1,1,0,1,0,0]
 }
-export const reagionLibrary = {
+export const regionLibrary = {
     events: {
         enter: enter,
         fall: fall,

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
-import { reagionLibrary } from "../../../../public/bridge/dragons/tiles";
-import { GameData } from "../../../../public/bridge/dragons/tileTypes";
+import { regionLibrary } from "../../../public/dragons/tiles";
+import { GameData } from "../../../public/dragons/tileTypes";
 import { enterEvent, exitEvent, fallEvent } from "./event";
 import Region, { RegionData } from "./region";
 
@@ -60,7 +60,7 @@ export default function MapFollow({game}: {game: GameData}){
     </div>
 }
 
-const rl = reagionLibrary;
+const rl = regionLibrary;
 type Floor = RegionData[][];
 const treeTrunk: Floor = [
     [rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air],

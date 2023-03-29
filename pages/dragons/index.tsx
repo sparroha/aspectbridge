@@ -4,12 +4,12 @@ import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import useLog from "../../components/conlog";
 import { ProfileByIp } from "../login/[userlogin]";
-import { GameData, Player, Position } from "../../public/bridge/dragons/tileTypes";
-import { EventData, eventsList } from "./dragons/components/event";
-import Inventory, { useInventory } from "./dragons/components/inventory";
-import MapSettings from "./dragons/mapsettings";
-import Controls from "./dragons/controls";
-import MapFollow, { getMap, MapData } from "./dragons/components/worldmap";
+import { GameData, Player, Position } from "../../public/dragons/tileTypes";
+import Inventory, { useInventory } from "./components/inventory";
+import MapSettings from "./mapsettings";
+import Controls from "./controls";
+import MapFollow, { getMap, MapData } from "./components/worldmap";
+import { EventData, eventsList } from "./components/event";
 
 export default function NetDragons({ip, M, E}: {ip: string, M: MapData[], E: EventData[]}){
     const [user, setUser] = useState(null)
