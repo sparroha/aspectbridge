@@ -1,5 +1,5 @@
 import { Button, Col, Row } from "react-bootstrap";
-import { GameData, Position } from "../../../../public/bridge/dragons/tileTypes";
+import { GameData, Position } from "../../../public/dragons/tileTypes";
 import { RegionData } from "./region";
 import { getMap } from "./worldmap";
 

@@ -1,5 +1,5 @@
 import { Button, Col, Row } from "react-bootstrap"
-import { Position } from "../../../../public/bridge/dragons/tileTypes"
+import { Position } from "../../../public/dragons/tileTypes"
 
 const background = {
     backgroundSize: 'cover',
