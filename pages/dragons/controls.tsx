@@ -1,5 +1,5 @@
 import { Button, Col, Row } from "react-bootstrap";
-import { GameData } from "../../../public/bridge/dragons/tileTypes";
+import { GameData } from "../../public/dragons/tileTypes";
 
 export const control = {
     fontSize: '10px',
