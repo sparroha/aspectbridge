@@ -1,5 +1,5 @@
 import sql from "../../../lib/,base/sql"
-import { Position } from "../../../public/dragons/tileTypes"
+import { Position } from "../../../public/dragons/tileTypes"//?
 export type Region = {
     id?: number,
     name: string,
