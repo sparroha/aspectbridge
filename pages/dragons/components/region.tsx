@@ -34,9 +34,9 @@ export type RegionData = {
     destination?: Position,
     destinationMap?: string,
 }
-export default function Region({key, region, disabled}: {key: number, region: RegionData, disabled: boolean}){
+export default function Region({indexkey, region, disabled}: {indexkey: number, region: RegionData, disabled: boolean}){
     if(!region) return <></>
-        return <div key={key} style={{float: 'left', position: 'relative', ...square}}>
+        return <div key={indexkey} style={{float: 'left', position: 'relative', ...square}}>
             <Button style={{...regionButton, ...background, position: 'relative', backgroundImage: `url(${region.image})`}} disabled={disabled}>
                 <Walls paths={region.paths}>
                     <Row height={'33vh'}>
