@@ -9,6 +9,7 @@ export const portcontrol = {
     text: 'center',
 }
 export default function MapSettings({game}: {game: GameData}){
+    if(!game) return <></>
     const [x, setX] = useState(0)
     const [y, setY] = useState(0)
     const [z, setZ] = useState(0)
