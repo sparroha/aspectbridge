@@ -20,7 +20,7 @@ export default function MapSettings({game}: {game: GameData}){
             <option key={0} value={0}>0</option>
             <option key={1} value={1}>1</option>
             <option key={2} value={2}>2</option>
-            {game.user.access==2?(
+            {/*game.user.access*/2==2?(
                 <><option key={3} value={3}>3</option>
                 <option key={4} value={4}>4</option></>
             ):(null)}

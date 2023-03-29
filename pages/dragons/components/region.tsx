@@ -47,18 +47,18 @@ export default function Region({indexkey, region, disabled}: {indexkey: number, 
             <Button style={{...regionButton, ...background, position: 'relative', backgroundImage: `url(${region.image})`}} disabled={disabled}>
                 <Walls paths={region.paths}>
                     <Row height={'33vh'}>
-                        <Col xs={4} style={collomn}>{region.paths[5]==0?'\u2BB6':'-'}</Col>
-                        <Col xs={4} style={collomn}>{region.paths[0]==0?'\u23F6':'-'}</Col>
-                        <Col xs={4} style={collomn}>{region.paths[4]==0?'\u2BB5':'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[5]==0?'\u2935'/*DOWN*/:'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[0]==0?'\u2B06'/*NORTH*/:'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[4]==0?'\u2934'/*UP*/:'-'}</Col>
                     </Row>
                     <Row height={'33vh'}>
-                        <Col xs={4} style={collomn}>{region.paths[3]==0?'\u23F4':'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[3]==0?'\u2B05'/*WEST*/:'-'}</Col>
                         <Col xs={4} style={{...collomn, fontSize: '5px'}}>{region.name}</Col>
-                        <Col xs={4} style={collomn}>{region.paths[1]==0?'\u23F5':'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[1]==0?'\u27A1'/*EAST*/:'-'}</Col>
                     </Row>
                     <Row height={'33vh'}>
                         <Col xs={4} style={collomn}>{0==0?'-':'-'}</Col>
-                        <Col xs={4} style={collomn}>{region.paths[2]==0?'\u23F7':'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[2]==0?'\u2B07'/*SOUTH*/:'-'}</Col>
                         <Col xs={4} style={collomn}>{0==0?'-':'-'}</Col>
                     </Row>
                 </Walls>
