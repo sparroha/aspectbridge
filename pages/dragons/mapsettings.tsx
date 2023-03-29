@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { GameData } from "../../../public/bridge/dragons/tileTypes";
+import { GameData } from "../../public/dragons/tileTypes";
 
 export const portcontrol = {
     fontSize: '10px',
