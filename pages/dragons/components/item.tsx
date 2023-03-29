@@ -7,6 +7,7 @@ export type ItemData = {
     use: Function
 }
 export default function Region({item}: {item: ItemData}){
+    if(!item) return <></>
     return <Button style={{position: 'relative', backgroundImage: `url(${item.image})`}}>
             <Row height={'33vh'}>
                     <Col xs={12}>{item.name}</Col>

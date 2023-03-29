@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Button } from "react-bootstrap"
 
 export default function Inventory({inventory}){
+    if(!inventory) return <></>
     const {I, setI} = inventory
     return <div className={'net-dragons-inventory'}>
         {I.map((item, i) => <Button key={i} onClick={e => useItem(I, setI, item)}>{item}</Button>)}

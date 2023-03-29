@@ -1,5 +1,3 @@
-//adding new tiles:
-
 import sql from "../../../lib/,base/sql"
 
 //type reference

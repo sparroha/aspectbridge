@@ -7,6 +7,7 @@ export type CreatureData = {
     action: Function
 }
 export default function Region({creature}: {creature: CreatureData}){
+    if(!creature) return <></>
     return <Button style={{position: 'relative', backgroundImage: `url(${creature.image})`}}>
                 <Row height={'33vh'}>
                     <Col xs={12}>{creature.name}</Col>

@@ -11,6 +11,7 @@ export type EventData = {
     destroy?: string,
 }
 export default function Event({event}: {event: EventData}){
+    if(!event) return <></>
     return <Button style={{position: 'relative'}}>
             <Row height={'33vh'}>
                     <Col xs={12}>{event.name}: {event.description}</Col>

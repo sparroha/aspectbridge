@@ -35,6 +35,7 @@ export type RegionData = {
     destinationMap?: string,
 }
 export default function Region({key, region, disabled}: {key: number, region: RegionData, disabled: boolean}){
+    if(!region) return <></>
         return <div key={key} style={{float: 'left', position: 'relative', ...square}}>
             <Button style={{...regionButton, ...background, position: 'relative', backgroundImage: `url(${region.image})`}} disabled={disabled}>
                 <Walls paths={region.paths}>
