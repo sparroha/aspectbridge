@@ -1,4 +1,5 @@
-import { EventData, MapData, Region, treeOfLife } from "./tileTypes"
+import { EventData } from "../../../pages/bridge/dragons/components/event"
+import { RegionData } from "../../../pages/bridge/dragons/components/region"
 
 //tiles.ts
 const enter: EventData = {
@@ -6,7 +7,7 @@ const enter: EventData = {
     description: 'you enter this region',
     init: 'enter',
 }
-const treeOfLifeEntrance: Region = {
+const treeOfLifeEntrance: RegionData = {
     name: 'Tree of Life',
     description: 'The Tree of Life is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
     image: '../../bridge/dragons/assets/tree.png',
@@ -22,7 +23,7 @@ const fall: EventData = {
     description: 'you fell',
     init: 'fall',
 }
-const air: Region = {
+const air: RegionData = {
     name: 'Air',
     description: 'gravity takes over',
     image: 'air.png',
@@ -37,7 +38,7 @@ const exit: EventData = {
     description: 'you teft this region',
     init: 'exit',
 }
-const leaveMap: Region = {
+const leaveMap: RegionData = {
     name: 'Exit',
     description: 'you have reached the end of the world',
     image: 'exit.png',
@@ -46,7 +47,7 @@ const leaveMap: Region = {
     monsters: [],
     events: [exit]
 }
-const exitWorldTree: Region = {
+const exitWorldTree: RegionData = {
     name: 'Exit',
     description: 'you have reached the end of the world',
     image: 'exit.png',
@@ -57,80 +58,80 @@ const exitWorldTree: Region = {
     destination: {x: 3, y: 4, z: 1},
     destinationMap: 'treeOfLife'
 }
-const branchNS: Region = {
+const branchNS: RegionData = {
     name: 'NS Branch',
     description: 'The Branch is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
     image: 'branchNS.png',
     paths: [0,1,0,1,1,1]
 }
-const branchNSE: Region = {
+const branchNSE: RegionData = {
     name: 'NSE Branch',
     image: 'branchNSE.png',
     paths: [0,0,0,1,1,1]
 }
-const branchNSW: Region = {
+const branchNSW: RegionData = {
     name: 'NSW Branch',
     image: 'branchNSW.png',
     paths: [0,1,0,0,1,1]
 }
-const branchNE: Region = {
+const branchNE: RegionData = {
     name: 'NE Branch',
     image: 'branchNE.png',
     paths: [0,0,1,1,1,1]
 }
-const branchNW: Region = {
+const branchNW: RegionData = {
     name: 'NW Branch',
     image: 'branchNW.png',
     paths: [0,1,1,0,1,1]
 }
-const branchSE: Region = {
+const branchSE: RegionData = {
     name: 'SE Branch',
     image: 'branchSE.png',
     paths: [1,0,0,1,1,1]
 }
-const branchWE: Region = {
+const branchWE: RegionData = {
     name: 'WE Branch',
     image: 'branchWE.png',
     paths: [1,0,1,0,1,1]
 }
-const branchWS: Region = {
+const branchWS: RegionData = {
     name: 'WS Branch',
     image: 'branchWS.png',
     paths: [1,1,0,0,1,1]
 }
-const branchE: Region = {
+const branchE: RegionData = {
     name: 'E Branch',
     image: 'branchE.png',
     paths: [1,0,1,1,1,1]
 }
-const branchW: Region = {
+const branchW: RegionData = {
     name: 'W Branch',
     image: 'branchW.png',
     paths: [1,1,1,0,1,1]
 }
-const branchS: Region = {
+const branchS: RegionData = {
     name: 'S Branch',
     image: 'branchS.png',
     paths: [1,1,0,1,1,1]
 }
-const branchN: Region = {
+const branchN: RegionData = {
     name: 'N Branch',
     image: 'branchN.png',
     paths: [0,1,1,1,1,1]
 }
-const branchV: Region = {
+const branchV: RegionData = {
     name: 'Vertical Branch',
     paths: [0,0,0,0,1,1]
 }
-const vineUp: Region = {
+const vineUp: RegionData = {
     name: 'Vine Up',
     paths: [1,1,0,1,0,1]
 }
-const vineDown: Region = {
+const vineDown: RegionData = {
     name: 'Vine Down',
     paths: [1,1,0,1,1,0]
 }
-const vineUpDown: Region = {
+const vineUpDown: RegionData = {
     name: 'Vine Up and Down',
     paths: [1,1,0,1,0,0]
 }
@@ -160,12 +161,4 @@ export const reagionLibrary = {
     vineUp: vineUp,
     vineDown: vineDown,
     vineUpDown: vineUpDown,
-}
-export function getMap(mapName: string): MapData {
-    switch (mapName) {
-        case 'treeOfLife':
-            return treeOfLife
-        default:
-            return treeOfLife
-    }
 }
