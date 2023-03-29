@@ -1,13 +1,7 @@
 import sql from "../../../lib/,base/sql"
+import { ItemData } from "../../dragons/components/item"
 //TODO indev: follow events.ts
-export type Item = {
-    id?: number,
-    name: string,
-    description?: string,
-    image?: string,
-    onuse?: string[],//JSON.stringify(['function1', 'function2'])
-    
-}
+
 export default async function getItemInfo(req?, res?) {
     //TABLE DOE NOT EXIST EXISTS
     /*const newTable = await sql`CREATE TABLE IF NOT EXISTS aspect_dragons_items_ (
@@ -19,23 +13,23 @@ export default async function getItemInfo(req?, res?) {
                     );`*/
     //call array from table
     try {
-        const items: Item[] = await getItems()
+        const items: ItemData[] = await getItems()
         return res.status(200).json({tiles: JSON.stringify(items), message: 'Items found', success: true})
     } catch (error) {
         return res.status(404).json({tiles: [null], message: 'No items found', success: false})
     }
 }
-export async function getItems(selector: string = '*'): Promise<Item[]> {
+export async function getItems(selector: string = '*'): Promise<ItemData[]> {
     try {
-        const items = await sql`select * from aspect_dragons_items_;`
+        const items = await sql`select ${selector} from aspect_dragons_items_ WHERE 1;`
         console.log(items)
-        const itemInfo: Item[] = items.map((item) => {
+        const itemInfo: ItemData[] = items.map((item) => {
             return {
                 id: item.id,
                 name: item.name,
                 description: item.description,
                 image: item.image,
-                use: JSON.parse(item.use),
+                onuse: item.onuse,
             }
         })
         return itemInfo

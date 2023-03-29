@@ -15,7 +15,7 @@ export type MapData = {
     regions: RegionData[][][]
 }
 export default function MapFollow({game}: {game: GameData}){
-    if(!game) return <></>
+    if(!game) return <>Map Loading...</>
     useEffect(()=>{
         game.setEventIndex(Math.floor(Math.random()*game.events.length))
         return game.activeMap.regions[game.position.z][game.position.x][game.position.y].events?.forEach((event)=>{

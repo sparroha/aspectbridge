@@ -5,19 +5,26 @@ const background = {
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
 }
+const scale = '48px'
 const regionButton = {
-    fontSize: '10px',
-    width: '64px',
-    height: '64px',
+    fontSize: '7px',
+    width: scale,
+    height: scale,
     margin: '0px',
     padding: '0px',
+    border: '0px',
     text: 'center'
 }
 export const square = {
     fontSize: '12px',
-    width: '64px',
-    height: '64px',
+    width: scale,
+    height: scale,
     margin: '0px',
+    padding: '0px',
+    text: 'center'
+}
+export const collomn = {
+    fontSize: '10px',
     padding: '0px',
     text: 'center'
 }
@@ -35,20 +42,24 @@ export type RegionData = {
     destinationMap?: string,
 }
 export default function Region({indexkey, region, disabled}: {indexkey: number, region: RegionData, disabled: boolean}){
-    if(!region) return <></>
+    if(!region) return <>Tile Loading...</>
         return <div key={indexkey} style={{float: 'left', position: 'relative', ...square}}>
             <Button style={{...regionButton, ...background, position: 'relative', backgroundImage: `url(${region.image})`}} disabled={disabled}>
                 <Walls paths={region.paths}>
                     <Row height={'33vh'}>
-                        <Col xs={12}>{region.name}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[5]==0?'\u2BB6':'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[0]==0?'\u23F6':'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[4]==0?'\u2BB5':'-'}</Col>
                     </Row>
                     <Row height={'33vh'}>
-                        <Col xs={12}>{region.description}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[3]==0?'\u23F4':'-'}</Col>
+                        <Col xs={4} style={{...collomn, fontSize: '5px'}}>{region.name}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[1]==0?'\u23F5':'-'}</Col>
                     </Row>
                     <Row height={'33vh'}>
-                        <Col xs={4}>{region.paths[0]}</Col>
-                        <Col xs={4}></Col>
-                        <Col xs={4}>{region.paths[1]}</Col>
+                        <Col xs={4} style={collomn}>{0==0?'-':'-'}</Col>
+                        <Col xs={4} style={collomn}>{region.paths[2]==0?'\u23F7':'-'}</Col>
+                        <Col xs={4} style={collomn}>{0==0?'-':'-'}</Col>
                     </Row>
                 </Walls>
             </Button>
@@ -56,9 +67,9 @@ export default function Region({indexkey, region, disabled}: {indexkey: number, 
 }
 export function Walls({paths, children}: {paths: number[], children: any}){
     return <div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1}}>{children}
-        {paths[0]==1?<div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '5px', backgroundColor: 'black', zIndex: 1}}></div>:null}
-        {paths[1]==1?<div style={{position: 'absolute', top: 0, right: 0, width: '5px', height: '100%', backgroundColor: 'black', zIndex: 1}}></div>:null}
-        {paths[2]==1?<div style={{position: 'absolute', bottom: 0, right: 0, width: '100%', height: '5px', backgroundColor: 'black', zIndex: 1}}></div>:null}
-        {paths[3]==1?<div style={{position: 'absolute', bottom: 0, left: 0, width: '5px', height: '100%', backgroundColor: 'black', zIndex: 1}}></div>:null}
+        {paths[0]==1?<div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '2px', backgroundColor: 'black', zIndex: 1}}></div>:null}
+        {paths[1]==1?<div style={{position: 'absolute', top: 0, right: 0, width: '2px', height: '100%', backgroundColor: 'black', zIndex: 1}}></div>:null}
+        {paths[2]==1?<div style={{position: 'absolute', bottom: 0, right: 0, width: '100%', height: '2px', backgroundColor: 'black', zIndex: 1}}></div>:null}
+        {paths[3]==1?<div style={{position: 'absolute', bottom: 0, left: 0, width: '2px', height: '100%', backgroundColor: 'black', zIndex: 1}}></div>:null}
     </div>
 }

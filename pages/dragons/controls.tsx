@@ -18,21 +18,21 @@ export default function Controls({game}: {game: GameData}){
                     if(typeof game.activeMap.regions[pP.z-1] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z-1][pP.x] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z-1][pP.x][pP.y] === 'undefined') return pP;
-                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[5])?-1:0)}})}}>Down</Button>
+                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[5])?-1:0)}})}}>{'\u2BB6'/*DOWN*/}</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
                     if(typeof game.activeMap.regions[pP.z] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z][pP.x-1] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z][pP.x-1][pP.y] === 'undefined') return pP;
-                    return {x: pP.x+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[0])?-1:0), y: pP.y, z: pP.z}})}}>North</Button>
+                    return {x: pP.x+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[0])?-1:0), y: pP.y, z: pP.z}})}}>{'\u23F6'/*NORTH*/}</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control} onClick={()=>{game.setPosition((pP)=>{
                     if(typeof game.activeMap.regions[pP.z+1] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z+1][pP.x] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z+1][pP.x][pP.y] === 'undefined') return pP;
-                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[4])?1:0)}})}}>Up</Button>
+                    return {x: pP.x, y: pP.y, z: pP.z+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[4])?1:0)}})}}>{'\u2BB5'/*UP*/}</Button>
             </Col>
         </Row>
         <Row>
@@ -41,7 +41,7 @@ export default function Controls({game}: {game: GameData}){
                     if(typeof game.activeMap.regions[pP.z] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z][pP.x] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z][pP.x][pP.y-1] === 'undefined') return pP;
-                    return {x: pP.x, y: pP.y+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[3])?-1:0), z: pP.z}})}}>West</Button>
+                    return {x: pP.x, y: pP.y+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[3])?-1:0), z: pP.z}})}}>{'\u23F4'/*WEST*/}</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control}>Enter</Button>
@@ -51,7 +51,7 @@ export default function Controls({game}: {game: GameData}){
                     if(typeof game.activeMap.regions[pP.z] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z][pP.x] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z][pP.x][pP.y+1] === 'undefined') return pP;
-                    return {x: pP.x, y: pP.y+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[1])?1:0), z: pP.z}})}}>East</Button>
+                    return {x: pP.x, y: pP.y+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[1])?1:0), z: pP.z}})}}>{'\u23F5'/*EAST*/}</Button>
             </Col>
         </Row>
         <Row>
@@ -63,7 +63,7 @@ export default function Controls({game}: {game: GameData}){
                     if(typeof game.activeMap.regions[pP.z] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z][pP.x+1] === 'undefined') return pP;
                     if(typeof game.activeMap.regions[pP.z][pP.x+1][pP.y] === 'undefined') return pP;
-                    return {x: pP.x+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[2])?1:0), y: pP.y, z: pP.z}})}}>South</Button>
+                    return {x: pP.x+(!(game.activeMap.regions[pP.z][pP.x][pP.y].paths[2])?1:0), y: pP.y, z: pP.z}})}}>{'\u23F7'/*SOUTH*/}</Button>
             </Col>
             <Col xs={4}>
                 <Button variant={'primary'} style={control}>Fight</Button>
