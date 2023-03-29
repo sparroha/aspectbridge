@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { GameData } from "../../public/dragons/tileTypes";
 
 export const portcontrol = {
@@ -32,12 +32,17 @@ export default function MapSettings({game}: {game: GameData}){
                 game.setPosition({x: x, y: y, z: z})
             }} >
             <Form.Group style={portcontrol} controlId="formEmail">
-                <Form.Label>Longitude</Form.Label>
-                <Form.Control style={portcontrol} required type="number" min={1} value={x+1} onChange={(e)=>setX(parseInt(e.target.value)-1)}/>
-                <Form.Label>Latitude</Form.Label>
-                <Form.Control style={portcontrol} required type="number" min={1} value={y+1} onChange={(e)=>setY(parseInt(e.target.value)-1)}/>
-                <Form.Label>Altitude</Form.Label>
-                <Form.Control style={portcontrol} required type="number" min={1} value={z+1} onChange={(e)=>setZ(parseInt(e.target.value)-1)}/>
+                <Row>
+                    <Col xs={2}><Form.Label style={portcontrol} >X</Form.Label></Col>
+                    <Col xs={6}><Form.Control style={portcontrol} required type="number" min={1} value={x+1} onChange={(e)=>setX(parseInt(e.target.value)-1)}/></Col>
+                    <Col xs={4} sm={0}></Col>
+                    <Col xs={2}><Form.Label style={portcontrol} >Y</Form.Label></Col>
+                    <Col xs={6}><Form.Control style={portcontrol} required type="number" min={1} value={y+1} onChange={(e)=>setY(parseInt(e.target.value)-1)}/></Col>
+                    <Col xs={4} sm={0}></Col>
+                    <Col xs={2}><Form.Label style={portcontrol} >Z</Form.Label></Col>
+                    <Col xs={6}><Form.Control style={portcontrol} required type="number" min={1} value={z+1} onChange={(e)=>setZ(parseInt(e.target.value)-1)}/></Col>
+                    <Col xs={4} sm={0}></Col>
+                </Row>
             </Form.Group>
             <Button style={portcontrol} type="submit" >Teleport</Button>
         </Form>
