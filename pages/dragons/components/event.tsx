@@ -27,9 +27,9 @@ export const eventsList: EventData[] = [
     {name: 'nothing', description: 'nothing happens'},
     {name: 'nothing', description: 'nothing happens'},
     {name: 'nothing', description: 'nothing happens'},
-    {name: 'item', description: 'you have discovered an item. click your location to pick it up'},
-    {name: 'bright idea', description: 'a wild hair has apeared up yours'},
-    {name: 'ambush', description: 'a wild wildabeast has apeared'},
-    {name: 'ambush', description: 'a tame guard dog has apeared'},
-    {name: 'trip', description: 'you ate some bad shooms bro'}
+    {name: 'item', description: 'you have discovered an lietem. click your location to pick it up'},
+    {name: 'bright idea', description: 'a wild hare has appeared with a wild hair on its tail'},
+    {name: 'ambush', description: 'a wild wildabeast has appeared'},
+    {name: 'ambush', description: 'a tame guard dog has appeared'},
+    {name: 'trip', description: 'you ate some bad shrooms bro'}
 ]
