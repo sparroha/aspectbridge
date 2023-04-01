@@ -1,13 +1,5 @@
 import sql from "../../../lib/,base/sql"
 
-export type EventData = {
-    id?: number,
-    name: string,
-    description?: string,
-    oninit?: string[],//JSON.stringify(['function1', 'function2'])
-    onupdate?: string[],//JSON.stringify(['function1', 'function2'])
-    ondestroy?: string[],//JSON.stringify(['function1', 'function2'])
-}
 /**
  * 
  * @param req query: name, description, oninit, onupdate, ondestroy, method; 
@@ -27,7 +19,7 @@ export default async function getEvenInfo(req, res) {
                         ondestroy varchar(255)
                     );`*/
     //call array from table
-    const { name, description, oninit, onupdate, ondestroy, method } = req.query;
+    const { name, description, oninit, onupdate, ondestroy, method } = req.body || req.query;//?
     if(method=='set') {
         const event = await setNewEventByName(name, description, oninit, onupdate, ondestroy)
         //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
@@ -99,14 +91,29 @@ async function setNewEventByName(id? ,name?, description?, oninit?, onupdate?, o
     const [event] = await sql`INSERT INTO aspect_dragons_events_ (name, description, oninit, onupdate, ondestroy) VALUES (${name}, ${description}, ${oninit}, ${onupdate}, ${ondestroy});`
     return event
 }
+//general use unteasted
+async function insertInto(table: string = 'aspect_dragons_events_', fields: string[], values: string[]) {
+    const [event] = await sql`INSERT INTO ${table} (${fields.map((f, i)=>{return f+(i==fields.length-1?'':', ')})}) VALUES (${values.map((v, i)=>{return v+(i==values.length-1?'':', ')})});`
+    return event
+}
 async function deleteEventByName(name) {
     if(name.toLowerCase()=='all') return null
     const [event] = await sql`DELETE FROM aspect_dragons_events_ WHERE name = ${name};`
     return event
 }
+//general use unteasted
+async function deleteFrom(table: string = 'aspect_dragons_events_', fields: string[], values: string[]) {
+    const [event] = await sql`DELETE FROM ${table} WHERE ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':' AND ')})};`
+    return event
+}
 async function updateEventByName(name, description?, oninit?, onupdate?, ondestroy?) {
     if(name=='all') return null
     const [event] = await sql`UPDATE aspect_dragons_events_ SET ${description?'description = '+description+', ':'' }${oninit?'oninit = '+oninit+', ':'' }${onupdate?'onupdate = '+onupdate+', ':'' }${ondestroy?'ondestroy = '+ondestroy+', ':'' }WHERE name = ${name};`
+    return event
+}
+//general use unteasted
+async function updateInto(table: string = 'aspect_dragons_events_', fields: string[], values: string[], whereFields: string[], whereValues: string[]) {
+    const [event] = await sql`UPDATE ${table} SET ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':', ')})} WHERE ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':' AND ')})};`
     return event
 }
 //**********

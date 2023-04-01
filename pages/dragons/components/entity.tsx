@@ -1,12 +1,15 @@
 import { Button, Col, Row } from "react-bootstrap";
 
-export type CreatureData = {
+//type reference
+export type Entity = {
+    id?: number,
     name: string,
-    description: string,
-    image: string,
-    action: Function
+    description?: string,
+    image?: string,
+    onaction?: string[],//JSON.stringify(['action1', 'action2'])
+    
 }
-export default function Region({creature}: {creature: CreatureData}){
+export default function Region({creature}: {creature: Entity}){
     if(!creature) return <>Creature Loading...</>
     return <Button style={{position: 'relative', backgroundImage: `url(${creature.image})`}}>
                 <Row height={'33vh'}>

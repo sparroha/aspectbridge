@@ -1,5 +1,5 @@
 import sql from "../../../lib/,base/sql";
-
+//this is a mirrior of the logan_clients_ table in the database
 export default async function updateGameDetails(req, res) {
     const {clientname, email, street1, street2, city, state, statecode, zip, update} = req.query;
     if ( update == 'true' ) {

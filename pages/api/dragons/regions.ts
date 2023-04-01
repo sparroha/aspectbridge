@@ -1,24 +1,13 @@
 import sql from "../../../lib/,base/sql"
 import { Position } from "../../../public/dragons/tileTypes"//?
-export type Region = {
-    id?: number,
-    name: string,
-    description?: string,
-    image?: string,
-    paths: number[],//JSON.stringify([0,0,0,0,0,0])
-    loot_table?: string[],//JSON.stringify(['item1', 'item2'])
-    population_table?: string[],//JSON.stringify(['creature1', 'creature2'])
-    event_table?: string[],//JSON.stringify(['function1', 'function2'])
-    destination?: Position,//JSON.stringify({x: 0, y: 0, z: 0})
-    destinationMap?: string,
-}
+
 /**
  * ERROR getting 404
  * @param req 
  * @param res 
  * @returns 
  */
-export default async function getTileInfo(req?, res?) {
+export default async function getRegionInfo(req?, res?) {
     //sql`INSERT INTO aspect_dragons_tiles_ (id, name, description, image, paths, loot_table, population_table, event_table, destination, destinationMap) VALUES (${1}, ${'air'}, ${'gravity takes over'}, ${'air.png'}, ${JSON.stringify([0,0,0,0,0,0])}, ${JSON.stringify([''])}, ${JSON.stringify([''])}, ${JSON.stringify(['fall'])}, ${JSON.stringify({x: 0, y: 0, z: 0})}, ${''});`
     //TABLE ALREADY EXISTS
     /*const newTable = await sql`CREATE TABLE IF NOT EXISTS aspect_dragons_tiles_ (

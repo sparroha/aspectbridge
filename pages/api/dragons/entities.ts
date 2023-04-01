@@ -1,37 +1,30 @@
 import sql from "../../../lib/,base/sql"
+import { Entity } from "../../dragons/components/entity"
 
-//type reference
-export type Creture = {
-    id?: number,
-    name: string,
-    description?: string,
-    image?: string,
-    onaction?: string[],//JSON.stringify(['action1', 'action2'])
-    
-}
+
 //Table
-export default async function getPopulaceInfo(req?, res?) {
-    //TABLE DOE NOT EXIST EXISTS
-    /*const newTable = await sql`CREATE TABLE IF NOT EXISTS aspect_dragons_creatures_ (
+export default async function getEntityInfo(req?, res?) {
+    //TABLE ALREADY EXISTS
+    /*const newTable = await sql`CREATE TABLE IF NOT EXISTS aspect_dragons_entities_ (
                         id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         name varchar(255),
                         description varchar(255),
                         image varchar(255),
-                        onaction varchar(255),
+                        onaction varchar(255)
                     );`*/
     //call array from table
     try {
-        const creatures: Creture[] = await getCreatures()
+        const creatures: Entity[] = await getEntities()
         return res.status(200).json({tiles: JSON.stringify(creatures), message: 'Population found', success: true})
     } catch (error) {
         return res.status(404).json({tiles: [null], message: 'No creatures found', success: false})
     }
 }
-export async function getCreatures(selector: string = '*'): Promise<Creture[]> {
+export async function getEntities(selector: string = '*'): Promise<Entity[]> {
     try {
-        const tiles = await sql`select * from aspect_dragons_creatures_;`
+        const tiles = await sql`select * from aspect_dragons_entities_;`
         console.log(tiles)
-        const creatureInfo: Creture[] = tiles.map((creature) => {
+        const creatureInfo: Entity[] = tiles.map((creature) => {
             return {
                 id: creature.id,
                 name: creature.name,

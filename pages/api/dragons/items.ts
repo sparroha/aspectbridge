@@ -3,13 +3,13 @@ import { ItemData } from "../../dragons/components/item"
 //TODO indev: follow events.ts
 
 export default async function getItemInfo(req?, res?) {
-    //TABLE DOE NOT EXIST EXISTS
+    //TABLE ALREADY EXISTS
     /*const newTable = await sql`CREATE TABLE IF NOT EXISTS aspect_dragons_items_ (
                         id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         name varchar(255),
                         description varchar(255),
                         image varchar(255),
-                        onuse varchar(255),
+                        onuse varchar(255)
                     );`*/
     //call array from table
     try {

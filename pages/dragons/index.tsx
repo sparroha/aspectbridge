@@ -9,7 +9,8 @@ import Inventory, { useInventory } from "./components/inventory";
 import MapSettings from "./mapsettings";
 import Controls from "./controls";
 import MapFollow, { getMap, MapData } from "./components/worldmap";
-import { EventData, eventsList } from "./components/event";
+import { EventData } from "./components/event";
+import sql from "../../lib/,base/sql";
 
 export default function NetDragons({ip, M, E}: {ip: string, M: MapData[], E: EventData[]}){
     const [user, setUser] = useState(null)
@@ -68,9 +69,31 @@ function useGame(maps: MapData[], activeMapIndex: number, pP: Position, sPP: Fun
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    //extract query arguments from context
     const query = context.query
+    //extract user IP from context rquest
     const ip = await requestIp.getClientIp(context.req)
-    const events = eventsList //placeholder for random events
+
+    //get Item data from database
+    //const items = await getItems()
+    const items = await sql`select * from aspect_dragons_items_ WHERE 1;`
+    console.log(items)
+    //get Map data from database
+    //const maps = await getMaps()
+    const maps = await sql`select * from aspect_dragons_maps_ WHERE 1;`
+    console.log(maps)
+    //get Event data from database
+    //****SUCCUEES */
+    //const events = await getEvents()
+    const events = await sql`select * from aspect_dragons_events_ WHERE 1;`
+    console.log(events)
+    const eventList: EventData[] = events.map((event: any)=>{return {name: event.name, description: event.description, oninit: JSON.parse(event.oninit), onupdate: JSON.parse(event.onupdate), ondestroy: JSON.parse(event.ondestroy)}}) 
+    //get Entity data from database
+    //const entities = await getEntities()
+    const entities = await sql`select * from aspect_dragons_entities_ WHERE 1;`
+    console.log(entities)
+
+    const eventsL = eventList
     const map: MapData = getMap('treeOfLife')
-    return {props: {ip: ip, M: [map,map], E: events}} 
+    return {props: {ip: ip, M: [map,map], E: eventsL}} 
 }

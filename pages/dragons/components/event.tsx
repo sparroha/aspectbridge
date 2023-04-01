@@ -4,11 +4,12 @@ import { RegionData } from "./region";
 import { getMap } from "./worldmap";
 
 export type EventData = {
+    id?: number,
     name: string,
     description?: string,
-    init?: string,
-    update?: string,
-    destroy?: string,
+    oninit?: string[],//JSON.stringify(['function1', 'function2'])
+    onupdate?: string[],//JSON.stringify(['function1', 'function2'])
+    ondestroy?: string[],//JSON.stringify(['function1', 'function2'])
 }
 export default function Event({event}: {event: EventData}){
     if(!event) return <>Noting is happening.</>
