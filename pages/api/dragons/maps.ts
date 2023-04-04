@@ -13,38 +13,47 @@ export default async function getMapInfo(req, res) {
     //DATA IS TOO LARGE FOR MAP SIZE. need to use floorplan instead of map for this. map = floors
     //sql`INSERT INTO aspect_dragons_maps_ (name, description, map) VALUES (${'fall'}, ${'you fell'}, ${JSON.stringify(treeOfLife)});`
     //TABLE ALREADY EXISTS BUT
+    //await sql`DROP TABLE IF EXISTS aspect_dragons_maps_;`
     /*const newTable = await sql`CREATE TABLE IF NOT EXISTS aspect_dragons_maps_ (
-                        id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         name varchar(255),
                         description varchar(255),
-                        map varchar(255)
-                    );`*/
+                        mapX int(255),
+                        mapY int(255),
+                        mapZ int(255),
+                        tile varchar(255)
+                    );`
+                    return res.status(200).json({newTable})*/
     //call array from table
-    const { name, description, m, method } = req.body || req.query;//?
-    if(method=='set') {
-        const map = await setNewMapByName(name, description, m)
-        //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
-        return res.status(200).json({map})
+    const { name, description, x, y, z, tile, method } = req.body || req.query;//?
+    //const { name, description, x, y, z, tile } = body
+    if(!method){
+        const allM = await getAllMaps()
+        return res.status(200).json(allM)
     }
-    if(method=='get'||!method) {
+    if(method=='set') {
+        const insert = await setMapTilename(name, x, y, z, tile, description)
+        //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
+        return res.status(200).json(insert)
+    }
+    else if(method=='get'||!method) {
         const map = await getFirstMapByName(name)
         //if(!event) return res.status(404).json({name: name, message: 'No event found.', method: method, success: false})
-        return res.status(200).json({map})
+        return res.status(200).json(map)
     }
-    if(method=='getall') {
+    else if(method=='getall') {
         const maps = await getAllMaps()
         //if(!events) return res.status(404).json({message: 'No event found.', method: method, success: false})
-        return res.status(200).json({maps})
+        return res.status(200).json(maps)
     }
-    if(method=='delete') {
+    else if(method=='delete') {
         const map = await deleteMapByName(name)
         //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
-        return res.status(200).json({map, message: 'Event deleted', method: method, success: true})
+        return res.status(200).json(map)
     }
-    if(method=='update') {
-        const map = await updateMapByName(name, description, m)
+    else if(method=='update') {
+        const upd = await updateMapByName(name, x, y, z, tile, description)
         //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
-        return res.status(200).json({map, message: 'Event updated', method: method, success: true})
+        return res.status(200).json(upd)
     }
     /*let event = null
     let events = null
@@ -67,52 +76,32 @@ async function getAllMaps() {
     return maps
 }
 
-async function setNewMapByName(id? ,name?, description?, m?) {
-    if(name.toLowerCase()=='all') return null
-    const [map] = await sql`INSERT INTO aspect_dragons_maps_ (name, description, map) VALUES (${name}, ${description}, ${JSON.stringify(m)});`
+async function setMapTilename(name, x, y, z, tile, description?) {
+    const [map] = await sql`INSERT INTO aspect_dragons_maps_ (name, description, mapX, mapY, mapZ, tile) VALUES (${name}, ${description}, ${x}, ${y}, ${z}, ${tile});`
     return map
 }
 //general use unteasted
-async function insertInto(table: string = 'aspect_dragons_maps_', fields: string[], values: string[]) {
-    const [map] = await sql`INSERT INTO ${table} (${fields.map((f, i)=>{return f+(i==fields.length-1?'':', ')})}) VALUES (${values.map((v, i)=>{return v+(i==values.length-1?'':', ')})});`
-    return map
-}
+/*async function insertInto(table: string, fields: string[], values: string[]) {
+    //const querystr = `INSERT INTO ${table} (${fields.map((f)=>{return f})}) VALUES (${values.map((v)=>{return v})});`
+    const [insert] = await sql`INSERT INTO ${table} (${fields.map((f)=>{return f})}) VALUES (${values.map((v)=>{return v})});`
+    return insert
+}*/
 async function deleteMapByName(name) {
-    if(name.toLowerCase()=='all') return null
     const [map] = await sql`DELETE FROM aspect_dragons_maps_ WHERE name = ${name};`
     return map
 }
 //general use unteasted
-async function deleteFrom(table: string = 'aspect_dragons_maps_', fields: string[], values: string[]) {
+/*async function deleteFrom(table: string = 'aspect_dragons_maps_', fields: string[], values: string[]) {
     const [map] = await sql`DELETE FROM ${table} WHERE ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':' AND ')})};`
     return map
-}
-async function updateMapByName(name, description?, m?) {
-    if(name=='all') return null
+}*/
+async function updateMapByName(name, x, y, z, tile, description?) {
     //corrected for error in comma spacing
-    const [map] = await sql`UPDATE aspect_dragons_maps_ SET ${description?'description = '+description+' ':'' }${m?', map = '+m+' ':'' }WHERE name = ${name};`
-    return map
+    const [update] = await sql`UPDATE aspect_dragons_maps_ SET ${description?'description = '+description+' ':'' }${', mapX = '+x+'' }${', mapY = '+y+'' }${', mapZ = '+z+'' }${', tile = '+tile+'' } WHERE name = ${name};`
+    return update
 }
 //general use unteasted
-async function updateInto(table: string = 'aspect_dragons_maps_', fields: string[], values: string[], whereFields: string[], whereValues: string[]) {
+/*async function updateInto(table: string = 'aspect_dragons_maps_', fields: string[], values: string[], whereFields: string[], whereValues: string[]) {
     const [map] = await sql`UPDATE ${table} SET ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':', ')})} WHERE ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':' AND ')})};`
     return map
-}
-//**********
-/*
-login(userCredentials) {
-    // Get a token from api server using the fetch api
-    return this.fetch(`${this.domain}/api/login`, {
-        method: 'POST',
-        headers: new Headers({'Content-Type':'application/json'}),
-        body: JSON.stringify(userCredentials)
-    }).then(res => return res.json())
-    .then((res) => {
-          console.log('statusCode:'+ res.status)
-          console.log('Token:' +res.token)
-          this.setToken(res.token) // Setting the token in localStorage
-          return Promise.resolve(res);
-
-    })
-}
-*/
+}*/

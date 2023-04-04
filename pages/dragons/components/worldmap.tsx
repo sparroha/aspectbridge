@@ -55,9 +55,9 @@ export default function MapFollow({game}: {game: GameData}){
             {row.map((col, j) => (j>=(game.position.x-game.viewDistance))&&(j<=(game.position.x+game.viewDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
                 {col.map((cell, k) => ((k>=game.position.y-game.viewDistance)&&(k<=game.position.y+game.viewDistance))?
                 <Region indexkey={k} region={cell} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)} />
-                :null)}
-            </Col></Row>:null)}
-        </Col></Row>:null)}
+                :<div key={k}></div>)}
+            </Col></Row>:<div key={j}></div>)}
+        </Col></Row>:<div key={i}></div>)}
     </div>
 }
 

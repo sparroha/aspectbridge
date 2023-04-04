@@ -4,12 +4,12 @@ import { RegionData } from "../../pages/dragons/components/region"
 const enter: EventData = {
     name: 'enter',
     description: 'you enter this region',
-    init: 'enter',
+    oninit: ['enter'],
 }
 const treeOfLifeEntrance: RegionData  = {
     name: 'Tree of Life',
     description: 'The Tree of Life is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
-    image: '../../bridge/dragons/assets/tree.png',
+    image: 'tree.png',
     paths: [1,1,1,1,0,1],
     items: [],
     monsters: [],
@@ -20,7 +20,7 @@ const treeOfLifeEntrance: RegionData  = {
 const fall: EventData = {
     name: 'fall',
     description: 'you fell',
-    init: 'fall',
+    oninit: ['fall'],
 }
 const air: RegionData = {
     name: 'Air',
@@ -35,7 +35,7 @@ const air: RegionData = {
 const exit: EventData = {
     name: 'exit',
     description: 'you teft this region',
-    init: 'exit',
+    oninit: ['exit']
 }
 const leaveMap: RegionData = {
     name: 'Exit',
