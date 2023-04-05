@@ -2,6 +2,14 @@ import sql from "../../../lib/,base/sql"
 import { RegionData } from "../../dragons/components/region";
 import { treeOfLife } from "../../dragons/components/worldmap";
 
+export type a_d_maps_ = {
+    name: string,
+    description: string,
+    mapX: number,
+    mapY: number,
+    mapZ: number,
+    tile: string
+}
 /**
  * 
  * @param req query: name, description, oninit, onupdate, ondestroy, method; 
@@ -68,7 +76,7 @@ export default async function getMapInfo(req, res) {
     else res.status(200).json({event, events, eventInfo})*/
 }
 async function getFirstMapByName(name) {
-    const [map] = await sql`SELECT * FROM aspect_dragons_maps_ WHERE name = ${name};`
+    const map = await sql`SELECT * FROM aspect_dragons_maps_ WHERE name = ${name};`
     return map
 }
 async function getAllMaps() {

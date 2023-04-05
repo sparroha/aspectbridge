@@ -20,30 +20,24 @@ export default async function getEvenInfo(req, res) {
                     );`*/
     //call array from table
     const { name, description, oninit, onupdate, ondestroy, method } = req.body || req.query;//?
-    if(method=='add') {
-        try{
-            const event = await addNewEvent(name, description, oninit, onupdate, ondestroy)
-            return res.status(200).json({event})
-        }catch(e){
-            return res.status(400).json({e})
-        }
-    }
-    else if(method=='get'||!method) {
+    if(method=='add') {//works but doesnt work
+        const newEvent = await addNewEvent(name, description, oninit, onupdate, ondestroy)
+        return res.status(200).json({newEvent})
+        //const event = await getFirstEventByName(name)
+        //return res.status(200).json({event})
+    } else if(method=='get'||!method) {
         const event = await getFirstEventByName(name)
         //if(!event) return res.status(404).json({name: name, message: 'No event found.', method: method, success: false})
         return res.status(200).json({event})
-    }
-    else if(method=='getall') {
+    } else if(method=='getall') {
         const events = await getAllEvents()
         //if(!events) return res.status(404).json({message: 'No event found.', method: method, success: false})
         return res.status(200).json({events})
-    }
-    else if(method=='delete') {
+    } else if(method=='delete') {
         const events = await deleteEventByName(name)
         //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
         return res.status(200).json({events})
-    }
-    else if(method=='update') {
+    } else if(method=='update') {
         const event = await updateEventByName(name, description, oninit, onupdate, ondestroy)
         if(!event) return res.status(404).json({message: 'No event found.'})
         return res.status(200).json({event})

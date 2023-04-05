@@ -1,6 +1,18 @@
 import sql from "../../../lib/,base/sql"
 import { Position } from "../../../public/dragons/tileTypes"//?
 
+export type a_d_tiles_ = {
+    id: number,
+    name: string,
+    description: string,
+    image: string,
+    paths: string,
+    loot_table: string,
+    population_table: string,
+    event_table: string,
+    destination: string,
+    destinationMap: string,
+}
 /**
  * ERROR getting 404
  * @param req 
@@ -23,32 +35,42 @@ export default async function getRegionInfo(req?, res?) {
                         destinationMap varchar(255)
                     );`*/
     //call array from table
-    const {name, description, image, paths, loot_table, population_table, event_table, destination, destinationMap, method} = req.body
+    const {id, name, description, image, paths, loot_table, population_table, event_table, destination, destinationMap, method} = req.body || req.query;//?
     if(method=='set'){
         const newTile = await setNewTileByName(name, description, image, paths, loot_table, population_table, event_table, destination, destinationMap)
         //if(!newTile) return res.status(404).json({tile: [null], message: 'No tiles found', method: method, success: false})
-        return res.status(200).json({newTile})
+        return res.status(200).json(newTile)
     }
-    if(method=='get'||!method){
+    if(method=='get'){
         const tile = await getFirstTileByName(name)
         //if(!tile) return res.status(404).json({tile: [null], message: 'No tiles found', method: method, success: false})
-        return res.status(200).json({tile})
+        return res.status(200).json(tile)
     }
-    if(method=='getall'){
+    if(method=='getall'||!method){
         const tiles = await getAllTiles()
         //if(!tiles) return res.status(404).json({tile: [null], tiles: [null], message: 'No tiles found', method: method, success: false})
-        return res.status(200).json({tiles})
+        return res.status(200).json(tiles)
     }
-    if(method=='delete'){
+    if(method=='delete'&&id){
+        const deletedTile = await deleteTileById(id)
+        //if(!deletedTile) return res.status(404).json({tiles: [null], message: 'No tiles found', method: method, success: false})
+        return res.status(200).json(deletedTile)
+    }
+    if(method=='delete'&&name){
         const deletedTile = await deleteTileByName(name)
         //if(!deletedTile) return res.status(404).json({tiles: [null], message: 'No tiles found', method: method, success: false})
-        return res.status(200).json({deletedTile})
+        return res.status(200).json(deletedTile)
     }
-    if(method=='update'){
+    if(method=='update'&&id){
+        const updatedTile = await updateTileById(id, name, description, image, paths, loot_table, population_table, event_table, destination, destinationMap)
+        //if(!updatedTile) return res.status(404).json({tiles: [null], message: 'No tiles found', method: method, success: false})
+        return res.status(200).json(updatedTile)
+    }
+    /*if(method=='update'){
         const updatedTile = await updateTileByName(name, description, image, paths, loot_table, population_table, event_table, destination, destinationMap)
         //if(!updatedTile) return res.status(404).json({tiles: [null], message: 'No tiles found', method: method, success: false})
-        return res.status(200).json({updatedTile})
-    }
+        return res.status(200).json(updatedTile)
+    }*/
     /*try {
         const tiles: Region[] = await getTiles()
         return res.status(200).json({tiles: JSON.stringify(tiles), message: 'Tiles found', success: true})
@@ -91,17 +113,22 @@ async function getAllTiles() {
     }
 }*/
 async function setNewTileByName(name: string, description: string, image: string, paths: number[], loot_table: string[], population_table: string[], event_table: string[], destination: Position, destinationMap: string, id?) {
-    if(name.toLowerCase()=='all') return null
     const newTile = await sql`INSERT INTO aspect_dragons_tiles_ (name, description, image, paths, loot_table, population_table, event_table, destination, destinationMap) VALUES (${name}, ${description}, ${image}, ${paths}, ${loot_table}, ${population_table}, ${event_table}, ${destination}, ${destinationMap});`
     return newTile
 }
 async function deleteTileByName(name: string) {
-    if(name.toLowerCase()=='all') return null
     const deletedTile = await sql`DELETE FROM aspect_dragons_tiles_ WHERE name=${name};`
     return deletedTile
 }
+async function deleteTileById(id: number) {
+    const deletedTile = await sql`DELETE FROM aspect_dragons_tiles_ WHERE id=${id};`
+    return deletedTile
+}
 async function updateTileByName(name: string, description: string, image: string, paths: number[], loot_table: string[], population_table: string[], event_table: string[], destination: Position, destinationMap: string, id?) {
-    if(name.toLowerCase()=='all') return null
+    const updatedTile = await sql`UPDATE aspect_dragons_tiles_ SET description=${description}, image=${image}, paths=${paths}, loot_table=${loot_table}, population_table=${population_table}, event_table=${event_table}, destination=${destination}, destinationMap=${destinationMap} WHERE name=${name};`
+    return updatedTile
+}
+async function updateTileById(id: number, name: string, description: string, image: string, paths: number[], loot_table: string[], population_table: string[], event_table: string[], destination: Position, destinationMap: string) {
     const updatedTile = await sql`UPDATE aspect_dragons_tiles_ SET name=${name}, description=${description}, image=${image}, paths=${paths}, loot_table=${loot_table}, population_table=${population_table}, event_table=${event_table}, destination=${destination}, destinationMap=${destinationMap} WHERE id=${id};`
     return updatedTile
 }

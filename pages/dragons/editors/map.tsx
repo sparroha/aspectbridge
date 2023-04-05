@@ -7,6 +7,10 @@ import useSWR from 'swr'
 import requestIp from 'request-ip'
 import sql from "../../../lib/,base/sql"
 import SimpleNav from "../../../components/simplenav"
+import { a_d_maps_ } from "../../api/dragons/maps"
+import { a_d_tiles_ } from "../../api/dragons/regions"
+import useLog from "../../../components/conlog"
+import { ProfileByIp } from "../../login/[userlogin]"
 
 export type ActiveUser = {
   username: string | string[],
@@ -38,132 +42,143 @@ const menuLayout = {
     paddingRight: '20px',
     borderRadius: '10px'
 }
-export default function MapEditor({ip, homepage}) {
-    const router = useRouter()
-    const [method, setMethod] = useState(router.query.userlogin)
+export default function MapEditor({ip}) {
+    const [mapname, setMapname] = useState('tree')
     const [emap, setEmap] = useState(null)
     const [user, setUser] = useState(null)
-    const [showMenu, setShowMenu] = useState('show')
-    
-    useEffect(() => { 
-      if(user)router.push({pathname: '/'+homepage/*+'/'+user.username*/, query: {
-        username: user.username, email: user.email, access: user.access, message: user.message
-      }}
-    )},[user])
+    const {tiles, setTiles} = useTiles()
 
     return <Container>
-            <ProfileByIp ip={ip} setUser={setUser}/>
-
-            {/**Menu Dropdown example*/}
-            <div style={menuLayout}>{
-              showMenu === 'show'?<>
-                <Button onClick={() => {setShowMenu('hide')}}>{'\u21E3'}</Button>
-                <SimpleNav root={"./"} title={"dragons/editors"} links={["map", "region", "item", "entity"]} args={''}/>
-              </>
-              :<Button onClick={() => {setShowMenu('show')}}>{'\u2911'}</Button>
-            }</div>
-
-            <div style={loginLayout}>{
-              method === 'login'?<></>
-              :<Button variant="primary" type="submit" onClick={() => {setMethod('login')}}>Back to Login</Button>
-            }</div>
-
-            <div style={registerLayout}>{
-              method === 'registernew'?
-              <RegisterForm homepage={homepage}/>
-              :<Button variant="primary" type="submit" onClick={() => {setMethod('registernew')}}>Register New User</Button>
-            }</div>
-
+            <Row><Col xs={12}>
+              <input type="text" name="mapname" value={mapname} onChange={(e)=>setMapname(e.target.value)}/>
+              <EditMap access={user?.access} name={mapname} setEmap={setEmap}/>
+            </Col></Row>
+            <Row><Col xs={12}>
+              <EditTile access={user?.access} tiles={tiles} setTiles={setTiles}/>
+            </Col></Row>
+            <Row><Col xs={12}><ProfileByIp ip={ip} setUser={setUser}/></Col></Row>
           </Container>
 }
 
-/*good example but doesnt work
-export function StateToggle( {setState, state, key, name, style, children}){
-  return <div style={style}>{
-    state===key?
-    children
-    :<Button onClick={setState(key)}>{name}</Button>
-  }</div>
-}*/
-
-function LoginForm({setHash}){
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password))}} >
-      <Form.Group controlId="formEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
-      </Form.Group>
-      <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control required type="password" name="password" placeholder={"password"} onChange={(e)=>setPassword(e.target.value)}/>
-      </Form.Group>
-      <Button type="submit" >Login</Button>
-  </Form>
-}
-
-function RegisterForm({homepage}){
-  return <Form id={'registerForm'}>
-        <Form.Group controlId="formUsername">
-            <Form.Label>Username</Form.Label>
-            <Form.Control required type="text" name="username" placeholder={"username"}/>
-        </Form.Group>
-        <Form.Group controlId="formEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control required type="email" name="email" placeholder={"email"}/>
-        </Form.Group>
-        <Form.Group controlId="formPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control required type="password" name="password" placeholder="password"/>
-        </Form.Group>
-        <Form.Group controlId="formHidden">
-            <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
-        </Form.Group>
-        <Button variant="primary" type="submit" formAction={"/login/register"}>Register</Button>
-    </Form>
-}
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
-    const method = query.userlogin
-    const username = query.username
-    const email = query.email
-    const hash = sha224(query.email+''+query.password)
-    const homepage = query.homepage!=undefined?query.homepage:'bridge'
     const ip = await requestIp.getClientIp(req)
-    if(method === 'logout'){
-      await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
-    }
-    if(method === 'register'){
-      const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${hash}`
-      if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
-    }
-    return {props: {ip: ip, homepage: homepage}}
+    //const tiles = await sql`SELECT * FROM aspect_dragons_tiles_ WHERE 1`
+    return {props: {ip: ip}}
 }
 
-export function Profile({hash, ip, setUser}) {
-  const { data, error } = useSWR('../api/getuserdetails?hash='+hash+'&ip='+ip, { revalidateOnFocus: false })
-  if (error) return <div style={{visibility: 'hidden', position: 'absolute'}}>{JSON.stringify(error)}:No such user</div>
-  if (!data) return <div>loading...</div>
-  else {
-    let {username, email, access} = data
-    data.message = 'Welcome back '+data.username+'!'
-    setUser(data)
-    return <div>hello {username}!{`\<${email}\>`} Your access level is {access}. IP: {ip}</div>
-  }
+export function useMap({name, setEmap}){
+  const [map , setMap] = useState(null)
+  const { data, error } = useSWR('../../../api/dragons/maps?method=get&name='+name, { revalidateOnFocus: false })
+  const debug = true
+  useEffect(() => { return setEmap(data) },[data])
+  
+  return {map: map, setMap: setMap}
 }
-export function ProfileByIp({ip, setUser}) {
-  const { data, error } = useSWR('../api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
-  const debug = false
-  useEffect(() => { setUser(data) },[data])
-  if (error) return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>{JSON.stringify(error)}:User not cached. Please login or register.</Col></Row>
-  if (!data) return <div>loading...</div>
-  else {
-    let {username, email, access} = data
-    data.message = 'Welcome back '+data.username+'!'
-    return <Row>
-        <Col sm={4}></Col>
-        <Col sm={4} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>hello {username}!{`\<${email}\>`} Your access level is {access}.</Col>
-        <Col sm={4}></Col>
+export function EditMap({access, name, setEmap}) {
+  const { data, error } = useSWR('../../../api/dragons/maps?method=get&name='+name, { revalidateOnFocus: false })
+  const debug = true
+  useEffect(() => { return setEmap(data) },[data])
+  if (error) return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>{JSON.stringify(error)}:Map not cached.</Col></Row>
+  if (!data) return <div>loading Map...</div>
+
+  let mapConstructedFromDB: string[][][] = [[[]]]
+  data.forEach((tile: a_d_maps_, index: number) => {
+    mapConstructedFromDB[tile.mapX][tile.mapY][tile.mapZ] = tile.name
+  },[]);
+  
+  return <Row>
+      <Col sm={4}></Col>
+      <Col sm={4} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>
+        <h1>Map: {data}</h1>
+
+      </Col>
+      <Col sm={4}></Col>
+    </Row>
+}
+export function useTiles(){
+  const [tiles , setTiles] = useState(null)
+  const { data, error } = useSWR('../../../api/dragons/regions?method=getall', { revalidateOnFocus: true })
+  useEffect(() => { setTiles(data); return setTiles(data) },[data])
+  useLog(data)
+  
+  return {tiles: tiles, setTiles: setTiles}
+}
+export function EditTile({access, tiles, setTiles}) {
+  const [updateMethod, setUpdateMethod] = useState('update')
+  //const debug = true
+  //if (error) return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>{JSON.stringify(error)}:Tiles not cached.</Col></Row>
+  if (!tiles || typeof tiles === undefined) return <div>loading Region Tile...</div>
+  let tilesdata: a_d_tiles_[] = tiles
+  return <>
+    <iframe style={{display: 'default'}} name={'api'}></iframe>
+    <Row>
+      <Col xs={1}>
+        ID
+      </Col>
+      <Col xs={2}>
+        Region Name
+      </Col>
+      <Col xs={3}>
+        Description
+      </Col>
+      <Col xs={3}>
+        Paths Array
+      </Col>
+      <Col xs={1}>
+        Method
+      </Col>
+      <Col xs={1}>
+        /Action
+      </Col>
+    </Row>
+    <Form id={'ADD_TILE'} method={'post'} target={'api'}>
+      <Row>
+        <Col xs={1}>
+          <Form.Control value={0}/>
+        </Col>
+        <Col xs={2}>
+          <Form.Control required type="text" name="name" placeholder={'name'}/>
+        </Col>
+        <Col xs={3}>
+          <Form.Control type="text" name="description" placeholder={'description'}/>
+        </Col>
+        <Col xs={3}>
+          <Form.Control required type="text" name="paths" placeholder={'paths'}/>
+        </Col>
+        <Col xs={1}>
+          <Form.Control name="method" value={'set'}/>
+        </Col>
+        <Col xs={1}>
+          <Button type="submit" formAction={"../../../api/dragons/regions"}>Add</Button>
+        </Col>
       </Row>
-  }
+    </Form>
+
+    {tilesdata.map((tile: a_d_tiles_) => {
+      return <Form key={tile.id} id={'DELETE_TILE'} method={'post'}>
+            <Row>
+              <Col xs={1}>
+                <Form.Control name="id" value={tile.id}/>
+                <img src={tile.image} alt={tile.name} width={'16px'} height={'16px'}/>
+              </Col>
+              <Col xs={2}>
+                <Form.Control type="text" name="name" placeholder={tile.name}/>
+              </Col>
+              <Col xs={3}>
+                <Form.Control type="text" name="description" placeholder={tile.description}/>
+              </Col>
+              <Col xs={3}>
+                <Form.Control type="text" name="paths" placeholder={tile.paths}/>
+              </Col>
+              <Col xs={1}>
+                <select name="method" value={updateMethod} onChange={e => setUpdateMethod(e.target.value)}>
+                  <option value={"update"}>Update</option>
+                  {(access&&access==2)?<option value={"delete"}>Delete</option>:null}
+                </select>
+                <Button variant="primary" type="submit" formTarget={'api'} formAction={"../../../api/dragons/regions"}>Update</Button>
+              </Col>
+            </Row>
+          </Form>
+    })}
+  </>
 }
