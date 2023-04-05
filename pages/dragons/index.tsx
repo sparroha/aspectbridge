@@ -93,7 +93,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const entities = await sql`select * from aspect_dragons_entities_ WHERE 1;`
     console.log(entities)
 
-    const eventsL = eventList
     const map: MapData = getMap('treeOfLife')
-    return {props: {ip: ip, M: [map,map], E: eventsL}} 
+    return {props: {ip: ip, M: [map,map], E: eventList}} 
 }

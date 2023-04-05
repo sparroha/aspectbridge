@@ -20,42 +20,34 @@ export default async function getEvenInfo(req, res) {
                     );`*/
     //call array from table
     const { name, description, oninit, onupdate, ondestroy, method } = req.body || req.query;//?
-    if(method=='set') {
-        const event = await setNewEventByName(name, description, oninit, onupdate, ondestroy)
-        //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
-        return res.status(200).json({event})
+    if(method=='add') {
+        try{
+            const event = await addNewEvent(name, description, oninit, onupdate, ondestroy)
+            return res.status(200).json({event})
+        }catch(e){
+            return res.status(400).json({e})
+        }
     }
-    if(method=='get'||!method) {
+    else if(method=='get'||!method) {
         const event = await getFirstEventByName(name)
         //if(!event) return res.status(404).json({name: name, message: 'No event found.', method: method, success: false})
         return res.status(200).json({event})
     }
-    if(method=='getall') {
+    else if(method=='getall') {
         const events = await getAllEvents()
         //if(!events) return res.status(404).json({message: 'No event found.', method: method, success: false})
         return res.status(200).json({events})
     }
-    if(method=='delete') {
-        const event = await deleteEventByName(name)
+    else if(method=='delete') {
+        const events = await deleteEventByName(name)
         //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
-        return res.status(200).json({event, message: 'Event deleted', method: method, success: true})
+        return res.status(200).json({events})
     }
-    if(method=='update') {
+    else if(method=='update') {
         const event = await updateEventByName(name, description, oninit, onupdate, ondestroy)
-        //if(!event) return res.status(404).json({message: 'No event found.', method: method, success: false})
-        return res.status(200).json({event, message: 'Event updated', method: method, success: true})
-    }
-    /*let event = null
-    let events = null
-    let eventInfo: EventData[] = null//TODO<-- whats happening here?
-    try{eventInfo = await getEventData(req, res)}catch(error){console.log(error)}
-    
-    if( name ) {
-        event = await getFirstEventByName(name) //return only first event from sql query
-        events = await getAllEventByName(name)
-    }
-    if(!event) res.status(404).json({message: 'No event found.'})
-    else res.status(200).json({event, events, eventInfo})*/
+        if(!event) return res.status(404).json({message: 'No event found.'})
+        return res.status(200).json({event})
+    }else return res.status(404).json({message: 'No event found.'})
 }
 async function getFirstEventByName(name) {
     const [event] = await sql`SELECT * FROM aspect_dragons_events_ WHERE name = ${name};`
@@ -86,8 +78,7 @@ async function getAllEvents() {
         return [null]
     }
 }*/
-async function setNewEventByName(id? ,name?, description?, oninit?, onupdate?, ondestroy?) {
-    if(name.toLowerCase()=='all') return null
+async function addNewEvent(name?, description?, oninit?, onupdate?, ondestroy?) {
     const [event] = await sql`INSERT INTO aspect_dragons_events_ (name, description, oninit, onupdate, ondestroy) VALUES (${name}, ${description}, ${oninit}, ${onupdate}, ${ondestroy});`
     return event
 }
@@ -97,40 +88,28 @@ async function insertInto(table: string = 'aspect_dragons_events_', fields: stri
     return event
 }
 async function deleteEventByName(name) {
-    if(name.toLowerCase()=='all') return null
-    const [event] = await sql`DELETE FROM aspect_dragons_events_ WHERE name = ${name};`
-    return event
+    try {
+        await sql`DELETE FROM aspect_dragons_events_ WHERE name = ${name};`
+        return getAllEvents()
+    } catch (error) {
+        return error
+    }
 }
 //general use unteasted
 async function deleteFrom(table: string = 'aspect_dragons_events_', fields: string[], values: string[]) {
-    const [event] = await sql`DELETE FROM ${table} WHERE ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':' AND ')})};`
-    return event
+    try {
+        await sql`DELETE FROM ${table} WHERE ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':' AND ')})};`
+        return getAllEvents()
+    } catch (error) {
+        return error
+    }
 }
 async function updateEventByName(name, description?, oninit?, onupdate?, ondestroy?) {
-    if(name=='all') return null
     const [event] = await sql`UPDATE aspect_dragons_events_ SET ${description?'description = '+description+', ':'' }${oninit?'oninit = '+oninit+', ':'' }${onupdate?'onupdate = '+onupdate+', ':'' }${ondestroy?'ondestroy = '+ondestroy+', ':'' }WHERE name = ${name};`
     return event
 }
 //general use unteasted
-async function updateInto(table: string = 'aspect_dragons_events_', fields: string[], values: string[], whereFields: string[], whereValues: string[]) {
+/*async function updateInto(table: string = 'aspect_dragons_events_', fields: string[], values: string[], whereFields: string[], whereValues: string[]) {
     const [event] = await sql`UPDATE ${table} SET ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':', ')})} WHERE ${fields.map((f, i)=>{return f+' = '+values[i]+(i==fields.length-1?'':' AND ')})};`
     return event
-}
-//**********
-/*
-login(userCredentials) {
-    // Get a token from api server using the fetch api
-    return this.fetch(`${this.domain}/api/login`, {
-        method: 'POST',
-        headers: new Headers({'Content-Type':'application/json'}),
-        body: JSON.stringify(userCredentials)
-    }).then(res => return res.json())
-    .then((res) => {
-          console.log('statusCode:'+ res.status)
-          console.log('Token:' +res.token)
-          this.setToken(res.token) // Setting the token in localStorage
-          return Promise.resolve(res);
-
-    })
-}
-*/
+}*/

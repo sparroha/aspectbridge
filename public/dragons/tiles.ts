@@ -1,11 +1,6 @@
 import { EventData } from "../../pages/dragons/components/event"
 import { RegionData } from "../../pages/dragons/components/region"
 
-const enter: EventData = {
-    name: 'enter',
-    description: 'you enter this region',
-    oninit: ['enter'],
-}
 const treeOfLifeEntrance: RegionData  = {
     name: 'Tree of Life',
     description: 'The Tree of Life is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
@@ -13,14 +8,9 @@ const treeOfLifeEntrance: RegionData  = {
     paths: [1,1,1,1,0,1],
     items: [],
     monsters: [],
-    events: [enter],
+    events: ['enter'],
     destination: {x: 0, y: 1, z: 0},
     destinationMap: 'treeOfLife'
-}
-const fall: EventData = {
-    name: 'fall',
-    description: 'you fell',
-    oninit: ['fall'],
 }
 const air: RegionData = {
     name: 'Air',
@@ -29,13 +19,8 @@ const air: RegionData = {
     paths: [0,0,0,0,0,0],
     items: [],
     monsters: [],
-    events: [fall],
+    events: ['fall'],
     destination: {x: 0, y: 0, z: 0}
-}
-const exit: EventData = {
-    name: 'exit',
-    description: 'you teft this region',
-    oninit: ['exit']
 }
 const leaveMap: RegionData = {
     name: 'Exit',
@@ -44,7 +29,7 @@ const leaveMap: RegionData = {
     paths: [0,0,0,0,0,0],
     items: [],
     monsters: [],
-    events: [exit]
+    events: ['exit']
 }
 const exitWorldTree: RegionData = {
     name: 'Exit',
@@ -53,7 +38,7 @@ const exitWorldTree: RegionData = {
     paths: [0,0,0,0,0,0],
     items: [],
     monsters: [],
-    events: [exit],
+    events: ['exit'],
     destination: {x: 3, y: 4, z: 1},
     destinationMap: 'treeOfLife'
 }
@@ -135,11 +120,6 @@ const vineUpDown: RegionData = {
     paths: [1,1,0,1,0,0]
 }
 export const regionLibrary = {
-    events: {
-        enter: enter,
-        fall: fall,
-        exit: exit
-    },
     air: air,
     treeOfLifeEntrance: treeOfLifeEntrance,
     exitWorldTree: exitWorldTree,

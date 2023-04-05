@@ -36,8 +36,8 @@ export type RegionData = {
     image?: string,
     paths: number[],//north, east, south, west, up, down
     items?: string[],//list of items that may apear in this region
-    monsters?: any[],//list of monsters that may apear in this region
-    events?: any[],//list of events that may apear in this region
+    monsters?: string[],//list of monsters that may apear in this region
+    events?: string[],//list of events that may apear in this region
     destination?: Position,
     destinationMap?: string,
 }
