@@ -16,7 +16,7 @@ export type MapData = {
 }
 export default function MapFollow({game}: {game: GameData}){
     const [update, setUpdate] = useState()
-    const [lastIndex, setLastIndex] = useState(game.eventIndex)
+    const [lastIndex, setLastIndex] = useState(game?.eventIndex||0)
     if(!game) return <>Map Loading...</>
     useEffect(()=>{
         setLastIndex(game.eventIndex)
