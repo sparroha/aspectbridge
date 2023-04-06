@@ -154,13 +154,15 @@ export function EditTile({access, tiles, setTiles}) {
     </Form>
 
     {tilesdata.map((tile: a_d_tiles_, index: number) => {
+      let image = tile&&typeof tile.image !== undefined&&tile.image!=null&&tile.image!=''?tile.image:'tree.png'
+      let imgurl = '../../../dragons/assets/'+image
       return <Form key={tile.id} id={'DELETE_TILE'} method={'post'}>
             <Row>
-              <Col xs={8} sm={5} style={{...background, backgroundImage: 'url("../../dragons/assets/tree.png'+'")'}}>
+              <Col xs={8} sm={5} style={{...background, backgroundImage: 'url("'+imgurl+'")'}}>
                 <Row>
                   <Col xs={3}>
                     <Form.Control name="id" value={tile.id}/>
-                    <img src={tile.image} alt={tile.name} width={'16px'} height={'16px'}/>
+                    {image}<img src={imgurl} alt={tile.name} width={'16px'} height={'16px'}/>
                   </Col>
                   <Col xs={9}>
                     <Form.Control type="text" name="name" placeholder={tile.name}/>
