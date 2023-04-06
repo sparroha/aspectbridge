@@ -42,6 +42,10 @@ const menuLayout = {
     paddingRight: '20px',
     borderRadius: '10px'
 }
+const background = {
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+}
 export default function MapEditor({ip}) {
     const [mapname, setMapname] = useState('tree')
     const [emap, setEmap] = useState(null)
@@ -112,7 +116,7 @@ export function EditTile({access, tiles, setTiles}) {
   return <>
     <iframe style={{display: 'default'}} name={'api'}></iframe>
     <Row>
-      <Col xs={1}>
+      <Col xs={2}>
         ID
       </Col>
       <Col xs={2}>
@@ -124,16 +128,13 @@ export function EditTile({access, tiles, setTiles}) {
       <Col xs={3}>
         Paths Array
       </Col>
-      <Col xs={1}>
-        Method
-      </Col>
-      <Col xs={1}>
-        /Action
+      <Col xs={2}>
+        Action
       </Col>
     </Row>
     <Form id={'ADD_TILE'} method={'post'} target={'api'}>
       <Row>
-        <Col xs={1}>
+        <Col xs={2}>
           <Form.Control value={0}/>
         </Col>
         <Col xs={2}>
@@ -145,32 +146,38 @@ export function EditTile({access, tiles, setTiles}) {
         <Col xs={3}>
           <Form.Control required type="text" name="paths" placeholder={'paths'}/>
         </Col>
-        <Col xs={1}>
+        <Col xs={2}>
           <Form.Control name="method" value={'set'}/>
-        </Col>
-        <Col xs={1}>
           <Button type="submit" formAction={"../../../api/dragons/regions"}>Add</Button>
         </Col>
       </Row>
     </Form>
 
-    {tilesdata.map((tile: a_d_tiles_) => {
+    {tilesdata.map((tile: a_d_tiles_, index: number) => {
       return <Form key={tile.id} id={'DELETE_TILE'} method={'post'}>
             <Row>
-              <Col xs={1}>
-                <Form.Control name="id" value={tile.id}/>
-                <img src={tile.image} alt={tile.name} width={'16px'} height={'16px'}/>
-              </Col>
-              <Col xs={2}>
-                <Form.Control type="text" name="name" placeholder={tile.name}/>
+              <Col xs={8} sm={5} style={{...background, backgroundImage: 'url("../../dragons/assets/tree.png'+'")'}}>
+                <Row>
+                  <Col xs={3}>
+                    <Form.Control name="id" value={tile.id}/>
+                    <img src={tile.image} alt={tile.name} width={'16px'} height={'16px'}/>
+                  </Col>
+                  <Col xs={9}>
+                    <Form.Control type="text" name="name" placeholder={tile.name}/>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <Form.Control type="text" name="description" placeholder={tile.description}/>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={6}>
+                    <Form.Control type="text" name="paths" placeholder={tile.paths}/>
+                  </Col>
+                </Row>
               </Col>
               <Col xs={3}>
-                <Form.Control type="text" name="description" placeholder={tile.description}/>
-              </Col>
-              <Col xs={3}>
-                <Form.Control type="text" name="paths" placeholder={tile.paths}/>
-              </Col>
-              <Col xs={1}>
                 <select name="method" value={updateMethod} onChange={e => setUpdateMethod(e.target.value)}>
                   <option value={"update"}>Update</option>
                   {(access&&access==2)?<option value={"delete"}>Delete</option>:null}
