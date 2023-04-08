@@ -35,9 +35,9 @@ export type RegionData = {
     description?: string,
     image?: string,
     paths: number[],//north, east, south, west, up, down
-    items?: string[],//list of items that may apear in this region
-    monsters?: string[],//list of monsters that may apear in this region
-    events?: string[],//list of events that may apear in this region
+    loot_table?: string[],//list of items that may apear in this region
+    population_table?: string[],//list of monsters that may apear in this region
+    event_table?: string[],//list of events that may apear in this region
     destination?: Position,
     destinationMap?: string,
 }

@@ -9,7 +9,7 @@ export type Entity = {
     onaction?: string[],//JSON.stringify(['action1', 'action2'])
     
 }
-export default function Region({creature}: {creature: Entity}){
+export default function Entity({creature}: {creature: Entity}){
     if(!creature) return <>Creature Loading...</>
     return <Button style={{position: 'relative', backgroundImage: `url(${creature.image})`}}>
                 <Row height={'33vh'}>

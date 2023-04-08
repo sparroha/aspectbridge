@@ -20,12 +20,12 @@ export default function MapFollow({game}: {game: GameData}){
     if(!game) return <>Map Loading...</>
     useEffect(()=>{
         setLastIndex(game.eventIndex)
-        return !game.activeMap.regions[game.position.z][game.position.x][game.position.y].events?game.setEventIndex(game.events.findIndex((e: EventData)=>{return e.name === 'none'})):
-        game.activeMap.regions[game.position.z][game.position.x][game.position.y].events?.forEach((event: string)=>{
+        return !game.activeMap.regions[game.position.z][game.position.x][game.position.y].event_table?game.setEventIndex(game.events.findIndex((e: EventData)=>{return e.name === 'none'})):
+        game.activeMap.regions[game.position.z][game.position.x][game.position.y].event_table?.forEach((event: string)=>{
             let E: EventData = game.events.find((e: EventData)=>{return e.name === event})//thank you copilot
             let I: number = game.events.findIndex((e: EventData)=>{return e.name === event})
             game.setEventIndex(I)
-            E?.oninit?.forEach((event: string)=>{
+            E.oninit.forEach((event: string)=>{
                 console.log(event)
                 switch(event){
                     case 'fall':
@@ -74,11 +74,11 @@ const rl = regionLibrary;
 type Floor = RegionData[][];
 const treeTrunk: Floor = [
     [rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air],
-    [rl.air, rl.air, rl.air, rl.air, {paths: [0,0,1,0,1,1], events: []}, rl.air, rl.air, rl.air],
-    [rl.air, rl.air, {paths: [0,1,0,0,1,1], events: []}, {paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], events: []}, rl.air],
+    [rl.air, rl.air, rl.air, rl.air, {paths: [0,0,1,0,1,1], event_table: []}, rl.air, rl.air, rl.air],
+    [rl.air, rl.air, {paths: [0,1,0,0,1,1], event_table: []}, {paths: [1,0,0,1,1,1]}, {paths: [1,0,1,0,1,1]}, {paths: [1,1,0,0,1,1]}, {paths: [0,0,0,1,1,1], event_table: []}, rl.air],
     [rl.air, rl.air, rl.air, {paths: [0,1,0,1,1,1]}, rl.vineUpDown, {paths: [0,1,0,1,1,1]}, rl.air, rl.air],
-    [rl.air, rl.air, {paths: [0,1,0,0,1,1], events: []}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], events: ['fall']}, rl.air],
-    [rl.air, rl.air, rl.air, {paths: [1,0,0,0,1,1], events: []}, rl.air, {paths: [1,0,0,0,1,1], events: []}, {paths: [0,0,0,0,1,1], events: []}, rl.air],
+    [rl.air, rl.air, {paths: [0,1,0,0,1,1], event_table: []}, {paths: [0,0,1,1,1,1]}, {paths: [0,0,1,0,1,1]}, {paths: [0,1,1,0,1,1]}, {paths: [0,0,0,1,1,1], event_table: ['fall']}, rl.air],
+    [rl.air, rl.air, rl.air, {paths: [1,0,0,0,1,1], event_table: []}, rl.air, {paths: [1,0,0,0,1,1], event_table: []}, {paths: [0,0,0,0,1,1], event_table: []}, rl.air],
     [rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air],
     [rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air, rl.air],
 ]

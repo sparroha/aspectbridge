@@ -65,9 +65,7 @@ export default function RegionEditor({ip}) {
 }
 export function useTiles(setTiles){
     const fetcher = (url) => fetch(url).then((res) => res.json()).then((data) => { return setTiles(data) })
-    const { data, error } = useSWR('../../../api/dragons/regions?method=getall', fetcher/*{ revalidateOnFocus: true }*/)
-    //useEffect(() => { return setTiles(data) },[data])  
-    //return data
+    const { data, error } = useSWR('../../../api/dragons/regions?method=getall', fetcher)
   }
   export function EditTiles({access, tiles}) {
     //const debug = true
