@@ -119,7 +119,7 @@ function Send({username, setUpdate}){
       <Form.Control type='text' style={{visibility: 'collapse'}} name='username' defaultValue={name}/> 
       <Row>
           <Col xs={10}>
-            <textarea name='send' style={{width: '100%'}} onChange={(event)=>{setSend(()=>{alert(event.target.value);return event.target.value})}} value={send}/>
+            <textarea name='send' style={{width: '100%'}} onChange={(event)=>{setSend(event.target.value)}} value={send}/>
           </Col>
           <Col xs={2}>
             <Button type='submit'>Send</Button>
