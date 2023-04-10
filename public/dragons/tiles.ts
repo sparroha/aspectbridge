@@ -6,9 +6,9 @@ const treeOfLifeEntrance: RegionData  = {
     description: 'The Tree of Life is a symbol of life and rebirth. It is a symbol of the interconnectedness of all life on our planet. It is a symbol of the interconnectedness of all life in the universe. It is a symbol of the interconnectedness of all life in the multive',
     image: 'tree.png',
     paths: [1,1,1,1,0,1],
-    items: [],
-    monsters: [],
-    events: ['enter'],
+    loot_table: [],
+    population_table: [],
+    event_table: ['enter'],
     destination: {x: 0, y: 1, z: 0},
     destinationMap: 'treeOfLife'
 }
@@ -17,9 +17,9 @@ const air: RegionData = {
     description: 'gravity takes over',
     image: 'air.png',
     paths: [0,0,0,0,0,0],
-    items: [],
-    monsters: [],
-    events: ['fall'],
+    loot_table: [],
+    population_table: [],
+    event_table: ['fall'],
     destination: {x: 0, y: 0, z: 0}
 }
 const leaveMap: RegionData = {
@@ -27,18 +27,18 @@ const leaveMap: RegionData = {
     description: 'you have reached the end of the world',
     image: 'exit.png',
     paths: [0,0,0,0,0,0],
-    items: [],
-    monsters: [],
-    events: ['exit']
+    loot_table: [],
+    population_table: [],
+    event_table: ['exit']
 }
 const exitWorldTree: RegionData = {
     name: 'Exit',
     description: 'you have reached the end of the world',
     image: 'exit.png',
     paths: [0,0,0,0,0,0],
-    items: [],
-    monsters: [],
-    events: ['exit'],
+    loot_table: [],
+    population_table: [],
+    event_table: ['exit'],
     destination: {x: 3, y: 4, z: 1},
     destinationMap: 'treeOfLife'
 }
