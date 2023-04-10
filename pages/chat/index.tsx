@@ -78,7 +78,7 @@ function Messages({update, setUpdate, access, style}){
     mutate()
   }}
   return <div id='messages' style={{maxHeight: '30vh', ...style}}>{data?.map((message, i)=>{
-      return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'<'}{message.timestamp}{'> ['}{message.username}{'] '}{message.message}<br/></p>
+      return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'<'}{message.timestamp}{'> ['}{message.username}{'] '}{message.message.Replace('\r\n','<br/>')}<br/></p>
   })}</div>
 }
 function Users(style){
