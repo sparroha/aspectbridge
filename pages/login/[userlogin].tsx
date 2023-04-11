@@ -160,7 +160,15 @@ export function ProfileByIp({ip, setUser}) {
   const { data, error } = useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
   const debug = true
   useEffect(() => { setUser(data) },[data])
-  if (error) return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>{JSON.stringify(error)}:User not cached. Please login or register.</Col></Row>
+  if (error) {
+    let guest = {
+        username: 'guest'+ip.split(".")[3],
+        email: '',
+        access: 0
+    }
+    setUser(guest)
+    return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>{JSON.stringify(error)}:User not cached. Please login or register.</Col></Row>
+  }
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data
