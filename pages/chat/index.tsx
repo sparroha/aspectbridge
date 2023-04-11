@@ -180,7 +180,7 @@ const removeInactiveUsers = async (users, inactivePeriod) => {
 
   users.forEach(user => {
     let lastActive = new Date(user.last_active).getTime();
-    if(lastActive <= inactiveTime){
+    if(lastActive >= inactiveTime){
       fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
       .then((res)=>res.json())
       .then((data)=>{console.log(data?'user '+data.username+' removed for inactivity because\n lastActive'+lastActive+'<='+inactiveTime:'user not removed for inactivity')})
