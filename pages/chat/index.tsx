@@ -9,12 +9,15 @@ import useLog from '../../components/conlog';
 const scroll = {
   overflowY: 'scroll'
 }
+
+/**
+ * Chat App
+ * @param props: ip, user, session
+ * @returns 
+ */
 export default function Chat(props){
   const [user, setUser] = useState({username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
-  //const [session, setSession] = useState(null)
   const [update, setUpdate] = useState(false)
-  const [send, setSend] = useState('')
-  const [messages, setMessages] = useState(null)
 
   useEffect(()=>{
     if(user) {
@@ -62,6 +65,12 @@ export default function Chat(props){
       <ProfileByIp ip={props.ip} setUser={setUser}/>
   </Container>
 }
+
+/**
+ * Messages
+ * @param param0: update, setUpdate, access, style 
+ * @returns 
+ */
 function Messages({update, setUpdate, access, style}){
   //const [dataSorted, setDataSorted] = useState(null)
   const {data, error, mutate} = useSWR('api/chat/messages', { refreshInterval: 500 })
@@ -73,7 +82,6 @@ function Messages({update, setUpdate, access, style}){
     console.log("No Data")
     if(!data) return
     console.log(data)
-    setFilteredData(removeInactiveUsers(data, (1000*60*3)))
     //if(data) setDataSorted(data.sort((a, b) => {new Date(a.timestamp).getMilliseconds() - new Date(b.timestamp).getMilliseconds()}))
   }, [data])
   useEffect(()=>{
@@ -98,11 +106,17 @@ function Messages({update, setUpdate, access, style}){
       return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'<'}{message.timestamp}{'> ['}{message.username}{'] '}{message.message}<br/></p>
   })}</div>
 }
+
+/**
+ * Users
+ * @param style: style
+ * @returns 
+ */
 function Users(style){
   const {data, error} = useSWR('api/chat/users', { refreshInterval: 2000 })
+  
   useEffect(()=>{
-    const messages = document.getElementById('messages')
-    messages.scrollTop = messages.scrollHeight
+    if(data) removeInactiveUsers(data, (1000*60*3))
     console.log(data)
   }, [data])
   return <div id='active_users' style={{ maxHeight: '50vh', ...style}}>{data?.map((user, i)=>{
@@ -110,6 +124,11 @@ function Users(style){
   })}</div>
 }
 
+/**
+ * Send
+ * @param param0: username, setUpdate
+ * @returns
+ */
 function Send({username, setUpdate}){
   const [send, setSend] = useState('')
   const [name, setName] = useState('')
@@ -147,30 +166,25 @@ function Send({username, setUpdate}){
   </Form>
 }
 
-function removeInactiveUsers(users, inactivePeriod) {
+/**
+ * Remove Inactive Users
+ * @param users: array of users
+ * @param inactivePeriod: in milliseconds
+ */
+const removeInactiveUsers = async (users, inactivePeriod) => {
   const now = new Date();
   const inactiveTime = now.getTime() - inactivePeriod;
 
-  return users.filter((user) => {
-    const lastActive = new Date(user.last_active).getTime();
-    return lastActive > inactiveTime;
+  users.forEach(user => {
+    let lastActive = new Date(user.last_active).getTime();
+    if(lastActive <= inactiveTime){
+      fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+      .then((res)=>res.json())
+      .then((data)=>{console.log(data?'user '+data.username+' removed for inactivity':'user not removed for inactivity')})
+    }
   });
 }
 
-/*function NavBar({ user, homepage }) {
-  return (
-    <Nav>
-      <Nav.Link 
-        href={
-          '/login/' + (user ? 'logout' : 'login') + 
-          '?homepage=' + homepage + 
-          (user ? '&username=' + user.username : '')
-        }>
-        {user ? 'Logout ' + user.username : 'Login'}
-      </Nav.Link>{' '}
-    </Nav>
-  );
-}*/
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const ip = await requestIp.getClientIp(context.req);
