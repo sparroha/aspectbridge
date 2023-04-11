@@ -116,10 +116,11 @@ function Users(style){
   const {data, error} = useSWR('api/chat/users', { refreshInterval: 2000 })
   
   useEffect(()=>{
-    if(data) {
-      console.log('BEFORE: '+data)
+    if(!data) return
+    return () =>{
+      console.log('BEFORE: '+JSON.stringify(data))
       removeInactiveUsers(data, (1000*60*3))
-      console.log('AFTER: '+data)
+      console.log('AFTER: '+JSON.stringify(data))
     }
   }, [data])
   return <div id='active_users' style={{ maxHeight: '50vh', ...style}}>{data?.map((user, i)=>{
@@ -180,10 +181,10 @@ const removeInactiveUsers = async (users, inactivePeriod) => {
 
   users.forEach(user => {
     let lastActive = new Date(user.last_active).getTime();
-    if(lastActive >= inactiveTime){
+    if(lastActive <= inactiveTime){
       fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
       .then((res)=>res.json())
-      .then((data)=>{console.log(data?'user '+data.username+' removed for inactivity because\n lastActive'+lastActive+'>='+inactiveTime:'user not removed for inactivity')})
+      .then((data)=>{console.log(data?'user '+user.username+' removed for inactivity because\n lastActive'+lastActive+'<='+inactiveTime:'user not removed for inactivity')})
     }
   });
 }
