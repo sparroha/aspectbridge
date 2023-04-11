@@ -30,8 +30,10 @@ export default function Chat(props){
     .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
   }
   useEffect(()=>{
-    if(user) window.addEventListener('unload', makeinactive);
-    if(user) window.addEventListener('beforeunload', makeinactive);
+    if(user) {
+      window.addEventListener('unload', makeinactive);
+      window.addEventListener('beforeunload', makeinactive);
+  }
   }, [user])
   
   return <Container><LoginNav user={user} homepage={'chat'}/>
