@@ -18,29 +18,23 @@ const scroll = {
 export default function Chat(props){
   const [user, setUser] = useState({username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
   const [update, setUpdate] = useState(false)
-
-  useEffect(()=>{
-    let useractivate = ()=>{
-      fetch('api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
-      .then((res)=>res.json())
-      .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
-    }
-    if(user) useractivate()
-    let refreshactivity = setInterval(() => {
-      if(user) useractivate()
-    }, 1000*60*1);
-    return () => clearInterval(refreshactivity);
-  }, [user])
+  const useractivate = ()=>{
+    fetch('api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+    .then((res)=>res.json())
+    .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
+  }
   const makeinactive = (event) => {
     // send an API command to remove the user from the session
     fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
     .then((res)=>res.json())
-    .then((data)=>{console.log(data?'user removed':'user not removed')})
+    .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
   }
+
   useEffect(()=>{
     if(user) window.addEventListener('unload', makeinactive);
     if(user) window.addEventListener('beforeunload', makeinactive);
   }, [user])
+  
   return <Container><LoginNav user={user} homepage={'chat'}/>
       <Row>
         <Col xs={8}>
@@ -51,7 +45,7 @@ export default function Chat(props){
           </Row>
           <Row>
             <Col xs={12}>
-              <Send username={user?.username} setUpdate={setUpdate}/>
+              <Send username={user?.username} setUpdate={setUpdate} useractivate={useractivate}/>
             </Col>
           </Row>
         </Col>
@@ -76,9 +70,8 @@ function Messages({update, setUpdate, access, style}){
   useEffect(()=>{
     const messages = document.getElementById('messages')
     messages.scrollTop = messages.scrollHeight
-    console.log("No Data")
     if(!data) return
-    console.log(data)
+    //console.log(data)
     //if(data) setDataSorted(data.sort((a, b) => {new Date(a.timestamp).getMilliseconds() - new Date(b.timestamp).getMilliseconds()}))
   }, [data])
   useEffect(()=>{
@@ -130,7 +123,7 @@ function Users(style){
  * @param param0: username, setUpdate
  * @returns
  */
-function Send({username, setUpdate}){
+function Send({username, setUpdate, useractivate}){
   const [send, setSend] = useState('')
   const [name, setName] = useState('')
   useEffect(()=>{
@@ -151,6 +144,7 @@ function Send({username, setUpdate}){
     .catch(error => console.error(error));
     setSend('')
     setUpdate(true)
+    useractivate()
   }
   return <Form onSubmit={handleSubmit} style={{ maxHeight: '20vh'}}>
       <Form.Control type='text' style={{visibility: 'collapse'}} name='username' defaultValue={name}/> 
