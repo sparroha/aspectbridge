@@ -20,29 +20,26 @@ export default function Chat(props){
   const [update, setUpdate] = useState(false)
 
   useEffect(()=>{
-    if(user) {
+    let useractivate = ()=>{
       fetch('api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
       .then((res)=>res.json())
-      .then((data)=>{console.log(data?'user added':'user not added')})
+      .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
     }
+    if(user) useractivate()
+    let refreshactivity = setInterval(() => {
+      if(user) useractivate()
+    }, 1000*60*1);
+    return () => clearInterval(refreshactivity);
   }, [user])
+  const makeinactive = (event) => {
+    // send an API command to remove the user from the session
+    fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+    .then((res)=>res.json())
+    .then((data)=>{console.log(data?'user removed':'user not removed')})
+  }
   useEffect(()=>{
-    if(user) window.addEventListener('unload', function (event) {
-      // send an API command to remove the user from the session
-      fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
-      .then((res)=>res.json())
-      .then((data)=>{console.log(data?'user removed':'user not removed')})
-    });
-  }, [user])
-  useEffect(()=>{
-    const userTimeout = setTimeout(() => {
-      if(user) {
-        fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
-        .then((res)=>res.json())
-        .then((data)=>{console.log(data?'user removed':'user not removed')})
-      }
-    }, 1000*60*3);
-    return () => clearTimeout(userTimeout);
+    if(user) window.addEventListener('unload', makeinactive);
+    if(user) window.addEventListener('beforeunload', makeinactive);
   }, [user])
   return <Container><LoginNav user={user} homepage={'chat'}/>
       <Row>
@@ -116,12 +113,12 @@ function Users(style){
   const {data, error} = useSWR('api/chat/users', { refreshInterval: 2000 })
   
   useEffect(()=>{
-    if(!data) return
-    return () =>{
+    const userTimeout = setTimeout(() =>{
       console.log('BEFORE: '+JSON.stringify(data))
       removeInactiveUsers(data, (1000*60*3))
       console.log('AFTER: '+JSON.stringify(data))
-    }
+    }, 1000*60*1);
+    return () => clearTimeout(userTimeout);
   }, [data])
   return <div id='active_users' style={{ maxHeight: '50vh', ...style}}>{data?.map((user, i)=>{
       return <p key={i} style={{fontSize: '10px'}}>{user.username}{'['}{user.last_active}{']'}<br/></p>
@@ -179,7 +176,7 @@ const removeInactiveUsers = async (users, inactivePeriod) => {
   const now = new Date();
   const inactiveTime = now.getTime() - inactivePeriod;
 
-  users.forEach(user => {
+  users?.forEach(user => {
     let lastActive = new Date(user.last_active).getTime();
     if(lastActive <= inactiveTime){
       fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
