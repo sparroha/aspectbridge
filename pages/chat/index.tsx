@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ProfileByIp } from '../login/[userlogin]';
+import { LoginNav, ProfileByIp } from '../login/[userlogin]';
 import { GetServerSideProps } from 'next';
 import requestIp from 'request-ip';
 import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
@@ -10,7 +10,7 @@ const scroll = {
   overflowY: 'scroll'
 }
 export default function Chat(props){
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState({username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
   //const [session, setSession] = useState(null)
   const [update, setUpdate] = useState(false)
   const [send, setSend] = useState('')
@@ -31,7 +31,7 @@ export default function Chat(props){
       .then((data)=>{console.log(data?'user removed':'user not removed')})
     });
   }, [user])
-  return <Container><NavBar user={user} homepage={'chat'}/>
+  return <Container><LoginNav user={user} homepage={'chat'}/>
       <Row>
         <Col xs={8}>
           <Row>
@@ -130,7 +130,7 @@ function Send({username, setUpdate}){
   </Form>
 }
 
-function NavBar({ user, homepage }) {
+/*function NavBar({ user, homepage }) {
   return (
     <Nav>
       <Nav.Link 
@@ -143,7 +143,7 @@ function NavBar({ user, homepage }) {
       </Nav.Link>{' '}
     </Nav>
   );
-}
+}*/
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const ip = await requestIp.getClientIp(context.req);

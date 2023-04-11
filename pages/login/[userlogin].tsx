@@ -2,7 +2,7 @@ import { sha224 } from "js-sha256"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
 import { SetStateAction, useEffect, useState } from "react"
-import { Button, Col, Container, Form, Row } from "react-bootstrap"
+import { Button, Col, Container, Form, Nav, Row } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
@@ -157,29 +157,14 @@ export function Profile({hash, ip, setUser}) {
   }
 }
 export function ProfileByIp({ip, setUser}) {
-  const [guestname, setGuestname] = useState('guest')
-  useEffect(() => {
-    console.log('ip changed: '+ip)
-    if(ip&&guestname == 'guest')setGuestname(guestname+ip.split(".")[2]+ip.split(".")[3])
-    else setGuestname(error)
-  },[ip])
-
   const { data, error } = useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
   const debug = true
   useEffect(() => {
     setUser(data)
-    if (error){
-      let guest = {
-        username: guestname,
-        email: '',
-        access: 0
-      }
-      setUser(guest)
-    }
-  },[data,error])
+  },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
-        {JSON.stringify(error)}\\{guestname}:User not cached. Please login or register.
+        {JSON.stringify(error)}:User not cached. Please login or register.
       </Col></Row>
   }
   if (!data) return <div>loading...</div>
@@ -192,4 +177,19 @@ export function ProfileByIp({ip, setUser}) {
         <Col sm={4}></Col>
       </Row>
   }
+}
+
+export function LoginNav({ user, homepage }) {
+  return (
+    <Nav>
+      <Nav.Link 
+        href={
+          '/login/' + (user ? 'logout' : 'login') + 
+          '?homepage=' + homepage + 
+          (user ? '&username=' + user.username : '')
+        }>
+        {user ? 'Logout ' + user.username : 'Login'}
+      </Nav.Link>{' '}
+    </Nav>
+  );
 }
