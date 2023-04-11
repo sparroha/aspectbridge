@@ -24,7 +24,7 @@ export default function Chat(props){
     }
   }, [user])
   useEffect(()=>{
-    if(user) window.addEventListener('beforeunload', function (event) {
+    if(user) window.addEventListener('unload', function (event) {
       // send an API command to remove the user from the session
       fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
       .then((res)=>res.json())
@@ -55,17 +55,22 @@ export default function Chat(props){
 function Messages({update, setUpdate, access, style}){
   //const [dataSorted, setDataSorted] = useState(null)
   const {data, error, mutate} = useSWR('api/chat/messages', { refreshInterval: 500 })
+  const [filteredData, setFilteredData] = useState(null)
   let refresh = false
   useEffect(()=>{
     const messages = document.getElementById('messages')
     messages.scrollTop = messages.scrollHeight
+    console.log("No Data")
+    if(!data) return
     console.log(data)
+    setFilteredData(removeInactiveUsers(data, (1000*60*3)))
     //if(data) setDataSorted(data.sort((a, b) => {new Date(a.timestamp).getMilliseconds() - new Date(b.timestamp).getMilliseconds()}))
   }, [data])
   useEffect(()=>{
     if(update) {mutate();setUpdate(false)}
   }, [update])
   function handleDelete(message){return () =>{
+    let filteredData = null;
     fetch('/api/chat/deletesend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }, 
@@ -130,6 +135,16 @@ function Send({username, setUpdate}){
           </Col>
       </Row>
   </Form>
+}
+
+function removeInactiveUsers(users, inactivePeriod) {
+  const now = new Date();
+  const inactiveTime = now.getTime() - inactivePeriod;
+
+  return users.filter((user) => {
+    const lastActive = new Date(user.last_active).getTime();
+    return lastActive > inactiveTime;
+  });
 }
 
 /*function NavBar({ user, homepage }) {

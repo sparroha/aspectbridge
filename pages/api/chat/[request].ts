@@ -68,6 +68,18 @@ export default async function chat(req, res) {
           const users = await sql`SELECT * FROM aspect_chat_users_ ORDER BY last_active DESC;`
           res.status(200).json(users)
           break
+          case 'resetusers':
+            await sql`DROP TABLE IF EXISTS aspect_chat_users_;`
+            await sql`CREATE TABLE IF NOT EXISTS aspect_chat_users_ (
+              id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+              username VARCHAR(100) NOT NULL UNIQUE,
+              last_active TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              expire TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP + INTERVAL 3 MINUTE
+            );`
+            //Add a Agent job that periodically deletes rows that have expired
+            //await sql`CREAT INDEX aspect_chat_users_ttl_column_idx_ ON aspect_chat_users_ (ttl_column) WITH (expiry_delay = '0');`
+            res.status(200).json({ alert: 'users reset' })
+            break
         default:
           res.status(400).json({
             alert: 'Invalid request',
