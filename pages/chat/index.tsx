@@ -31,6 +31,16 @@ export default function Chat(props){
       .then((data)=>{console.log(data?'user removed':'user not removed')})
     });
   }, [user])
+  useEffect(()=>{
+    const userTimeout = setTimeout(() => {
+      if(user) {
+        fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+        .then((res)=>res.json())
+        .then((data)=>{console.log(data?'user removed':'user not removed')})
+      }
+    }, 1000*60*3);
+    return () => clearTimeout(userTimeout);
+  }, [user])
   return <Container><LoginNav user={user} homepage={'chat'}/>
       <Row>
         <Col xs={8}>
