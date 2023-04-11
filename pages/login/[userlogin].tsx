@@ -157,9 +157,11 @@ export function Profile({hash, ip, setUser}) {
   }
 }
 export function ProfileByIp({ip, setUser}) {
-  let guestusername = 'guest'
+  const [guestname, setGuestname] = useState('guest')
   useEffect(() => {
-    guestusername == 'guest'?guestusername = 'guest'+ip.split(".")[2]+ip.split(".")[3]:'error'
+    console.log('ip changed: '+ip)
+    if(ip&&guestname == 'guest')setGuestname(guestname+ip.split(".")[2]+ip.split(".")[3])
+    else setGuestname(error)
   },[ip])
 
   const { data, error } = useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
@@ -168,7 +170,7 @@ export function ProfileByIp({ip, setUser}) {
     setUser(data)
     if (error){
       let guest = {
-        username: guestusername,
+        username: guestname,
         email: '',
         access: 0
       }
@@ -177,7 +179,7 @@ export function ProfileByIp({ip, setUser}) {
   },[data,error])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
-        {JSON.stringify(error)}\\{guestusername}:User not cached. Please login or register.
+        {JSON.stringify(error)}\\{guestname}:User not cached. Please login or register.
       </Col></Row>
   }
   if (!data) return <div>loading...</div>
