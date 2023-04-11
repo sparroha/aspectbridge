@@ -53,12 +53,14 @@ export default function Chat(props){
   </Container>
 }
 function Messages({update, setUpdate, access, style}){
+  //const [dataSorted, setDataSorted] = useState(null)
   const {data, error, mutate} = useSWR('api/chat/messages', { refreshInterval: 500 })
   let refresh = false
   useEffect(()=>{
     const messages = document.getElementById('messages')
     messages.scrollTop = messages.scrollHeight
     console.log(data)
+    //if(data) setDataSorted(data.sort((a, b) => {new Date(a.timestamp).getMilliseconds() - new Date(b.timestamp).getMilliseconds()}))
   }, [data])
   useEffect(()=>{
     if(update) {mutate();setUpdate(false)}
