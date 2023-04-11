@@ -29,7 +29,6 @@ export default function Chat(props){
     .then((res)=>res.json())
     .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
   }
-
   useEffect(()=>{
     if(user) window.addEventListener('unload', makeinactive);
     if(user) window.addEventListener('beforeunload', makeinactive);
@@ -175,7 +174,7 @@ const removeInactiveUsers = async (users, inactivePeriod) => {
     if(lastActive <= inactiveTime){
       fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
       .then((res)=>res.json())
-      .then((data)=>{console.log(data?'user '+user.username+' removed for inactivity because\n lastActive'+lastActive+'<='+inactiveTime:'user not removed for inactivity')})
+      .then((data)=>{console.log(data?'user '+user.username+' removed for inactivity':'error removing user for inactivity')})
     }
   });
 }
