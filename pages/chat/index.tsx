@@ -18,23 +18,19 @@ const scroll = {
 export default function Chat(props){
   const [user, setUser] = useState(props.user?props.user:{username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
   const [update, setUpdate] = useState(false)
-  const [revalidate, setRevalidate] = useState(false)
+  const [revalidate, setRevalidate] = useState(true)
   const activate = ()=>{
     if(user)fetch('api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
     .then((res)=>res.json())
     .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
+    .catch(error => console.error(error));
   }
   const inactivate = ()=>{
     if(user)fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
     .then((res)=>res.json())
     .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
+    .catch(error => console.error(error));
   }
-  useEffect(()=>{
-    if(revalidate){
-      activate()
-      setRevalidate(false)
-    }
-  }, [revalidate])
   useEffect(()=>{
     if(user) {
       window.addEventListener('unload', inactivate);
@@ -42,6 +38,12 @@ export default function Chat(props){
       setRevalidate(true);
     }
   }, [user])
+  useEffect(()=>{
+    if(revalidate){
+      activate()
+      setRevalidate(false)
+    }
+  }, [revalidate])
   
   
   return <Container>{!props.user?<LoginNav user={user} homepage={'chat'}/>:null}
@@ -73,7 +75,7 @@ export default function Chat(props){
  */
 function Messages({update, setUpdate, access, style}){
   //const [dataSorted, setDataSorted] = useState(null)
-  const {data, error, mutate} = useSWR('api/chat/messages', { refreshInterval: 500 })
+  const {data, error, mutate} = useSWR('/api/chat/messages', { refreshInterval: 500 })
   const [filteredData, setFilteredData] = useState(null)
   let refresh = false
   useEffect(()=>{
@@ -107,7 +109,7 @@ function Messages({update, setUpdate, access, style}){
     Search: <input type='text' defaultValue={''} onChange={(event)=>{setFilteredData(data.filter((message)=>{return message.message.includes(event.target.value)}))}}/>
     <div id='messages' style={{maxHeight: '50vh', minHeight: '20px', ...style}}>
       {filteredData?.map((message, i)=>{
-        return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'<'}{message.timestamp}{'> ['}{message.username}{'] '}{message.message}<br/></p>
+        return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'< '}{message.timestamp}{' > ['}{message.username}{'] '}{message.message}<br/></p>
       })}
     </div>
   </>
@@ -119,7 +121,7 @@ function Messages({update, setUpdate, access, style}){
  * @returns 
  */
 function Users(style){
-  const {data, error} = useSWR('api/chat/users', { refreshInterval: 500 })
+  const {data, error} = useSWR('/api/chat/users', { refreshInterval: 500 })
   
   useEffect(()=>{
     const userInterval = setInterval(() =>{

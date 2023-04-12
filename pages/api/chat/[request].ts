@@ -24,6 +24,11 @@ export default async function chat(req, res) {
           await sql`DELETE FROM aspect_chat_messages_ WHERE message = ${message};`
           res.status(200).json({ alert: 'message deleted' })
           break
+        case 'deletetimesend':
+          const [m] = await sql`SELECT * FROM aspect_chat_messages_ WHERE message = ${message};`
+          await sql`DELETE FROM aspect_chat_messages_ WHERE timestamp = ${time};`
+          res.status(200).json({ alert: 'message deleted at timestamp: '+ time + ' [Compare '+m.timestamp+']'})
+          break
         /*case 'drop':
           await sql`DROP TABLE IF EXISTS aspect_chat_messages_;`
           await sql`DROP TABLE IF EXISTS aspect_chat_users_;`

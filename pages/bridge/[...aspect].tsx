@@ -16,6 +16,7 @@ import DiceWidget, { diceInitProps, useDiceRoll } from '../../components/dice';
 import TLiterator from '../../components/hebrew';
 import requestIp from 'request-ip';
 import { Clock } from '../../components/clock';
+import Chat from '../chat';
 
 /**CSS module *//not working/
 //TODO is working
@@ -45,6 +46,7 @@ export default function AspectBridge({ip}) {
             </Row>
             <Row>
                 <Col sm={5}><CalendarTab /></Col>
+                <Col sm={7} style={{background: 'white'}}><Chat user={user} ip={ip} /></Col>
             </Row>
             <Footer />
         </Container>
