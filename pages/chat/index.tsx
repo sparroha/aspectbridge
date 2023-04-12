@@ -20,13 +20,13 @@ export default function Chat(props){
   const [update, setUpdate] = useState(false)
   const [revalidate, setRevalidate] = useState(false)
   const activate = ()=>{
-    if(user)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+    if(user)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: '['+(user.access==2?'**':(user.access==1?'*':''))+']'+user.username})})
     .then((res)=>res.json())
     .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
     .catch(error => console.error(error));
   }
   const inactivate = ()=>{
-    if(user)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+    if(user)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: '['+(user.access==2?'**':(user.access==1?'*':''))+']'+user.username})})
     .then((res)=>res.json())
     .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
     .catch(error => console.error(error));
