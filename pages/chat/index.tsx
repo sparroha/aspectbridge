@@ -18,15 +18,15 @@ const scroll = {
 export default function Chat(props){
   const [user, setUser] = useState(props.user?props.user:{username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
   const [update, setUpdate] = useState(false)
-  const [revalidate, setRevalidate] = useState(true)
+  const [revalidate, setRevalidate] = useState(false)
   const activate = ()=>{
-    if(user)fetch('api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+    if(user)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
     .then((res)=>res.json())
     .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
     .catch(error => console.error(error));
   }
   const inactivate = ()=>{
-    if(user)fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+    if(user)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
     .then((res)=>res.json())
     .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
     .catch(error => console.error(error));
@@ -64,7 +64,9 @@ export default function Chat(props){
           <Users style={scroll}/>
         </Col>
       </Row>
-      {props.ip?<ProfileByIp ip={props.ip} setUser={setUser}/>:null}
+      <Row style={{visibility: 'collapse', height: '0px'}}>
+        <Col xs={12}>{props.ip?<ProfileByIp ip={props.ip} setUser={setUser}/>:null}</Col>
+      </Row>
   </Container>
 }
 
