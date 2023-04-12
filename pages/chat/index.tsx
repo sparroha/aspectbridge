@@ -18,22 +18,13 @@ const scroll = {
 export default function Chat(props){
   const [user, setUser] = useState({username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
   const [update, setUpdate] = useState(false)
-  const useractivate = ()=>{
-    fetch('api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
-    .then((res)=>res.json())
-    .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
-  }
-  const makeinactive = (event) => {
-    // send an API command to remove the user from the session
-    fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
-    .then((res)=>res.json())
-    .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
-  }
+  const [activate, setActivate] = useState(()=>{})
+  const [inactivate, setInactivate] = useState(()=>{})
   useEffect(()=>{
     if(user) {
-      window.addEventListener('unload', makeinactive);
-      window.addEventListener('beforeunload', makeinactive);
-  }
+      window.addEventListener('unload', ()=>inactivate);
+      window.addEventListener('beforeunload', ()=>inactivate);
+    }
   }, [user])
   
   return <Container><LoginNav user={user} homepage={'chat'}/>
@@ -46,7 +37,7 @@ export default function Chat(props){
           </Row>
           <Row>
             <Col xs={12}>
-              <Send username={user?.username} setUpdate={setUpdate} useractivate={useractivate}/>
+              <Send username={user?.username} setUpdate={setUpdate} activate={activate}/>
             </Col>
           </Row>
         </Col>
@@ -66,7 +57,7 @@ export default function Chat(props){
 function Messages({update, setUpdate, access, style}){
   //const [dataSorted, setDataSorted] = useState(null)
   const {data, error, mutate} = useSWR('api/chat/messages', { refreshInterval: 500 })
-  const [filteredData, setFilteredData] = useState(null)
+  const [filteredData, setFilteredData] = useState(data)
   let refresh = false
   useEffect(()=>{
     const messages = document.getElementById('messages')
@@ -93,9 +84,14 @@ function Messages({update, setUpdate, access, style}){
     .catch(error => console.error(error));
     mutate()
   }}
-  return <div id='messages' style={{maxHeight: '30vh', ...style}}>{data?.map((message, i)=>{
-      return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'<'}{message.timestamp}{'> ['}{message.username}{'] '}{message.message}<br/></p>
-  })}</div>
+  return <>
+    Search: <input type='text' onChange={(event)=>{setFilteredData(data.filter((message)=>{return message.message.includes(event.target.value)}))}}/>
+    <div id='messages' style={{maxHeight: '50vh', minHeight: '20px', ...style}}>
+      {filteredData?.map((message, i)=>{
+        return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'<'}{message.timestamp}{'> ['}{message.username}{'] '}{message.message}<br/></p>
+      })}
+    </div>
+  </>
 }
 
 /**
@@ -124,7 +120,7 @@ function Users(style){
  * @param param0: username, setUpdate
  * @returns
  */
-function Send({username, setUpdate, useractivate}){
+function Send({username, setUpdate, activate}){
   const [send, setSend] = useState('')
   const [name, setName] = useState('')
   useEffect(()=>{
@@ -145,7 +141,7 @@ function Send({username, setUpdate, useractivate}){
     .catch(error => console.error(error));
     setSend('')
     setUpdate(true)
-    useractivate()
+    if(activate)activate()
   }
   return <Form onSubmit={handleSubmit} style={{ maxHeight: '20vh'}}>
       <Form.Control type='text' style={{visibility: 'collapse'}} name='username' defaultValue={name}/> 
@@ -160,6 +156,25 @@ function Send({username, setUpdate, useractivate}){
           </Col>
       </Row>
   </Form>
+}
+
+function SetFunctions({user, setActivate, setInactivate}){
+  useEffect(()=>{
+    if(user){
+      setActivate(()=>{
+        fetch('api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+        .then((res)=>res.json())
+        .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
+      })
+      setInactivate((event) => {
+        // send an API command to remove the user from the session
+        fetch('api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
+        .then((res)=>res.json())
+        .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
+      })
+    }
+  }, [user])
+  return <></>
 }
 
 /**
