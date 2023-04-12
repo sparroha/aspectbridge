@@ -162,11 +162,13 @@ function Send({username, setUpdate, setRevalidate}){
     .then(response => response.json())
     .then(data => {
       console.log(data)
+    })
+    .catch(error => console.error(error));
+    setTimeout(()=>{
       setUpdate(true)
       setRevalidate(true)
       setSend('')
-    })
-    .catch(error => console.error(error));
+    }, 100)
   }
   return <Form onSubmit={handleSubmit} style={{ maxHeight: '20vh'}}>
       <Form.Control type='text' style={{visibility: 'collapse'}} name='username' defaultValue={name}/> 
