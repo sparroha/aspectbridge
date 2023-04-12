@@ -25,7 +25,7 @@ export default function Chat(props){
       window.addEventListener('unload', ()=>inactivate);
       window.addEventListener('beforeunload', ()=>inactivate);
     }
-  }, [user])
+  }, [user,inactivate])
   
   return <Container><LoginNav user={user} homepage={'chat'}/>
       <Row>
@@ -46,6 +46,7 @@ export default function Chat(props){
         </Col>
       </Row>
       <ProfileByIp ip={props.ip} setUser={setUser}/>
+      <SetFunctions user={user} setActivate={setActivate} setInactivate={setInactivate}/>
   </Container>
 }
 
@@ -57,12 +58,13 @@ export default function Chat(props){
 function Messages({update, setUpdate, access, style}){
   //const [dataSorted, setDataSorted] = useState(null)
   const {data, error, mutate} = useSWR('api/chat/messages', { refreshInterval: 500 })
-  const [filteredData, setFilteredData] = useState(data)
+  const [filteredData, setFilteredData] = useState(null)
   let refresh = false
   useEffect(()=>{
     const messages = document.getElementById('messages')
     messages.scrollTop = messages.scrollHeight
     if(!data) return
+    return setFilteredData(data)
     //console.log(data)
     //if(data) setDataSorted(data.sort((a, b) => {new Date(a.timestamp).getMilliseconds() - new Date(b.timestamp).getMilliseconds()}))
   }, [data])
@@ -85,7 +87,7 @@ function Messages({update, setUpdate, access, style}){
     mutate()
   }}
   return <>
-    Search: <input type='text' onChange={(event)=>{setFilteredData(data.filter((message)=>{return message.message.includes(event.target.value)}))}}/>
+    Search: <input type='text' defaultValue={''} onChange={(event)=>{setFilteredData(data.filter((message)=>{return message.message.includes(event.target.value)}))}}/>
     <div id='messages' style={{maxHeight: '50vh', minHeight: '20px', ...style}}>
       {filteredData?.map((message, i)=>{
         return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'<'}{message.timestamp}{'> ['}{message.username}{'] '}{message.message}<br/></p>
@@ -142,6 +144,7 @@ function Send({username, setUpdate, activate}){
     setSend('')
     setUpdate(true)
     if(activate)activate()
+    else(console.log(activate))
   }
   return <Form onSubmit={handleSubmit} style={{ maxHeight: '20vh'}}>
       <Form.Control type='text' style={{visibility: 'collapse'}} name='username' defaultValue={name}/> 
