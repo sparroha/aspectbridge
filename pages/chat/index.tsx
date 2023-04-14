@@ -101,6 +101,9 @@ function Messages({update, setUpdate, access, style}){
     }
   }, [update])
   function handleDelete(message){return () =>{
+    const date = new Date(message.timestamp);
+    const sqlDate = date.toISOString()
+
     let filteredData = null;
     fetch('/api/chat/deletesend', {
       method: 'POST',
@@ -111,7 +114,12 @@ function Messages({update, setUpdate, access, style}){
       })
     })
     .then(response => response.json())
-    .then(data => {mutate(),console.log(data)})
+    .then(data => {
+      mutate()
+      console.log(data)
+      console.log(message.timestamp.replace('T', ' '));
+      console.log(sqlDate);
+    })
     .catch(error => console.error(error));
   }}
   return <>
@@ -149,7 +157,7 @@ function Users(style){
     }
     const {username, access, last_active} = USER
     const color = access==2?'red':access==1?'orange':'black';
-    return <p key={i} style={{fontSize: '10px'}}><div style={{color: color, float: 'left'}}>{User[0]}</div>{username}{'['}{last_active}{']'}<br/></p>
+    return <div key={i} style={{fontSize: '10px'}}><div style={{color: color, float: 'left'}}>{User[0]}</div>{username}{'['}{last_active}{']'}<br/></div>
   })}</div>
 }
 
