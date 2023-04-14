@@ -31,7 +31,7 @@ export default function Chat(props){
         .then((data)=>{console.log(data?'user '+name+' left':'user not removed')})
         .catch(error => console.error(error))
       }
-      console.log('Rv1: '+JSON.stringify(name))
+      console.log('Rv1: '+JSON.stringify(user?user:name))
       window.addEventListener('unload', inactivate)
       window.addEventListener('beforeunload', inactivate)
       setRevalidate(true)
@@ -46,7 +46,7 @@ export default function Chat(props){
         .then((data)=>{console.log(data?'user '+name+' active':'user not active')})
         .catch(error => console.error(error))
       }
-      console.log('Rv2: '+JSON.stringify(name))
+      console.log('Rv2: '+JSON.stringify(user?user:name))
       activate()
       setRevalidate(false)
     }
@@ -134,9 +134,9 @@ function Users(style){
   
   useEffect(()=>{
     const userInterval = setInterval(() =>{
-      console.log('BEFORE: '+JSON.stringify(data))
+      //console.log('BEFORE: '+JSON.stringify(data))
       removeInactiveUsers(data, (1000*60*3))
-      console.log('AFTER: '+JSON.stringify(data))
+      //console.log('AFTER: '+JSON.stringify(data))
     }, 1000*60*1);
     return () => clearInterval(userInterval);
   }, [data])
@@ -165,7 +165,7 @@ function Send({name, setUpdate, setRevalidate}){
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+      //console.log(data)
     })
     .catch(error => console.error(error));
     setTimeout(()=>{
@@ -202,7 +202,10 @@ const removeInactiveUsers = async (users, inactivePeriod) => {
     if(lastActive <= inactiveTime){
       fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
       .then((res)=>res.json())
-      .then((data)=>{console.log(data?'user '+user.username+' removed for inactivity':'error removing user for inactivity')})
+      .then((data)=>{
+        console.log(data?'user '+user.username+' removed for inactivity':'error removing user for inactivity')
+      })
+      .catch((err)=>console.error(err))
     }
   });
 }
