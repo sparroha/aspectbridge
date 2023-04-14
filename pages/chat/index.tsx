@@ -26,7 +26,7 @@ export default function Chat(props){
   useEffect(()=>{
     if(name) {
       const inactivate = ()=>{
-        if(name)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**]':(user?.access==1?'[*]':''))+name})})
+        if(name)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**].':(user?.access==1?'[*].':''))+name})})
         .then((res)=>res.json())
         .then((data)=>{console.log(data?'user '+name+' left':'user not removed')})
         .catch(error => console.error(error))
@@ -41,7 +41,7 @@ export default function Chat(props){
     if(revalidate){
       const activate = ()=>{
         console.log('Rv3: '+JSON.stringify(user))
-        if(name)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**]':(user?.access==1?'[*]':''))+name})})
+        if(name)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**].':(user?.access==1?'[*].':''))+name})})
         .then((res)=>res.json())
         .then((data)=>{console.log(data?'user '+name+' active':'user not active')})
         .catch(error => console.error(error))
@@ -141,7 +141,15 @@ function Users(style){
     return () => clearInterval(userInterval);
   }, [data])
   return <div id='active_users' style={{ maxHeight: '50vh', ...style}}>{data?.map((user, i)=>{
-      return <p key={i} style={{fontSize: '10px'}}>{user.username}{'['}{user.last_active}{']'}<br/></p>
+    const User = user.username.split('.')
+    const USER = {
+      username: User[1],
+      access: User[0]=='[**]'?2:User[0]=='[*]'?1:0,
+      last_active: user.last_active
+    }
+    const {username, access, last_active} = USER
+    const color = access==2?'red':access==1?'orange':'black';
+    return <p key={i} style={{fontSize: '10px'}}><div style={{color: color, float: 'left'}}>{User[0]}</div>{username}{'['}{last_active}{']'}<br/></p>
   })}</div>
 }
 
