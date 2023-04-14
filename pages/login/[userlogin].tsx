@@ -55,7 +55,7 @@ export default function UserLogin({ip, homepage}) {
     return <Container>
             {/**ProfileByIp is used to login if session ip is saved */}
             {/**ProfileByIp will not work if user has logged out */}
-            <ProfileByIp ip={ip} setUser={setUser}/>
+            {/*<ProfileByIp ip={ip} setUser={setUser}/>*/}
             {/**Profile is used to login if session is not saved */}
             <Profile hash={hash} ip={ip} setUser={setUser}/>
 
@@ -145,21 +145,42 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
     return {props: {ip: ip, homepage: homepage}}
 }
 
-export function Profile({hash, ip, setUser}) {
-  const { data, error } = useSWR('../api/getuserdetails?hash='+hash+'&ip='+ip, { revalidateOnFocus: false })
-  if (error) return <div style={{visibility: 'hidden', position: 'absolute'}}>{JSON.stringify(error)}:No such user</div>
+export function Profile({ip, setUser, ...h}) {
+  const { data, error } = h.hash?
+    useSWR('../api/getuserdetails?hash='+h.hash+'&ip='+ip, { revalidateOnFocus: false }):
+    useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
+  const debug = true
+  useEffect(() => {
+    setUser(data)
+  },[data])
+  if (error) {
+    return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
+        {JSON.stringify(error)}:No such user
+      </Col></Row>
+  }
   if (!data) return <div>loading...</div>
   else {
     let {username, email, access} = data
     data.message = 'Welcome back '+data.username+'!'
-    setUser(data)
-    return <div>hello {username}!{`\<${email}\>`} Your access level is {access}. IP: {ip}</div>
+    return <Row>
+        <Col sm={4}></Col>
+        <Col sm={4} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>
+          hello {username}!{`\<${email}\>`} Your access level is {access}.
+        </Col>
+        <Col sm={4}></Col>
+      </Row>
   }
 }
+/**
+ * depricated
+ * @param param0 
+ * @returns 
+ */
 export function ProfileByIp({ip, setUser}) {
   const { data, error } = useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
   const debug = true
   useEffect(() => {
+    console.log('[ProfileByIp]This function is deprecated. Use Profile instead.');
     setUser(data)
   },[data])
   if (error) {
@@ -173,7 +194,9 @@ export function ProfileByIp({ip, setUser}) {
     data.message = 'Welcome back '+data.username+'!'
     return <Row>
         <Col sm={4}></Col>
-        <Col sm={4} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>hello {username}!{`\<${email}\>`} Your access level is {access}.</Col>
+        <Col sm={4} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>
+          hello {username}!{`\<${email}\>`} Your access level is {access}.
+        </Col>
         <Col sm={4}></Col>
       </Row>
   }

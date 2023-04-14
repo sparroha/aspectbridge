@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LoginNav, ProfileByIp } from '../login/[userlogin]';
+import { LoginNav, Profile, ProfileByIp } from '../login/[userlogin]';
 import { GetServerSideProps } from 'next';
 import requestIp from 'request-ip';
 import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
@@ -19,27 +19,34 @@ export default function Chat(props){
   const [user, setUser] = useState(props.user?props.user:{username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
   const [update, setUpdate] = useState(false)
   const [revalidate, setRevalidate] = useState(false)
-  const activate = ()=>{
-    if(user)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: '['+(user.access==2?'**':(user.access==1?'*':''))+']'+user.username})})
-    .then((res)=>res.json())
-    .then((data)=>{console.log(data?'user '+user.username+' active':'user not active')})
-    .catch(error => console.error(error));
-  }
-  const inactivate = ()=>{
-    if(user)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: '['+(user.access==2?'**':(user.access==1?'*':''))+']'+user.username})})
-    .then((res)=>res.json())
-    .then((data)=>{console.log(data?'user '+user.username+' left':'user not removed')})
-    .catch(error => console.error(error));
-  }
+  const [name, setName] = useState('')
   useEffect(()=>{
-    if(user) {
-      window.addEventListener('unload', inactivate);
-      window.addEventListener('beforeunload', inactivate);
-      setRevalidate(true);
-    }
+    if(user)setName(user.username)
   }, [user])
   useEffect(()=>{
+    if(name) {
+      const inactivate = ()=>{
+        if(name)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**]':(user?.access==1?'[*]':''))+name})})
+        .then((res)=>res.json())
+        .then((data)=>{console.log(data?'user '+name+' left':'user not removed')})
+        .catch(error => console.error(error))
+      }
+      console.log('Rv1: '+JSON.stringify(name))
+      window.addEventListener('unload', inactivate)
+      window.addEventListener('beforeunload', inactivate)
+      setRevalidate(true)
+    }
+  }, [name])
+  useEffect(()=>{
     if(revalidate){
+      const activate = ()=>{
+        console.log('Rv3: '+JSON.stringify(user))
+        if(name)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**]':(user?.access==1?'[*]':''))+name})})
+        .then((res)=>res.json())
+        .then((data)=>{console.log(data?'user '+name+' active':'user not active')})
+        .catch(error => console.error(error))
+      }
+      console.log('Rv2: '+JSON.stringify(name))
       activate()
       setRevalidate(false)
     }
@@ -56,16 +63,16 @@ export default function Chat(props){
           </Row>
           <Row>
             <Col xs={12}>
-              <Send username={user?.username} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
+              <Send name={name} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
             </Col>
           </Row>
         </Col>
         <Col xs={4}>
-          <Users style={scroll}/>
+          <Users style={scroll} revalidate={revalidate}/>
         </Col>
       </Row>
       <Row style={{visibility: 'collapse', height: '0px'}}>
-        <Col xs={12}>{props.ip?<ProfileByIp ip={props.ip} setUser={setUser}/>:null}</Col>
+        <Col xs={12}>{props.ip?<Profile ip={props.ip} setUser={setUser}/>:null}</Col>
       </Row>
   </Container>
 }
@@ -143,12 +150,9 @@ function Users(style){
  * @param param0: username, setUpdate
  * @returns
  */
-function Send({username, setUpdate, setRevalidate}){
+function Send({name, setUpdate, setRevalidate}){
   const [send, setSend] = useState('')
-  const [name, setName] = useState('')
-  useEffect(()=>{
-    if(username)setName(username)
-  }, [username])
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     fetch('/api/chat/messages', {
@@ -166,7 +170,6 @@ function Send({username, setUpdate, setRevalidate}){
     .catch(error => console.error(error));
     setTimeout(()=>{
       setUpdate(true)
-      setRevalidate(true)
       setSend('')
     }, 100)
   }

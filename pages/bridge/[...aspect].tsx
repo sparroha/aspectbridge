@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import NavIndex from '../../components/ab/nav';
 import navComponentObject from '../../components/ab/navigaton';
 import { GetServerSideProps } from 'next';
-import { ActiveUser, ProfileByIp } from '../login/[userlogin]';
+import { Profile} from '../login/[userlogin]';
 import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
@@ -35,7 +35,7 @@ const componentObject = navComponentObject()
 export default function AspectBridge({ip}) {
     const [user, setUser] = useState(null)
     return <>
-        <ProfileByIp ip={ip} setUser={setUser}/>
+        <Profile ip={ip} setUser={setUser}/>
         <Headers />
         <Container className={'aspect'}>
             <ContainerHeader user={user?user:null}/>
