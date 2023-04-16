@@ -112,8 +112,7 @@ function ContainerHeader({ user }){
 function NavLeftDefault(){  
     const dip: diceInitProps = {
         sides: 6,
-        speed: 5,
-        rand: Math.random()
+        speed: 5
     }
     return <Col xs={12} sm={3} md={2} id="nav-left" className={"p0 'w100 h100'"}>
                 <Row className={'w100 h100'} style={{position: 'relative'}}>

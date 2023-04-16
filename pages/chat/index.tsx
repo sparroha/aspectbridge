@@ -9,6 +9,10 @@ import useLog from '../../components/conlog';
 const scroll = {
   overflowY: 'scroll'
 }
+const border = {
+  border: '1px outset black',
+  borderRadius: '5px'
+}
 
 /**
  * Chat App
@@ -54,21 +58,37 @@ export default function Chat(props){
   
   
   return <Container>{!props.user?<LoginNav user={user} homepage={'chat'}/>:null}
-      <Row>
+      {/*<Row>
         <Col xs={8}>
           <Row>
-            <Col xs={12}>
-              <Messages update={update} setUpdate={setUpdate} access={user?.access} style={scroll}/>
+            <Col xs={12} style={border}>
+              <Messages update={update} setUpdate={setUpdate} access={user?.access} style={{...scroll, ...border}}/>
             </Col>
           </Row>
           <Row>
-            <Col xs={12}>
+            <Col xs={12} style={border}>
               <Send name={name} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
             </Col>
           </Row>
         </Col>
         <Col xs={4}>
           <Users style={scroll} revalidate={revalidate}/>
+        </Col>
+      </Row>
+      <Row style={{visibility: 'collapse', height: '0px'}}>
+        <Col xs={12}>{props.ip?<Profile ip={props.ip} setUser={setUser}/>:null}</Col>
+      </Row>*/}
+      <Row>
+        <Col xs={8} style={border}>
+          <Messages update={update} setUpdate={setUpdate} access={user?.access} style={{...scroll, ...border}}/>
+        </Col>
+        <Col xs={4}>
+          <Users style={scroll} revalidate={revalidate}/>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} style={border}>
+          <Send name={name} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
         </Col>
       </Row>
       <Row style={{visibility: 'collapse', height: '0px'}}>
@@ -190,7 +210,7 @@ function Send({name, setUpdate, setRevalidate}){
     }, 100)
   }
   return <Form onSubmit={handleSubmit} style={{ maxHeight: '20vh'}}>
-      <Form.Control type='text' style={{visibility: 'collapse'}} name='username' defaultValue={name}/> 
+      <Form.Control type='text' style={{visibility: 'collapse', border: '0px', margin: '0px', padding: '0px', height: '0px'}} name='username' defaultValue={name}/> 
       <Row>
           <Col xs={10}>
             <Form.Control type='text' name='send' style={{width: '100%'}} onChange={(event)=>{setSend(event.target.value)}} value={send}/>

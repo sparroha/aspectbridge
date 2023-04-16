@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 type diceProps = {
     sides?: number,
     speed?: number,
-    rand?: number,
+    rand?: Function,
     value?: number,
     setRoller?: Function,
     selectSides?: Function,
@@ -21,12 +21,12 @@ export default function DiceWidget({udr}: {udr: Function}){
     const dice = [2,4,6,8,10,12,20,100]
     
     useEffect(() => {
-        if(sides==0){
-            let r = dice[Math.floor(rand*8)]
+        if(setValue&&sides==0){
+            let r = dice[Math.floor(rand()*8)]
             selectSides(r)
-            setValue(Math.floor(rand*r)+1)
+            setValue(Math.floor(rand()*r)+1)
         }
-    }, [])
+    }, [setValue])
 
     return <div className={'dice-widget text-white'}>
         <select value={sides} onChange={e => selectSides(Number(e.target.value))}>
@@ -47,11 +47,11 @@ export default function DiceWidget({udr}: {udr: Function}){
             backgroundColor: 'silver',
             borderRadius: '25%',
             border: '5px outset lightgray',
-        }} onClick={() => setValue(Math.floor(rand*sides)+1)}>{value}</button>
+        }} onClick={() => setValue(Math.floor(rand()*sides)+1)}>{value}</button>
     </div>
 }
 export function useDiceRoll(props: diceInitProps): diceProps{
-    const rand = props.rand || Math.random();
+    const rand = ()=>Math.random();
     const [sides, selectSides] = useState(props.sides || 0)
     const [value, setValue] = useState(0)
     const [roller, setRoller] = useState('false')
@@ -60,13 +60,13 @@ export function useDiceRoll(props: diceInitProps): diceProps{
     useEffect(() => {
         if(roller=='false') return
         const i = setInterval(() => {
-            setValue(Math.floor(rand*sides)+1);
+            setValue(Math.floor(rand()*sides)+1);
             console.log('dice roll every '+speed+' seconds!');
         }, speed*1000);
         return () => clearInterval(i)
     }, [sides, roller])
 
-    return props? props :{
+    return {
         sides: sides,
         speed: speed,
         rand: rand,
@@ -74,7 +74,7 @@ export function useDiceRoll(props: diceInitProps): diceProps{
         setRoller: setRoller,
         selectSides: selectSides,
         setValue: setValue,
-        setSpeed: setSpeed,
+        setSpeed: setSpeed
     }
 }
 
