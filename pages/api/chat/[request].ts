@@ -2,9 +2,8 @@ import sql from "../../../lib/,base/sql"
 
 export default async function chat(req, res) {
   const { request } = req.query
-  const { username, send, time, message } = req.body
+  const { username, send, time, message, access } = req.body
   const method = req.method
-
   if (method === 'POST') {
     try {
       switch (request) {
@@ -28,6 +27,10 @@ export default async function chat(req, res) {
           const [m] = await sql`SELECT * FROM aspect_chat_messages_ WHERE message = ${message};`
           await sql`DELETE FROM aspect_chat_messages_ WHERE timestamp = convert(${time}, datetime);`
           res.status(200).json({ alert: 'message deleted at timestamp: '+ time + ' [Compare '+m.timestamp+']'})
+          break
+        case 'clear':
+          //Not Implemented
+          res.status(200).json({ alert: 'clear is not implemented' })
           break
         /*case 'drop':
           await sql`DROP TABLE IF EXISTS aspect_chat_messages_;`

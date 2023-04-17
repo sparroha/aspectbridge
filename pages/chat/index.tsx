@@ -35,7 +35,7 @@ export default function Chat(props){
         .then((data)=>{console.log(data?'user '+name+' left':'user not removed')})
         .catch(error => console.error(error))
       }
-      console.log('Rv1: '+JSON.stringify(user?user:name))
+      //console.log('Rv1: '+JSON.stringify(user?user:name))
       window.addEventListener('unload', inactivate)
       window.addEventListener('beforeunload', inactivate)
       setRevalidate(true)
@@ -44,13 +44,13 @@ export default function Chat(props){
   useEffect(()=>{
     if(revalidate){
       const activate = ()=>{
-        console.log('Rv3: '+JSON.stringify(user))
+        //console.log('Rv3: '+JSON.stringify(user))
         if(name)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**].':(user?.access==1?'[*].':''))+name})})
         .then((res)=>res.json())
         .then((data)=>{console.log(data?'user '+name+' active':'user not active')})
         .catch(error => console.error(error))
       }
-      console.log('Rv2: '+JSON.stringify(user?user:name))
+      //console.log('Rv2: '+JSON.stringify(user?user:name))
       activate()
       setRevalidate(false)
     }
@@ -88,7 +88,7 @@ export default function Chat(props){
       </Row>
       <Row>
         <Col xs={12} style={border}>
-          <Send name={name} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
+          <Send name={name} access={user?.access} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
         </Col>
       </Row>
       <Row style={{visibility: 'collapse', height: '0px'}}>
@@ -143,10 +143,14 @@ function Messages({update, setUpdate, access, style}){
     .catch(error => console.error(error));
   }}
   return <>
-    Search: <input type='text' defaultValue={''} onChange={(event)=>{setFilteredData(data.filter((message)=>{return message.message.includes(event.target.value)}))}}/>
+    Search: <input type='text' defaultValue={''} onChange={(event)=>{
+      setFilteredData(data.filter((message)=>{
+        return message.message.includes(event.target.value)
+      }))
+    }}/>
     <div id='messages' style={{maxHeight: '50vh', minHeight: '20px', ...style}}>
       {filteredData?.map((message, i)=>{
-        return <p key={i} style={{fontSize: '12px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'< '}{message.timestamp}{' > ['}{message.username}{'] '}{message.message}<br/></p>
+        return <p key={i} style={{fontSize: '14px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'< '}{message.timestamp}{' > ['}{message.username}{'] '}{message.message}<br/></p>
       })}
     </div>
   </>
@@ -177,7 +181,7 @@ function Users(style){
     }
     const {username, access, last_active} = USER
     const color = access==2?'red':access==1?'orange':'black';
-    return <div key={i} style={{fontSize: '10px'}}><div style={{color: color, float: 'left'}}>{User[0]}</div>{username}{'['}{last_active}{']'}<br/></div>
+    return <div key={i} style={{fontSize: '12px'}}><div style={{color: color, float: 'left'}}>{User[0]}</div>{username}{'['}{last_active}{']'}<br/></div>
   })}</div>
 }
 
@@ -186,17 +190,48 @@ function Users(style){
  * @param param0: username, setUpdate
  * @returns
  */
-function Send({name, setUpdate, setRevalidate}){
+function Send({name, access, setUpdate, setRevalidate}){
   const [send, setSend] = useState('')
+  const [command, setCommand] = useState(null)
   
   const handleSubmit = (event) => {
     event.preventDefault();
+    if(command){
+      switch(command){
+        case 'clear':
+          fetch('/api/chat/clear', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              username: name,
+              send: send,
+              access: access
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+          })
+          .catch(error => console.error(error));
+          break;
+        case 'revalidate':
+          setRevalidate(true)
+          break;
+        case 'help':
+          console.log('Commands: /clear, /revalidate, /help')
+          break;
+        default:
+          console.log('Command not found')
+          break;
+      }
+      return;
+    }
     fetch('/api/chat/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }, 
       body: JSON.stringify({
         username: name,
-        send: send
+        send: send,
       })
     })
     .then(response => response.json())
@@ -207,15 +242,20 @@ function Send({name, setUpdate, setRevalidate}){
     setTimeout(()=>{
       setUpdate(true)
       setSend('')
+      setRevalidate(true)
     }, 100)
   }
   return <Form onSubmit={handleSubmit} style={{ maxHeight: '20vh'}}>
       <Form.Control type='text' style={{visibility: 'collapse', border: '0px', margin: '0px', padding: '0px', height: '0px'}} name='username' defaultValue={name}/> 
       <Row>
           <Col xs={10}>
-            <Form.Control type='text' name='send' style={{width: '100%'}} onChange={(event)=>{setSend(event.target.value)}} value={send}/>
-            {/*<textarea style={{width: '100%'}} onChange={(event)=>{setSend(event.target.value)}}/>
-            <Form.Control type='text' style={{visibility: 'collapse'}} name='send' defaultValue={send}/>*/}
+            <Form.Control type='text' name='send' style={{width: '100%'}}
+              onChange={(event)=>{
+                let out = event.target.value.toLowerCase()
+                let command = out.charAt(0)=='/'?out.replace('/', '').split(' ')[0]:null
+                setCommand(command)
+                setSend(event.target.value)
+              }} value={send}/>
           </Col>
           <Col xs={2}>
             <Button type='submit'>Send</Button>
