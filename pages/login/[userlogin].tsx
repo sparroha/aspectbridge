@@ -138,7 +138,7 @@ export function Profile(props) {
   },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
-        {JSON.stringify(error)}:No such user
+        {JSON.stringify(error)}:No such user:{JSON.stringify(props)}
       </Col></Row>
   }
   if (!data) return <div>loading...</div>
