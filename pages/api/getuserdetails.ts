@@ -4,7 +4,7 @@ export default async function getUserDetails(req, res) {
     const { email, username, hash, ip } = req.query;
     let user = null
     if(ip){
-        if (hash) user = await getUserByHash(hash, ip)
+        if (hash&&hash!=null) user = await getUserByHash(hash, ip)
         else user = await getUserByIp(ip)
     }
     else if( email ) user = await getUserByEmail(email)
