@@ -7,6 +7,7 @@ import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
 import SimpleNav from "../../components/simplenav"
+import Head from "next/head"
 
 export type ActiveUser = {
   username: string | string[],
@@ -53,6 +54,7 @@ export default function UserLogin({ip, homepage}) {
     )},[user])
 
     return <Container style={{textAlign: 'center'}}>
+            <Headers/>
             <Row>
               {/**ProfileByIp is used to login if session ip is saved */}
               {/**ProfileByIp will not work if user has logged out */}
@@ -102,7 +104,23 @@ export function StateToggle( {setState, state, key, name, style, children}){
     :<Button onClick={setState(key)}>{name}</Button>
   }</div>
 }*/
-
+/**
+ * The Head section contains all the complicated important stuff.
+ * The brains if you will.
+ * 
+ * @returns <Head>{els}</Head>
+ */
+function Headers(){
+  return <Head>
+              <title>Bridge Login</title>
+              <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+              <meta name="keywords" content="" />
+              <meta name="description" content="" />
+              <link rel="shortcut icon" href="/assets/binary2.png" type="image/x-icon" />
+          </Head>
+}
 function LoginForm({setHash}){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -142,10 +160,10 @@ function RegisterForm({homepage}){
 }
 export function Profile(props) {
   const {ip, setUser, hash} = props
-  const { data, error, mutate } = useSWR('../api/getuserdetails?ip='+ip+(hash && hash!= null?'&hash='+hash:''), { revalidateOnFocus: false })
+  const { data, error, mutate } = useSWR('../api/getuserdetails?ip='+ip+'&hash='+hash)
   const debug = true
   useEffect(() => {
-    if(hash)mutate()
+    if(hash&&hash!=null)mutate()
   },[hash])
   useEffect(() => {
     if(data)setUser(data)

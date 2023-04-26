@@ -82,7 +82,7 @@ function Headers(){
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
                 <meta name="keywords" content="" />
-                <meta name="description" content="" />
+                <meta name="description" content="Building bridges of understanding" />
                 <link rel="shortcut icon" href="assets/binary2.png" type="image/x-icon" />
                 <Script src="js/script.js"></Script>
                 <Script src="js/hebrew.js"></Script>
