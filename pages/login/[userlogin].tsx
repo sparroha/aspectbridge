@@ -153,6 +153,7 @@ export function Profile(props) {
   const debug = true
   useEffect(() => {
     setUser(data)
+    alert(JSON.stringify(data))
   },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
