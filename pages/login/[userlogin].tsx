@@ -95,7 +95,7 @@ function LoginForm({setHash}){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password))}} >
+  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password));alert('logging in...')}} >
       <Form.Group controlId="formEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
@@ -128,23 +128,6 @@ function RegisterForm({homepage}){
         <Button variant="primary" type="submit" formAction={"/login/register"}>Register</Button>
     </Form>
 }
-export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
-    const method = query.userlogin
-    const username = query.username
-    const email = query.email
-    const hash = sha224(query.email+''+query.password)
-    const homepage = query.homepage!=undefined?query.homepage:'bridge'
-    const ip = await requestIp.getClientIp(req)
-    if(method === 'logout'){
-      await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
-    }
-    if(method === 'register'){
-      const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${hash}`
-      if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
-    }
-    return {props: {ip: ip, homepage: homepage}}
-}
-
 export function Profile(props) {
   const {ip, setUser, hash} = props
   const { data, error } = (hash&&hash!=null)?
@@ -153,7 +136,7 @@ export function Profile(props) {
   const debug = true
   useEffect(() => {
     setUser(data)
-    alert(JSON.stringify(data))
+    return alert(JSON.stringify(data))//debug
   },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
@@ -217,4 +200,21 @@ export function LoginNav({ user, homepage }) {
       </Nav.Link>{' '}
     </Nav>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
+  const method = query.userlogin
+  const username = query.username
+  const email = query.email
+  const hash = sha224(query.email+''+query.password)
+  const homepage = query.homepage!=undefined?query.homepage:'bridge'
+  const ip = await requestIp.getClientIp(req)
+  if(method === 'logout'){
+    await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
+  }
+  if(method === 'register'){
+    const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${hash}`
+    if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
+  }
+  return {props: {ip: ip, homepage: homepage}}
 }
