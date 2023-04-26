@@ -133,7 +133,7 @@ export function Profile(props) {
   const { data, error, mutate } = useSWR('../api/getuserdetails?ip='+ip+(hash && hash!= null?'&hash='+hash:''), { revalidateOnFocus: false })
   const debug = true
   useEffect(() => {
-    if(hash&&error)mutate()
+    if(hash)mutate()
   },[hash])
   useEffect(() => {
     if(data)setUser(data)
