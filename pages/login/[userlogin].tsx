@@ -21,7 +21,7 @@ const debugAccess='2'
 export default function UserLogin({ip, homepage}) {
     const router = useRouter()
     const [method, setMethod] = useState(router.query.userlogin)
-    const [hash, setHash] = useState('')
+    const [hash, setHash] = useState(null)
     const [user, setUser] = useState(null)
     const [menu, setMenu] = useState('show')
     const loginLayout = {
@@ -145,9 +145,9 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
     return {props: {ip: ip, homepage: homepage}}
 }
 
-export function Profile({ip, setUser, ...h}) {
-  const { data, error } = h.hash?
-    useSWR('../api/getuserdetails?hash='+h.hash+'&ip='+ip, { revalidateOnFocus: false }):
+export function Profile({ip, setUser, hash}) {
+  const { data, error } = hash!=null?
+    useSWR('../api/getuserdetails?hash='+hash+'&ip='+ip, { revalidateOnFocus: false }):
     useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
   const debug = true
   useEffect(() => {
