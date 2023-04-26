@@ -95,7 +95,7 @@ function LoginForm({setHash}){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password));alert('logging in...')}} >
+  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password));alert('logging in...'+email+''+password)}} >
       <Form.Group controlId="formEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
@@ -135,8 +135,8 @@ export function Profile(props) {
     useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
   const debug = true
   useEffect(() => {
-    setUser(data)
-    return alert(JSON.stringify(data))//debug
+    if(data){setUser(data)
+    return alert(JSON.stringify(data))}//debug
   },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
