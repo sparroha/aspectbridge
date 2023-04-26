@@ -52,33 +52,45 @@ export default function UserLogin({ip, homepage}) {
       }}
     )},[user])
 
-    return <Container>
-            {/**ProfileByIp is used to login if session ip is saved */}
-            {/**ProfileByIp will not work if user has logged out */}
-            {/*<ProfileByIp ip={ip} setUser={setUser}/>*/}
-            {/**Profile is used to login if session is not saved */}
-            <Profile hash={hash} ip={ip} setUser={setUser}/>
-
-            {/**Menu Dropdown example*/}
-            <div style={menuLayout}>{
-              menu === 'show'?<>
-                <Button onClick={() => {setMenu('hide')}}>{'\u21E3'}</Button>
-                <SimpleNav root={"./"} title={"login/login"} links={["login", "logout", "registernew"]} args={''}/>
-              </>
-              :<Button onClick={() => {setMenu('show')}}>{'\u2911'}</Button>
-            }</div>
-
-            <div style={loginLayout}>{
-              method === 'login'?<LoginForm setHash={setHash}/>
-              :<Button variant="primary" type="submit" onClick={() => {setMethod('login')}}>Back to Login</Button>
-            }</div>
-
-            <div style={registerLayout}>{
-              method === 'registernew'?
-              <RegisterForm homepage={homepage}/>
-              :<Button variant="primary" type="submit" onClick={() => {setMethod('registernew')}}>Register New User</Button>
-            }</div>
-
+    return <Container style={{textAlign: 'center'}}>
+            <Row>
+              {/**ProfileByIp is used to login if session ip is saved */}
+              {/**ProfileByIp will not work if user has logged out */}
+              {/*<ProfileByIp ip={ip} setUser={setUser}/>*/}
+              {/**Profile is used to login if session is not saved */}
+              <Col xs={12}>
+                <Profile style={{height: '30vh'}} hash={hash} ip={ip} setUser={setUser}/>
+              </Col>
+            </Row>
+            <Row>
+              {/**Menu Dropdown example*/}
+              <Col sm={4} md={5}></Col>
+              <Col xs={12} sm={4} md={2} style={{visibility: 'collapse', ...menuLayout}}>{'Depricated Nav'/*
+                menu === 'show'?<>
+                  <Button onClick={() => {setMenu('hide')}}>{'\u21E3'}</Button>
+                  <SimpleNav root={"./"} title={"login/login"} links={["login", "logout", "registernew"]} args={''}/>
+                </>
+                :<Button onClick={() => {setMenu('show')}}>{'\u2911'}</Button>
+              */}</Col>
+              <Col sm={4} md={5}></Col>
+            </Row>
+            <Row>
+              <Col sm={4} lg={5}></Col>
+              <Col xs={12} sm={4} lg={2} style={loginLayout}>{
+                method === 'login'?<LoginForm setHash={setHash}/>
+                :<Button variant="primary" type="submit" onClick={() => {setMethod('login')}}>Back to Login</Button>
+              }</Col>
+              <Col sm={4} lg={5}></Col>
+            </Row>
+            <Row>
+              <Col sm={4} lg={5}></Col>
+              <Col xs={12} sm={4} lg={2} style={registerLayout}>{
+                method === 'registernew'?
+                <RegisterForm homepage={homepage}/>
+                :<Button variant="primary" type="submit" onClick={() => {setMethod('registernew')}}>Register New User</Button>
+              }</Col>
+              <Col sm={4} lg={5}></Col>
+            </Row>
           </Container>
 }
 
@@ -140,15 +152,15 @@ export function Profile(props) {
     //return //alert('data: '+JSON.stringify(data)+'\nhash:'+hash+'\nip:'+ip+'\nerror:'+JSON.stringify(error))//debug
   },[data])
   if (error) {
-    return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
+    return <Row style={props.style}><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
         {'ERROR:'+JSON.stringify(error)+'\n'}:No such user:{JSON.stringify(props)+'\nDATA:'+JSON.stringify(data)}
       </Col></Row>
   }
-  if (!data) return <div>loading...</div>
+  if (!data) return <Row style={props.style}>loading...</Row>
   else {
     let {username, email, access} = data
     data.message = 'Welcome back '+data.username+'!'
-    return <Row>
+    return <Row style={props.style}>
         <Col sm={4}></Col>
         <Col sm={4} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>
           hello {username}!{`\<${email}\>`} Your access level is {access}.
