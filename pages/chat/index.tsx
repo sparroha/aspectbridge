@@ -92,7 +92,7 @@ export default function Chat(props){
         </Col>
       </Row>
       <Row style={{visibility: 'collapse', height: '0px'}}>
-        <Col xs={12}>{props.ip?<Profile ip={props.ip} setUser={setUser} hash={null}/>:null}</Col>
+        <Col xs={12}>{props.ip?<Profile ip={props.ip} setUser={setUser}/>:null}</Col>
       </Row>
   </Container>
 }

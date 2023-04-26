@@ -145,8 +145,9 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
     return {props: {ip: ip, homepage: homepage}}
 }
 
-export function Profile({ip, setUser, hash}) {
-  const { data, error } = hash!=null?
+export function Profile(props) {
+  const {ip, setUser, hash} = props
+  const { data, error } = (hash&&hash!=null)?
     useSWR('../api/getuserdetails?hash='+hash+'&ip='+ip, { revalidateOnFocus: false }):
     useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
   const debug = true
