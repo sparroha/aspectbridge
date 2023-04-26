@@ -104,7 +104,7 @@ function LoginForm({setHash}){
           <Form.Label>Password</Form.Label>
           <Form.Control required type="password" name="password" placeholder={"password"} onChange={(e)=>setPassword(e.target.value)}/>
       </Form.Group>
-      <input type="submit" value='Login'/>
+      <Button type="submit" >Login</Button>
   </Form>
 }
 
@@ -134,7 +134,7 @@ export function Profile(props) {
   const debug = true
   useEffect(() => {
     if(data)setUser(data)
-    return alert('data: '+JSON.stringify(data)+'\nhash:'+hash+'\nip:'+ip)//debug
+    return alert('data: '+JSON.stringify(data)+'\nhash:'+hash+'\nip:'+ip+'\nerror:'+JSON.stringify(error))//debug
   },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
