@@ -134,7 +134,7 @@ export function Profile(props) {
   const debug = true
   useEffect(() => {
     if(data)setUser(data)
-    return alert(JSON.stringify(data))//debug
+    return alert('data: '+JSON.stringify(data)+'\nhash:'+hash+'\nip:'+ip)//debug
   },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
