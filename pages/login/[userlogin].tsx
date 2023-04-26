@@ -104,7 +104,7 @@ function LoginForm({setHash}){
           <Form.Label>Password</Form.Label>
           <Form.Control required type="password" name="password" placeholder={"password"} onChange={(e)=>setPassword(e.target.value)}/>
       </Form.Group>
-      <Button type="submit" >Login</Button>
+      <input type="submit" value='Login'/>
   </Form>
 }
 
