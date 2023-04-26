@@ -3,8 +3,10 @@ import sql from "../../lib/,base/sql";
 export default async function getUserDetails(req, res) {
     const { email, username, hash, ip } = req.query;
     let user = null
-    if ( !hash && ip ) user = await getUserByIp(ip)
-    else if ( hash ) user = await getUserByHash(hash, ip)
+    if(ip){
+        if (hash) user = await getUserByHash(hash, ip)
+        else user = await getUserByIp(ip)
+    }
     else if( email ) user = await getUserByEmail(email)
     else if( username ) user = await getUserByUsername(username)
     else return res.status(400).json({message: 'No email, username or hash provided.'})

@@ -130,13 +130,11 @@ function RegisterForm({homepage}){
 }
 export function Profile(props) {
   const {ip, setUser, hash} = props
-  const { data, error } = (hash&&hash!=null)?
-    useSWR('../api/getuserdetails?hash='+hash+'&ip='+ip, { revalidateOnFocus: false }):
-    useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
+  const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash?'&hash='+hash:''), { revalidateOnFocus: false })
   const debug = true
   useEffect(() => {
-    if(data){setUser(data)
-    return alert(JSON.stringify(data))}//debug
+    if(data)setUser(data)
+    return alert(JSON.stringify(data))//debug
   },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
