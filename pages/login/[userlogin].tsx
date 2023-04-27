@@ -93,6 +93,15 @@ export default function UserLogin({ip, homepage}) {
               }</Col>
               <Col sm={4} lg={5}></Col>
             </Row>
+            <Row>
+              <Col sm={4} lg={5}></Col>
+              <Col xs={12} sm={4} lg={2} style={registerLayout}>{
+                method === 'email'?
+                <UpdateEmailForm homepage={homepage}/>
+                :<Button variant="primary" type="submit" onClick={() => {setMethod('email')}}>Update User Email</Button>
+              }</Col>
+              <Col sm={4} lg={5}></Col>
+            </Row>
           </Container>
 }
 
@@ -128,7 +137,7 @@ function LoginForm({setHash}){
   return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password))}} >
       <Form.Group controlId="formEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value)}/>
+          <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value.toLowerCase())}/>
       </Form.Group>
       <Form.Group controlId="formPassword">
           <Form.Label>Password</Form.Label>
@@ -156,6 +165,26 @@ function RegisterForm({homepage}){
             <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
         </Form.Group>
         <Button variant="primary" type="submit" formAction={"/login/register"}>Register</Button>
+    </Form>
+}
+function UpdateEmailForm({homepage}){
+  return <Form id={'updateForm'}>
+        <Form.Group controlId="formEmail">
+            <Form.Label>New Email address</Form.Label>
+            <Form.Control required type="email" name="nemail" placeholder={"email"}/>
+        </Form.Group>
+        <Form.Group controlId="formEmail">
+            <Form.Label>Current Email address</Form.Label>
+            <Form.Control required type="email" name="cemail" placeholder={"email"}/>
+        </Form.Group>
+        <Form.Group controlId="formPassword">
+            <Form.Label>Current Password</Form.Label>
+            <Form.Control required type="password" name="password" placeholder="password"/>
+        </Form.Group>
+        <Form.Group controlId="formHidden">
+            <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
+        </Form.Group>
+        <Button variant="primary" type="submit" formAction={"/login/update"}>Update</Button>
     </Form>
 }
 export function Profile(props) {
@@ -236,8 +265,8 @@ export function LoginNav({ user, homepage }) {
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   const method = query.userlogin
   const username = query.username
-  const email = query.email
-  const hash = sha224(query.email+''+query.password)
+  const email = query.email?.toString().toLocaleLowerCase()
+  const hash = sha224(query.email?.toString().toLocaleLowerCase()+''+query.password)
   const homepage = query.homepage!=undefined?query.homepage:'bridge'
   const ip = await requestIp.getClientIp(req)
   if(method === 'logout'){
@@ -246,6 +275,9 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   if(method === 'register'){
     const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${hash}`
     if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
+  }
+  if(method === 'update'){
+    await sql`UPDATE aspect_users_ SET email = ${query.nemail.toString().toLowerCase()}, hash=${sha224(query.nemail.toString().toLocaleLowerCase()+''+query.password)} WHERE email = ${query.cemail}`
   }
   return {props: {ip: ip, homepage: homepage}}
 }

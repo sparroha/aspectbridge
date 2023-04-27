@@ -22,7 +22,7 @@ async function getUserByEmail(email) {
     return user
 }
 async function getUserByUsername(username) {
-    const [user] = await sql`SELECT username, email, access FROM aspect_users_ WHERE username = ${username}`
+    const [user] = await sql`SELECT username, email, access, hash FROM aspect_users_ WHERE username = ${username}`
     return user
 }
 async function getHashByIp(ip) {
