@@ -46,7 +46,7 @@ export default function AspectBridge({ip}) {
             </Row>
             <Row>
                 <Col sm={5}><CalendarTab /></Col>
-                <Col sm={7} style={{background: 'white'}}><Chat user={user} ip={ip} /></Col>
+                <Col sm={7} style={{background: 'white'}}><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
             </Row>
             <Footer />
         </Container>
