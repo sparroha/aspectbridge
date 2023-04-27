@@ -189,14 +189,10 @@ function UpdateEmailForm({homepage}){
 }
 export function Profile(props) {
   const {ip, setUser, hash} = props
-  const { data, error, mutate } = useSWR('../api/getuserdetails?ip='+ip+'&hash='+hash)
+  const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''))
   const debug = true
   useEffect(() => {
-    if(hash&&hash!=null)mutate()
-  },[hash])
-  useEffect(() => {
     if(data)setUser(data)
-    //return //alert('data: '+JSON.stringify(data)+'\nhash:'+hash+'\nip:'+ip+'\nerror:'+JSON.stringify(error))//debug
   },[data])
   if (error) {
     return <Row style={props.style}><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
