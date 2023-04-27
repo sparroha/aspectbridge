@@ -153,8 +153,8 @@ function Footer(){
                             <Card.Title className={'img-banner'}>About...Upon</Card.Title>
                             <hr />
                             <Card.Text>
-                                Crossing lines no one considers crossing, not for lacking morality<br />
-                                More has remained mystery that has ever been concieved of by mind.
+                                Building bridges of understanding.<br />
+                                More has remained mystery than has ever been concieved of by mind.
                             </Card.Text>
                         </Card.Body>
                     </Card>
