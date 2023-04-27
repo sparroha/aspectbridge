@@ -277,7 +277,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
     if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
   }
   if(method === 'update'){
-    await sql`UPDATE aspect_users_ SET email = ${query.nemail.toString().toLowerCase()}, hash=${sha224(query.nemail.toString().toLocaleLowerCase()+''+query.password)} WHERE email = ${query.cemail}`
+    await sql`UPDATE aspect_users_ SET email = ${query.nemail.toString().toLowerCase()}, hash=${sha224(query.nemail.toString().toLocaleLowerCase()+''+query.password)} WHERE hash = ${sha224(query.cemail+''+query.password)}`
   }
   return {props: {ip: ip, homepage: homepage}}
 }
