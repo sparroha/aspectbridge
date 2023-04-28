@@ -88,7 +88,7 @@ function DiceCompact({udr}){
         <Col xs={4}><input type="checkbox" onChange={e => e.target.checked ? setRoller('true') : setRoller('false')} /> Auto
         </Col>
         </Row>
-        <Row><Col xs={12} style=><h1>{value}</h1></Col></Row>
+        <Row><Col xs={12}><h1>{value}</h1></Col></Row>
         
         <Row>
         <Col xs={4}>
