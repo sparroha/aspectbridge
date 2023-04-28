@@ -88,9 +88,9 @@ function DiceCompact({udr}){
         <Col xs={4}><input type="checkbox" onChange={e => e.target.checked ? setRoller('true') : setRoller('false')} /> Auto
         </Col>
         </Row>
-        <Row><Col xs={12}>{value}</Col></Row>
+        <Row><Col xs={12} style=><h1>{value}</h1></Col></Row>
         
-
+        <Row>
         <Col xs={4}>
 Sides:<input style={{
             borderRadius: '50%',
@@ -103,7 +103,7 @@ Speed:<input style={{
         }} type="number" min={1} max={10} defaultValue={speed} onChange={e => setSpeed(Number(e.target.value))} />
         small is fast
         </Col>
-
+        </Row>
 
          
         </button>
