@@ -69,11 +69,11 @@ function DiceCompact({udr}){
     return <div>
         <button
             style={{
-                height: 'auto',
-                width: 'auto',
+                height: '120px',
+                width: '120px',
                 color: 'blue',
                 backgroundColor: 'silver',
-                borderRadius: '25%',
+                borderRadius: '25px',
                 border: '5px outset lightgray',
             }}
             onClick={() => setValue(
@@ -98,10 +98,9 @@ Sides:<input style={{
         </Col>
         <Col xs={4}></Col>
         <Col xs={4}>
-Speed:<input style={{
+seconds:<input style={{
             borderRadius: '50%',
         }} type="number" min={1} max={10} defaultValue={speed} onChange={e => setSpeed(Number(e.target.value))} />
-        small is fast
         </Col>
         </Row>
 
