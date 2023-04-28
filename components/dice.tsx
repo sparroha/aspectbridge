@@ -69,8 +69,8 @@ function DiceCompact({udr}){
     return <div>
         <button
             style={{
-                height: '40px',
-                width: '40px',
+                height: 'auto',
+                width: 'auto',
                 color: 'blue',
                 backgroundColor: 'silver',
                 borderRadius: '25%',
