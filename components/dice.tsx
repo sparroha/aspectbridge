@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
 
 type diceProps = {
     sides?: number,
