@@ -18,7 +18,7 @@ export type diceInitProps = {
     rand?: number,
 }
 export default function DiceWidget({udr}: {udr: Function}){
-    const {sides, speed, rand, value, setRoller, selectSides, setValue, setSpeed} = udr()
+    /*const {sides, speed, rand, value, setRoller, selectSides, setValue, setSpeed} = udr()
     const dice = [2,4,6,8,10,12,20,100]
     
     useEffect(() => {
@@ -48,7 +48,8 @@ export default function DiceWidget({udr}: {udr: Function}){
             backgroundColor: 'silver',
             borderRadius: '25%',
             border: '5px outset lightgray',
-        }} onClick={() => setValue(Math.floor(rand()*sides)+1)}>{value}</button>
+        }} onClick={() => setValue(Math.floor(rand()*sides)+1)}>{value}</button>*/
+    return <div className={'dice-widget text-white'}>
       <DiceCompact udr={udr}/>
     </div>
 }
@@ -75,32 +76,39 @@ function DiceCompact({udr}){
                 backgroundColor: 'silver',
                 borderRadius: '25px',
                 border: '5px outset lightgray',
+                padding: '0px',
+                margin: '0px',
             }}
             onClick={() => setValue(
             Math.floor(rand()*sides)+1)}
         ><Row>
-            <Col xs={4}><select value={sides} onChange={e => selectSides(Number(e.target.value))}>
-            {dice.map((side, index) => <option key={index} value={side}>{side}</option>)}
-        </select></Col>
-
-        <Col xs={4}></Col>
-
-        <Col xs={4}><input type="checkbox" onChange={e => e.target.checked ? setRoller('true') : setRoller('false')} /> Auto
-        </Col>
+            <Col xs={3}>
+                <input style={{
+                    borderRadius: '50px', textAlign: 'center' 
+                }} type="text" size={2} min={1} max={10} defaultValue={speed} onChange={e => {if(Number(e.target.value))setSpeed(Number(e.target.value))}} />
+            </Col>
+            <Col xs={7}>
+                second reroll
+            </Col>
+            <Col xs={2}>
+                <input type="checkbox" onChange={e => e.target.checked ? setRoller('true') : setRoller('false')} />
+            </Col>
         </Row>
         <Row><Col xs={12}><h1>{value}</h1></Col></Row>
         
         <Row>
+            
+        <Col xs={4}><select value={sides} onChange={e => selectSides(Number(e.target.value))}>
+            {dice.map((side, index) => <option key={index} value={side}>{side}</option>)}
+        </select> </Col>
         <Col xs={4}>
-Sides:<input style={{
-            borderRadius: '50%',
-        }} type="number" min={2} max={100} defaultValue={sides} onChange={e => selectSides(Number(e.target.value))} />
+            {'Sides'/*:<input style={{
+                borderRadius: '50px', 
+            }} type="number" min={2} max={100} defaultValue={sides} onChange={e => selectSides(Number(e.target.value))} 
+        />*/}
         </Col>
         <Col xs={4}></Col>
         <Col xs={4}>
-seconds:<input style={{
-            borderRadius: '50%',
-        }} type="number" min={1} max={10} defaultValue={speed} onChange={e => setSpeed(Number(e.target.value))} />
         </Col>
         </Row>
 
