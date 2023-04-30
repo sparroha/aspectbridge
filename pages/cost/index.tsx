@@ -25,7 +25,7 @@ export default function Cost(props) {
     }, [user])
 
     useEffect(() => {
-        if(update)updatePlayer(user, coin, income)
+        if(user&&update)updatePlayer(user, coin, income)
         //console.log('update')
         return setUpdate(false)
     }, [update])
