@@ -7,6 +7,7 @@ import { LoginNav } from "../login/[userlogin]";
 
 
 export default function Cost(props) {
+    const [prestige, setPrestige] = useState(0)
     const [coin, setCoin] = useState(0)
     const [income, setIncome] = useState(0)
     const [user, setUser] = useState(null)
@@ -18,14 +19,15 @@ export default function Cost(props) {
             .then((res)=>res.json())
             .then((data)=>{
                 //console.log(data)
-                coin==0?setCoin(data[0].coin):null
-                income==0?setIncome(data[0].income):null
+                setCoin(data[0].coin)
+                setIncome(data[0].income)
+                setPrestige(data[0].prestige)
             }).catch((e)=>{console.log(e)})
         }
     }, [user])
 
     useEffect(() => {
-        if(user&&update)updatePlayer(user, coin, income)
+        if(user&&update)updatePlayer(user, coin, income, prestige)
         //console.log('update')
         return setUpdate(false)
     }, [update])
@@ -43,7 +45,7 @@ export default function Cost(props) {
         for(let i=1;i<=Math.floor(Math.log10(coin));i++){
             buttons.push(
                 <><Button onClick={()=>{
-                    setIncome((p)=>{return p+Math.pow(10,i)/10})//set income to current income + (i-1)*10
+                    setIncome((p)=>{return p+(Math.pow(10,i)/10)*prestige})//set income to current income + (i-1)*10
                     setCoin((c)=>{return c-Math.pow(10,i)})//set coin to current coin - 10^i
                     setUpdate(true)
                 }}>+{Math.pow(10,i)/10} income {'(-'}{Math.pow(10,i)}{' coin)'}</Button><br/></>
@@ -65,15 +67,17 @@ export default function Cost(props) {
                 <Col xs={0} sm={2}></Col>
             </Row>
             <Row>
-                <Col xs={12} sm={4}><Button onClick={()=>{setCoin((c)=>{return ++c});setUpdate(true)}}>Increment coin by 1</Button></Col>
-                <Col xs={12} sm={4}><label>Coin: {coin}</label></Col>
-                <Col xs={12} sm={4}><label>income: {income}</label></Col>
+                <Col xs={12} sm={2}><Button onClick={()=>{setCoin((c)=>{return ++c});setUpdate(true)}}>Increment coin by 1</Button></Col>
+                <Col xs={12} sm={3}><label>Coin: {coin}</label></Col>
+                <Col xs={12} sm={3}><label>income: {income}</label></Col>
+                <Col xs={12} sm={3}><label>prestige: {prestige}</label></Col>
+                {coin>=1000000000?<Col xs={12} sm={1}><Button onClick={()=>{setCoin(0);setIncome(0);setPrestige((p)=>++p);setUpdate(true)}}>Prestige</Button></Col>:null}
             </Row>
             <RenderButton />
         </Container>
     );
 }
-function updatePlayer(user, coin, income){
+function updatePlayer(user, coin, income, prestige){
     console.log('updatePlayer')
     fetch('/api/cost/users', {
         method: 'POST',
@@ -83,7 +87,8 @@ function updatePlayer(user, coin, income){
         body: JSON.stringify({
             username: user.username,
             coin: coin,
-            income: income
+            income: income,
+            prestige: prestige
         })
     }).then((res)=>res.json())
     .then((data)=>{

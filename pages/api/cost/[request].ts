@@ -2,7 +2,7 @@ import sql from "../../../lib/,base/sql"
 
 export default async function cost(req, res) {
     const { request } = req.query
-    const { username, send, time, message, access, coin, income } = req.body
+    const { username, send, time, message, access, coin, income, prestige } = req.body
     const method = req.method
     if (method === 'POST') {try {
         switch (request) {
@@ -11,7 +11,7 @@ export default async function cost(req, res) {
             res.status(200).json({ alert: 'user deleted' })
             break
           case 'users'://aka update user
-            await sql`INSERT INTO aspect_cost_users_ (username, last_active, coin, income) VALUES (${username}, NOW(), ${coin}, ${income}) ON DUPLICATE KEY UPDATE last_active = NOW(), coin = ${coin}, income = ${income};`
+            await sql`INSERT INTO aspect_cost_users_ (username, last_active, coin, income, prestige) VALUES (${username}, NOW(), ${coin}, ${income}, ${prestige}) ON DUPLICATE KEY UPDATE last_active = NOW(), coin = ${coin}, income = ${income}, prestige = ${prestige};`
             res.status(200).json({ alert: 'user added' })
             break
           default:
@@ -42,7 +42,8 @@ export default async function cost(req, res) {
                 username VARCHAR(100) NOT NULL UNIQUE,
                 last_active DATETIME NOT NULL,
                 coin INT NOT NULL DEFAULT 0,
-                income INT NOT NULL DEFAULT 0
+                income INT NOT NULL DEFAULT 0,
+                prestige INT NOT NULL DEFAULT 0
             );`
             res.status(200).json({ alert: 'users reset' })
             break
