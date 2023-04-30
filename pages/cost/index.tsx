@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 
@@ -10,12 +10,11 @@ export default function Cost() {
         const interval = setInterval(() => {
             setCoin((c)=>{return c+income})
         }, 1000);
-        return () => clearInterval(interval);
-        }, [income]);
+        }, []);
         
     const RenderButton = ()=>{
         const buttons = []
-        for(let i=1;i<10;i++){
+        for(let i=1;i<Math.floor(Math.log10(coin));i++){
             buttons.push(
                 coin>=Math.pow(10,i)?//if current coin is greater than 10^i then display button
                 <><button key={i} onClick={()=>{
@@ -27,9 +26,7 @@ export default function Cost() {
         }
         return <Row>
             {buttons.map((b, i)=>{
-                return <Col xs={5} sm={4} md={3} lg={2}>
-                        {b}
-                    </Col>
+                return <Col xs={5} sm={4} md={3} lg={2}>{b}</Col>
             })}
         </Row>
     }
