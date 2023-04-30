@@ -10,11 +10,12 @@ export default function Cost() {
         const interval = setInterval(() => {
             setCoin((c)=>{return c+income})
         }, 1000);
-        }, []);
+        return () => clearInterval(interval);
+        }, [income]);
         
     const RenderButton = ()=>{
         const buttons = []
-        for(let i=1;i<Math.floor(Math.log10(coin));i++){
+        for(let i=1;i<10;i++){
             buttons.push(
                 coin>=Math.pow(10,i)?//if current coin is greater than 10^i then display button
                 <><button key={i} onClick={()=>{
