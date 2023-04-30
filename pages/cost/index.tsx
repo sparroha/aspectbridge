@@ -45,7 +45,7 @@ export default function Cost(props) {
         for(let i=1;i<=Math.floor(Math.log10(coin));i++){
             buttons.push(
                 <><Button onClick={()=>{
-                    setIncome((p)=>{return p+(Math.pow(10,i)/10)*prestige})//set income to current income + (i-1)*10
+                    setIncome((p)=>{return p+(Math.pow(10,i)/10)*(prestige+1)})//set income to current income + (i-1)*10
                     setCoin((c)=>{return c-Math.pow(10,i)})//set coin to current coin - 10^i
                     setUpdate(true)
                 }}>+{Math.pow(10,i)/10} income {'(-'}{Math.pow(10,i)}{' coin)'}</Button><br/></>
