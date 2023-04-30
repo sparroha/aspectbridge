@@ -16,7 +16,7 @@ export default function Cost(props) {
         const player = fetch('/api/cost/users?username='+user?.username)
         .then((res)=>res.json())
         .then((data)=>{
-            console.log(data)
+            //console.log(data)
             coin==0?setCoin(data[0].coin):null
             income==0?setIncome(data[0].income):null
         }).catch((e)=>{console.log(e)})
@@ -24,7 +24,7 @@ export default function Cost(props) {
 
     useEffect(() => {
         if(update)updatePlayer(user, coin, income)
-        console.log('update')
+        //console.log('update')
         return setUpdate(false)
     }, [update])
 
@@ -84,7 +84,9 @@ function updatePlayer(user, coin, income){
             income: income
         })
     }).then((res)=>res.json())
-    .then((data)=>{console.log(data)})
+    .then((data)=>{
+        //console.log(data)
+    })
     .catch((e)=>{console.log(e)})
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
