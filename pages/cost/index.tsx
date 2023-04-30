@@ -13,13 +13,15 @@ export default function Cost(props) {
     const [update, setUpdate] = useState(false)
 
     useEffect(() => {
-        const player = fetch('/api/cost/users?username='+user?.username)
-        .then((res)=>res.json())
-        .then((data)=>{
-            //console.log(data)
-            coin==0?setCoin(data[0].coin):null
-            income==0?setIncome(data[0].income):null
-        }).catch((e)=>{console.log(e)})
+        if(user){
+            const player = fetch('/api/cost/users?username='+user?.username)
+            .then((res)=>res.json())
+            .then((data)=>{
+                //console.log(data)
+                coin==0?setCoin(data[0].coin):null
+                income==0?setIncome(data[0].income):null
+            }).catch((e)=>{console.log(e)})
+        }
     }, [user])
 
     useEffect(() => {
