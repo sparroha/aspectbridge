@@ -13,6 +13,14 @@ export default function Cost(props) {
     const [user, setUser] = useState(null)
     const [update, setUpdate] = useState(false)
 
+    //const maxIncome = Number.MAX_SAFE_INTEGER
+    //const maxCoin = Number.MAX_SAFE_INTEGER
+    const raise = (i, prestige)=>{return (Math.pow(10,i)/10)*prestige}
+    const magnitude = (n)=>{return Math.floor(Math.log10(n))}
+    const tenTo = (n)=>{return Math.pow(10,n)}
+    const lol = (n)=>{return n/tenTo(magnitude(n))}
+    const prestigeCost = ()=>{return tenTo(prestige)}
+
     useEffect(() => {
         if(user){
             const player = fetch('/api/cost/users?username='+user?.username)
@@ -40,15 +48,15 @@ export default function Cost(props) {
         return () => clearInterval(interval);
     }, [income]);
         
-    function RenderButton(){
+    function RenderButtons(){
         const buttons = []
-        for(let i=1;i<=Math.floor(Math.log10(coin));i++){
+        for(let i=1;i<=magnitude(coin);i++){//rerenders for each income tick
             buttons.push(
                 <><Button onClick={()=>{
-                    setIncome((p)=>{return p+(Math.pow(10,i)/10)*prestige})//set income to current income + (i-1)*10
-                    setCoin((c)=>{return c-Math.pow(10,i)})//set coin to current coin - 10^i
+                    setIncome((p)=>{return p+(raise(i, prestige))})//set income to current income + (i-1)*10
+                    setCoin((c)=>{return c-tenTo(i)})//set coin to current coin - 10^i
                     setUpdate(true)
-                }}>+{Math.pow(10,i)/10} income {'(-'}{Math.pow(10,i)}{' coin)'}</Button><br/></>
+                }}>{'+'+raise(i, prestige)+' income (-'+tenTo(i)+' coin)'}</Button><br/></>
             )
         }
         return <Row>
@@ -71,9 +79,9 @@ export default function Cost(props) {
                 <Col xs={12} sm={3}><label>Coin: {coin}</label></Col>
                 <Col xs={12} sm={3}><label>income: {income}</label></Col>
                 <Col xs={12} sm={3}><label>prestige: {prestige}</label></Col>
-                {coin>=1000000000?<Col xs={12} sm={1}><Button onClick={()=>{setCoin(0);setIncome(0);setPrestige((p)=>++p);setUpdate(true)}}>Prestige</Button></Col>:null}
+                {coin>=prestigeCost()?<Col xs={12} sm={1}><Button onClick={()=>{setCoin(0);setIncome(0);setPrestige((p)=>++p);setUpdate(true)}}>Prestige</Button></Col>:prestigeCost()}
             </Row>
-            <RenderButton />
+            <RenderButtons />
         </Container>
     );
 }
