@@ -25,11 +25,11 @@ export default function Cost(props) {
         if(user){
             const player = fetch('/api/cost/users?username='+user?.username)
             .then((res)=>res.json())
-            .then((data)=>{
+            .then(([{coin, income, prestige}])=>{ 
                 //console.log(data)
-                setCoin(data[0].coin)
-                setIncome(data[0].income)
-                setPrestige(data[0].prestige)
+                setCoin(coin)
+                setIncome(income)
+                setPrestige(prestige)
             }).catch((e)=>{console.log(e)})
         }
     }, [user])
