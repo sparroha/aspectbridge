@@ -10,12 +10,37 @@ import Dialog from "../../components/dialog";
 export default function Cost(props) {
     const [prestige, setPrestige] = useState(0)
     const [coin, setCoin] = useState(0)
+    const [invItems, setInvItems] = useState([
+        {name: 'item1', value: 1, amount: 0},
+        {name: 'item2', value: 10, amount: 0},
+        {name: 'item3', value: 100, amount: 0},
+        {name: 'item4', value: 1000, amount: 0},
+        {name: 'item5', value: 10000, amount: 0},
+        {name: 'item6', value: 100000, amount: 0},
+        {name: 'item7', value: 1000000, amount: 0},
+        {name: 'item8', value: 10000000, amount: 0},
+        {name: 'item9', value: 100000000, amount: 0},
+        {name: 'item10', value: 1000000000, amount: 0},
+    ])
+    const shopItems = [
+        {name: 'item1', value: 1, amount: 0},
+        {name: 'item2', value: 10, amount: 0},
+        {name: 'item3', value: 100, amount: 0},
+        {name: 'item4', value: 1000, amount: 0},
+        {name: 'item5', value: 10000, amount: 0},
+        {name: 'item6', value: 100000, amount: 0},
+        {name: 'item7', value: 1000000, amount: 0},
+        {name: 'item8', value: 10000000, amount: 0},
+        {name: 'item9', value: 100000000, amount: 0},
+        {name: 'item10', value: 1000000000, amount: 0},
+    ]
     const [income, setIncome] = useState(0)
     const [user, setUser] = useState(null)
     const [update, setUpdate] = useState(false)
     const [level, setLevel] = useState(0)
 
     //helper functions
+    
     const raise = (n, prestige)=>{return (Math.pow(10,n)/10)*prestige}
     const magnitude = (n)=>{return Math.floor(Math.log10(n))}
     const tenTo = (n)=>{return Math.pow(10,n)}
@@ -64,7 +89,17 @@ export default function Cost(props) {
             <Header />
             <Labels props={{coin: wallet(coin), income: income, prestige: prestige, setCoin: setCoin, setIncome: setIncome, setPrestige: setPrestige, setUpdate: setUpdate, prestigeCost: prestigeCost}} />
             <RenderButtons props={{level: level, prestige: prestige, setIncome: setIncome, setCoin: setCoin, setUpdate: setUpdate, raise: raise, tenTo: tenTo}} />
-        
+            
+            <Row>
+                <Col xs={12} sm={6}>
+                    <Shop shopItems={shopItems} setInvItems={setInvItems} setCoin={setCoin}/>
+                </Col>
+                <Col xs={12} sm={6}>
+                    <Inventory invItems={invItems} setInvItems={setInvItems} setCoin={setCoin}/>
+                </Col>
+            </Row>
+            
+            
         </Container>
     );
 }
@@ -122,6 +157,46 @@ function updatePlayer(user, coin, income, prestige){
     })
     .catch((e)=>{console.log(e)})
 }
+
+//experimental
+function Shop({shopItems, setCoin, setInvItems}){
+    return shopItems.map((item, i)=>{
+        return <Row key={i+1}>
+            <Col xs={12} sm={4}><label>{item.name}</label></Col>
+            <Col xs={12} sm={4}><label>{item.value}</label></Col>
+            <Col xs={12} sm={4}><Button onClick={
+                ()=>{
+                    setCoin((c)=>{return c-item.value})
+                    setInvItems((inv)=>{
+                        let invNew = inv
+                        invNew[i].amount++
+                        return invNew
+                    })
+                }
+            }>Buy</Button></Col>
+        </Row>
+    })
+}
+function Inventory({invItems, setInvItems, setCoin}){
+    return invItems.map((item, i)=>{
+        return item.amount>0?<Row key={i+1}>
+            <Col xs={12} sm={4}><label>{item.amount}:{item.name}</label></Col>
+            <Col xs={12} sm={4}><label>{item.value}</label></Col>
+            <Col xs={12} sm={4}><Button onClick={
+                ()=>{
+                    setCoin((c)=>{return c+item.value})
+                    setInvItems((inv)=>{
+                        let invNew = inv
+                        invNew[i].amount--
+                        return invNew
+                    })
+                }
+            }>Sell</Button></Col>
+        </Row>:null
+    })
+}
+
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = context.query
     const ip = await requestIp.getClientIp(context.req)
