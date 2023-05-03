@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import requestIp from 'request-ip';
 import { Profile } from "../login/[userlogin]";
 import { LoginNav } from "../login/[userlogin]";
+import Dialog from "../../components/dialog";
 
 
 export default function Cost(props) {
@@ -52,14 +53,18 @@ export default function Cost(props) {
         }, 1000);
         //return () => clearInterval(interval);
     }, []);
-        
+    
+    const wallet = (coin) => {
+        return <Dialog id={'wallet'} title={'wallet'} content={'c: '+coin} open={'cCc'} close={'---'}/>
+    }
     return (
         <Container>
             <LoginNav user={user} homepage={props.homepage || 'cost'} />
             <Profile ip={props.ip} setUser={setUser}/>
             <Header />
-            <Labels props={{coin: coin, income: income, prestige: prestige, setCoin: setCoin, setIncome: setIncome, setPrestige: setPrestige, setUpdate: setUpdate, prestigeCost: prestigeCost}} />
+            <Labels props={{coin: wallet(coin), income: income, prestige: prestige, setCoin: setCoin, setIncome: setIncome, setPrestige: setPrestige, setUpdate: setUpdate, prestigeCost: prestigeCost}} />
             <RenderButtons props={{level: level, prestige: prestige, setIncome: setIncome, setCoin: setCoin, setUpdate: setUpdate, raise: raise, tenTo: tenTo}} />
+        
         </Container>
     );
 }
