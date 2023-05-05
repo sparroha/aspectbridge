@@ -26,12 +26,12 @@ export default function Dialog(props?){
         }
     },[/*active*/])
 
-    return<>
+    return<div>
         <Button id={'open'+id} data-open-modal>{open?open:'Open'}</Button>
         <dialog style={{borderRadius: '25px', border: '5px outset silver', textAlign: 'center',...style}} id={'modal'+id} data-modal>
             <h2>{title?title:'Modal'}</h2>
             <div>{content?content:'Modal content'}</div>
             <Button id={'close'+id} data-close-modal>{close?close:'Close'}</Button>
         </dialog>
-    </>
+    </div>
 }

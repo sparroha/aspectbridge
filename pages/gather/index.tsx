@@ -7,6 +7,7 @@ import useLog from "../../components/conlog";
 import Dialog from "../../components/dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import ContainerOverlay from "../../components/overlay";
+import useSWR from "swr";
 
 export type Item = {name: string, value: number, amount: number}
 export type Player = {
@@ -25,24 +26,35 @@ export default function Gather(props: { ip: any; }){
     const render = ()=>{renders.current++;r({})}
     const Debug = () => {return <>Renders: {renders.current}</>}
     const user = useRef(null)//set by <Profile/> to provide user authentiation
+    const {data, error, mutate} = useSWR('/api/gather/users', { refreshInterval: 500 })
+    function Users(){
+        if(data){
+            return <>
+                Users:<br/>
+                {data.map((u, i)=>{return <div key={i}>{u.username+'[gems: '+JSON.stringify(JSON.parse(u.player_data).wallet.gem)+']'}</div>})}
+            </>
+        }else{
+            return <>Loading Online Users...</>
+        }
+    }
     const Pinit: Player = {
         wallet: {income: 0, coin: 0, gem: 0, prestige: 0},
         items: []
     }
     const shopItems: Item[] = [
-        {name: 'item1', value: 1, amount: 0},
-        {name: 'item2', value: 2, amount: 0},
-        {name: 'item3', value: 3, amount: 0},
-        {name: 'item4', value: 4, amount: 0},
-        {name: 'item5', value: 5, amount: 0},
-        {name: 'item6', value: 6, amount: 0},
-        {name: 'item7', value: 7, amount: 0},
-        {name: 'item8', value: 8, amount: 0},
-        {name: 'item9', value: 9, amount: 0},
-        {name: 'item10', value: 10, amount: 0},
+        {name: 'Apple Alphabary', value: 42, amount: 0},
+        {name: 'Berry', value: 2, amount: 0},
+        {name: 'Grape', value: 3, amount: 0},
+        {name: 'Duck', value: 4, amount: 0},
+        {name: 'Hay', value: 5, amount: 0},
+        {name: 'Wine', value: 6, amount: 0},
+        {name: 'Zukini', value: 7, amount: 0},
+        {name: 'Chorn', value: 8, amount: 0},
+        {name: 'Topatoes', value: 9, amount: 0},
+        {name: 'Yams', value: 10, amount: 0},
     ]
-
     function reducer (state: {player: Player}, action) {
+        //TODO: if player is inactive after 5 seconds, refresh page here
         let {player, amount, item} = action.payload
         renders.current++
         switch (action.type) {
@@ -81,7 +93,6 @@ export default function Gather(props: { ip: any; }){
     }
     const [state, dispatch] = useReducer(reducer, {player: Pinit});
     useEffect(()=>{return updatePlayer()},[state])
-
     /**
      * api GET player_data once
      */
@@ -94,7 +105,6 @@ export default function Gather(props: { ip: any; }){
             }).catch((e)=>{console.log(e)})
         }
     },[user.current])
-
     /**
      * api POST player_data
      * @param username 
@@ -131,13 +141,18 @@ export default function Gather(props: { ip: any; }){
                 <Profile ip={props.ip} setUser={(data: any)=>{user.current=data;render()}}/>
             </Col>
         </Row>
-        <Row>
-            <Col><Wallet {...state?.player?.wallet}/></Col>
-            <Col><Pack pack={state?.player?.items} dispatch={dispatch}/></Col>
-            <Col><Store shopItems={shopItems} gem={state.player.wallet.gem} dispatch={dispatch}/></Col>
+        <Row style={{textAlign: 'center'}}>
+            <Col xs={2} style={{backgroundColor: 'lightblue'}}><Wallet {...state?.player?.wallet}/></Col>
+            <Col xs={2} style={{backgroundColor: 'tan'}}><Pack pack={state?.player?.items} dispatch={dispatch}/></Col>
+            <Col xs={2} style={{backgroundColor: 'lightgreen'}}><Store shopItems={shopItems} gem={state.player.wallet.gem} dispatch={dispatch}/></Col>
+        </Row>
+        <Row style={{textAlign: 'center'}}>
+            <Col xs={6}  style={{backgroundColor: 'darkgrey'}}><Mine gem={state?.player?.wallet.gem} dispatch={dispatch}/></Col>
         </Row>
         <Row>
-            <Col>g: {state.player.wallet.gem}<br/><Button onClick={()=>{dispatch({type: 'addGem', payload: {amount: Math.floor(Math.random()*6+1)>2?1:-2}})}}>Mine Gems</Button></Col>
+            <Col xs={6}  style={{backgroundColor: 'lightgrey'}}>
+                <Users/>
+            </Col>
         </Row>
     </Container>
 }
@@ -159,10 +174,12 @@ const Wallet = ({income, coin, gem, prestige}: {income: number, coin: number, ge
             {'c: '+coin}<br/>
             {'g: '+gem}<br/>
             {'p: '+prestige}
-        </>} open={'cCc'} close={'---'}/>
+        </>} style={{backgroundColor: 'lightblue'}} open={'cCc'} close={'---'}/>
 }
 const Pack = ({pack, dispatch}: {pack: Item[], dispatch: Function}) => {
-    return <Dialog id={'pack'} title={'pack'} content={<Inventory pack={pack} dispatch={dispatch} />} open={'Stuff'} close={'Close'}/>
+    return <Dialog id={'pack'} title={'pack'} content={
+            <Inventory pack={pack} dispatch={dispatch}/>
+        } style={{backgroundColor: 'tan'}} open={'Stuff'} close={'Close'}/>
 }
 const Inventory = ({pack, dispatch}) => {
     useLog('Inventory: '+JSON.stringify(pack))
@@ -180,7 +197,9 @@ const Inventory = ({pack, dispatch}) => {
     })
 }
 const Store = ({shopItems, gem, dispatch}) => {
-    return <Dialog id={'store'} title={'store'} content={<Shop shopItems={shopItems} gem={gem} dispatch={dispatch}/>} open={'Store'} close={'Exit'}/>
+    return <Dialog id={'store'} title={'store'} content={
+            <Shop shopItems={shopItems} gem={gem} dispatch={dispatch}/>
+        } style={{backgroundColor: 'lightgreen'}} open={'Store'} close={'Exit'}/>
 }
 const Shop = ({shopItems, gem, dispatch}) => {
     return shopItems.map((item, i)=>{
@@ -196,4 +215,12 @@ const Shop = ({shopItems, gem, dispatch}) => {
             }>Buy</Button></Col>
         </Row>
     })
+}
+const Mine = ({gem, dispatch}) => {
+    return <>
+        g: {gem}<br/>
+        <Button onClick={()=>{
+            dispatch({type: 'addGem', payload: {amount: Math.floor(Math.random()*6+1)>2?1:-1}})
+            }}>Mine Gems</Button>
+    </>
 }
