@@ -142,11 +142,11 @@ export default function Gather(props: { ip: any; }){
         </Row>
         <Row style={{textAlign: 'center'}}>
             <Col xs={2} style={{backgroundColor: 'lightblue'}}><Wallet {...state?.player?.wallet}/></Col>
-            <Col xs={2} style={{backgroundColor: 'tan'}}><Pack pack={state?.player?.items} dispatch={dispatch}/></Col>
-            <Col xs={2} style={{backgroundColor: 'lightgreen'}}><Store shopItems={shopItems} gem={state?.player?.wallet.gem} dispatch={dispatch}/></Col>
+            <Col xs={2} style={{backgroundColor: 'tan'}}><Pack pack={state?.player?.items} dispatch={dispatch} updatePlayer={updatePlayer}/></Col>
+            <Col xs={2} style={{backgroundColor: 'lightgreen'}}><Store shopItems={shopItems} gem={state?.player?.wallet.gem} dispatch={dispatch} updatePlayer={updatePlayer}/></Col>
         </Row>
         <Row style={{textAlign: 'center'}}>
-            <Col xs={6}  style={{backgroundColor: 'darkgrey'}}><Mine gem={state?.player?.wallet.gem} dispatch={dispatch}/></Col>
+            <Col xs={6}  style={{backgroundColor: 'darkgrey'}}><Mine gem={state?.player?.wallet.gem} dispatch={dispatch} updatePlayer={updatePlayer}/></Col>
         </Row>
         <Row>
             <Col xs={6}  style={{backgroundColor: 'lightgrey'}}>
@@ -175,12 +175,12 @@ const Wallet = ({income, coin, gem, prestige}: {income: number, coin: number, ge
             {'p: '+prestige}
         </>} style={{backgroundColor: 'lightblue'}} open={'cCc'} close={'---'}/>
 }
-const Pack = ({pack, dispatch}: {pack: Item[], dispatch: Function}) => {
+const Pack = ({pack, dispatch, updatePlayer}: {pack: Item[], dispatch: Function, updatePlayer: Function}) => {
     return <Dialog id={'pack'} title={'pack'} content={
-            <Inventory pack={pack} dispatch={dispatch}/>
+            <Inventory pack={pack} dispatch={dispatch} updatePlayer={updatePlayer}/>
         } style={{backgroundColor: 'tan'}} open={'Stuff'} close={'Close'}/>
 }
-const Inventory = ({pack, dispatch}) => {
+const Inventory = ({pack, dispatch, updatePlayer}) => {
     useLog('Inventory: '+JSON.stringify(pack))
     return pack.map((item, i)=>{
         return item.amount>0?<Row key={i+1}>
@@ -196,12 +196,12 @@ const Inventory = ({pack, dispatch}) => {
         </Row>:null
     })
 }
-const Store = ({shopItems, gem, dispatch}) => {
+const Store = ({shopItems, gem, dispatch, updatePlayer}) => {
     return <Dialog id={'store'} title={'store'} content={
-            <Shop shopItems={shopItems} gem={gem} dispatch={dispatch}/>
+            <Shop shopItems={shopItems} gem={gem} dispatch={dispatch} updatePlayer={updatePlayer}/>
         } style={{backgroundColor: 'lightgreen'}} open={'Store'} close={'Exit'}/>
 }
-const Shop = ({shopItems, gem, dispatch}) => {
+const Shop = ({shopItems, gem, dispatch, updatePlayer}) => {
     return shopItems.map((item, i)=>{
         return <Row key={i+1}>
             <Col xs={12} sm={4}><label>{item.name}</label></Col>
@@ -217,7 +217,7 @@ const Shop = ({shopItems, gem, dispatch}) => {
         </Row>
     })
 }
-const Mine = ({gem, dispatch}) => {
+const Mine = ({gem, dispatch, updatePlayer}) => {
     return <>
         g: {gem}<br/>
         <Button onClick={()=>{
