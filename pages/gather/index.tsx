@@ -32,12 +32,26 @@ export default function Gather(props: { ip: any; }){
     const down = ()=>{setPosition({x: position.x, y: position.y+speed})}
     const left = ()=>{setPosition({x: position.x-speed, y: position.y})}
     const right = ()=>{setPosition({x: position.x+speed, y: position.y})}
+
+
+useEffect(()=>{
+
+const moveup = setInterval(up, 200)
+
+document.querySelector('#up').addEventListener(
+    'mousedown', moveup
+)
+document.querySelector('#up').addEventListener(
+    'mouseup', clearInterval(moveup)
+)
+},[])
+
     const Control = ()=>{
         return <>
         <Row>
             <Col xs={4}></Col>
             <Col xs={4}>
-                <Button onClick={up}>Up</Button>
+                <Button id={'up'} onClick={up}>Up</Button>
             </Col>
             <Col xs={4}></Col>
         </Row>
