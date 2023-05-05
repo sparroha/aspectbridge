@@ -97,7 +97,7 @@ export default function Gather(props: { ip: any; }){
      */
     useEffect(()=>{//get user initial player_data
         if(user.current){
-            const playerData = fetch('/api/gather/users?username='+user?.current?.username)
+            const playerData = fetch('/api/gather/users?username='+user.current.username)
             .then((res)=>res.json())
             .then(([{player_data}])=>{ 
                 dispatch({type: 'setPlayer', payload: {player: JSON.parse(player_data)}})
@@ -110,14 +110,14 @@ export default function Gather(props: { ip: any; }){
      * @param player 
      */
     function updatePlayer(){//update database with current player_data
-        if(user.current?.username){console.log('updatePlayer')
+        if(user.current){console.log('updatePlayer')
         fetch('/api/gather/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: user.current?.username,
+                username: user.current.username,
                 player_data: JSON.stringify({...state?.player})//SHALLOW COPY//do I need to stringify inside my stringify?
             })
         }).then((res)=>res.json())
@@ -143,7 +143,7 @@ export default function Gather(props: { ip: any; }){
         <Row style={{textAlign: 'center'}}>
             <Col xs={2} style={{backgroundColor: 'lightblue'}}><Wallet {...state?.player?.wallet}/></Col>
             <Col xs={2} style={{backgroundColor: 'tan'}}><Pack pack={state?.player?.items} dispatch={dispatch}/></Col>
-            <Col xs={2} style={{backgroundColor: 'lightgreen'}}><Store shopItems={shopItems} gem={state.player.wallet.gem} dispatch={dispatch}/></Col>
+            <Col xs={2} style={{backgroundColor: 'lightgreen'}}><Store shopItems={shopItems} gem={state?.player?.wallet.gem} dispatch={dispatch}/></Col>
         </Row>
         <Row style={{textAlign: 'center'}}>
             <Col xs={6}  style={{backgroundColor: 'darkgrey'}}><Mine gem={state?.player?.wallet.gem} dispatch={dispatch}/></Col>
