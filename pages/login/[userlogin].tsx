@@ -245,8 +245,7 @@ export function ProfileByIp({ip, setUser}) {
 
 export function LoginNav(props) {
   const { user, homepage, style } = props
-  return (
-    <Nav style={style}>
+  return <Nav style={style}>
       <Nav.Link 
         style={style}
         href={
@@ -257,7 +256,6 @@ export function LoginNav(props) {
         {user ? 'Logout ' + user.username : 'Login'}
       </Nav.Link>{' '}
     </Nav>
-  );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {

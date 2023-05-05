@@ -64,7 +64,6 @@ export default function Gather(props: { ip: any; }){
                 }else{
                     iTemsA.push({...item, amount: (amount?amount:1)})
                 }
-
                 return {...state, player:{...state.player, items: [...iTemsA]}}
             case 'subItem':
                 let iTems = [...state.player.items]
@@ -133,9 +132,12 @@ export default function Gather(props: { ip: any; }){
             </Col>
         </Row>
         <Row>
-            <Wallet {...state?.player?.wallet}/>
-            <Pack pack={state?.player?.items} dispatch={dispatch}/>
-            <Store shopItems={shopItems} gem={state.player.wallet.gem} dispatch={dispatch}/>
+            <Col><Wallet {...state?.player?.wallet}/></Col>
+            <Col><Pack pack={state?.player?.items} dispatch={dispatch}/></Col>
+            <Col><Store shopItems={shopItems} gem={state.player.wallet.gem} dispatch={dispatch}/></Col>
+        </Row>
+        <Row>
+            <Col>g: {state.player.wallet.gem}<br/><Button onClick={()=>{dispatch({type: 'addGem', payload: {amount: Math.floor(Math.random()*6+1)>2?1:-2}})}}>Mine Gems</Button></Col>
         </Row>
     </Container>
 }
