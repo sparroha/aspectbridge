@@ -16,7 +16,7 @@ const border = {
 
 /**
  * Chat App
- * @param props: ip, user, session
+ * @param props: ip, user
  * @returns 
  */
 export default function Chat(props){

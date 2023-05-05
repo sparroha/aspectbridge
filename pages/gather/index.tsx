@@ -7,6 +7,7 @@ import Dialog from "../../components/dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import ContainerOverlay from "../../components/overlay";
 import useSWR from "swr";
+import Chat from "../chat";
 
 export type Item = {name: string, value: number, amount: number}
 export type Player = {
@@ -25,21 +26,39 @@ export default function Gather(props: { ip: any; }){
     const render = ()=>{renders.current++;r({})}
     const Debug = () => {return <>Renders: {renders.current}</>}
     const user = useRef(null)//set by <Profile/> to provide user authentiation
-    const {data, error, mutate} = useSWR('/api/gather/users', { refreshInterval: 500 })
-    function Users(){
-        if(data){
-            return <>
-                Users:<br/>
-                {data.map((u, i)=>{return <div key={i}>{u.username+'[gems: '+JSON.stringify(JSON.parse(u.player_data).wallet.gem)+']'}</div>})}
-            </>
-        }else{
-            return <>Loading Online Users...</>
-        }
+    const [position, setPosition] = useState({x: 0, y: 0})
+    const speed = 10
+    const up = ()=>{setPosition({x: position.x, y: position.y-speed})}
+    const down = ()=>{setPosition({x: position.x, y: position.y+speed})}
+    const left = ()=>{setPosition({x: position.x-speed, y: position.y})}
+    const right = ()=>{setPosition({x: position.x+speed, y: position.y})}
+    const Control = ()=>{
+        return <>
+        <Row>
+            <Col xs={4}></Col>
+            <Col xs={4}>
+                <Button onClick={up}>Up</Button>
+            </Col>
+            <Col xs={4}></Col>
+        </Row>
+        <Row>
+            <Col xs={4}>
+                <Button onClick={left}>Left</Button>
+            </Col> 
+            <Col xs={4}></Col> 
+            <Col xs={4}>
+                <Button onClick={right}>Right</Button>
+            </Col> 
+        </Row>
+        <Row>
+            <Col xs={4}></Col> 
+            <Col xs={4}>
+                <Button onClick={down}>Down</Button>
+            </Col> 
+            <Col xs={4}></Col> 
+        </Row></>
     }
-    const Pinit: Player = {
-        wallet: {income: 0, coin: 0, gem: 0, prestige: 0},
-        items: []
-    }
+
     const shopItems: Item[] = [
         {name: 'Apple Alphabary', value: 42, amount: 0},
         {name: 'Berry', value: 2, amount: 0},
@@ -52,6 +71,22 @@ export default function Gather(props: { ip: any; }){
         {name: 'Topatoes', value: 9, amount: 0},
         {name: 'Yams', value: 10, amount: 0},
     ]
+    //<PLAYER STATE>
+    const {data, error, mutate} = useSWR('/api/gather/users', { refreshInterval: 500 })
+    function Users(){
+        if(data){
+            return <>
+                Users:<br/>
+                {data.map((u, i)=>{return <div key={i}>{u.username+'[gems: '+JSON.parse(u.player_data).wallet.gem+' / coins: '+JSON.parse(u.player_data).wallet.coin+']'}</div>})}
+            </>
+        }else{
+            return <>Loading Online Users...</>
+        }
+    }
+    const Pinit: Player = {
+        wallet: {income: 0, coin: 0, gem: 0, prestige: 0},
+        items: []
+    }
     function reducer (state: {player: Player}, action) {
         //TODO: if player is inactive after 5 seconds, refresh page here
         let {player, amount, item} = action.payload
@@ -90,8 +125,8 @@ export default function Gather(props: { ip: any; }){
                 throw new Error()
         }
     }
+    //<PLAYER STATE/>
     const [state, dispatch] = useReducer(reducer, {player: Pinit});
-    /*useEffect(()=>{return updatePlayer()},[state])*/
     /**
      * api GET player_data once
      */
@@ -128,7 +163,7 @@ export default function Gather(props: { ip: any; }){
     }
     
     return <Container>
-        <Row style={{textAlign: 'center'}}>
+        <Row id={'AppSystem'} style={{textAlign: 'center'}}>
             <Col xs={4} style={{visibility: 'collapse'}}>
                 <Debug/>
             </Col>
@@ -140,16 +175,32 @@ export default function Gather(props: { ip: any; }){
                 <Profile ip={props.ip} setUser={(data: any)=>{user.current=data;render()}}/>
             </Col>
         </Row>
-        <Row style={{textAlign: 'center'}}>
-            <Col xs={2} style={{backgroundColor: 'lightblue'}}><Wallet {...state?.player?.wallet}/></Col>
-            <Col xs={2} style={{backgroundColor: 'tan'}}><Pack pack={state?.player?.items} dispatch={dispatch} updatePlayer={updatePlayer}/></Col>
-            <Col xs={2} style={{backgroundColor: 'lightgreen'}}><Store shopItems={shopItems} gem={state?.player?.wallet.gem} dispatch={dispatch} updatePlayer={updatePlayer}/></Col>
+        <Row id={'Econ'} style={{textAlign: 'center'}}>
+            <Col xs={3} sm={2} style={{backgroundColor: 'lightblue'}}><Wallet {...state?.player?.wallet}/></Col>
+            <Col xs={3} sm={2} style={{backgroundColor: 'tan'}}><Pack pack={state?.player?.items} dispatch={dispatch} updatePlayer={updatePlayer}/></Col>
+            <Col xs={3} sm={2} style={{backgroundColor: 'lightgreen'}}><Store shopItems={shopItems} gem={state?.player?.wallet.gem} dispatch={dispatch} updatePlayer={updatePlayer}/></Col>
         </Row>
-        <Row style={{textAlign: 'center'}}>
-            <Col xs={6}  style={{backgroundColor: 'darkgrey'}}><Mine gem={state?.player?.wallet.gem} dispatch={dispatch} updatePlayer={updatePlayer}/></Col>
+        <Row id={'Mine'} style={{textAlign: 'center'}}>
+            <Col xs={6}  style={{backgroundColor: 'darkgrey'}}>
+                <Mine wallet={state?.player?.wallet} dispatch={dispatch} updatePlayer={updatePlayer}/>
+            </Col>
         </Row>
-        <Row>
-            <Col xs={6}  style={{backgroundColor: 'lightgrey'}}>
+        <Row id={'Field Control'}>
+            <Col xs={12} sm={6} md={3} style={{backgroundColor: 'lightgrey'}}>
+                <Control/>
+            </Col>
+        </Row>
+        <Row id={'Field'} style={{position: 'relative', height: '20%'}}>
+            <Col>
+                <Button style={{position: 'absolute', top: position.y+'px', left: position.x+'px'}} onClick={()=>{setPosition({x: 0, y: 0})}}>Absolute</Button>
+            </Col>
+        </Row>
+
+        <Row id={'community'}>
+            <Col xs={12} sm={8} md={9} style={{backgroundColor: 'lightgrey'}}>
+                <Chat ip={props.ip} user={user.current}/>
+            </Col>
+            <Col xs={12} sm={4} md={3} style={{backgroundColor: 'darkgrey'}}>
                 <Users/>
             </Col>
         </Row>
@@ -217,12 +268,30 @@ const Shop = ({shopItems, gem, dispatch, updatePlayer}) => {
         </Row>
     })
 }
-const Mine = ({gem, dispatch, updatePlayer}) => {
-    return <>
-        g: {gem}<br/>
-        <Button onClick={()=>{
-            dispatch({type: 'addGem', payload: {amount: Math.floor(Math.random()*6+1)>2?1:-1}})
-            updatePlayer()
+const Mine = ({wallet, dispatch, updatePlayer}) => {
+    return <Row>
+        <Col>
+            g: {wallet.gem}<br/>
+            <Button onClick={()=>{
+                dispatch({type: 'addGem', payload: {amount: Math.floor(Math.random()*6+1)>2?1:-1}})
+                updatePlayer()
             }}>Mine Gems</Button>
-    </>
+        </Col>
+        <Col>
+            c: {wallet.coin}<br/>
+            <Button onClick={()=>{
+                let price = 1000
+                if(wallet.gem>=10){
+                dispatch({type: 'addGem', payload: {amount: -10}})
+                dispatch({type: 'addCoin', payload: {amount: price}})
+                updatePlayer()}
+            }}>Sell Gem 10g/1000c</Button>
+            <Button onClick={()=>{
+                let price = 1200
+                if(wallet.coin>=price){dispatch({type: 'addGem', payload: {amount: 10}})
+                dispatch({type: 'addCoin', payload: {amount: -price}})
+                updatePlayer()}
+            }}>Buy Gem 1000c/10g</Button>
+        </Col>
+    </Row>
 }

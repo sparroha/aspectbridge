@@ -1,7 +1,7 @@
 import sql from "../../lib/,base/sql";
 
 export default async function getUserDetails(req, res) {
-    const { email, username, hash, ip } = req.query;
+    const { email, username, hash, ip, command} = req.query;
     let user = null
     if(ip){
         if (hash&&hash!=null) user = await getUserByHash(hash, ip)
@@ -9,6 +9,7 @@ export default async function getUserDetails(req, res) {
     }
     else if( email ) user = await getUserByEmail(email)
     else if( username ) user = await getUserByUsername(username)
+    else if( command == 'getall') user = await getAllUsers()
     else return res.status(400).json({message: 'No email, username or hash provided.'})
     res.status(200).json(user);
 }
@@ -32,4 +33,8 @@ async function getHashByIp(ip) {
 async function getUserByIp(ip) {
     const [user] = await sql`SELECT username, email, access FROM aspect_users_ WHERE ip = ${ip}`
     return user || await getUserByHash(await getHashByIp(ip), ip)
+}
+async function getAllUsers() {
+    const user = await sql`SELECT username, email, access FROM aspect_users_ WHERE 1`
+    return user
 }
