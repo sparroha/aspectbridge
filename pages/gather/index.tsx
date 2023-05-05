@@ -2,7 +2,6 @@ import { GetServerSideProps } from "next";
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react"
 import requestIp from 'request-ip';
 import { LoginNav, Profile } from "../login/[userlogin]";
-import { update } from "xstate/lib/actionTypes";
 import useLog from "../../components/conlog";
 import Dialog from "../../components/dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
