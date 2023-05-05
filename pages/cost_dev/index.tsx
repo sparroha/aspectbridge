@@ -5,7 +5,6 @@ import requestIp from 'request-ip';
 import { Profile } from "../login/[userlogin]";
 import { LoginNav } from "../login/[userlogin]";
 import Dialog from "../../components/dialog";
-import { render } from "react-dom";
 
 export const raise = (n, prestige)=>{return (Math.pow(10,n)/10)*prestige}
 export const magnitude = (n)=>{return Math.floor(Math.log10(n))}
@@ -18,7 +17,8 @@ export const getState = (setState)=>{//get state from setState rather than state
 }
 
 export default function Cost(props) {
-    const render = useState({})[1]
+    const r = useState({})[1]
+    const render = ()=>r({})
     const prestigeRef = useRef(0)
     const coinRef = useRef(0)
     const gemRef = useRef(0)
@@ -70,7 +70,7 @@ export default function Cost(props) {
                 coinRef.current-=Number.MAX_SAFE_INTEGER
                 gemRef.current++
             }
-            render({})
+            render()
             console.log('income & render')
         }, 1000);
         //return () => clearInterval(interval);

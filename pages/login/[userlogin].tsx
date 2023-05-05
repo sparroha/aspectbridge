@@ -190,7 +190,7 @@ function UpdateEmailForm({homepage}){
 export function Profile(props) {
   const {ip, setUser, hash} = props
   const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''))
-  const debug = true
+  const debug = props.debug
   useEffect(() => {
     if(data)setUser(data)
   },[data])
@@ -243,10 +243,12 @@ export function ProfileByIp({ip, setUser}) {
   }
 }
 
-export function LoginNav({ user, homepage }) {
+export function LoginNav(props) {
+  const { user, homepage, style } = props
   return (
-    <Nav>
+    <Nav style={style}>
       <Nav.Link 
+        style={style}
         href={
           '/login/' + (user ? 'logout' : 'login') + 
           '?homepage=' + homepage + 
