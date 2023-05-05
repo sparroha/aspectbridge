@@ -92,7 +92,7 @@ export default function Gather(props: { ip: any; }){
         }
     }
     const [state, dispatch] = useReducer(reducer, {player: Pinit});
-    useEffect(()=>{return updatePlayer()},[state])
+    /*useEffect(()=>{return updatePlayer()},[state])*/
     /**
      * api GET player_data once
      */
@@ -191,6 +191,7 @@ const Inventory = ({pack, dispatch}) => {
                 ()=>{
                     dispatch({type: 'addGem', payload: {amount: item.value}})
                     dispatch({type: 'subItem', payload: {item: item, amount: 1}})
+                    updatePlayer()
                 }
             }>Sell</Button></Col>
         </Row>:null
@@ -211,6 +212,7 @@ const Shop = ({shopItems, gem, dispatch}) => {
                     if(gem<item.value)return alert('You do not have enough gems to buy this item.')
                     dispatch({type: 'addGem', payload: {amount: -item.value}})
                     dispatch({type: 'addItem', payload: {item: item, amount: 1}})
+                    updatePlayer()
                 }
             }>Buy</Button></Col>
         </Row>
@@ -221,6 +223,7 @@ const Mine = ({gem, dispatch}) => {
         g: {gem}<br/>
         <Button onClick={()=>{
             dispatch({type: 'addGem', payload: {amount: Math.floor(Math.random()*6+1)>2?1:-1}})
+            updatePlayer()
             }}>Mine Gems</Button>
     </>
 }
