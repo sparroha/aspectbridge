@@ -2,6 +2,10 @@ import { useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import DiceWidget, { useDiceRoll } from "../../components/dice";
 import Dialog from "../../components/dialog";
+import Chat from "../chat";
+import requestIp from 'request-ip';
+import { GetServerSideProps } from "next";
+import { Profile } from "../login/[userlogin]";
 
 export type componentToolProps = {
     name: string,
@@ -10,25 +14,45 @@ export type componentToolProps = {
     useData: Function,
     jsx: JSX.Element,
 }
-export default function Toolbelt() {
+export default function Toolbelt(props) {
     const r = useState({})[1]
     const render = ()=>r({})
     const toolBelt: {current: componentToolProps[]} = useRef([])
+    const user = useRef({})
 
     /**
      * Tool Shop
      */
     /** Dice Widget Data Hook */
-    const dataHook = ()=>useDiceRoll({sides: 5, speed: 5})
+    const useDice = ()=>useDiceRoll({sides: 5, speed: 5})
+    const chatUser = ()=>{return user.current}
+
+
     /** Tool Shop Array */
     const toolShop: componentToolProps[] = [
         {/** Dice Widget */
             name: 'DiceWidget',
             description: 'customize dice rolls',
             image: '',
-            useData: dataHook,
-            jsx: <DiceWidget udr={()=>dataHook()} />,
+            useData: useDice,
+            jsx: <DiceWidget udr={()=>useDice()} />,
         },
+        {/** Aspect Bridge Chat */
+            name: 'ChatWindow',
+            description: 'discorse apon a bridge',
+            image: '',
+            useData: null,
+            jsx: <Chat user={chatUser()} homepage={'toolbelt'} ip={props.ip}/>,
+        },
+        {/** User Login Profile */
+            name: 'UserLogin',
+            description: 'login to your profile',
+            image: '',
+            useData: null,
+            jsx: <>
+                <Profile ip={props.ip} setUser={(u)=>{user.current=u;render()}}/>
+            </>,
+        }
     ]
     /** Tool Shop JSX */
     const ToolShop = () => {
@@ -68,3 +92,7 @@ export default function Toolbelt() {
             <ToolSlots/>
         </Container>
 }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const ip = await requestIp.getClientIp(context.req);
+    return { props: { ip } };
+  };
