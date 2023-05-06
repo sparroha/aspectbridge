@@ -348,13 +348,13 @@ const Control = ({direction, position, render})=>{
         <Row>
             <Col xs={4}></Col>
             <Col xs={4}>
-                <Button id={'up'} name={'ArrowUp'} onMouseDown={()=>{direction.current.up=true}} onMouseUp={()=>{direction.current.up=false}}>Up</Button>
+                <Button id={'up'} name={'ArrowUp'} onMouseDown={()=>{direction.current.up=true}} onMouseUp={()=>{direction.current.up=false}} onTouchStart={()=>{direction.current.up=true}} onTouchEnd={()=>{direction.current.up=false}}>Up</Button>
             </Col>
             <Col xs={4}></Col>
         </Row>
         <Row>
             <Col xs={4}>
-                <Button id={'left'} name={'ArrowLeft'} onMouseDown={()=>{direction.current.left=true}} onMouseUp={()=>{direction.current.left=false}}>Left</Button>
+                <Button id={'left'} name={'ArrowLeft'} onMouseDown={()=>{direction.current.left=true}} onMouseUp={()=>{direction.current.left=false}} onTouchStart={()=>{direction.current.left=true}} onTouchEnd={()=>{direction.current.left=false}}>Left</Button>
             </Col> 
             <Col xs={4}></Col> 
             <Col xs={4}>
@@ -364,7 +364,7 @@ const Control = ({direction, position, render})=>{
         <Row>
             <Col xs={4}></Col> 
             <Col xs={4}>
-                <Button id={'down'} name={'ArrowDown'} onMouseDown={()=>{direction.current.down=true}} onMouseUp={()=>{direction.current.down=false}}>Down</Button>
+                <Button id={'down'} name={'ArrowDown'} onMouseDown={()=>{direction.current.down=true}} onMouseUp={()=>{direction.current.down=false}} onTouchStart={()=>{direction.current.down=true}} onTouchEnd={()=>{direction.current.down=false}}>Down</Button>
             </Col> 
             <Col xs={4}></Col> 
         </Row></>
