@@ -15,7 +15,7 @@ type diceProps = {
 export type diceInitProps = {
     sides?: number,
     speed?: number,
-    rand?: number,
+    rand?: Function,
 }
 /**
  * JSX: Dice Widget default
@@ -71,10 +71,11 @@ function DiceCompact({udr}){
            setSpeed} = udr()
     const dice = [2,4,6,8,10,12,20,100]
     useEffect(() => {
-        if(setValue&&sides==0){
-            let r = dice[Math.floor(rand()*8)]
+        if(setValue){
+            let r = sides?sides:dice[Math.floor(rand()*8)]
             selectSides(r)
             setValue(Math.floor(rand()*r)+1)
+            console.log(r+' sided dice roll!')
         }
     }, [setValue])
 
@@ -110,13 +111,12 @@ function DiceCompact({udr}){
         <Row>
             
         <Col xs={4}><select value={sides} onChange={e => selectSides(Number(e.target.value))}>
-            {dice.map((side, index) => <option key={index} value={side}>{side}</option>)}
+            {dice.map((sideCount, index) => <option key={index} value={sideCount}>{sideCount}</option>)}
         </select> </Col>
         <Col xs={4}>
-            {'Sides'/*:<input style={{
+            Sides D{sides}<input style={{
                 borderRadius: '50px', 
-            }} type="number" min={2} max={100} defaultValue={sides} onChange={e => selectSides(Number(e.target.value))} 
-        />*/}
+            }} type="text" size={3} min={2} max={100} defaultValue={sides} onChange={e => selectSides(Number(e.target.value))}/>
         </Col>
         <Col xs={4}></Col>
         <Col xs={4}>
@@ -134,7 +134,7 @@ function DiceCompact({udr}){
  * @returns 
  */
 export function useDiceRoll(props: diceInitProps): diceProps{
-    const rand = ()=>Math.random();
+    const rand: Function = props.rand?props.rand:()=>Math.random()
     const [sides, selectSides] = useState(props.sides || 0)
     const [value, setValue] = useState(0)
     const [roller, setRoller] = useState('false')

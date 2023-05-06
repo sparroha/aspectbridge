@@ -56,7 +56,7 @@ export default function Chat(props){
     }
   }, [revalidate])
   
-  return <Container>{<LoginNav user={user.username.substring(0,5)!='guest'?user:null} homepage={props.homepage?props.homepage:'chat'}/>}
+  return <Container>{<LoginNav user={user?.username?.substring(0,5)!='guest'?user:null} homepage={props.homepage?props.homepage:'chat'}/>}
       {/*<Row>
         <Col xs={8}>
           <Row>
