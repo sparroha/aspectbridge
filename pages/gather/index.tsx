@@ -36,7 +36,7 @@ export default function Gather(props: { ip: any; }){
         {name: 'Wine', value: 6, amount: 0},
         {name: 'Zukini', value: 7, amount: 0},
         {name: 'Chorn', value: 8, amount: 0},
-        {name: 'Topatoes', value: 9, amount: 0},
+        {name: 'Tomatoes', value: 9, amount: 0},
         {name: 'Yams', value: 10, amount: 0},
     ]
     //<PLAYER STATE>
@@ -386,7 +386,7 @@ function Field({render}: {render: ()=>void}){
         </Row>
         <Row id={'Field'} style={{position: 'relative', height: '20%'}}>
             <Col>
-                <Button style={{position: 'absolute', top: position.current.y+'px', left: position.current.x+'px'}} onClick={()=>{position.current.x=0;position.current.y=0}}>Absolute</Button>
+                <Button style={{position: 'absolute', top: position.current.y+'px', left: position.current.x+'px'}} onClick={()=>{position.current.x=0;position.current.y=0;render()}}>Absolute</Button>
             </Col>
         </Row>
     </>
