@@ -26,52 +26,6 @@ export default function Gather(props: { ip: any; }){
     const render = ()=>{renders.current++;r({})}
     const Debug = () => {return <>Renders: {renders.current}</>}
     const user = useRef(null)//set by <Profile/> to provide user authentiation
-    const [position, setPosition] = useState({x: 0, y: 0})
-    const speed = 10
-    const up = ()=>{setPosition({x: position.x, y: position.y-speed})}
-    const down = ()=>{setPosition({x: position.x, y: position.y+speed})}
-    const left = ()=>{setPosition({x: position.x-speed, y: position.y})}
-    const right = ()=>{setPosition({x: position.x+speed, y: position.y})}
-
-
-useEffect(()=>{
-
-const moveup = setInterval(up, 200)
-
-document.querySelector('#up').addEventListener(
-    'mousedown', moveup
-)
-document.querySelector('#up').addEventListener(
-    'mouseup', clearInterval(moveup)
-)
-},[])
-
-    const Control = ()=>{
-        return <>
-        <Row>
-            <Col xs={4}></Col>
-            <Col xs={4}>
-                <Button id={'up'} onClick={up}>Up</Button>
-            </Col>
-            <Col xs={4}></Col>
-        </Row>
-        <Row>
-            <Col xs={4}>
-                <Button onClick={left}>Left</Button>
-            </Col> 
-            <Col xs={4}></Col> 
-            <Col xs={4}>
-                <Button onClick={right}>Right</Button>
-            </Col> 
-        </Row>
-        <Row>
-            <Col xs={4}></Col> 
-            <Col xs={4}>
-                <Button onClick={down}>Down</Button>
-            </Col> 
-            <Col xs={4}></Col> 
-        </Row></>
-    }
 
     const shopItems: Item[] = [
         {name: 'Apple Alphabary', value: 42, amount: 0},
@@ -199,16 +153,7 @@ document.querySelector('#up').addEventListener(
                 <Mine wallet={state?.player?.wallet} dispatch={dispatch} updatePlayer={updatePlayer}/>
             </Col>
         </Row>
-        <Row id={'Field Control'}>
-            <Col xs={12} sm={6} md={3} style={{backgroundColor: 'lightgrey'}}>
-                <Control/>
-            </Col>
-        </Row>
-        <Row id={'Field'} style={{position: 'relative', height: '20%'}}>
-            <Col>
-                <Button style={{position: 'absolute', top: position.y+'px', left: position.x+'px'}} onClick={()=>{setPosition({x: 0, y: 0})}}>Absolute</Button>
-            </Col>
-        </Row>
+        <Field render={render}/>
 
         <Row id={'community'}>
             <Col xs={12} sm={8} md={9} style={{backgroundColor: 'lightgrey'}}>
@@ -220,6 +165,7 @@ document.querySelector('#up').addEventListener(
         </Row>
     </Container>
 }
+
 /**
  * server props for ip
  * @param context 
@@ -246,7 +192,7 @@ const Pack = ({pack, dispatch, updatePlayer}: {pack: Item[], dispatch: Function,
         } style={{backgroundColor: 'tan'}} open={'Stuff'} close={'Close'}/>
 }
 const Inventory = ({pack, dispatch, updatePlayer}) => {
-    useLog('Inventory: '+JSON.stringify(pack))
+    //useLog('Inventory: '+JSON.stringify(pack))
     return pack.map((item, i)=>{
         return item.amount>0?<Row key={i+1}>
             <Col xs={12} sm={4}><label>{item.amount}:{item.name}</label></Col>
@@ -308,4 +254,137 @@ const Mine = ({wallet, dispatch, updatePlayer}) => {
             }}>Buy Gem 1000c/10g</Button>
         </Col>
     </Row>
+}
+/**
+ * 
+ * @param direction 
+ * @param position 
+ * @param render 
+ * @returns 
+ */
+const Control = ({direction, position, render})=>{
+    const speed = 5
+    const diagSpeed = Math.ceil(Math.sqrt((speed^2)/2))//3.5
+    const up = ()=>{position.current.y-=speed;render()}
+    const down = ()=>{position.current.y+=speed;render()}
+    const left = ()=>{position.current.x-=speed;render()}
+    const right = ()=>{position.current.x+=speed;render()}
+    const moveKeyDown = (e)=>{
+        switch(e.key){
+            case 'ArrowUp':
+                e.preventDefault()
+                direction.current.up=true
+                //render()
+                break
+            case 'ArrowDown':
+                e.preventDefault()
+                direction.current.down=true
+                //render()
+                break
+            case 'ArrowLeft':
+                e.preventDefault()
+                direction.current.left=true
+                //render()
+                break
+            case 'ArrowRight':
+                e.preventDefault()
+                direction.current.right=true
+                //render()
+                break
+        }
+    }
+    const moveKeyUp = (e)=>{
+        switch(e.key){
+            case 'ArrowUp':
+                e.preventDefault()
+                direction.current.up=false
+                //render()
+                break
+            case 'ArrowDown':
+                e.preventDefault()
+                direction.current.down=false
+                //render()
+                break
+            case 'ArrowLeft':
+                e.preventDefault()
+                direction.current.left=false
+                //render()
+                break
+            case 'ArrowRight':
+                e.preventDefault()
+                direction.current.right=false
+                //render()
+                break
+        }
+    }
+    const move = (d)=>{
+        //console.log(d)
+        if(d.up&&!d.right&&!d.left)position.current.y-=speed
+        else if(d.up&&d.right&&!d.left){position.current.y-=diagSpeed;position.current.x+=Math.sqrt(speed^2*2)}
+        else if(d.up&&!d.right&&d.left){position.current.y-=diagSpeed;position.current.x-=Math.sqrt(speed^2*2)}
+        else if(d.down&&!d.right&&!d.left)position.current.y+=speed
+        else if(d.down&&d.right&&!d.left){position.current.y+=diagSpeed;position.current.x+=Math.sqrt(speed^2*2)}
+        else if(d.down&&!d.right&&d.left){position.current.y+=diagSpeed;position.current.x-=Math.sqrt(speed^2*2)}
+        else if(d.left&&!d.up&&!d.down)position.current.x-=speed
+        else if(d.right&&!d.up&&!d.down)position.current.x+=speed
+        render()
+    }
+    useEffect(()=>{
+        const movement = setInterval(()=>move(direction.current), 100);
+        //return ()=>{clearInterval(movement)}
+    },[])
+    useEffect(()=>{
+        window.onkeydown = (event)=>{
+            //console.log(event)
+            moveKeyDown(event)
+        }; 
+        window.onkeyup = (event)=>{
+            //console.log(event)
+            moveKeyUp(event)
+        };
+    },[])
+
+    return <>
+        <Row>
+            <Col xs={4}></Col>
+            <Col xs={4}>
+                <Button id={'up'} name={'ArrowUp'} onMouseDown={()=>{direction.current.up=true;render()}} onMouseUp={()=>{direction.current.up=false;render()}}>Up</Button>
+            </Col>
+            <Col xs={4}></Col>
+        </Row>
+        <Row>
+            <Col xs={4}>
+                <Button id={'left'} name={'ArrowLeft'} onClick={left}>Left</Button>
+            </Col> 
+            <Col xs={4}></Col> 
+            <Col xs={4}>
+                <Button id={'right'} name={'ArrowRight'} onClick={right}>Right</Button>
+            </Col> 
+        </Row>
+        <Row>
+            <Col xs={4}></Col> 
+            <Col xs={4}>
+                <Button id={'down'} name={'ArrowDown'} onClick={down}>Down</Button>
+            </Col> 
+            <Col xs={4}></Col> 
+        </Row></>
+}
+function Field({render}: {render: ()=>void}){
+    const position = useRef({x: 0, y: 0})
+    const direction = useRef({up: false, down: false, left: false, right: false})
+    
+
+    return <>
+        <Row id={'Field Control'}>
+            <Col xs={12} sm={6} md={3} style={{backgroundColor: 'lightgrey'}}>
+                <Control direction={direction} position={position} render={render}/>
+                {JSON.stringify(direction.current)}
+            </Col>
+        </Row>
+        <Row id={'Field'} style={{position: 'relative', height: '20%'}}>
+            <Col>
+                <Button style={{position: 'absolute', top: position.current.y+'px', left: position.current.x+'px'}} onClick={()=>{position.current.x=0;position.current.y=0}}>Absolute</Button>
+            </Col>
+        </Row>
+    </>
 }
