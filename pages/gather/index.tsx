@@ -263,8 +263,8 @@ const Mine = ({wallet, dispatch, updatePlayer}) => {
  * @returns 
  */
 const Control = ({direction, position, render})=>{
-    const speed = 5
-    const diagSpeed = Math.ceil(Math.sqrt((speed^2)/2))//3.5
+    const speed = 10
+    const diagSpeed = Math.ceil(Math.sqrt((speed^2)/2))+1//3.5
     const up = ()=>{position.current.y-=speed;render()}
     const down = ()=>{position.current.y+=speed;render()}
     const left = ()=>{position.current.x-=speed;render()}
@@ -319,19 +319,21 @@ const Control = ({direction, position, render})=>{
     }
     const move = (d)=>{
         //console.log(d)
-        if(d.up&&!d.right&&!d.left)position.current.y-=speed
-        else if(d.up&&d.right&&!d.left){position.current.y-=diagSpeed;position.current.x+=Math.sqrt(speed^2*2)}
-        else if(d.up&&!d.right&&d.left){position.current.y-=diagSpeed;position.current.x-=Math.sqrt(speed^2*2)}
-        else if(d.down&&!d.right&&!d.left)position.current.y+=speed
-        else if(d.down&&d.right&&!d.left){position.current.y+=diagSpeed;position.current.x+=Math.sqrt(speed^2*2)}
-        else if(d.down&&!d.right&&d.left){position.current.y+=diagSpeed;position.current.x-=Math.sqrt(speed^2*2)}
-        else if(d.left&&!d.up&&!d.down)position.current.x-=speed
-        else if(d.right&&!d.up&&!d.down)position.current.x+=speed
+        if(!d.up&&!d.down&&!d.left&&!d.right)return
+        if(d.up&&!d.right&&!d.left)position.current.y-=speed//up
+        else if(d.up&&d.right&&!d.left){position.current.y-=diagSpeed;position.current.x+=diagSpeed}//up right
+        else if(d.up&&!d.right&&d.left){position.current.y-=diagSpeed;position.current.x-=diagSpeed}//up left
+        else if(d.down&&!d.right&&!d.left)position.current.y+=speed//down
+        else if(d.down&&d.right&&!d.left){position.current.y+=diagSpeed;position.current.x+=diagSpeed}//down right
+        else if(d.down&&!d.right&&d.left){position.current.y+=diagSpeed;position.current.x-=diagSpeed}//down left
+        else if(d.left&&!d.up&&!d.down)position.current.x-=speed//left
+        else if(d.right&&!d.up&&!d.down)position.current.x+=speed//right
+        else return
         render()
     }
     useEffect(()=>{
         const movement = setInterval(()=>move(direction.current), 100);
-        //return ()=>{clearInterval(movement)}
+        return ()=>{clearInterval(movement)}
     },[])
     useEffect(()=>{
         window.onkeydown = (event)=>{
@@ -377,7 +379,9 @@ function Field({render}: {render: ()=>void}){
         <Row id={'Field Control'}>
             <Col xs={12} sm={6} md={3} style={{backgroundColor: 'lightgrey'}}>
                 <Control direction={direction} position={position} render={render}/>
-                {JSON.stringify(direction.current)}
+                {
+                    //JSON.stringify(direction.current)
+                }
             </Col>
         </Row>
         <Row id={'Field'} style={{position: 'relative', height: '20%'}}>
