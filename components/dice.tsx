@@ -17,6 +17,11 @@ export type diceInitProps = {
     speed?: number,
     rand?: number,
 }
+/**
+ * JSX: Dice Widget default
+ * @param udr: DATA HOOK: Dice Roll useDiceRoll(props: diceInitProps): diceProps{} 
+ * @returns 
+ */
 export default function DiceWidget({udr}: {udr: Function}){
     /*const {sides, speed, rand, value, setRoller, selectSides, setValue, setSpeed} = udr()
     const dice = [2,4,6,8,10,12,20,100]
@@ -53,6 +58,12 @@ export default function DiceWidget({udr}: {udr: Function}){
       <DiceCompact udr={udr}/>
     </div>
 }
+
+/**
+ * JSX: Dice Widget Compact
+ * @param udr: DATA HOOK: Dice Roll useDiceRoll(props: diceInitProps): diceProps{}
+ * @returns 
+ */
 function DiceCompact({udr}){
     const {sides, speed, rand, 
            value, setRoller, 
@@ -117,6 +128,11 @@ function DiceCompact({udr}){
     </div>
 }
 
+/**
+ * DATA HOOK: Dice Roll useDiceRoll(props: diceInitProps): diceProps{}
+ * @param props: diceInitProps
+ * @returns 
+ */
 export function useDiceRoll(props: diceInitProps): diceProps{
     const rand = ()=>Math.random();
     const [sides, selectSides] = useState(props.sides || 0)

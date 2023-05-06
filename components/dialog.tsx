@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap"
 
 /**
  * 
- * @param props  id: string, title: string, content: string, open: string, close: string, style: object
+ * @param props  id: string, title: string, content: any, open: string, close: string, style: object
  * @returns 
  */
 export default function Dialog(props?){
