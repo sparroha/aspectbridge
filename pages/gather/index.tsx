@@ -358,7 +358,7 @@ const Control = ({direction, position, render})=>{
             </Col> 
             <Col xs={4}></Col> 
             <Col xs={4}>
-                <Button id={'right'} name={'ArrowRight'} onMouseDown={()=>{direction.current.right=true}} onMouseUp={()=>{direction.current.right=false}}>Right</Button>
+                <Button id={'right'} name={'ArrowRight'} onMouseDown={()=>{direction.current.right=true}} onMouseUp={()=>{direction.current.right=false}} onTouchStart={()=>{direction.current.right=true}} onTouchEnd={()=>{direction.current.right=false}}>Right</Button>
             </Col> 
         </Row>
         <Row>
