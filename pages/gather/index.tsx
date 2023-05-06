@@ -348,23 +348,23 @@ const Control = ({direction, position, render})=>{
         <Row>
             <Col xs={4}></Col>
             <Col xs={4}>
-                <Button id={'up'} name={'ArrowUp'} onMouseDown={()=>{direction.current.up=true;render()}} onMouseUp={()=>{direction.current.up=false;render()}}>Up</Button>
+                <Button id={'up'} name={'ArrowUp'} onMouseDown={()=>{direction.current.up=true}} onMouseUp={()=>{direction.current.up=false}}>Up</Button>
             </Col>
             <Col xs={4}></Col>
         </Row>
         <Row>
             <Col xs={4}>
-                <Button id={'left'} name={'ArrowLeft'} onClick={left}>Left</Button>
+                <Button id={'left'} name={'ArrowLeft'} onMouseDown={()=>{direction.current.left=true}} onMouseUp={()=>{direction.current.left=false}}>Left</Button>
             </Col> 
             <Col xs={4}></Col> 
             <Col xs={4}>
-                <Button id={'right'} name={'ArrowRight'} onClick={right}>Right</Button>
+                <Button id={'right'} name={'ArrowRight'} onMouseDown={()=>{direction.current.right=true}} onMouseUp={()=>{direction.current.right=false}}>Right</Button>
             </Col> 
         </Row>
         <Row>
             <Col xs={4}></Col> 
             <Col xs={4}>
-                <Button id={'down'} name={'ArrowDown'} onClick={down}>Down</Button>
+                <Button id={'down'} name={'ArrowDown'} onMouseDown={()=>{direction.current.down=true}} onMouseUp={()=>{direction.current.down=false}}>Down</Button>
             </Col> 
             <Col xs={4}></Col> 
         </Row></>
@@ -372,7 +372,6 @@ const Control = ({direction, position, render})=>{
 function Field({render}: {render: ()=>void}){
     const position = useRef({x: 0, y: 0})
     const direction = useRef({up: false, down: false, left: false, right: false})
-    
 
     return <>
         <Row id={'Field Control'}>
