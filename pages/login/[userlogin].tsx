@@ -207,11 +207,11 @@ export function Profile(props) {
     let {username, email, access} = data
     data.message = 'Welcome back '+data.username+'!'
     return <Row style={props.style}>
-        <Col sm={4}></Col>
-        <Col sm={4} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>
+        {/*<Col sm={4}></Col>*/}
+        <Col sm={12} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>
           hello {username}!{`\<${email}\>`} Your access level is {access}.
         </Col>
-        <Col sm={4}></Col>
+        {/*<Col sm={4}></Col>*/}
       </Row>
   }
 }

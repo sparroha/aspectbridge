@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import DiceWidget, { useDiceRoll } from "../../components/dice";
 import Dialog from "../../components/dialog";
@@ -23,17 +23,22 @@ export type componentToolProps = {
 }
 export default function Toolbelt(props) {
     const r = useState({})[1]
-    const render = ()=>r({})
+    const renders = useRef(0)
+    const render = ()=>{;renders.current++;r({})}
+    const Debug = () => {return <>Renders: {renders.current}</>}
     const toolBelt: {current: componentToolProps[]} = useRef([])
     const user = useRef({})
-    const setUser = (u)=>{user.current=u}
+    const setUser = (data: any)=>{user.current=data}
+    const getUser = ()=>{return user.current}
+    useEffect(()=>{
+        return render()
+    },[user.current])
 
     /**
      * Tool Shop
      */
     /** Dice Widget Data Hook */
     const useDice = ()=>useDiceRoll({sides: 5, speed: 5})
-    const getUser = ()=>{return user.current}
 
 
     /** Tool Shop Array */
@@ -54,7 +59,7 @@ export default function Toolbelt(props) {
             jsx: <Chat user={getUser()} homepage={'toolbelt'} ip={props.ip}/>,
             size: {xs: 12, sm: 6, md: 6}
         },
-        /*{** User Login Profile *causing continuous rerender
+        /*{** User Login Profile *causing continuous rerender or Logout link not rendering properly
             name: 'UserLogin',
             description: 'login to your profile',
             image: '',
@@ -101,6 +106,18 @@ export default function Toolbelt(props) {
     }
     //Belt
     return <Container>
+            <Row id={'AppSystem'} style={{textAlign: 'center'}}>
+                <Col xs={4} style={{visibility: 'visible'}}>
+                    <Debug/>
+                </Col>
+                <Col xs={8} style={{textAlign: 'center'}}>{/*provides standard login link for redirect;homepage=here*/}
+                    <LoginNav user={user.current} homepage={'gather'} style={{textAlign: 'center'}}/>
+                </Col>
+                <Col xs={12} style={{visibility: 'visible'}}>
+                    {/*sets user state to provide user authentiation*/}
+                    <Profile ip={props.ip} setUser={(data: any)=>{user.current=data;render()}}/>
+                </Col>
+            </Row>
             <ToolShop/>
             <ToolSlots/>
         </Container>
