@@ -1,12 +1,11 @@
 import { sha224 } from "js-sha256"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
-import { SetStateAction, useEffect, useState } from "react"
-import { Button, Col, Container, Form, Nav, Row } from "react-bootstrap"
+import { useEffect, useState } from "react"
+import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
-import SimpleNav from "../../components/simplenav"
 import Head from "next/head"
 
 export type ActiveUser = {
@@ -189,10 +188,14 @@ function UpdateEmailForm({homepage}){
 }
 export function Profile(props) {
   const {ip, setUser, hash} = props
-  const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''))
+  const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 1000})
   const debug = props.debug
   useEffect(() => {
     if(data)setUser(data)
+    console.log('mounting: '+JSON.stringify(data))
+    return () => {
+      console.log('unmounting: '+JSON.stringify(data))
+    }
   },[data])
   if (error) {
     return <Row style={props.style}><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>

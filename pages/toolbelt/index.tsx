@@ -26,6 +26,7 @@ export default function Toolbelt(props) {
     const render = ()=>r({})
     const toolBelt: {current: componentToolProps[]} = useRef([])
     const user = useRef({})
+    const setUser = (u)=>{user.current=u}
 
     /**
      * Tool Shop
@@ -53,17 +54,17 @@ export default function Toolbelt(props) {
             jsx: <Chat user={getUser()} homepage={'toolbelt'} ip={props.ip}/>,
             size: {xs: 12, sm: 6, md: 6}
         },
-        {/** User Login Profile */
+        /*{** User Login Profile *causing continuous rerender
             name: 'UserLogin',
             description: 'login to your profile',
             image: '',
             useData: null,
             jsx: <>
-                <LoginNav user={getUser()} homepage={'toolbelt'} style={styleFlat}/><br/><hr/>
-                <Profile ip={props.ip} setUser={(u)=>{user.current=u;render()}}/>
+                <LoginNav user={getUser()} homepage={'toolbelt'} style={styleFlat}/>
+                <Profile ip={props.ip} setUser={setUser}/>
             </>,
             size: {xs: 12}
-        }
+        }*/
     ]},[user.current])
     /** Tool Shop JSX */
     const ButtonToolbelt = (props)=>{return <Row><Col><Dialog id={'toolshop'} title={'toolshop'} content={props.content} open={'toolshop'} close={'>-<'}/></Col></Row>}

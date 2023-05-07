@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LoginNav, Profile, ProfileByIp } from '../login/[userlogin]';
+import { LoginNav, Profile } from '../login/[userlogin]';
 import { GetServerSideProps } from 'next';
 import requestIp from 'request-ip';
 import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
@@ -25,6 +25,7 @@ export default function Chat(props){
   const [revalidate, setRevalidate] = useState(false)
   const [name, setName] = useState('')
   useEffect(()=>{
+    console.log('Chat: '+JSON.stringify(user))
     if(user)setName(user.username)
   }, [user])
   useEffect(()=>{
