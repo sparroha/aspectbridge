@@ -39,25 +39,35 @@ export default function Toolbelt(props) {
         dataHelper: {
             useDice: ()=>useDiceRoll({sides: 5, speed: 5}),
             chat: Chat,
-            dialog: {key: 0, id: 'Dialog', title: 'Dialog', content: 'Dialog content', open: 'Open', close: 'Close', style: {}}
-
+            dialog: {
+                key: 0, 
+                id: 'Dialog', 
+                title: 'Dialog', 
+                content: 'Dialog content', 
+                open: 'Open', 
+                close: 'Close', 
+                style: {}
+            },
         }
     }
     function reducer (state, action) {
         switch (action.type) {
-            case ACTIONS.INITIALIZE://TODO: dispatch this action on page load
+            case ACTIONS.INITIALIZE://TODO: X/dispatch this action on page load
                 //console.log('INITIALIZE '+JSON.stringify(action.payload.toolShop))
                 return {...state, toolShop: action.payload.toolShop};
             case ACTIONS.ADDTOOL:
-                return {...state, toolBelt: [...state.toolBelt, action.payload.tool]};
+                return {...state, 
+                    toolBelt: [...state.toolBelt,action.payload.tool],
+                    dataHelper: {...state.dataHelper, dialog: {...state.dataHelper.dialog, key: state.dataHelper.dialog.key+1}}
+                };
             case ACTIONS.REMOVETOOL:
                 return {...state, toolBelt: state.toolBelt.filter((tool, i) => i!=action.payload.index)};
             case ACTIONS.SETUSER:
                 return {...state, user: action.payload.user};
             case ACTIONS.NEXTKEY:
-                return {...state, dataHelper: {...state.dataHelper, key: state.dataHelper.dialog.key+1}};
+                return {...state, dataHelper: {...state.dataHelper, dialog: {...state.dataHelper.dialog, key: state.dataHelper.dialog.key+1}}};
             default:
-                throw new Error();
+                throw new Error()
         }
     }
     const [state, dispatch] = useReducer(reducer, defaultState);
@@ -91,9 +101,9 @@ export default function Toolbelt(props) {
                         size: {xs: 4} 
                     }
                 ]
-            }});console.log('INITIALIZE '+JSON.stringify(state.dataHelper.dialog))
+            }});//console.log('INITIALIZE '+JSON.stringify(state.dataHelper.dialog))
             //}
-    }, [])
+    }, [state.user, state.dataHelper.dialog])
     //dispatch({type: ACTIONS.ADD, payload: {}})
 
     //const r = useState({})[1]
@@ -167,7 +177,8 @@ export default function Toolbelt(props) {
     const ButtonToolbelt = (props)=>{
         return <Row><Col><Dialog id={'toolshop'} title={'toolshop'} content={props.content} open={'toolshop'} close={'>-<'}/></Col></Row>}
     const toolButtonClick = (tool: componentToolProps) => {
-        dispatch({type: ACTIONS.ADDTOOL, payload: {tool: tool}})}
+        dispatch({type: ACTIONS.ADDTOOL, payload: {tool: tool}})
+    }
     const toolButton = (tool: componentToolProps) => {
         return <Button  onClick={()=>toolButtonClick(tool)}>Add {tool.name}</Button>}
     const mapToolButtons = ()=>state.toolShop?.map((tool, i) => {console.log(tool);
@@ -208,6 +219,7 @@ export default function Toolbelt(props) {
             </Row>
             <ToolShop/>
             <ToolSlots/>
+            {/*<div>{state.dataHelper.dialog.key}<Button onClick={()=>dispatch({type: ACTIONS.NEXTKEY})}>+</Button></div>*/}
         </Container>
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
