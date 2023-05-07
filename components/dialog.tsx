@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Button } from "react-bootstrap"
 
 /**
- * 
+ * id must be unique
  * @param props  id: string, title: string, content: any, open: string, close: string, style: object
  * @returns 
  */
