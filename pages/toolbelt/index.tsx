@@ -6,6 +6,7 @@ import Chat from "../chat";
 import requestIp from 'request-ip';
 import { GetServerSideProps } from "next";
 import { LoginNav, Profile } from "../login/[userlogin]";
+import SimpleNav from "../../components/simplenav";
 
 export const styleFlat = {
     border: '0px',
@@ -39,7 +40,8 @@ export default function Toolbelt(props) {
      */
     /** Dice Widget Data Hook */
     const useDice = ()=>useDiceRoll({sides: 5, speed: 5})
-
+    //const navRef = ()=>{return {root: 'toolbelt', page: 'Toolbelt', links: ['DiceWidget', 'ChatWindow', 'SimpleNav', 'UserLogin', 'Profile'], args: ''}}
+    //const dialogRef = useRef({id: 'Dialog', title: 'Dialog', content: 'Dialog content', open: 'Open', close: 'Close', style: {}})
 
     /** Tool Shop Array */
     const toolShop: componentToolProps[] = useMemo(()=>{return [
@@ -59,6 +61,22 @@ export default function Toolbelt(props) {
             jsx: <Chat user={getUser()} homepage={'toolbelt'} ip={props.ip}/>,
             size: {xs: 12, sm: 6, md: 6}
         },
+        /*{** Simple Nav Menue *
+            name: 'SimpleNav NYI',
+            description: 'a simple nav menue',
+            image: '',
+            useData: null,
+            jsx: <SimpleNav root={'navRef().root'} page={'navRef().page'} links={['navRef().links']} args={'navRef().args'}/>,
+            size: {xs: 12}
+        },*/
+        /*{** Dialog *
+            name: 'Dialog',
+            description: 'a dialog box',
+            image: '',
+            useData: null,
+            jsx: <Dialog id={dialogRef.current.id} title={dialogRef.current.title} content={dialogRef.current.content} open={dialogRef.current.open} close={dialogRef.current.close}/>,
+            size: {xs: 4} 
+        },*/
         /*{** User Login Profile *causing continuous rerender or Logout link not rendering properly
             name: 'UserLogin',
             description: 'login to your profile',
@@ -70,7 +88,7 @@ export default function Toolbelt(props) {
             </>,
             size: {xs: 12}
         }*/
-    ]},[user.current])
+    ]},[user.current, /*dialogRef.current, navRef.current*/])
     /** Tool Shop JSX */
     const ButtonToolbelt = (props)=>{return <Row><Col><Dialog id={'toolshop'} title={'toolshop'} content={props.content} open={'toolshop'} close={'>-<'}/></Col></Row>}
     const toolButtonClick = (tool: componentToolProps) => {addTool(tool)}
