@@ -114,6 +114,14 @@ export default function Toolbelt(props) {
                     jsx: <Chat user={state.user} homepage={'toolbelt'} ip={props.ip}/>,
                     size: {xs: 12, sm: 6, md: 6}
                 },
+                {/** SimpleNav */
+                    name: 'Simple_Nav',
+                    description: 'a simple navigation bar',
+                    image: '',
+                    useData: null,
+                    jsx: <SimpleNav page={'toolbelt'}/>,
+                    size: {xs: 12, sm: 6, md: 6}
+                },
                 {/** Dialog */
                     name: 'Dialog',
                     description: 'a dialog box',
