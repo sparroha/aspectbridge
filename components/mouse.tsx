@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
-export default function Mouse({mousepos, clickpos}) {
-    return <><div id={'mousepos'}>{Math.floor(mousepos.x)+'/'+Math.floor(mousepos.y)}</div><br/><div id={'clickpos'}>Last clicked: {Math.floor(clickpos.x)+'/'+Math.floor(clickpos.y)}</div></>
+export default function Mouse(props) {
+    const {mousepos, clickpos} = props
+    const mouse = useMousePosition('#mousepos', (e, mousepos) => {}, () => {});
+    return <><div id={'mousepos'}>{Math.floor(mousepos?mousepos.x:mouse.mousepos.x)+'/'+Math.floor(mousepos?mousepos.y:mouse.mousepos.y)}</div><br/><div id={'clickpos'}>Last clicked: {Math.floor(clickpos?clickpos.x:mouse.clickpos.x)+'/'+Math.floor(clickpos?clickpos.y:mouse.clickpos.y)}</div></>
 }
 export function useMousePosition(screenid, onClick: { (e: Event, mousepos: { x: number; y: number; }): void }, onContext: Function) {
     const [screen, setScreen] = useState(null)
