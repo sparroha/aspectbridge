@@ -99,7 +99,7 @@ export default function Toolbelt(props) {
         dispatch({type: ACTIONS.INITIALIZE, payload: {
             toolShop: [
                 {/** Dice Widget */
-                    name: 'DiceWidget',
+                    name: 'Dice_Widget',
                     description: 'customize dice rolls',
                     image: '',
                     useData: state.dataHelper.useDice,
@@ -107,7 +107,7 @@ export default function Toolbelt(props) {
                     size: {xs: 4}
                 },
                 {/** Aspect Bridge Chat */
-                    name: 'ChatWindow',
+                    name: 'Chat_Window',
                     description: 'discorse apon a bridge',
                     image: '',
                     useData: null,
@@ -163,36 +163,18 @@ export default function Toolbelt(props) {
             {state.toolBelt.map((tool, i) => {
                 let {name, description, image, useData, jsx, size} = tool
                 let {xs, sm, md, lg, xl} = size
+                let NAME = name.split('_')[0].toUpperCase()
+                let letters = []
+                for(let i=0; i<NAME.length; i++) {
+                    letters.push(NAME.charAt(i))
+                }
                 return <Col key={i} xs={xs} sm={sm} md={md} lg={lg} xl={xl}><Row>
-                    <Col xs={2} style={styleFlat}>{name.split(' ')[0].charAt(0).toUpperCase()}<br/>{name.charAt(1).toUpperCase()}<br/>{name.charAt(2).toUpperCase()}<br/> <Button style={{...styleFlat, border: '1px outset darkgrey', borderRadius: '2px', marginRight: '2px'}} onClick={()=>{dispatch({type: ACTIONS.REMOVETOOL, payload: {index: i}})}}>X</Button></Col>
+                    <Col xs={2} style={styleFlat}>{letters.map((l,i)=><div key={i}>{l}<br/></div>)}<br/> <Button style={{...styleFlat, border: '1px outset darkgrey', borderRadius: '2px', marginRight: '2px'}} onClick={()=>{dispatch({type: ACTIONS.REMOVETOOL, payload: {index: i}})}}>X</Button></Col>
                     <Col xs={10} style={styleFlat}>{jsx}</Col>
                 </Row></Col>
             })}
         </Row>
     }
-    /*const ToolSlots = () => {
-        function parseName({name}: {name: string}) {
-            let NAME = name.split(' ')[0].toUpperCase()
-            let letters = []
-            for(let i=0; i<NAME.length; i++) {
-                letters.push(NAME.charAt(i))
-            }
-            return letters
-        }
-
-        return <Row>
-            {state.toolBelt.map((tool, i) => {
-                let {name, description, image, useData, jsx, size} = tool
-                let {xs, sm, md, lg, xl} = size
-                return <Col key={i} xs={xs} sm={sm} md={md} lg={lg} xl={xl}><Row>
-                    <Col xs={2} style={styleFlat}>
-                        {parseName(name).map((letter, i) => <><span key={i}>{letter}</span><br/></>)}
-                        <Button style={{...styleFlat, border: '1px outset darkgrey', borderRadius: '2px', marginRight: '2px'}} onClick={()=>{dispatch({type: ACTIONS.REMOVETOOL, payload: {index: i}})}}>X</Button></Col>
-                    <Col xs={10} style={styleFlat}>{jsx}</Col>
-                </Row></Col>
-            })}
-        </Row>
-    }*/
     //Belt
     return <Container>
             <Row id={'AppSystem'} style={{textAlign: 'center'}}>
