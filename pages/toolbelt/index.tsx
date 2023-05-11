@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import DiceWidget, { useDiceRoll } from "../../components/dice";
 import Dialog from "../../components/dialog";
@@ -11,7 +11,6 @@ import { Clock } from "../../components/clock";
 import TLiterator from "../../components/hebrew";
 import Mouse from "../../components/mouse";
 import { useMousePosition } from "../../components/mouse";
-import JSXStyle from "styled-jsx/style";
 
 export const styleFlat = {
     border: '0px',
@@ -23,9 +22,7 @@ export type componentToolProps = {
     name: string,
     description: string,
     image: string,
-    useData: Function,
     jsx: JSX.Element,
-    size: {xs?: number, sm?: number, md?: number, lg?: number, xl?: number}
 }
 type diceProps = {
     id: string, 
@@ -43,32 +40,29 @@ type dialogProps = {
     size: {xs?: number, sm?: number, md?: number, lg?: number, xl?: number},
     style?: {}
 }
-type simpleNavProps = {
+type navProps = {
     id: string,
     root: string,
     page: string,
     links: string[],
     args: string[],
+    size: {xs?: number, sm?: number, md?: number, lg?: number, xl?: number},
     style?: {}
 }
 export type toolBeltState = {
     debug: {renders: number},
     user: {username: string, email: string, access: number},
     toolShop: componentToolProps[],
-    toolBelt: {name: string, element: JSX.Element}[],
+    toolBelt: {name: string, element: JSX.Element, props: any}[],
     toolProps: {name: string, props: any}[],
     dataHelper: {
         key: number
-        useDice: Function,
-        chat: JSX.Element,
-        //dialog: dialogProps
     }
 }
 const ACTIONS = {
     INITIALIZE: 'initialize',
     SETUSER: 'setuser',
     ADDTOOL: 'addtool',
-    ADDPROPS: 'addprops',
     REMOVETOOL: 'removetool',
     NEXTKEY: 'nextkey'
 }
@@ -81,36 +75,17 @@ export default function Toolbelt(props) {
         toolProps: [],
         dataHelper: {
             key: 0,
-            useDice: ()=>useDiceRoll({sides: 5, speed: 5}),
-            chat: null,
-            /*dialog: {
-                id: 'Dialog', 
-                title: 'Dialog', 
-                content: 'Dialog content', 
-                open: 'Open', 
-                close: 'Close', 
-                size: {xs: 12, sm: 12, md: 12, lg: 12, xl: 12},
-                style: {}
-            },*/
         }
     }
     function reducer (state: toolBeltState, action: {type: string, payload: any}){
         switch (action.type) {
-            case ACTIONS.INITIALIZE://TODO: X/dispatch this action on page load
+            case ACTIONS.INITIALIZE:
                 //console.log('INITIALIZE '+JSON.stringify(action.payload.toolShop))
                 return {...state, toolShop: action.payload.toolShop};
             case ACTIONS.ADDTOOL:
                 return {...state, 
-                    toolBelt: [...state.toolBelt,action.payload.tool],
-                    toolProps: [...state.toolProps, {name: action.payload.tool.name, props: null}],
+                    toolBelt: [...state.toolBelt, action.payload.tool],
                     dataHelper: {...state.dataHelper,  key: state.dataHelper.key+1}
-                };
-            case ACTIONS.ADDPROPS:
-                let index = state.toolProps.findIndex((tool)=>tool.name==action.payload.name);
-                let toolProps = [...state.toolProps];
-                toolProps[index].props = action.payload.props;
-                return {...state,
-                    toolProps: [...toolProps]
                 };
             case ACTIONS.REMOVETOOL:
                 return {...state, 
@@ -127,54 +102,63 @@ export default function Toolbelt(props) {
     }
     const [state, dispatch]: [toolBeltState, any] = useReducer(reducer, defaultState);
     //INITIALIZE SHOP
+    const dispatchAddTool = (formData, element)=>{dispatch({type: ACTIONS.ADDTOOL, payload: {tool: {name: formData.current.id, element: element, props: formData.current}}});}
     const SizeProps = ({setSize})=>{
-        let size = {xs: 12, sm: 12, md: 12, lg: 12, xl: 12};
-        const {xs, sm, md, lg, xl} = size;
+        const size = useRef({xs: null, sm: null, md: null, lg: null, xl: null});
         return <Row><Col>
-            xs:<input type='number' min='1' max='12' defaultValue={xs} onChange={(e)=>{size.xs=Number.parseInt(e.target.value);setSize(size)}}/>
-            sm:<input type='number' min='1' max='12' defaultValue={sm} onChange={(e)=>{size.sm=Number.parseInt(e.target.value);setSize(size)}}/>
-            md:<input type='number' min='1' max='12' defaultValue={md} onChange={(e)=>{size.md=Number.parseInt(e.target.value);setSize(size)}}/>
-            lg:<input type='number' min='1' max='12' defaultValue={lg} onChange={(e)=>{size.lg=Number.parseInt(e.target.value);setSize(size)}}/>
-            xl:<input type='number' min='1' max='12' defaultValue={xl} onChange={(e)=>{size.xl=Number.parseInt(e.target.value);setSize(size)}}/>
+            xs:<input type='number' min='1' max='12' defaultValue={size.current.xs} onChange={(e)=>{size.current.xs=Number.parseInt(e.target.value);setSize(size)}}/>
+            sm:<input type='number' min='1' max='12' defaultValue={size.current.sm} onChange={(e)=>{size.current.sm=Number.parseInt(e.target.value);setSize(size)}}/>
+            md:<input type='number' min='1' max='12' defaultValue={size.current.md} onChange={(e)=>{size.current.md=Number.parseInt(e.target.value);setSize(size)}}/>
+            lg:<input type='number' min='1' max='12' defaultValue={size.current.lg} onChange={(e)=>{size.current.lg=Number.parseInt(e.target.value);setSize(size)}}/>
+            xl:<input type='number' min='1' max='12' defaultValue={size.current.xl} onChange={(e)=>{size.current.xl=Number.parseInt(e.target.value);setSize(size)}}/>
         </Col></Row>
     }
     const Dice = ()=> {
-        const [nav, setNav] = useState(false);
-        const P: diceProps = state.toolProps.filter((tool)=>tool.name=='Dice_Widget')[0]?.props || null;
         const render = useState({})[1];
-        const formData: {current: diceProps} = useRef({id: P?.id, sides: P?.sides, speed: P?.speed, size: P?.size, style: P?.style});
-        const udr = ()=>useDiceRoll({sides: formData.current.sides, speed: formData.current.speed})
-        const dice: JSX.Element = <DiceWidget udr={udr} />
+        const formData: {current: diceProps} = useRef({
+            id: 'Dice'+state.dataHelper.key,
+            sides: 6,
+            speed: 5,
+            size: {xs: null, sm: null, md: null, lg: null, xl: null},
+            style: {}
+        });
+        const dataManager = ()=>useDiceRoll({sides: formData.current.sides, speed: formData.current.speed})
+        const element: JSX.Element = <DiceWidget udr={dataManager} />
         const setSize = (size: {xs: number, sm: number, md: number, lg: number, xl: number})=>{
             formData.current.size = size;
             render({});
         }
         
-        return<>
-        {nav?dice:
-        <><Row><Col>
-            <input type='number' min='1' max='100' defaultValue={formData.current.sides} onChange={(e)=>formData.current.sides=Number.parseInt(e.target.value)}/>
+        return <>
+        <Row><Col>
+            <input type='number' min='1' max='100' defaultValue={formData.current.sides} onChange={(e)=>{formData.current.sides=Number.parseInt(e.target.value);render({})}}/>
         </Col></Row>
         <Row><Col>
-            <input type='number' min='1' max='100' defaultValue={formData.current.speed} onChange={(e)=>formData.current.speed=Number.parseInt(e.target.value)}/>
+            <input type='number' min='1' max='100' defaultValue={formData.current.speed} onChange={(e)=>{formData.current.speed=Number.parseInt(e.target.value);render({})}}/>
         </Col></Row>
         <SizeProps setSize={setSize}/>
         <Row><Col>
-            <Button onClick={()=>{setNav(true)}}>Roll</Button>
-        </Col></Row></>}
-        </>
+            <Button onClick={()=>dispatchAddTool(formData, element)}>Add {formData.current.id}</Button>
+        </Col></Row></>
     }
     const SNav = ()=> {
-        const P = state.toolProps.filter((tool)=>tool.name=='Simple_Nav')[0]?.props || null;
         const render = useState({})[1];
-        const formData: {current: any} = useRef({root: P?.root, page: P?.page, links: P?.links, args: P?.args, nav: P?.nav, style: P?.style});
+        const formData: {current: navProps} = useRef({
+            id: 'SimpleNav'+state.dataHelper.key,
+            root: 'http://localhost:3000',
+            page: 'home',
+            links: ['home', 'about', 'contact'],
+            args: [],
+            size: {xs: 12, sm: 12, md: 12, lg: 12, xl: 12},
+            style: {}
+        });
+        const element: JSX.Element = <SimpleNav root={formData.current.root} page={formData.current.page} links={formData.current.links} args={formData.current.args}/>
         const setSize = (size: {xs: number, sm: number, md: number, lg: number, xl: number})=>{
             formData.current.size = size;
             render({});
         }
         return<>
-        {formData.current.nav?<SimpleNav root={formData.current.root} page={formData.current.page} links={formData.current.links} args={formData.current.args}/>:
-        <><Row><Col>
+        <Row><Col>
             Root {'('}include 'http://' or 'https://' when entering a url, otherwise root points to current site page root{')'}: <input type='text' defaultValue={formData.current.root} onChange={(e)=>formData.current.root=e.target.value}/>
         </Col></Row>
         <Row><Col>
@@ -184,12 +168,12 @@ export default function Toolbelt(props) {
             Nav Links {'('}comma separated{')'}: <input type='text' defaultValue={''} onChange={(e)=>formData.current.links=e.target.value.replaceAll(' ','').split(',')}/>
         </Col></Row>
         <Row><Col>
-            Nav Arguments {'('}comma separated and applies to all links{')'}: <input type='text' defaultValue={''} onChange={(e)=>formData.current.args='?'+e.target.value.replaceAll(' ','').split(',').map((arg)=>{return arg+'&'})}/>
+            Nav Arguments {'('}comma separated and applies to all links{')'}: <input type='text' defaultValue={''} onChange={(e)=>formData.current.args=e.target.value.replaceAll(' ','').replaceAll(',','&,').split(',')}/>
         </Col></Row>
         <SizeProps setSize={setSize}/>
         <Row><Col>
-            <Button onClick={formData.current.page?()=>{formData.current.nav=true;/*dispatch({type: ACTIONS.ADDPROPS, payload: {name: 'Simple_Nav', props: formData.current}});*/render({})}:()=>alert('page is required')}>Nav</Button>
-        </Col></Row></>}
+            <Button onClick={formData.current.page?()=>{dispatchAddTool(formData, element)}:()=>alert('page is required')}>Add {formData.current.id}</Button>
+        </Col></Row>
         </>
     }
     const DLog = ()=> {
@@ -228,58 +212,44 @@ export default function Toolbelt(props) {
             name: 'Dice_Widget',
             description: 'customize dice rolls',
             image: '',
-            useData: state.dataHelper.useDice,
             jsx: <Dice/>,
-            size: {xs: 4}
         },
         {/** Aspect Bridge Chat */
             name: 'Chat_Window',
             description: 'discorse apon a bridge',
             image: '',
-            useData: null,
             jsx: <Chat user={state.user} homepage={'toolbelt'} ip={props.ip}/>,
-            size: {xs: 12, sm: 6, md: 6}
         },
         {/** SimpleNav */
             name: 'Simple_Nav',
             description: 'a simple navigation bar',
             image: '',
-            useData: null,
             jsx: <SNav/>,
-            size: {xs: 12, sm: 6, md: 6}
         },
         {/** Dialog */
             name: 'Dialog',
             description: 'a dialog box',
             image: '',
-            useData: null,
             jsx: <DLog/>,
-            size: {xs: 4, sm: 4, md: 3, lg: 2, xl: 2} 
         },
         {/** Clock */
             name: 'Clock',
             description: 'a clock',
             image: '',
-            useData: null,
             jsx: <Clock/>,
-            size: {xs: 3, sm: 2, md: 1}
         },
         {/** Hebrew */
             name: 'Hebrew',
             description: 'a hebrew transliterator',
             image: '',
-            useData: null,
             jsx: <TLiterator/>,
-            size: {xs: 12, sm: 6, md: 6}
         },
-        {/** Mouse */
+        /*{/** Mouse *
             name: 'Mouse',
             description: 'a mouse pointer tracker',
             image: '',
-            useData: useMousePosition,
             jsx: <Mouse/>,
-            size: {xs: 12, sm: 6, md: 6}
-        },
+        },*/
     ]
     useEffect(()=>{
         dispatch({type: ACTIONS.INITIALIZE, payload: {toolShop: toolShop}})
@@ -304,21 +274,19 @@ export default function Toolbelt(props) {
     const ToolSlots = () => {
         return <Row>
             {state.toolBelt.map((tool, i) => {
-                //let {name, description, image, useData, jsx, size} = tool
-                //let {xs, sm, md, lg, xl} = size
-                let NAME = tool.name.split('_')[0].toUpperCase()
+                const {xs, sm, md, lg, xl} = tool.props.size || {xs: 12, sm: 6, md: 6}
+                let name = tool.name.split('_')[0].toUpperCase()
                 let letters = []
-                for(let i=0; i<NAME.length; i++) {
-                    letters.push(NAME.charAt(i))
+                for(let i=0; i<name.length; i++) {
+                    letters.push(name.charAt(i))
                 }
-                /*return <Col key={i} xs={xs} sm={sm} md={md} lg={lg} xl={xl}><Row>
-                    <Col xs={2} style={styleFlat}>
+                return <Col key={i} xs={xs} sm={sm} md={md} lg={lg} xl={xl}><Row>
+                    <Col xs={1} style={styleFlat}>
                         {letters.map((l,i)=><div key={i}>{l}<br/></div>)}<br/>
                         <Button style={{...styleFlat, border: '1px outset darkgrey', borderRadius: '2px', marginRight: '2px'}} onClick={()=>{dispatch({type: ACTIONS.REMOVETOOL, payload: {index: i}})}}>X</Button>
                     </Col>
-                    <Col xs={10} style={styleFlat}>{tool.jsx}</Col>
-                </Row></Col>*/
-                return <>{tool.element}</>
+                    <Col xs={11} style={styleFlat}>{tool.element}</Col>
+                </Row></Col>
             })}
         </Row>
     }

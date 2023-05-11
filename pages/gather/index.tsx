@@ -153,7 +153,7 @@ export default function Gather(props: { ip: any; }){
                 <Mine wallet={state?.player?.wallet} dispatch={dispatch} updatePlayer={updatePlayer}/>
             </Col>
         </Row>
-        <Field render={render}/>
+        <Field/>
 
         <Row id={'community'}>
             <Col xs={12} sm={8} md={9} style={{backgroundColor: 'lightgrey'}}>
@@ -265,31 +265,31 @@ const Mine = ({wallet, dispatch, updatePlayer}) => {
 const Control = ({direction, position, render})=>{
     const speed = 10
     const diagSpeed = Math.ceil(Math.sqrt((speed^2)/2))+1//3.5
-    const up = ()=>{position.current.y-=speed;render()}
-    const down = ()=>{position.current.y+=speed;render()}
-    const left = ()=>{position.current.x-=speed;render()}
-    const right = ()=>{position.current.x+=speed;render()}
+    const up = ()=>{position.current.y-=speed;render({})}
+    const down = ()=>{position.current.y+=speed;render({})}
+    const left = ()=>{position.current.x-=speed;render({})}
+    const right = ()=>{position.current.x+=speed;render({})}
     const moveKeyDown = (e)=>{
         switch(e.key){
             case 'ArrowUp':
                 e.preventDefault()
                 direction.current.up=true
-                //render()
+                //render({})
                 break
             case 'ArrowDown':
                 e.preventDefault()
                 direction.current.down=true
-                //render()
+                //render({})
                 break
             case 'ArrowLeft':
                 e.preventDefault()
                 direction.current.left=true
-                //render()
+                //render({})
                 break
             case 'ArrowRight':
                 e.preventDefault()
                 direction.current.right=true
-                //render()
+                //render({})
                 break
         }
     }
@@ -298,22 +298,22 @@ const Control = ({direction, position, render})=>{
             case 'ArrowUp':
                 e.preventDefault()
                 direction.current.up=false
-                //render()
+                //render({})
                 break
             case 'ArrowDown':
                 e.preventDefault()
                 direction.current.down=false
-                //render()
+                //render({})
                 break
             case 'ArrowLeft':
                 e.preventDefault()
                 direction.current.left=false
-                //render()
+                //render({})
                 break
             case 'ArrowRight':
                 e.preventDefault()
                 direction.current.right=false
-                //render()
+                //render({})
                 break
         }
     }
@@ -329,7 +329,7 @@ const Control = ({direction, position, render})=>{
         else if(d.left&&!d.up&&!d.down)position.current.x-=speed//left
         else if(d.right&&!d.up&&!d.down)position.current.x+=speed//right
         else return
-        render()
+        render({})
     }
     useEffect(()=>{
         const movement = setInterval(()=>move(direction.current), 100);
@@ -371,10 +371,34 @@ const Control = ({direction, position, render})=>{
             <Col xs={4}></Col> 
         </Row></>
 }
-function Field({render}: {render: ()=>void}){
+type Entity = {
+    name: string,
+    position: {x: number, y: number},
+    trigger: ()=>void
+}
+function Field(){
+    const render = useState({})[1]
     const position = useRef({x: 0, y: 0})
     const direction = useRef({up: false, down: false, left: false, right: false})
-
+    const entities: {current: Entity[]} = useRef([])
+    function RenderPlayer(){
+        return <Col><Button style={{position: 'absolute', zIndex: 1, top: position.current.y+'px', left: position.current.x+'px'}} 
+            onClick={()=>{position.current.x=0;position.current.y=0;render({})}}>Player</Button></Col>
+    }
+    function RenderEntities(){
+        return <>{entities.current.map((e, i)=>{
+            return <Col key={i}><Button style={{position: 'absolute', top: e.position.y+'px', left: e.position.x+'px'}}
+                onClick={()=>{e.trigger();e.position.x+=1;render({})}}>{e.name}</Button></Col>
+        })}</>
+    }
+    /*useEffect(()=>{
+        entities.current.push({name: 'Entity 1', position: {x: 100, y: 100}, trigger: ()=>{
+            let ePos = entities.current[].position
+            if(ePos.x>=position.current.x-9&&ePos.y>=position.current.y-9&&ePos.x<=position.current.x+9&&ePos.y<=position.current.y+9){
+                console.log('Entity 1 triggered: collided with player')
+            }
+        }})
+    },[])*/
     return <>
         <Row id={'Field Control'}>
             <Col xs={12} sm={6} md={3} style={{backgroundColor: 'lightgrey'}}>
@@ -385,9 +409,8 @@ function Field({render}: {render: ()=>void}){
             </Col>
         </Row>
         <Row id={'Field'} style={{position: 'relative', height: '20%'}}>
-            <Col>
-                <Button style={{position: 'absolute', top: position.current.y+'px', left: position.current.x+'px'}} onClick={()=>{position.current.x=0;position.current.y=0;render()}}>Absolute</Button>
-            </Col>
+            <RenderPlayer/>
+            <RenderEntities/>
         </Row>
     </>
 }
