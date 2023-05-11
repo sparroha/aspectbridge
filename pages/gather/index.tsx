@@ -55,7 +55,7 @@ export default function Gather(props: { ip: any; }){
         wallet: {income: 0, coin: 0, gem: 0, prestige: 0},
         items: []
     }
-    function reducer (state: {player: Player}, action) {
+    function reducer (state: {player: Player}, action: {type: string, payload: any}) {
         //TODO: if player is inactive after 5 seconds, refresh page here
         let {player, amount, item} = action.payload
         renders.current++
@@ -153,7 +153,7 @@ export default function Gather(props: { ip: any; }){
                 <Mine wallet={state?.player?.wallet} dispatch={dispatch} updatePlayer={updatePlayer}/>
             </Col>
         </Row>
-        <Field/>
+        <Field dispatch={dispatch}/>
 
         <Row id={'community'}>
             <Col xs={12} sm={8} md={9} style={{backgroundColor: 'lightgrey'}}>
@@ -319,16 +319,23 @@ const Control = ({direction, position, render})=>{
     }
     const move = (d)=>{
         //console.log(d)
+        let s = speed
         if(!d.up&&!d.down&&!d.left&&!d.right)return
-        if(d.up&&!d.right&&!d.left)position.current.y-=speed//up
-        else if(d.up&&d.right&&!d.left){position.current.y-=diagSpeed;position.current.x+=diagSpeed}//up right
-        else if(d.up&&!d.right&&d.left){position.current.y-=diagSpeed;position.current.x-=diagSpeed}//up left
-        else if(d.down&&!d.right&&!d.left)position.current.y+=speed//down
-        else if(d.down&&d.right&&!d.left){position.current.y+=diagSpeed;position.current.x+=diagSpeed}//down right
-        else if(d.down&&!d.right&&d.left){position.current.y+=diagSpeed;position.current.x-=diagSpeed}//down left
-        else if(d.left&&!d.up&&!d.down)position.current.x-=speed//left
-        else if(d.right&&!d.up&&!d.down)position.current.x+=speed//right
-        else return
+        if(d.up||d.down&&d.left||d.right){
+            s=diagSpeed
+        }
+        if(d.up){
+            if(!d.right&&!d.left)position.current.y-=speed//up
+            else if(d.right&&!d.left){position.current.y-=speed;position.current.x+=speed}//up right
+            else if(!d.right&&d.left){position.current.y-=speed;position.current.x-=speed}//up left
+        }else if(d.down){
+            if(!d.right&&!d.left)position.current.y+=speed//down
+            else if(d.right&&!d.left){position.current.y+=speed;position.current.x+=speed}//down right
+            else if(!d.right&&d.left){position.current.y+=speed;position.current.x-=speed}//down left
+        }else{
+            if(d.left)position.current.x-=speed//left
+            else if(d.right)position.current.x+=speed//right
+        }
         render({})
     }
     useEffect(()=>{
@@ -374,31 +381,52 @@ const Control = ({direction, position, render})=>{
 type Entity = {
     name: string,
     position: {x: number, y: number},
-    trigger: ()=>void
+    trigger: (entitiesList: Entity[])=>void,
+    triggerMessage: string
 }
-function Field(){
+function Field({dispatch}: {dispatch: React.Dispatch<any>}){
     const render = useState({})[1]
     const position = useRef({x: 0, y: 0})
     const direction = useRef({up: false, down: false, left: false, right: false})
     const entities: {current: Entity[]} = useRef([])
-    function RenderPlayer(){
-        return <Col><Button style={{position: 'absolute', zIndex: 1, top: position.current.y+'px', left: position.current.x+'px'}} 
-            onClick={()=>{position.current.x=0;position.current.y=0;render({})}}>Player</Button></Col>
+    function RenderPlayer({pos}: {pos: {x: number, y: number}}){
+        return <Col><Button style={{position: 'absolute', zIndex: 1, top: pos.y+'px', left: pos.x+'px'}} 
+            onClick={()=>{pos.x=0;pos.y=0;render({})}}>Player</Button></Col>
     }
-    function RenderEntities(){
-        return <>{entities.current.map((e, i)=>{
+    function RenderEntities({ents}: {ents: Entity[]}){
+        return <>{ents.map((e, i)=>{
             return <Col key={i}><Button style={{position: 'absolute', top: e.position.y+'px', left: e.position.x+'px'}}
-                onClick={()=>{e.trigger();e.position.x+=1;render({})}}>{e.name}</Button></Col>
+                onClick={()=>{e.trigger(ents);e.position.x+=1;render({})}}>{e.name}</Button></Col>
         })}</>
     }
-    /*useEffect(()=>{
-        entities.current.push({name: 'Entity 1', position: {x: 100, y: 100}, trigger: ()=>{
-            let ePos = entities.current[].position
-            if(ePos.x>=position.current.x-9&&ePos.y>=position.current.y-9&&ePos.x<=position.current.x+9&&ePos.y<=position.current.y+9){
-                console.log('Entity 1 triggered: collided with player')
+    useEffect(()=>{
+        entities.current.push({name: 'Colider Hawk', position: {x: 100, y: 100}, trigger: (entitiesList)=>{
+            let self = entitiesList.filter(e=>e.name==='Hawk')[0]
+            if(self){
+                let ePos = self.position
+                if(ePos)if(isNear(ePos, position.current, 50))console.log('Entity 1 triggered: collided with player')
             }
-        }})
-    },[])*/
+        }, triggerMessage: 'You found a hawk!'})
+
+        entities.current.push({name: 'Gem Mine', position: {x: 50, y: 50}, trigger: (entitiesList)=>{
+            let self = entitiesList.filter(e=>e.name==='Gem Mine')[0]
+            if(self){
+                let ePos = self.position
+                if(ePos)if(new Date().getSeconds()%5==0)if(isNear(ePos, position?.current, 50))dispatch({type: 'addGem', payload: {amount: 1}})
+            }
+        }, triggerMessage: 'You found a gem mine!'})
+        return ()=>{entities.current = []}
+    },[])
+
+    function isNear(p1: {x: number, y: number}, p2: {x: number, y: number}, dist: number){
+        if(!p1||!p2)return false
+        return p1.x>=p2.x-dist&&p1.y>=p2.y-dist&&p1.x<=p2.x+dist&&p1.y<=p2.y+dist
+    }
+    useEffect(()=>{
+        entities.current.forEach(e=>{
+            if(isNear(e.position, position.current, 50)) e.trigger(entities.current)
+        });
+    },[position.current.x, position.current.y])
     return <>
         <Row id={'Field Control'}>
             <Col xs={12} sm={6} md={3} style={{backgroundColor: 'lightgrey'}}>
@@ -409,8 +437,8 @@ function Field(){
             </Col>
         </Row>
         <Row id={'Field'} style={{position: 'relative', height: '20%'}}>
-            <RenderPlayer/>
-            <RenderEntities/>
+            <RenderPlayer pos={position.current}/>
+            <RenderEntities ents={entities.current}/>
         </Row>
     </>
 }
