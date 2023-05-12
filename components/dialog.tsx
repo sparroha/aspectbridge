@@ -37,9 +37,9 @@ export default function Dialog(props?){
             <div>{content?content:'Modal content'}</div>
             <Button id={'close'+id} data-close-modal>{close?close:'Close'}</Button>
         </dialog>
-        <dialog  id={'modal_info'+id} style={{borderRadius: '25px', border: '5px outset silver', textAlign: 'center',...style}} data-modal-info>
-            <h2>{title?title:'Modal'}</h2>
-            <div>{content.info?content.info:'Modal info'}</div>
-        </dialog>
+        {info?<dialog  id={'modal_info'+id} style={{padding: '5px', position: 'relative', fontSize: '12px', borderRadius: '5px', border: '2px outset silver', textAlign: 'center',...style}} data-modal-info>
+            <span>{title?title:'Modal'}</span>
+            <div>{info}</div>
+        </dialog>:null}
     </div>
 }
