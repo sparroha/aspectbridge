@@ -133,7 +133,7 @@ const Control = ({direction, position, render})=>{
         </Row></>
 }
 
-export function Field({dispatch}: {dispatch: React.Dispatch<any>}){
+export default function Field({dispatch}: {dispatch: React.Dispatch<any>}){
     const render = useState({})[1]
     const position = useRef({x: 0, y: 0})
     const direction = useRef({up: false, down: false, left: false, right: false})
