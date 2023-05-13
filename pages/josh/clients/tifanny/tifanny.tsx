@@ -6,5 +6,5 @@ export default function Tifanny(){
     </>
 }
 export function TifannyNav(){
-    return <SimpleNav {...{root: 'josh', title: "tifanny", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "tifanny", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
 }
