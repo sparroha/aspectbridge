@@ -8,7 +8,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import ContainerOverlay from "../../components/overlay";
 import useSWR from "swr";
 import Chat from "../chat";
-import { Field } from "./field";
+import Field from "./field";
 
 export type Item = {name: string, value: number, amount: number}
 export type Player = {
