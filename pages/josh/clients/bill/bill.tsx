@@ -24,5 +24,5 @@ export function BillNavOld(){
 }
 
 export function BillNav(){
-    return <SimpleNav {...{root: 'josh', title: "bill", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "bill", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
 }

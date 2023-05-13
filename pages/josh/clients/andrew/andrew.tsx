@@ -20,5 +20,5 @@ export function AndrewNavOld(){
     </Card>
 }
 export function AndrewNav(){
-    return <SimpleNav {...{root: 'josh', title: "andrew", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "andrew", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
 }

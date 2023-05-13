@@ -20,5 +20,5 @@ export function AshmoreNavOld(){
     </Card>
 }
 export function AshmoreNav(){
-    return <SimpleNav {...{root: 'josh', title: "ashmore", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "ashmore", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
 }

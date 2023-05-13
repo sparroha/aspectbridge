@@ -19,5 +19,5 @@ export function ChurchNavOld(){
     </Card>
 }
 export function ChurchNav(){
-    return <SimpleNav {...{root: 'josh', title: "church", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "church", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
 }

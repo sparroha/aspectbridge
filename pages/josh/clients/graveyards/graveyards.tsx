@@ -6,16 +6,16 @@ export default function Graveyards(){
             </Form>
 }
 export function GraveyardsNav(){
-    return <SimpleNav {...{root: 'josh', title: "graveyards", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "graveyards", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
 }
 export function TrentonGraveyards(){
-    return <SimpleNav {...{root: 'josh', title: "trenton", links: ["map", "calendar", "tools"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "trenton", links: ["map", "calendar", "tools"], args: ''}} />
 }
 export function RinggoldGraveyards(){
-    return <SimpleNav {...{root: 'josh', title: "ringgold", links: ["map", "calendar", "tools"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "ringgold", links: ["map", "calendar", "tools"], args: ''}} />
 }
 export function CalhoonGraveyards(){
-    return <SimpleNav {...{root: 'josh', title: "calhoon", links: ["map", "calendar", "tools"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "calhoon", links: ["map", "calendar", "tools"], args: ''}} />
 }
 //This is Info Block for Clients
 /*const graves = [

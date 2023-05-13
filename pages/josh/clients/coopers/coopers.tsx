@@ -6,5 +6,5 @@ export default function Coopers(){
     </>
 }
 export function CoopersNav(){
-    return <SimpleNav {...{root: 'josh', title: "coopers", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
+    return <SimpleNav {...{root: 'josh', page: "coopers", links: ["trenton", "ringgold", "calhoon"], args: ''}} />
 }
