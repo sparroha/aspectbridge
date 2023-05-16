@@ -5,7 +5,7 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 export default function Home() {
     const [wavelength, setWavelength] = useState(0);
     const [zPlane, setZPlane] = useState(0);
-    const [y, setY] = useState(0);
+    const [formula, setFormula] = useState('Ripples');
     const [r, setR] = useState(0);
 
     //Mandlebrot
@@ -18,16 +18,43 @@ export default function Home() {
     const ymax = 1.5;
     //\\Mandlebrot
 
-    const formula = (x: number, y: number, width: number, height: number) => {
+    const FRipples = (x: number, y: number, width: number, height: number) => {
         const center = {x: width/2, y: height/2};
         //distance from center = square root of (x-center.x)^2 + (y-center.y)^2
         const centerDistance = Math.sqrt((x - center.x) ** 2 + (y - center.y) ** 2);
-        return Math.sin(centerDistance / wavelength) > zPlane;
+        return {valid: Math.sin(centerDistance / wavelength) > zPlane, color: '#000000'}
     };
-    const mandlebrot = (x: number, y: number, width: number, height: number) => {
-        
+    const FMandlebrot = (x: number, y: number, width: number, height: number) => {
+        // Map the pixel coordinates to the complex plane
+        const a = xmin + (x / width) * (xmax - xmin);
+        const b = ymin + (y / height) * (ymax - ymin);
 
-        return true;
+        // Start with z = 0
+        let zr = 0;
+        let zi = 0;
+
+        let i = 0;
+        while (i < maxIterations) {
+            // Apply the Mandelbrot formula: z = z^2 + c
+            const zrNew = zr * zr - zi * zi + a;
+            const ziNew = 2 * zr * zi + b;
+
+            zr = zrNew;
+            zi = ziNew;
+
+            // Check if the magnitude of z is greater than 2 (diverges to infinity)
+            if (zr * zr + zi * zi > 4) {
+                break;
+            }
+
+            i++;
+        }
+
+        // Color the pixel based on the number of iterations
+        const color = i === maxIterations ? '#000000' : `hsl(${i % 360}, 100%, 50%)`;
+
+
+        return {valid: true, color: color};
     };
     return <Container>
         <Row>
@@ -45,10 +72,16 @@ export default function Home() {
                         <Form.Label>Enter R</Form.Label>
                         <Form.Control hidden type="number" placeholder="Enter R" onChange={(e) => setR(Number(e.target.value))} />
                     </Form.Group>
-
+                    <Form.Group controlId='y'>
+                        <Form.Label>Formula</Form.Label>
+                        <select value={formula} onChange={e => setFormula(e.target.value)}>
+                            <option value={'Ripples'}>{'Ripples'}</option>
+                            <option value={'Mandlebrot'}>{'Mandlebrot'}</option>
+                        </select>
+                    </Form.Group>
                 </Form>
             </Col>
         </Row>
-        <Canvas formula={formula}/>
+        <Canvas formula={formula=='Ripples'?FRipples:(formula=='Mandlebrot'?FMandlebrot:()=>{return false})}/>
     </Container>
 }

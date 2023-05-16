@@ -13,7 +13,7 @@ const Canvas = ({ formula}) => {
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
         const result = formula(x, y, width, height);
-        const color = result ? '#000000' : '#FFFFFF';
+        const color = result.valid ? (result.color?result.color:'#000000') : '#FFFFFF';
         context.fillStyle = color;
         context.fillRect(x, y, 1, 1);
       }
