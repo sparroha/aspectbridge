@@ -29,6 +29,7 @@ const reducer = (
             x?: number, 
             y?: number,
             pathing?: Function,
+            data?: any,
         }
     }
 )=>{
@@ -83,6 +84,14 @@ const reducer = (
             return {...state,
                 entities: state.entities.splice(index, 1)
             }
+        case 'setEntity':
+            if(actionTarget){
+                let ArE = state.entities
+                ArE.splice(index, 1, action.payload.data)
+                return {...state,
+                    entities: ArE
+                }
+            }
         case 'init':
             return {...state,
                 init: true,
@@ -115,6 +124,7 @@ const initialState = {
 export default function PSX(){
     const [state, dispatch]: [ActiveState, Function] = useReducer(reducer, initialState)
     const speed = 1;
+    const vector: {current: {x: number, y: number}[]} = useRef([{x: 0, y: 0}])
     const keysDown = useRef({u: false, d: false, l: false, r: false})
     
     useEffect(()=>{

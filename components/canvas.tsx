@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { createCanvas } from 'canvas';
 
-const Canvas = ({ formula }) => {
+const Canvas = ({ formula}) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const Canvas = ({ formula }) => {
 
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
-        const result = formula(x, y);
+        const result = formula(x, y, width, height);
         const color = result ? '#000000' : '#FFFFFF';
         context.fillStyle = color;
         context.fillRect(x, y, 1, 1);

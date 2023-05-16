@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import useLog from "../../components/conlog"
 import Landscape from "../../components/ll/css/layout"
 import sql from "../../lib/,base/sql"
+import { stat } from "fs"
 
 export type Game = {
     playerLocalHP: number,
@@ -17,16 +18,21 @@ export type Game = {
 export type Card = {
     name: string,
     type: string,
-    cost: number,
     text: string,
     image: string,
     id: number,
     action: (instance: Game, setInstance: any) => void,
+    stats: {
+        attack: number,
+        defence: number,
+        health: number,
+        cost: number,
+        abilities: string[],
+    }
 }
 const ann_pr: Card = {
     name: 'annointer_priest',
     type: 'priest',
-    cost: 1,
     text: 'heal 1',
     image: 'https://cdn.discordapp.com/attachments/801000000000000000/801000000000000000/annointer_priest.png',
     id: 1,
@@ -34,6 +40,13 @@ const ann_pr: Card = {
         let playerLocalHP = instance.playerLocalHP + ((instance.tokenCount > instance.previousTokenCount) ? 1 : 0);
         instance.playerLocalHP = playerLocalHP//illegal operation
         setInstance(instance)
+    },
+    stats: {
+        attack: 1,//influence
+        defence: 1,//resolve
+        health: 3,//action
+        cost: 1,//requirement
+        abilities: ['heal 1(motivate)'],
     }
 }
 
