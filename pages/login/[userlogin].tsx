@@ -52,7 +52,7 @@ export default function UserLogin({ip, homepage}) {
       }}
     )},[user])
 
-    return <Container style={{textAlign: 'center'}}>
+    return <Container style={{textAlign: 'center', maxWidth: '100vw'}}>
             <Headers/>
             <Row>
               {/**ProfileByIp is used to login if session ip is saved */}
