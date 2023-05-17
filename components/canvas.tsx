@@ -20,7 +20,7 @@ const Canvas = ({ formula}) => {
     }
   }, [formula]);
 
-  return <canvas ref={canvasRef} width={800} height={600} />;
+  return <canvas ref={canvasRef} width={1280} height={720} />;
 };
 
 export default Canvas;
