@@ -1,5 +1,6 @@
 import { useRef } from "react";
 
+//export default async function dataStruct(req, res) {return null; res.status(200).json({ alert: 'dataStruct' })}
 export type Environment = {
     id: number;
     name: string;
