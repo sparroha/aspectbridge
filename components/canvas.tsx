@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { createCanvas } from 'canvas';
+//import { createCanvas } from 'canvas';
 
-const Canvas = ({ formula}) => {
+const Canvas = ({formula}) => {
   const canvasRef = useRef(null);
+  //const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     const canvas = canvasRef.current;

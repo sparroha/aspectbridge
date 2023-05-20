@@ -59,7 +59,8 @@ function CalendarTab(){
         <div className='calendar grey-back' style={{borderRadius: '15px'}}>
             <h1 className='text-center'>React Calendar</h1>
             <div className='calendar-container'>
-                <Calendar onChange={setDate} value={date} />
+                {//<Calendar onChange={setDate} value={date} />
+                }
             </div>
             <p className='text-center'>
                 <span className='bold'>Selected Date:</span>{' '}
