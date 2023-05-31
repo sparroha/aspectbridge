@@ -16,7 +16,7 @@ export default function Content(props){
         {content.length==2 && <Layout2Col col1={content[0]} col2={content[1]}/>}
         {content.length==3 && <Layout3Col col1={content[0]} col2={content[1]} col3={content[2]}/>}
         {content.length>3 && <Row>
-            {content.map((item, index) => <Col key={index} xs={12} md={4} lg={3}>{item}</Col>)}
+            {content.split(',').map((item, index) => <Col key={index} xs={12} md={4} lg={3}>{item}</Col>)}
         </Row>}
     </Col></Row>
 }
