@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import Site from "../../components/web_layout/stdindex";
+import { useEffect, useReducer, useRef, useState } from "react";
+import Site, { SiteProps } from "../../components/web_layout/stdindex";
 import { Button, Container, Form, FormGroup } from "react-bootstrap";
 import { GetServerSideProps } from "next";
 import sql from "../../lib/,base/sql";
@@ -9,96 +9,119 @@ import { Profile } from "../login/[userlogin]";
 import { LoginNav } from "../login/[userlogin]";
 import useLog from "../../components/conlog";
 
-export type SiteProps = {
-    title: string,
-    pages: string,
-    content: string,
-    footer: string
+
+const ACTIONS = {
+    INITIALIZE: 'initialize',
+    SETTITLE: 'settitle',
+    SETPAGES: 'setpages',
+    SETCONTENT: 'setcontent',
+    SETFOOTER: 'serfooter'
 }
 export default function Main(props){
-    const title ='Saved'
-    const user = useRef(null)
-    useEffect(()=>{
-        console.log(JSON.stringify(props))
-    }, [])
-    const dev = props.dev || user.current?.username || null//i.e.:dev=John
-    //const title = props.title//i.e.:dev=John
-    const render = useState({})[1];
-    //const renderMute = ()=>{mutate();render({})}
-    const siteProps: {current: SiteProps} = useRef({
-        title: props.title || title,
+    //VARIABLES AND CONSTANTS
+    const [titleState, setTitleState] = useState('Saved')
+    const [user, setUser] = useState(null)
+    useLog('props='+JSON.stringify(props))
+    const [dev, setDev] = useState(props.dev || user?.username || null)//i.e.:dev=John
+
+    //const render = useState({})[1];
+    const siteProps: SiteProps = {
+        title: props.title || titleState,
         pages: props.pages || 'Home: main,Content: main',
         content: props.content || 'Content: main',
         footer: props.footer || 'Footer: main'
-    })
-
-    /*const Toggle = ()=>{
-        setState(current=>(current+1)%2)
-        console.log(state)
-    }*/
-    //const ButtonToggle = ()=>{return <Button onClick={Toggle}>Toggle</Button>}
-    const ButtonRender = ()=>{return <Button onClick={()=>{updateSite(user, siteProps);/*TODO: update sql with values*/render({})}}>Apply</Button>}
-    //input form for site header
-    const FormSiteValues = ()=>{
-        return <FormGroup>
-            <Form.Label>Title: </Form.Label>
-            <Form.Control type={'text'} defaultValue={siteProps.current.title} onChange={(e)=>{
-                siteProps.current.title = e.target.value;render({})
-            }}/>
-        </FormGroup>
     }
-    //input form for site navbar
-    const FormSiteLinks = ()=>{
-        return <FormGroup>
-            <Form.Label>pages</Form.Label>
-            <Form.Control type={'text'} defaultValue={siteProps.current.pages} onChange={(e)=>{
-                siteProps.current.pages = e.target.value
-            }}/>
-        </FormGroup>
-    }
-    //input form for site content
-    const FormSiteContent = ()=>{
-        return <FormGroup>
-            <Form.Label>content</Form.Label>
-            <Form.Control type={'text'} defaultValue={siteProps.current.content} onChange={(e)=>{
-                siteProps.current.content = e.target.value
-            }}/>
-        </FormGroup>
-    }
-    function ShowSite({t}){
-        useLog('title='+t)
-        const { data, error } = useSWR(`/api/devpack/site?username=${dev}&title=${t}`, {refreshInterval: 200})
-        useLog('data='+data)
-        if (error) return <div style={{visibility: 'visible', position: 'absolute'}}>{JSON.stringify(error)}:Page not loaded.</div>
-        if (!data) return <div>loading...</div>
-        if (typeof data === undefined) return <div>undefined</div>
-        const {pages, content, footer} = data[0]
-        
-        siteProps.current = {
-            title: title,
-            pages: pages,
-            content: content,
-            footer: footer
+    //REDCER
+    function reducer (state: SiteProps, action: {type: string, payload: any}){
+        switch (action.type) {
+            case ACTIONS.INITIALIZE:
+                return {...action.payload}//{...state, toolShop: action.payload.toolShop};
+            case ACTIONS.SETTITLE:
+                return {...state, title: action.payload.title};
+            case ACTIONS.SETPAGES:
+                return {...state, pages: action.payload.pages};
+            case ACTIONS.SETCONTENT:
+                return {...state, content: action.payload.content};
+            case ACTIONS.SETFOOTER:
+                return {...state, footer: action.payload.footer};
+            default:
+                throw new Error()
         }
-        //useLog(siteProps)
-
-        //return state==0 ? <Site {...{...props, ...siteProps.current}}/>:(state==1 ? <Site/>: null)
-        return <Site {...{...props, ...siteProps.current}}/>
     }
+    const [state, dispatch]: [SiteProps, any] = useReducer(reducer, siteProps)
+    //DATA LOADING
+    const {data, error, mutate} = useSWR(`/api/devpack/site?username=${dev}&title=${titleState}`, {refreshInterval: 200})
+    //HOOKS
+    useEffect(()=>{//update siteProps.current.title
+        if(user?.username){
+            setDev(user.username)
+        }
+    },[user])
+    useEffect(()=>{
+        if(data){
+            const {title, pages, content, footer} = data[0] || {pages: 'No valid Pages', content: 'No valid Content', footer: 'No valid  Footer'}
+            let P: SiteProps = {
+                title: title || props.title || titleState,
+                pages: pages || props.pages || 'Home: main,Content: main',
+                content: content || props.content || 'Content: main',
+                footer: footer || props.footer || 'Footer: main'
+            }
+            dispatch({type: ACTIONS.INITIALIZE, payload: P})
+        }
+    },[data])
+    useLog('data='+data+'||JSONdata='+JSON.stringify(data))
+    //DATA LOADING
+    if (error) return <div style={{visibility: 'visible', position: 'absolute'}}>{JSON.stringify(error)}:Page not loaded.</div>
+    if (!data) return <div>loading...</div>
+
+    
+    //const showSiteProps = {...props,...{}}
     return <Container>
         <h4>Web Layout Test</h4>
-        <Profile ip={props.ip} setUser={(u)=>{user.current=u;render({})}}/>
-        <LoginNav as={'a'} user={user.current} homepage={'sandbox/test'}/>
-        {dev?<>
-            <h5>dev: {dev}</h5>
-            <FormSiteValues/><br/>
-            <FormSiteLinks/><br/>
-            <FormSiteContent/><br/>
-            <ButtonRender/>
-        </>:null}
-        <ShowSite t={siteProps.current.title}/>
+        <Profile ip={props.ip} setUser={setUser}/>
+        <LoginNav as={'a'} user={user} homepage={'sandbox/test'}/>
+        <h5>dev: {dev}</h5>
+        <Form>
+            <FormSiteTitle visible={dev} title={titleState} setTitle={setTitleState} mutate={mutate}/><br/>
+            <FormSiteNavigation visible={dev} pages={state.pages} setPagesRef={(pages)=>{dispatch({type: ACTIONS.SETPAGES, payload: pages})}}/>
+            <FormSiteContent visible={dev} content={state.content} setContentRef={(content)=>{dispatch({type: ACTIONS.SETCONTENT, payload: content})}}/>
+        </Form>
+        <ButtonRender onClick={()=>{updateSite(user, state)}}/>
+        <Site {...siteProps}/>
     </Container>
 }
+//FUNCTION CONSTANTS
+const ButtonRender = ({onClick})=>{return <Button onClick={onClick}>Apply</Button>}
+//input form for site header
+const FormSiteTitle = ({visible, title, setTitle, mutate})=>{
+    if(!visible) return <></>
+    return <FormGroup>
+        <Form.Label>Title: </Form.Label>
+        <Form.Control type={'text'} defaultValue={title} onChange={(e)=>{
+            setTitle(e.target.value)
+            mutate()
+        }}/>
+    </FormGroup>
+}
+const FormSiteNavigation = ({visible, pages, setPagesRef})=>{
+    if(!visible) return <></>
+    return <FormGroup>
+        <Form.Label>pages</Form.Label>
+        <Form.Control type={'text'} defaultValue={pages} onChange={(e)=>{
+            setPagesRef(e.target.value)
+        }}/>
+    </FormGroup>
+}
+const FormSiteContent = ({visible, content, setContentRef})=>{
+    if(!visible) return <></>
+    return <FormGroup>
+        <Form.Label>content</Form.Label>
+        <Form.Control type={'text'} defaultValue={content} onChange={(e)=>{
+            setContentRef(e.target.value)
+        }}/>
+    </FormGroup>
+}
+
 function updateSite(user, props, mutate?){//update database with current player_data
     if(user.current){console.log('updatePlayer')
     fetch('/api/devpack/site', {
@@ -110,8 +133,8 @@ function updateSite(user, props, mutate?){//update database with current player_
             username: user.current.username,
             title: props.current.title,
             pages: props.current.pages,
-            content: JSON.stringify(props.current.content),
-            footer: JSON.stringify(props.current.footer)
+            content: props.current.content,
+            footer: props.current.footer
         })
     })
     .then((res)=>res.json())
@@ -135,12 +158,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const siteProps: SiteProps = {
         title: title ||'Page Title: getServerSideProps',
         pages: pages ||'Home: getServerSideProps,Content: getServerSideProps',
-        content: content || [
-            <div key={0}>Content: getServerSideProps</div>,
-        ],
-        footer: footer || [
-            <div key={0}>Footer: getServerSideProps</div>,
-        ]
+        content: content || 'Content: getServerSideProps',
+        footer: footer || 'Footer: getServerSideProps'
     }
     return {props: {...query, ...siteProps, ip} }
 }
