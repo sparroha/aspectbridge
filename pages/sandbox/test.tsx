@@ -8,6 +8,7 @@ import requestIp from 'request-ip'
 import { Profile } from "../login/[userlogin]";
 import { LoginNav } from "../login/[userlogin]";
 import useLog from "../../components/conlog";
+import Sliders from "../../components/sliders";
 
 
 const ACTIONS = {
@@ -17,7 +18,7 @@ const ACTIONS = {
     SETCONTENT: 'setcontent',
     SETFOOTER: 'serfooter'
 }
-export default function Main(props){
+export function WebSiteDesign(props){
     //VARIABLES AND CONSTANTS
     const [titleState, setTitleState] = useState('Saved')
     const [user, setUser] = useState(null)
@@ -162,4 +163,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         footer: footer || 'Footer: getServerSideProps'
     }
     return {props: {...query, ...siteProps, ip} }
+}
+
+
+
+export default function CustomSliders(props){
+    return <Sliders {...props}/>
 }
