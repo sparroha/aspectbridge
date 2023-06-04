@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import Site, { SiteProps } from "../../components/web_layout/stdindex";
-import { Button, Container, Form, FormGroup } from "react-bootstrap";
+import { Button, Col, Container, Form, FormGroup, Row } from "react-bootstrap";
 import { GetServerSideProps } from "next";
 import sql from "../../lib/,base/sql";
 import useSWR from "swr";
@@ -8,7 +8,7 @@ import requestIp from 'request-ip'
 import { Profile } from "../login/[userlogin]";
 import { LoginNav } from "../login/[userlogin]";
 import useLog from "../../components/conlog";
-import Sliders from "../../components/sliders";
+import CssSlidersWrapper from "../../components/sliders";
 
 
 const ACTIONS = {
@@ -167,6 +167,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
 
-export default function CustomSliders(props){
-    return <Sliders {...props}/>
+export default function CSliders(props){
+    return <CssSlidersWrapper id={'row1'}>
+        <div>
+            <CssSlidersWrapper id={'row1col1'}>
+                <div>R1C1
+                </div>
+            </CssSlidersWrapper>
+        </div>
+    </CssSlidersWrapper>
 }
