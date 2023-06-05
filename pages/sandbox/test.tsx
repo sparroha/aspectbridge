@@ -169,8 +169,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export default function CSliders(props){
     return <CssSlidersWrapper id={'row1'}>
-            <CssSlidersWrapper id={'row1col1'}>
+            <div id={'row1col1'}>
                 R1C1
-            </CssSlidersWrapper>
+            </div>
     </CssSlidersWrapper>
 }
