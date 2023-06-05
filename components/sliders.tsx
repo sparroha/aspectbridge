@@ -48,6 +48,15 @@ export default function CssSlidersWrapper(props) {
                 defaultValue={styleRef.current.width.split("vw")[0]}
                 onChange={(e) => { console.log("width=" + e.target.value); styleRef.current.width = (Number.parseInt(e.target.value)<90?e.target.value:"85") + "vw"; setState({}); }}
             />
+
+            <label>{'height: '}</label>
+            {styleRef.current.width+'  '}
+            <input
+                type="range"
+                name={"height"}
+                defaultValue={styleRef.current.height.split("vh")[0]}
+                onChange={(e) => { console.log("height=" + e.target.value); styleRef.current.height = e.target.value + "vh"; setState({}); }}
+            />
         </div>
     </div>
   );
