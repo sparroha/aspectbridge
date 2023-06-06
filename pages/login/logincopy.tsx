@@ -38,8 +38,8 @@ export default function UserLogin(props: ActiveUser) {
             <BrowserRouter><Routes>
                 <Route 
                   path="/login/login"
-                  loader={({params})=>{}/**client */}
-                  action={({params})=>{}/**fetch  */}
+                  loader={({params})=>{return null}/**client */}
+                  action={({params})=>{return null}/**fetch  */}
                   element={<LoginForm props={props} setUser={setUser}/>}
                 />
                 <Route 
@@ -48,7 +48,7 @@ export default function UserLogin(props: ActiveUser) {
                 />
                 <Route 
                   path="/login/registernew"
-                  loader={({params})=>{}/**client */}
+                  loader={({params})=>{return null}/**client */}
                   action={async ({params, request})=>{/**fetch  */
                     const formData = await request.formData()
                     return setUser(formData)
