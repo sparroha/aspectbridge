@@ -23,8 +23,8 @@ export default function CssSlidersWrapper(props) {
     padding: '0%',
     color: 'black',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    //alignItems: 'center',
+    //justifyContent: 'center',
     backgroundColor: 'gray',
     borderColor: 'black',
 })
@@ -37,8 +37,8 @@ export default function CssSlidersWrapper(props) {
     },[])*/
 
   return (
-    <div style={{...props.style, position: "relative" }}>
-        <div id={"csschild_" + props.id} style={{ ...styleRef.current, position: 'absolute' }}>
+    <div id={"csswrapper_"+props.id} style={{ ...styleRef.current, position: 'absolute' }}>
+        <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
             {props.children}
             <Dialog id={"csscontrol_" + props.id} style={{...controlStyle, position: 'absolute' }} title={'css sliders'} open={'<>'} close={'</>'}>
                 <label>{'width: '}</label>
@@ -51,7 +51,7 @@ export default function CssSlidersWrapper(props) {
                 />
 
                 <label>{'height: '}</label>
-                {styleRef.current.width+'  '}
+                {styleRef.current.height+'  '}
                 <input
                     type="range"
                     name={"height"}
@@ -75,6 +75,33 @@ export default function CssSlidersWrapper(props) {
                     name={"top"}
                     defaultValue={styleRef.current.top.split("vh")[0]}
                     onChange={(e) => { console.log("y=" + e.target.value); styleRef.current.top = e.target.value + "vh"; setState({}); }}
+                />
+
+                <label>{'opacity: '}</label>
+                {styleRef.current.opacity+'  '}
+                <input
+                    type="range"
+                    name={"opacity"}
+                    defaultValue={styleRef.current.opacity.split("%")[0]}
+                    onChange={(e) => { console.log("opacity=" + e.target.value); styleRef.current.opacity = e.target.value + "%"; setState({}); }}
+                />
+
+                <label>{'color: '}</label>
+                {styleRef.current.color+'  '}
+                <input
+                    type="color"
+                    name={"color"}
+                    defaultValue={styleRef.current.color}
+                    onChange={(e) => { console.log("color=" + e.target.value); styleRef.current.color = e.target.value; setState({}); }}
+                />
+
+                <label>{'background color: '}</label>
+                {styleRef.current.backgroundColor+'  '}
+                <input
+                    type="color"
+                    name={"backgroundColor"}
+                    defaultValue={styleRef.current.backgroundColor}
+                    onChange={(e) => { console.log("backgroundColor=" + e.target.value); styleRef.current.backgroundColor = e.target.value; setState({}); }}
                 />
             </Dialog>
         </div>
