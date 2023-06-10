@@ -204,12 +204,12 @@ export default function CSliders(props){
                 {objects.current.map(
                     (object, index)=>{
                         return <CssSlidersWrapper key={index} style={object.style || {width: 5*(index+1)+'vw', height: 5*(index+1)+'vh', left: 5*(index+1)+'vw',top: 5*(index+1)+'vh'}} setStyle={setStyle} id={'row_'+object.id}>
-                        <a href={'#'} style={{float: "right"}} onClick={()=>{
-                            objects.current = objects.current.filter((obj)=>{return obj.id !== object.id})
-                            setState({})
-                        }}>X</a>
-                        {object.obj}
-                    </CssSlidersWrapper>
+                            <a href={'#'} style={{float: "right"}} onClick={()=>{
+                                objects.current = objects.current.filter((obj)=>{return obj.id !== object.id})
+                                setState({})
+                            }}>X</a>
+                            {object.obj}
+                        </CssSlidersWrapper>
                     }
                 )}
             </Row>

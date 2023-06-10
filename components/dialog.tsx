@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap"
  * @param props  id: string, title: string, content: any, open: string, close: string, style: object
  * @returns 
  */
-export default function Dialog(props?){
+export default function Dialog(props){
     const {id, title, content, children, open, close, style, info} = props
 
     useEffect(()=>{//TODO: handle escape key

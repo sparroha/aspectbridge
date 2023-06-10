@@ -1,14 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import Dialog from "./dialog";
 import { Col, Container, Row } from "react-bootstrap";
+import style from "./sliders.module.css";
 
 export default function CssSlidersWrapper(props) {
     //{children}
-    const controlStyle = {
-        top: "0vh",
-        left: "0vw",
-        zIndex: 10,
-    };
     const [state, setState] = useState({});
     const styleRef = useRef({
         top: "0vh",
@@ -41,59 +37,41 @@ export default function CssSlidersWrapper(props) {
                 
             </>)
         },[])*/
-
+    const sliders = [
+        { name: 'width', min: 0, max: 100, unit: 'vw' },
+        { name: 'height', min: 0, max: 100, unit: 'vh' },
+        { name: 'left', min: 0, max: 100, unit: 'vw' },
+        { name: 'top', min: 0, max: 100, unit: 'vh' },
+        { name: 'opacity', min: 0, max: 100, unit: '%' },
+        { name: 'borderRadius', min: 0, max: 50, unit: 'px' },
+        { name: 'borderRadius', min: 0, max: 50, unit: '%' },
+    ]
+    const slidersColor = [
+        { name: 'color', min: 0, max: 100, unit: '%' },
+        { name: 'backgroundColor', min: 0, max: 100, unit: '%' },
+        { name: 'borderColor', min: 0, max: 100, unit: '%' },
+    ]
+    
     return (
         <div id={"csswrapper_"+props.id} style={{ ...props.styleRef, ...styleRef.current, position: 'absolute' }}>
             <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-                <Dialog id={"csscontrol_" + props.id} style={{...controlStyle, float: 'right' }} title={'css sliders'} open={'<>'} close={'</>'}>
+                <Dialog id={"csscontrol_" + props.id} className={style.controlStyle} title={'css sliders'} open={'<>'} close={'</>'}>
                     <Container>
-                    <Row>
-                        <Col xs={6}><label>{'width: '+styleRef.current.width+'  '}</label></Col>
-                        <Col xs={6}><input
-                            type="range"
-                            name={"width"}
-                            defaultValue={styleRef.current.width.split("vw")[0]}
-                            onChange={(e) => { console.log("width=" + e.target.value); styleRef.current.width = e.target.value + "vw"; setState({}); }}//(Number.parseInt(e.target.value)<85?e.target.value:"85") + "vw"; setState({}); }}
-                        /></Col>
-                    </Row>
-                    <Row>
-                        <Col xs={6}><label>{'height: '+styleRef.current.height+'  '}</label></Col>
-                        <Col xs={6}><input
-                            type="range"
-                            name={"height"}
-                            defaultValue={styleRef.current.height.split("vh")[0]}
-                            onChange={(e) => { console.log("height=" + e.target.value); styleRef.current.height = e.target.value + "vh"; setState({}); }}
-                        /></Col>
-                    </Row>
-                    <Row>
-                        <Col xs={6}><label>{'x: '+styleRef.current.left+'  '}</label></Col>
-                        <Col xs={6}><input
-                            type="range"
-                            name={"left"}
-                            defaultValue={styleRef.current.left.split("vw")[0]}
-                            onChange={(e) => { console.log("x=" + e.target.value); styleRef.current.left = e.target.value + "vw"; setState({}); }}
-                        /></Col>
-                    </Row>
-                    <Row>
-                        <Col xs={6}><label>{'y: '}</label>
-                        {styleRef.current.top+'  '}</Col>
-                        <Col xs={6}><input
-                            type="range"
-                            name={"top"}
-                            defaultValue={styleRef.current.top.split("vh")[0]}
-                            onChange={(e) => { console.log("y=" + e.target.value); styleRef.current.top = e.target.value + "vh"; setState({}); }}
-                        /></Col>
-                    </Row>
-                    <Row>
-                        <Col xs={6}><label>{'opacity: '}</label>
-                        {styleRef.current.opacity+'  '}</Col>
-                        <Col xs={6}><input
-                            type="range"
-                            name={"opacity"}
-                            defaultValue={styleRef.current.opacity.split("%")[0]}
-                            onChange={(e) => { console.log("opacity=" + e.target.value); styleRef.current.opacity = e.target.value + "%"; setState({}); }}
-                        /></Col>
-                    </Row>
+                        {sliders.map((slider, i) => {
+                            return <Row key={i}>
+                                <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                                </Col>
+                                <Col xs={6}><input
+                                    type="range"
+                                    min={slider.min}
+                                    max={slider.max}
+                                    name={slider.name}
+                                    defaultValue={styleRef.current[slider.name].split(slider.unit)[0]}
+                                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value + slider.unit; setState({}); }}
+                                /></Col>
+                            </Row>
+                        })}
+                    
                     <Row>
                         <Col xs={6}><label>{'color: '}</label>
                         {styleRef.current.color+'  '}</Col>
