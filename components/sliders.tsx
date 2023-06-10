@@ -56,7 +56,7 @@ export default function CssSlidersWrapper(props) {
         { name: 'borderWidth', min: 0, max: 100, unit: 'px' },
         { name: 'borderRadius', min: 0, max: 50, unit: 'px' },
         { name: 'borderRadius', min: 0, max: 50, unit: '%' },
-        { name: 'borderShadow', min: 0, max: 50},
+        { name: 'borderShadow', min: 0, max: 50, unit: 'px'},
         { name: 'fontSize', min: 0, max: 100},
     ]
     const slidersOption = [
@@ -128,14 +128,14 @@ export default function CssSlidersWrapper(props) {
 
 export function CssControler(props){
     const {sliders, slidersOption, slidersColor, styleRef, setState} = props
-    return <div id={"csscontroler_" + props.id} style={{position: 'absolute', right: '0%', top: '0%', width: '300px', borderRadius: '25px'}}>
+    return <div id={"csscontroler_" + props.id} style={{position: 'absolute', right: '0%', top: '0%', width: '300px', borderRadius: '25px', fontSize: '10px'}}>
         <div id={"csscontrolerBackground_" + props.id} className={'grey-back o4 w100 h100'} style={{position: 'absolute', borderRadius: '25px'}}></div>{/**translucent backdrop */}
-        <div id={"csscontroler_" + props.id} style={{position: 'relative'}}>
+        <div id={"csscontroler_" + props.id} style={{position: 'relative', padding: 10}}>
             {sliders.map((slider, i) => {
                 return <Row key={i} style={{zIndex: 2}}>
-                    <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                    <Col xs={6} style={{margin: 0, padding: 0}}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
                     </Col>
-                    <Col xs={6}><input
+                    <Col xs={6} style={{margin: 0, padding: 0}}><input
                         type="range"
                         min={slider.min}
                         max={slider.max}
@@ -147,9 +147,9 @@ export function CssControler(props){
             })}
             {slidersOption.map((slider, i) => {
                 return <Row key={i} style={{zIndex: 2}}>
-                    <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                    <Col xs={6} style={{margin: 0, padding: 2}}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
                     </Col>
-                    <Col xs={6}><select
+                    <Col xs={6} style={{margin: 0, padding: 2}}><select
                         name={slider.name}
                         defaultValue={styleRef.current[slider.name]}
                         onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({}); }}
@@ -160,9 +160,9 @@ export function CssControler(props){
             })}
             {slidersColor.map((slider, i) => {
                 return <Row key={i} style={{zIndex: 2}}>
-                    <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                    <Col xs={6} style={{margin: 0, padding: 2}}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
                     </Col>
-                    <Col xs={6}><input
+                    <Col xs={6} style={{margin: 0, padding: 2}}><input
                         type="color"
                         name={slider.name}
                         defaultValue={styleRef.current[slider.name]}
