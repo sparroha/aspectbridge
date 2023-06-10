@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import Dialog from "./dialog";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import style from "./sliders.module.css";
 
 export default function CssSlidersWrapper(props) {
     //{children}
+    const [controlleOpen, setControlleOpen] = useState(false)
+
+
     const [state, setState] = useState({});
     const styleRef = useRef({
         top: "0vh",
@@ -47,12 +50,12 @@ export default function CssSlidersWrapper(props) {
         { name: 'borderRadius', min: 0, max: 50, unit: '%' },
     ]
     const slidersColor = [
-        { name: 'color', min: 0, max: 100, unit: '%' },
-        { name: 'backgroundColor', min: 0, max: 100, unit: '%' },
-        { name: 'borderColor', min: 0, max: 100, unit: '%' },
+        { name: 'color' },
+        { name: 'backgroundColor' },
+        { name: 'borderColor' },
     ]
-    
-    return (
+    const q = false
+    if(q)return (
         <div id={"csswrapper_"+props.id} style={{ ...props.styleRef, ...styleRef.current, position: 'absolute' }}>
             <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
                 <Dialog id={"csscontrol_" + props.id} className={style.controlStyle} title={'css sliders'} open={'<>'} close={'</>'}>
@@ -71,31 +74,68 @@ export default function CssSlidersWrapper(props) {
                                 /></Col>
                             </Row>
                         })}
-                    
-                    <Row>
-                        <Col xs={6}><label>{'color: '}</label>
-                        {styleRef.current.color+'  '}</Col>
-                        <Col xs={6}><input
-                            type="color"
-                            name={"color"}
-                            defaultValue={styleRef.current.color}
-                            onChange={(e) => { console.log("color=" + e.target.value); styleRef.current.color = e.target.value; setState({}); }}
-                        /></Col>
-                    </Row>
-                    <Row>
-                        <Col xs={6}><label>{'background color: '}</label>
-                        {styleRef.current.backgroundColor+'  '}</Col>
-                        <Col xs={6}><input
-                            type="color"
-                            name={"backgroundColor"}
-                            defaultValue={styleRef.current.backgroundColor}
-                            onChange={(e) => { console.log("backgroundColor=" + e.target.value); styleRef.current.backgroundColor = e.target.value; setState({}); }}
-                        /></Col>
-                    </Row>
+                        {slidersColor.map((slider, i) => {
+                            return <Row key={i}>
+                                <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                                </Col>
+                                <Col xs={6}><input
+                                    type="color"
+                                    name={slider.name}
+                                    defaultValue={styleRef.current[slider.name]}
+                                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({}); }}
+                                /></Col>
+                            </Row>
+                        })}
                     </Container>
                 </Dialog>
                 {props.children}
             </div>
         </div>
-    );
+    )
+    else return <>
+        <div id={"csswrapper_"+props.id} style={{ ...props.styleRef, ...styleRef.current, position: 'absolute' }} onFocus={()=>{setControlleOpen(false)}}>
+            <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+                <div id={"csscontrol_" + props.id} className={style.controlStyle} title={'css sliders'}>
+                    <Button id={'csscontrolopen_'+props.id} onClick={
+                        ()=>{setControlleOpen(!controlleOpen)}
+                    }>{controlleOpen?'Close':'Open'}</Button>
+                </div>
+                {props.children}
+            </div>
+        </div>
+        {controlleOpen?<CssControler sliders={sliders} slidersColor={slidersColor} styleRef={styleRef} setState={setState}/>:null}
+    </>
+
+}
+
+export function CssControler(props){
+    const {sliders, slidersColor, styleRef, setState} = props
+    return <div style={{position: 'absolute', right: '0%', top: '0%', width: '200px'}}>
+        {sliders.map((slider, i) => {
+            return <Row key={i}>
+                <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                </Col>
+                <Col xs={6}><input
+                    type="range"
+                    min={slider.min}
+                    max={slider.max}
+                    name={slider.name}
+                    defaultValue={styleRef.current[slider.name].split(slider.unit)[0]}
+                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value + slider.unit; setState({}); }}
+                /></Col>
+            </Row>
+        })}
+        {slidersColor.map((slider, i) => {
+            return <Row key={i}>
+                <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                </Col>
+                <Col xs={6}><input
+                    type="color"
+                    name={slider.name}
+                    defaultValue={styleRef.current[slider.name]}
+                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({}); }}
+                /></Col>
+            </Row>
+        })}
+    </div>
 }
