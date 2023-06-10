@@ -5,7 +5,8 @@ import style from "./sliders.module.css";
 
 export default function CssSlidersWrapper(props) {
     //{children}
-    const [controlleOpen, setControlleOpen] = useState(false)
+    const [controlerOpen, setControlerOpen] = useState(false)
+    const [controlerTarget, setControlerTarget] = useState(null)
 
 
     const [state, setState] = useState({});
@@ -41,6 +42,7 @@ export default function CssSlidersWrapper(props) {
             </>)
         },[])*/
     const sliders = [
+        { name: 'zIndex', min: 0, max: 10},
         { name: 'width', min: 0, max: 100, unit: 'vw' },
         { name: 'height', min: 0, max: 100, unit: 'vh' },
         { name: 'left', min: 0, max: 100, unit: 'vw' },
@@ -93,49 +95,52 @@ export default function CssSlidersWrapper(props) {
         </div>
     )
     else return <>
-        <div id={"csswrapper_"+props.id} style={{ ...props.styleRef, ...styleRef.current, position: 'absolute' }} onFocus={()=>{setControlleOpen(false)}}>
+        <div id={"csswrapper_"+props.id} style={{ ...props.styleRef, ...styleRef.current, position: 'absolute' }}>
             <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-                <div id={"csscontrol_" + props.id} className={style.controlStyle} title={'css sliders'}>
-                    <Button id={'csscontrolopen_'+props.id} onClick={
-                        ()=>{setControlleOpen(!controlleOpen)}
-                    }>{controlleOpen?'Close':'Open'}</Button>
+                <div id={"csscontrolerbutton_" + props.id} className={style.controlStyle} title={'css sliders'}>
+                    <Button id={'csscontroleropen_'+props.id} onClick={
+                        ()=>{setControlerOpen(!controlerOpen)}
+                    }>{controlerOpen?'Close':'Open'}</Button>
                 </div>
                 {props.children}
             </div>
         </div>
-        {controlleOpen?<CssControler sliders={sliders} slidersColor={slidersColor} styleRef={styleRef} setState={setState}/>:null}
+        {controlerOpen?<CssControler sliders={sliders} slidersColor={slidersColor} styleRef={styleRef} setState={setState}/>:null}
     </>
 
 }
 
 export function CssControler(props){
     const {sliders, slidersColor, styleRef, setState} = props
-    return <div style={{position: 'absolute', right: '0%', top: '0%', width: '200px'}}>
-        {sliders.map((slider, i) => {
-            return <Row key={i}>
-                <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
-                </Col>
-                <Col xs={6}><input
-                    type="range"
-                    min={slider.min}
-                    max={slider.max}
-                    name={slider.name}
-                    defaultValue={styleRef.current[slider.name].split(slider.unit)[0]}
-                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value + slider.unit; setState({}); }}
-                /></Col>
-            </Row>
-        })}
-        {slidersColor.map((slider, i) => {
-            return <Row key={i}>
-                <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
-                </Col>
-                <Col xs={6}><input
-                    type="color"
-                    name={slider.name}
-                    defaultValue={styleRef.current[slider.name]}
-                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({}); }}
-                /></Col>
-            </Row>
-        })}
+    return <div id={"csscontroler_" + props.id} style={{position: 'absolute', right: '0%', top: '0%', width: '300px', borderRadius: '25px'}}>
+        <div id={"csscontrolerBackground_" + props.id} className={'grey-back o4 w100 h100'} style={{position: 'absolute', borderRadius: '25px'}}></div>{/**translucent backdrop */}
+        <div id={"csscontroler_" + props.id} style={{position: 'relative'}}>
+            {sliders.map((slider, i) => {
+                return <Row key={i} style={{zIndex: 2}}>
+                    <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                    </Col>
+                    <Col xs={6}><input
+                        type="range"
+                        min={slider.min}
+                        max={slider.max}
+                        name={slider.name}
+                        defaultValue={slider.unit?styleRef.current[slider.name].split(slider.unit)[0]:styleRef.current[slider.name]}
+                        onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = slider.unit?(e.target.value + slider.unit):e.target.value; setState({}); }}
+                    /></Col>
+                </Row>
+            })}
+            {slidersColor.map((slider, i) => {
+                return <Row key={i} style={{zIndex: 2}}>
+                    <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                    </Col>
+                    <Col xs={6}><input
+                        type="color"
+                        name={slider.name}
+                        defaultValue={styleRef.current[slider.name]}
+                        onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({}); }}
+                    /></Col>
+                </Row>
+            })}
+        </div>
     </div>
 }
