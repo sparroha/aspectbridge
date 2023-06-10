@@ -51,12 +51,12 @@ export default function CssSlidersWrapper(props) {
         { name: 'left', min: 0, max: 100, unit: 'vw' },
         { name: 'top', min: 0, max: 100, unit: 'vh' },
         { name: 'opacity', min: 0, max: 100, unit: '%' },
-        { name: 'margin', min: 0, max: 100, unit: 'px' },
-        { name: 'padding', min: 0, max: 100, unit: 'px' },
+        { name: 'margin', min: 0, max: 100},
+        { name: 'padding', min: 0, max: 100},
         { name: 'borderWidth', min: 0, max: 100, unit: 'px' },
         { name: 'borderRadius', min: 0, max: 50, unit: 'px' },
         { name: 'borderRadius', min: 0, max: 50, unit: '%' },
-        { name: 'borderShadow', min: 0, max: 50, unit: 'px'},
+        { name: 'borderShadow', min: 0, max: 50},
         { name: 'fontSize', min: 0, max: 100},
     ]
     const slidersOption = [
