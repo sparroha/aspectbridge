@@ -3,44 +3,53 @@
 //    getOpponentGameState from server
 
 
-type Deck = {
-    deckid: string,
+export type Deck = {
+    name: string,
     cards: Card[]
 }
 
-type Card = {
+export type Card = {
     name: string,
-    actions: Action[]
-    token: boolean,
+    type: string,
+    subtype: string,
+    text: string,
+    cost: number,
+    power: number,
+    toughness: number,
+    loyalty?: number,
+    color: string,
+    image: string,
+    actions?: Action[]
+    token?: boolean,
 }
 
-type Action = {
+export type Action = {
     name: string,
     fname: string,
     params: string[]
 }
 
 //can not stringify
-type ActionHandler = {
+export type ActionHandler = {
     name: string,
     handler: Function
 }
 
-type GameState = {
+export type GameState = {
     playerid: string,
     active: boolean,
     hand: Card[],
     deck: Card[],
     decks: Deck[],
 }
-type FunctionStack = Function[]
+export type FunctionStack = Function[]
 
 //gameActive
     //SWR from opponent
     //fetch POST player
 
 
-const actions: Action[] = [
+export const actions: Action[] = [
     {name: "draw", fname: '', params: []},
     {name: "token", fname: '', params: ["1"]},
 ]

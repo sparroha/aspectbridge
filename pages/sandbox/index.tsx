@@ -1,12 +1,32 @@
 import { useEffect, useReducer, useState } from "react"
 import { Col, Container, Row } from "react-bootstrap"
-import { actionHAndlers } from "./cardgame"
+import { Deck, Card, actionHAndlers } from "./cardgame"
+import useLog from "../../components/conlog"
 
 
 export default function Sandbox(props) {
+    const [cardLib, setCardLib] = useState([])
+    const [deckLib, setDeckLib] = useState([])
+    //useLog('INIT: '+cards)
+    const priest: Card = {
+        name: 'priest',
+        type: 'hero',
+        subtype: 'priest',
+        cost: 0,
+        power: 0,
+        toughness: 30,
+        text: 'priest hero',
+        color: 'gray',
+        image: 'priest.png'
+    }
     const gamestructure = {
         phase: 'draw',
-        deckPlayer: [1,2,3,4,5,6,7,8,9],
+        deckPlayer: deckLib[0]?.cards, /*[
+            'priest','mage','warrior','paladin','druid',
+            'shaman','rogue','hunter','warlock','dragon',
+            'elemental','mech', 'murloc','pirate','totem',
+            'hero','hero_power','minion','clue','quest',
+        ],*/
         deckOpponent: [],
         handPlayer: [],
         handOpponent: [],
@@ -35,7 +55,12 @@ export default function Sandbox(props) {
     }
 
     const [phase, setPhase] = useState('upkeep')//upkeep, draw, main, combat, main2, end
-    const [deckPlayer, setDeckPlayer] = useState([1,2,3,4,5,6,7,8,9])
+    const [deckPlayer, setDeckPlayer] = useState(deckLib[0]?.cards, /*[
+        'priest','mage','warrior','paladin','druid',
+        'shaman','rogue','hunter','warlock','dragon',
+        'elemental','mech', 'murloc','pirate','totem',
+        'hero','hero_power','minion','clue','quest',
+    ],*/)
     const [deckOpponent, setDeckOpponent] = useState([])
     const [handPlayer, setHandPlayer] = useState([])
     const [handOpponent, setHandOpponent] = useState([])
@@ -47,11 +72,36 @@ export default function Sandbox(props) {
     const [statsOpponent, setStatsOpponent] = useState([])
     const [gameState, setGameState] = useState('')
 
-    useEffect(() => {
+    //INITIALIZE DECKS
+    useEffect(() => {console.log('use INITIALIZE DECKS')
+        if(cardLib.length == 0){
+            const cards: Promise<Card[]> = fetch('/api/sandbox/cards').then(res => res.json()).then(data => {
+                console.log('cards fetched: '+JSON.stringify(JSON.parse(data.cards)[0]))
+                setCardLib(JSON.parse(data.cards))
+                return JSON.parse(data.cards)
+            })
+            
+        }else{
+            const dummyDeck: Deck = {
+                name: 'dummy',
+                cards: [...cardLib]
+            }
+            setDeckLib([dummyDeck])
+            setDeckPlayer([...dummyDeck.cards])
+        }
+        //console.log('deckPlayer: '+JSON.stringify(deckPlayer))
+    }, [cardLib])
+
+    //SEQUENCE GAMEPLAY
+    useEffect(() => {console.log('use SEQUENCE GAMEPLAY')
         switch (phase) {
+            case 'reset':
+                //reset game
+                setTimeout(() => {setPhase('upkeep')}, 2000)
+                break;
             case 'upkeep':
                 //foreach card in play, do upkeep
-                setTimeout(() => {setPhase('draw')}, 2000)
+                setTimeout(() => {setPhase(deckPlayer?'draw':'reset')}, 1000)
                 break;
             case 'draw':
                 if(deckPlayer.length == 0) alert('no cards in deck')
@@ -85,16 +135,35 @@ export default function Sandbox(props) {
                 break;
         }
     },[phase])
+
+    //RENDER FUNCTIONS
+    function Card({card, index, location, className}){
+        return <button className={'card_design '+className} style={{backgroundImage: `url(${card.image})`}} onClick={() => {
+            if(phase != 'main' && phase != 'main2' && phase != 'combat') return false
+                //play card from hand
+                if(location == handPlayer){ //dispatch({type: 'play', payload: index})
+                    setFieldPlayer(fieldPlayer.concat(location[index]))
+                    setHandPlayer(location.slice(0, index).concat(location.slice(index + 1)))
+                }else if(location == fieldPlayer){ //dispatch({type: 'discard', payload: index})
+                    if(phase != 'main' && phase != 'main2') return false
+                    setDiscardPlayer(discardPlayer.concat(location[index]))
+                    setFieldPlayer(location.slice(0, index).concat(location.slice(index + 1)))
+                }
+            }}>{card.name}</button>
+    }
     function HandPlayer({hand}) {
         return <div id={'player_hand'} className={'hand'}>{hand.map((card, index) => {
-            return <button className={'card_design card_inhand'} key={index} onClick={() => {
-                if(phase != 'main' && phase != 'main2' && phase != 'combat') return false
-                //play card
-                    setFieldPlayer(fieldPlayer.concat(hand[index]))
-                    setHandPlayer(hand.slice(0, index).concat(hand.slice(index + 1)))
-                }}>play card: {card}</button>
+            return <Card key={index} card={card} index={index} location={hand} className={'card_design card_inhand'} />
         })}</div>
     }
+    function FieldPlayer({field}){
+        return <div id={'player_field_active'} className={'player_field'}>
+        {fieldPlayer.map((card, index) => {
+            return <Card key={index} card={card} index={index} location={field} className={'card_design card_inplay'} />
+        })}</div>
+    }
+
+
     return <Container id={'card_game'}>
 
         {/** OPPONENT SIDE */
@@ -142,28 +211,15 @@ export default function Sandbox(props) {
             {/** PLAYER Discard Pile */}
             <Col xs={4} md={2} id={'player_discard'}>
                 <button className={'discard'} onClick={() => {
-                    return false
-                    if(phase != 'main' && phase != 'main2' && phase != 'combat') return false
+                    if(phase != 'main2') return false
                     //shuffle discard into deck
                     setDeckPlayer(deckPlayer.concat(discardPlayer))
                     setDiscardPlayer([])
-                }}>Discard: shuffle discard into deck</button>
+                }}>Discard: {phase == 'main2' && deckPlayer.length ==0 ? ' shuffle discard into deck':''}</button>
         </Col>
             {/** PLAYER Field */}
             <Col xs={4} md={8} id={'player_field'}>
-                <Row id={'player_field_active'}>
-                    {fieldPlayer.map((card, index) => {
-                        return <Col id={'card_design player_card_active'} key={index}>
-                            <button className={'card_design card_inplay'} onClick={() => {
-                                if(phase != 'main' && phase != 'main2') return false
-                                //discard card
-                                setDiscardPlayer(discardPlayer.concat(fieldPlayer[index]))
-                                setFieldPlayer(fieldPlayer.slice(0, index).concat(fieldPlayer.slice(index + 1)))
-                            }}>discard: {card}</button>
-                        </Col>
-                    }
-                    )}
-                </Row>
+                <FieldPlayer field={fieldPlayer}/>
                 <HandPlayer hand={handPlayer}/>
             </Col>
             {/** PLAYER Deck */}
