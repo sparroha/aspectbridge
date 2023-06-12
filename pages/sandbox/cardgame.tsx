@@ -2,6 +2,7 @@
 //    getPlayerGameState from server
 //    getOpponentGameState from server
 
+export default function D(){return<>D</>}
 
 export type Deck = {
     name: string,
