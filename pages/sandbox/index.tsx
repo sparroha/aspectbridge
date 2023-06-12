@@ -1,8 +1,40 @@
-import { useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import { Col, Container, Row } from "react-bootstrap"
+import { actionHAndlers } from "./cardgame"
 
 
 export default function Sandbox(props) {
+    const gamestructure = {
+        phase: 'draw',
+        deckPlayer: [1,2,3,4,5,6,7,8,9],
+        deckOpponent: [],
+        handPlayer: [],
+        handOpponent: [],
+        fieldPlayer: [],
+        fieldOpponent: [],
+        discardPlayer: [],
+        discardOpponent: [],
+        statsPlayer: [],
+        statsOpponent: [],
+        gameState: ''
+    }
+    const [state, dispatch] = useReducer(reducer, gamestructure)
+    function reducer(state, action) {
+        switch (action.type) {
+            case 'draw':
+                return {...state, handPlayer: state.handPlayer.concat(state.deckPlayer[0]), deckPlayer: state.deckPlayer.slice(1)}
+            case 'play':
+                return {...state, fieldPlayer: state.fieldPlayer.concat(state.handPlayer[action.payload]), handPlayer: state.handPlayer.slice(0, action.payload).concat(state.handPlayer.slice(action.payload + 1))}
+            case 'discard':
+                return {...state, discardPlayer: state.discardPlayer.concat(state.fieldPlayer[action.payload]), fieldPlayer: state.fieldPlayer.slice(0, action.payload).concat(state.fieldPlayer.slice(action.payload + 1))}
+            case 'shuffle':
+                return {...state, deckPlayer: state.deckPlayer.concat(state.discardPlayer), discardPlayer: []}
+            default:
+                return state
+        }
+    }
+
+    const [phase, setPhase] = useState('upkeep')//upkeep, draw, main, combat, main2, end
     const [deckPlayer, setDeckPlayer] = useState([1,2,3,4,5,6,7,8,9])
     const [deckOpponent, setDeckOpponent] = useState([])
     const [handPlayer, setHandPlayer] = useState([])
@@ -15,6 +47,41 @@ export default function Sandbox(props) {
     const [statsOpponent, setStatsOpponent] = useState([])
     const [gameState, setGameState] = useState('')
 
+    useEffect(() => {
+        switch (phase) {
+            case 'upkeep':
+                //foreach card in play, do upkeep
+                setTimeout(() => {setPhase('draw')}, 2000)
+                break;
+            case 'draw':
+                setHandPlayer(handPlayer.concat(deckPlayer[0]))
+                setDeckPlayer(deckPlayer.slice(1))
+                setTimeout(() => {setPhase('main')}, 2000)
+                break;
+            case 'main':
+                //setTimeout(() => {}, 5000)
+                //allow player hand actions
+                break;
+            case 'combat':
+                //setTimeout(() => {}, 5000)
+                //allow player field actions
+                break;
+            case 'main2':
+                //setTimeout(() => {}, 5000)
+                //allow player hand actions
+                break;
+            case 'end':
+                //foreach card in play, do end
+                setTimeout(() => {setPhase('opponent')}, 2000)
+                break;
+            case 'opponent':
+                //await opponent actions
+                setTimeout(() => {setPhase('upkeep')}, 2000)
+                break;
+            default:
+                break;
+        }
+    },[phase])
     function HandPlayer({hand}) {
         return <div id={'player_hand'} className={'hand'}>{hand.map((card, index) => {
             return <button className={'card_inhand'} key={index} onClick={() => {
@@ -25,15 +92,44 @@ export default function Sandbox(props) {
         })}</div>
     }
     return <Container id={'card_game'}>
-        <Row id={'opponent'} style={{height: '40%'}}>
+        {/** OPPONENT SIDE */}
+        <Row id={'opponent'} style={{height: '35%'}}>
             <Col xs={4} md={2} id={'opponent_deck'}></Col>
             <Col xs={4} md={8} id={'opponent_field'}></Col>
             <Col xs={4} md={2}  id={'opponent_discard'}></Col>
         </Row>
-        <Row id={'medium'} style={{height: '5%'}}>
-
+        {/** MEDIAN */}
+        <Row id={'median'} style={{height: '10%'}}>
+            <Col>
+                {phase == 'main' || phase == 'main2' || phase == 'combat' ?
+                    <button onClick={() => {
+                        setPhase((phase)=>{
+                            switch (phase) {
+                                case 'upkeep':
+                                    return 'draw'
+                                case 'draw':
+                                    return 'main'
+                                case 'main':
+                                    return 'combat'
+                                case 'combat':
+                                    return 'main2'
+                                case 'main2':
+                                    return 'end'
+                                case 'end':
+                                    return 'opponent'
+                                case 'opponent':
+                                    return 'upkeep'
+                                default:
+                                    return 'upkeep'
+                            }
+                        })
+                    }}><h4>{phase}</h4>: Next Phase</button>
+                :<h4>{phase}</h4>}
+            </Col>
         </Row>
+        {/** PLAYER SIDE */}
         <Row id={'player'} style={{height: '55%'}}>
+            {/** PLAYER Discard Pile */}
             <Col xs={4} md={2} id={'player_discard'}>
                 <button className={'card'} onClick={() => {
                     //shuffle discard into deck
@@ -41,6 +137,7 @@ export default function Sandbox(props) {
                     setDiscardPlayer([])
                 }}>Discard: shuffle discard into deck</button>
             </Col>
+            {/** PLAYER Field */}
             <Col xs={4} md={8} id={'player_field'}>
                 <Row id={'player_field_active'}>
                     {fieldPlayer.map((card, index) => {
@@ -56,6 +153,7 @@ export default function Sandbox(props) {
                 </Row>
                 <HandPlayer hand={handPlayer}/>
             </Col>
+            {/** PLAYER Deck */}
             <Col xs={4} md={2} id={'player_deck'}>
                 <button className={'card'} onClick={() => {
                     //draw card
@@ -63,6 +161,9 @@ export default function Sandbox(props) {
                     setHandPlayer(handPlayer.concat(deckPlayer[0]))
                     setDeckPlayer(deckPlayer.slice(1))
                 }}>Draw</button>
+                <button onClick={() => {
+                    actionHAndlers.find(action => action.name == 'maketoken').handler(setFieldPlayer, 40)
+                }}>Token</button>
             </Col>
 
         </Row>
