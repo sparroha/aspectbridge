@@ -54,8 +54,11 @@ export default function Sandbox(props) {
                 setTimeout(() => {setPhase('draw')}, 2000)
                 break;
             case 'draw':
-                setHandPlayer(handPlayer.concat(deckPlayer[0]))
-                setDeckPlayer(deckPlayer.slice(1))
+                if(deckPlayer.length == 0) alert('no cards in deck')
+                else{
+                    setHandPlayer(handPlayer.concat(deckPlayer[0]))
+                    setDeckPlayer(deckPlayer.slice(1))
+                }
                 setTimeout(() => {setPhase('main')}, 2000)
                 break;
             case 'main':
@@ -84,7 +87,8 @@ export default function Sandbox(props) {
     },[phase])
     function HandPlayer({hand}) {
         return <div id={'player_hand'} className={'hand'}>{hand.map((card, index) => {
-            return <button className={'card_inhand'} key={index} onClick={() => {
+            return <button className={'card_design card_inhand'} key={index} onClick={() => {
+                if(phase != 'main' && phase != 'main2' && phase != 'combat') return false
                 //play card
                     setFieldPlayer(fieldPlayer.concat(hand[index]))
                     setHandPlayer(hand.slice(0, index).concat(hand.slice(index + 1)))
@@ -92,17 +96,21 @@ export default function Sandbox(props) {
         })}</div>
     }
     return <Container id={'card_game'}>
-        {/** OPPONENT SIDE */}
+
+        {/** OPPONENT SIDE */
+        }
         <Row id={'opponent'} style={{height: '35%'}}>
             <Col xs={4} md={2} id={'opponent_deck'}></Col>
             <Col xs={4} md={8} id={'opponent_field'}></Col>
             <Col xs={4} md={2}  id={'opponent_discard'}></Col>
         </Row>
-        {/** MEDIAN */}
+
+        {/** MEDIAN */
+        }
         <Row id={'median'} style={{height: '10%'}}>
             <Col>
                 {phase == 'main' || phase == 'main2' || phase == 'combat' ?
-                    <button onClick={() => {
+                    <button className={'game_phase_button'} onClick={() => {
                         setPhase((phase)=>{
                             switch (phase) {
                                 case 'upkeep':
@@ -127,22 +135,27 @@ export default function Sandbox(props) {
                 :<h4>{phase}</h4>}
             </Col>
         </Row>
-        {/** PLAYER SIDE */}
+
+        {/** PLAYER SIDE */
+        }
         <Row id={'player'} style={{height: '55%'}}>
             {/** PLAYER Discard Pile */}
             <Col xs={4} md={2} id={'player_discard'}>
-                <button className={'card'} onClick={() => {
+                <button className={'discard'} onClick={() => {
+                    return false
+                    if(phase != 'main' && phase != 'main2' && phase != 'combat') return false
                     //shuffle discard into deck
                     setDeckPlayer(deckPlayer.concat(discardPlayer))
                     setDiscardPlayer([])
                 }}>Discard: shuffle discard into deck</button>
-            </Col>
+        </Col>
             {/** PLAYER Field */}
             <Col xs={4} md={8} id={'player_field'}>
                 <Row id={'player_field_active'}>
                     {fieldPlayer.map((card, index) => {
-                        return <Col id={'player_card_active'} key={index}>
-                            <button className={'card'} onClick={() => {
+                        return <Col id={'card_design player_card_active'} key={index}>
+                            <button className={'card_design card_inplay'} onClick={() => {
+                                if(phase != 'main' && phase != 'main2') return false
                                 //discard card
                                 setDiscardPlayer(discardPlayer.concat(fieldPlayer[index]))
                                 setFieldPlayer(fieldPlayer.slice(0, index).concat(fieldPlayer.slice(index + 1)))
@@ -155,7 +168,7 @@ export default function Sandbox(props) {
             </Col>
             {/** PLAYER Deck */}
             <Col xs={4} md={2} id={'player_deck'}>
-                <button className={'card'} onClick={() => {
+                <button className={'deck'} onClick={() => {
                     //draw card
                     if (deckPlayer.length == 0) return false
                     setHandPlayer(handPlayer.concat(deckPlayer[0]))

@@ -4,12 +4,12 @@
 }
 #card_game, #player, #opponent, #player_field, #player_field_active,
 #opponent_field, #opponent_field_active, #player_hand,
-#opponent_hand, .card, #player_card_active, #player_card_hand,
+#opponent_hand, .card, .player_card_active, #player_card_hand,
 #opponent_card_active, #opponent_card_hand{
     justify-content: center;
     text-align: center;
 }
-#player_field, #player_field_active, #opponent_field, #opponent_field_active, #player_hand, #opponent_hand{
+#player_field, #opponent_field, #opponent_field_active, #player_hand, #opponent_hand{
     border: 1px solid black;
 }
 #player_field, #opponent_field{
@@ -38,32 +38,28 @@
     position: absolute;
     top: 0%;
 }
-.card{
-    width: 25px;
-    height: 37px;
+.card_design{
     border: 1px solid black;
     background-color: white;
     margin: 10px;
     font-size: 20px;
     font-weight: bold;
     color: black;
+}
+.card_inplay{
+    width: 25px;
+    height: 37px;
     transition: width 0.5s, height 0.5s;
 }
-.card_inhand{
+.card_inhand, .deck, .discard{
     position: relative;
     float: left;
     justify-content: center;
     text-align: center;
     width: 100px;
     height: 150px;
-    border: 1px solid black;
-    background-color: white;
-    margin: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
 }
-.card:hover{
+.card_inplay:hover{
     width: 100px;
     height: 150px;
     cursor: pointer;
@@ -74,4 +70,10 @@
     position: absolute;
     justify-content: center;
     text-align: center;
+}
+
+.game_phase_button{
+    border-radius: 10px;
+    border-style: outset;
+    border-color: gray;
 }
