@@ -23,13 +23,13 @@ export default function useRegister(registry: string, reg: any){
         if(registryLoaded) setDB(registry, register.current)
     },[register.current])
     //END UPDATE
-    
+
     return [register.current, setRegister]
 }
 
 //updates database with current register ref
 export async function setDB(name: string, data: any){
-    await fetch(`http://localhost:3000/api/registry/${name}`, {
+    await fetch(`/api/registry/${name}`, {
         method: 'POST',
         body: JSON.stringify({
             registry_data: data
@@ -38,7 +38,7 @@ export async function setDB(name: string, data: any){
 }
 
 export async function getDB(name: string){
-    return fetch(`http://localhost:3000/api/registry/${name}`)
+    return fetch(`/api/registry/${name}`)
     .then(res=>{
         console.log('fetch res: '+res)
         return res.json()
