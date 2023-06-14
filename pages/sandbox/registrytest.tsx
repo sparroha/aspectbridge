@@ -1,11 +1,12 @@
 import useRegister from "../../lib/util/registry"
 
 export default function Registry(props){
-    const [register, setRegister] = useRegister('test', true)
+    const [test, setTest] = useRegister('test', 'off')
 
     return <>
-        <div id={'registry'}>{register}</div>
-        <button onClick={()=>{setRegister(!register)}}>Toggle</button>
+        <div id={'test'}>{test}</div>
+        <button onClick={()=>{setTest(test=='off'?'on':'off')}}>Toggle</button>
+
     </>
 
 }
