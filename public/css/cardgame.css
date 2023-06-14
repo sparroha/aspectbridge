@@ -19,26 +19,17 @@
     justify-content: center;
     text-align: center;
 }
-#player_field_active{
+/*#player_field_active, #opponent_hand{
     top: 0%;
+}*/
+#opponent{
+    translate: rotate(180deg);
 }
-#player_hand {
+#opponent_field_active, #player_hand, #player_field_active, #opponent_hand{
     bottom: 0%;
-}
-#opponent_field_active{
-    bottom: 0%;
-}
-#player_hand #player_field_active{
     position: absolute;
     justify-content: center;
     text-align: center;
-}
-#opponent_field_active{
-    bottom: 0%;
-}
-#opponent_hand{
-    position: absolute;
-    top: 0%;
 }
 .card_design{
     border: 1px solid black;

@@ -169,9 +169,13 @@ export default function Sandbox(props) {
         {/** OPPONENT SIDE */
         }
         <Row id={'opponent'} style={{height: '35%'}}>
-            <Col xs={4} md={2} id={'opponent_deck'}></Col>
-            <Col xs={4} md={8} id={'opponent_field'}></Col>
-            <Col xs={4} md={2}  id={'opponent_discard'}></Col>
+            <Col xs={4} md={2} id={'opponent_deck'}>
+                <div className={'deck'}>{deckOpponent.length}</div>
+            </Col>
+            <Col xs={4} md={8} id={'opponent_field'}>Opponent</Col>
+            <Col xs={4} md={2}  id={'opponent_discard'}>
+                <div className={'discard'}>{discardOpponent.length}</div>
+            </Col>
         </Row>
 
         {/** MEDIAN */
