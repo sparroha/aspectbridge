@@ -5,13 +5,12 @@ export default async function registry(req, res) {
 	const { registry_data } = req.body?JSON.parse(req.body):0 //DATA: the data to be stored in the registry || the command to run on registry
     const reset = false //(req.query.reset == 'resetregistries') //RESET: if true, reset the registry
 	const method = req.method
-    //require NAME for reference
-    if (!registry) res.status(400).json({alert: 'Registry name required by dynamic rout'})
+	
 	if (method === 'POST') {try{
         switch (registry_data) {
             case 'delete':
                 await sql`DELETE FROM aspect_registry_ WHERE name = ${registry};`
-                res.status(200).json({ alert: 'user deleted' })
+                res.status(200).json({ alert: 'register deleted' })
                 break
             default: //aka update registry
 				//if(!registry_data) break

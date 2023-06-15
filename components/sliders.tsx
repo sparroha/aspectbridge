@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Dialog from "./dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import style from "./sliders.module.css";
-import useRegister from "../lib/util/registry";
+import useRegister, { getDB } from "../lib/util/registry";
 
 // props: style={object.style} setStyle={setStyle} id={'row_'+object.id}}
 export default function CssSlidersWrapper(props) {
@@ -34,26 +34,35 @@ export default function CssSlidersWrapper(props) {
         ...props.style
     })
 
-    
+    //TODO:: FIX PLS
     //SAVE LOAD DATA
-    const [styletest, setStyletest] = useRegister('styletest'+props.id, styleRef.current)
+    const [styletest, setStyletest] = useRegister('csswrapper_'+props.id, styleRef.current)
     //load state from db once
     useEffect(()=>{
+        getDB('csswrapper_'+props.id).then(data=>{
+            console.log('fetch data for '+'csswrapper_'+props.id+': '+JSON.stringify(data))
+            setStyletest(data)
+            console.log('fetch data for register.current: '+JSON.stringify(styletest))
+            setRegistryLoaded(true)
+        })
         if(!registryLoaded){
+            console.log('Loading Data for csswrapper_'+props.id+'...')
+            console.log('LOAD DATA: '+styletest)
             console.log('LOAD DATA: '+JSON.stringify(styletest))
             styleRef.current = styletest
-            props.setStyle(props.id, styleRef.current)
+            console.log('LOAD DATA styleRef.current: '+JSON.stringify(styleRef.current))
+            props.setStyle('csswrapper_'+props.id, styleRef.current)
             setRegistryLoaded(true)
             setState({})
         }
     },[])
-
+    
     /**CONFIRMED */
     useEffect(() => {
         if(registryLoaded) {
-            console.log('SAVE DATA')
+            console.log('SAVE DATA: '+JSON.stringify(styleRef.current))
             setStyletest(styleRef.current)
-            props.setStyle(props.id, {...styleRef.current})
+            props.setStyle('csswrapper_'+props.id, styleRef.current)
             //console.log(props.id+" css sliders wrapper style updated: "+styleRef.current)
         }
     }, [state])

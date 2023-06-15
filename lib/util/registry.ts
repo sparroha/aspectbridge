@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export default function useRegister(registry: string, reg: any){
     const [,setState] = useState({})//updates state for rerender of refs
     const register: {current: any} = useRef(reg || 0)//initialize register
-    const setRegister = (reg)=>{register.current = reg; setState({})}//register setter and render function
+    const setRegister = (rgs)=>{register.current = rgs; setState({})}//register setter and render function
     const [registryLoaded, setRegistryLoaded] = useState(false)
     
     //INIT
@@ -11,7 +11,7 @@ export default function useRegister(registry: string, reg: any){
     async function loadDataOnce(registry){
         return getDB(registry).then(data=>{
             console.log('fetch data for '+registry+': '+JSON.stringify(data))
-            register.current = data
+            setRegister(data)
             console.log('fetch data for register.current: '+JSON.stringify(register.current))
             setRegistryLoaded(true)
         })
