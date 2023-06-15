@@ -10,8 +10,9 @@ export default function useRegister(registry: string, reg: any){
     //initialize register from database
     async function loadDataOnce(registry){
         return getDB(registry).then(data=>{
-            console.log('fetch data: '+JSON.stringify(data))
+            console.log('fetch data for '+registry+': '+JSON.stringify(data))
             register.current = data
+            console.log('fetch data for register.current: '+JSON.stringify(register.current))
             setRegistryLoaded(true)
         })
     }

@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import Dialog from "./dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import style from "./sliders.module.css";
+import useRegister from "../lib/util/registry";
 
+// props: style={object.style} setStyle={setStyle} id={'row_'+object.id}}
 export default function CssSlidersWrapper(props) {
     //{children}
+    const [registryLoaded, setRegistryLoaded] = useState(false)
     const [controlerOpen, setControlerOpen] = useState(false)
     const [controlerTarget, setControlerTarget] = useState(null)
-
-
     const [state, setState] = useState({});
     const styleRef = useRef({
         top: "0vh",
@@ -33,10 +34,30 @@ export default function CssSlidersWrapper(props) {
         ...props.style
     })
 
+    
+    //SAVE LOAD DATA
+    const [styletest, setStyletest] = useRegister('styletest'+props.id, styleRef.current)
+    //load state from db once
+    useEffect(()=>{
+        if(!registryLoaded){
+            console.log('LOAD DATA: '+JSON.stringify(styletest))
+            styleRef.current = styletest
+            props.setStyle(props.id, styleRef.current)
+            setRegistryLoaded(true)
+            setState({})
+        }
+    },[])
+
+    /**CONFIRMED */
     useEffect(() => {
-        props.setStyle(props.id, {...styleRef.current})
-        console.log(props.id+" css sliders wrapper style updated")
+        if(registryLoaded) {
+            console.log('SAVE DATA')
+            setStyletest(styleRef.current)
+            props.setStyle(props.id, {...styleRef.current})
+            //console.log(props.id+" css sliders wrapper style updated: "+styleRef.current)
+        }
     }, [state])
+    //END SAVE LOAD DATA
 
     /*const [content, setContent] = useState(<></>)
         useEffect(()=>{
