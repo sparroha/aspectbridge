@@ -1,18 +1,22 @@
 import { useEffect, useRef, useState } from "react";
+import useLog from "../../components/conlog";
 
 export default function useRegister(registry: string, reg: any){
+    useLog('@useRegister://REGISTRY_NAME: '+registry+' :: REGISTRY: '+JSON.stringify(reg))
     const [,setState] = useState({})//updates state for rerender of refs
+    const [dataChange, setDataChanged] = useState(false)
     const register: {current: any} = useRef(reg || 0)//initialize register
-    const setRegister = (rgs)=>{register.current = rgs; setState({})}//register setter and render function
+    const setRegister = (rgs)=>{if (rgs !== register.current) {register.current = rgs; setDataChanged(true)}}//register setter and render function
     const [registryLoaded, setRegistryLoaded] = useState(false)
+    useLog('@useRegister://REGISTER: '+JSON.stringify(register.current)+' :: LOADED: '+registryLoaded)
     
     //INIT
     //initialize register from database
     async function loadDataOnce(registry){
         return getDB(registry).then(data=>{
-            console.log('fetch data for '+registry+': '+JSON.stringify(data))
+            console.log('@useRegister.loadDataOnce://fetch data for '+registry+': '+JSON.stringify(data))
             setRegister(data)
-            console.log('fetch data for register.current: '+JSON.stringify(register.current))
+            console.log('@useRegister.loadDataOnce://fetch data for register.current: '+JSON.stringify(register.current))
             setRegistryLoaded(true)
         })
     }
@@ -21,8 +25,8 @@ export default function useRegister(registry: string, reg: any){
 
     //UPDATE ONCHANGE
     useEffect(()=>{
-        if(registryLoaded) setDB(registry, register.current)
-    },[register.current])
+        if(registryLoaded && dataChange) setDB(registry, register.current)
+    },[register.current, dataChange])
     //END UPDATE
 
     return [register.current, setRegister]
@@ -41,7 +45,7 @@ export async function setDB(name: string, data: any){
 export async function getDB(name: string){
     return fetch(`/api/registry/${name}`)
     .then(res=>{
-        console.log('fetch res: '+res)
+        console.log('@getDB://fetch res: '+JSON.stringify(res))
         return res.json()
     })
 }

@@ -5,7 +5,7 @@ import sql from "../../lib/,base/sql";
 import requestIp from 'request-ip'
 import { Profile } from "../login/[userlogin]";
 import { LoginNav } from "../login/[userlogin]";
-import CssSlidersWrapper from "../../components/sliders";
+import CssSlidersWrapper from "../../components/sliders_copy";
 
 type RowObj = {id: string, obj: string, style?: React.CSSProperties}
 export default function CSliders(props){
