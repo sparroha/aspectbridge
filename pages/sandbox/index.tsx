@@ -2,6 +2,7 @@ import { useEffect, useReducer, useState } from "react"
 import { Col, Container, Row } from "react-bootstrap"
 import { Deck, Card, actionHAndlers } from "./cardgame"
 import useLog from "../../components/conlog"
+import SandboxNavbar from "./navbar"
 
 
 export default function Sandbox(props) {
