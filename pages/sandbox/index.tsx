@@ -165,7 +165,7 @@ export default function Sandbox(props) {
     }
 
 
-    return <Container id={'card_game'}>
+    return <Container id={'card_game sandbox'}>
 
         {/** OPPONENT SIDE */
         }
@@ -239,7 +239,11 @@ export default function Sandbox(props) {
                     actionHAndlers.find(action => action.name == 'maketoken').handler(setFieldPlayer, 40)
                 }}>Token</button>
             </Col>
-
+        </Row>
+        <Row>
+            <Col>
+            <SandboxNavbar/>
+            </Col>
         </Row>
     </Container>
 }

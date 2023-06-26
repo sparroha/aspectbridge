@@ -1,0 +1,16 @@
+.sitemap{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+}
+.sitemap::before{
+    content: "Sitemap";
+    margin-bottom: 1em;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #00000043;
+}

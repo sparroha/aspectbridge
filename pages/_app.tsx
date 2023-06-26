@@ -13,6 +13,7 @@ import '../public/css/helper.css'
 import '../static/josh/css/landscape.css'
 import '../public/css/sliders.css'
 import '../public/css/cardgame.css'
+import '../public/css/sandbox.css'
 
 //import Custom404 from './404'
 //import { ApiCommonProps } from './api/common-props'

@@ -1,14 +1,16 @@
-import { Link } from "react-router-dom";
+import { Col, Container, Row } from "react-bootstrap";
+
 
 export default function SandboxNavbar(props){
-    return(
-        <div>
-            <h1>Navbar</h1>
-            <Link to="/sandbox">Home</Link>
-            <Link to="/sandbox/cardgame">Card Game</Link>
-            <Link to="/sandbox/cardsgame">Cards Game</Link>
-            <Link to="/sandbox/provider">Provider</Link>
-            <Link to="/sandbox/registrytest">Registry Test</Link>
-        </div>
-    )
+    return<Container className={'sitemap'}>
+        <Row>
+            <Col><a href="/sandbox">Home</a></Col>
+            <Col><a href="/sandbox/cardgame">Card Game</a></Col>
+            <Col><a href="/sandbox/cardsgame">Cards Game</a></Col>
+            <Col><a href="/sandbox/provider">Provider</a></Col>
+            <Col><a href="/sandbox/registrytest">Registry Test</a></Col>
+            <Col><a href="/sandbox/site">Web Site Build</a></Col>
+            <Col><a href="/sandbox/story">Story Test</a></Col>
+        </Row>
+    </Container>
 }
