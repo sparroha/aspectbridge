@@ -2,7 +2,7 @@ import { useEffect, useReducer } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 
 export default function Story() {
-	const gameMaxHp = 20
+	const gameMaxHp = 100
 	const [belt, beltDispatch] = useReducer(
 		//reducer
 		(state, action) => {
@@ -55,21 +55,23 @@ export default function Story() {
 						console: 'addHp ' + action.payload,
 					}
 				case 'eat':
-					if (state.game.food > 0)
+					let gain = state.game.foods[action.payload].hp
+					let consume = Math.floor(gain/3)
+					if (state.game.food > 0 && state.game.hp < gameMaxHp)
 						return {
 							//payload: Number
 							...state,
 							game: {
 								...state.game,
-								hp: (state.game.hp+3<=gameMaxHp)?state.game.hp + 3:state.game.hp,
-								food: state.game.food - 1,
+								hp: state.game.hp + gain <= gameMaxHp ? state.game.hp + gain : gameMaxHp,
+								food: state.game.food - consume < 0 ? 0 : state.game.food - consume,
 							}, //payload consists of the amount of food to add
-							console: 'addHp 3: food ' + (state.game.food - 1),
+							console: 'addHp '+gain+': food ' + (state.game.food - consume),
 						}
 					else
 						return {
 							...state,
-							console: 'out of food',
+							console: state.game.food==0?'out of food':'hp is full',
 						}
 				case 'addFood':
 					if (state.game.food < 10)
@@ -129,6 +131,18 @@ export default function Story() {
 			game: {
 				hp: gameMaxHp,
 				food: 10,
+				foods: {
+					apple: {
+						name: 'apple',
+						weight: 1,
+						hp: 3,
+					},
+					steak: {
+						name: 'steak',
+						weight: 1,
+						hp: 6,
+					},
+				},
 				xp: 0,
                 ore: 0,
 				climate: {
@@ -190,7 +204,7 @@ export default function Story() {
 		//regen 1 hp per second
 		//console.log(belt)
 		const interval = setInterval(() => {
-			if (belt.game.hp < gameMaxHp) beltDispatch({ type: 'addHp', payload: 1 })
+			if (belt.game.hp > 0) beltDispatch({ type: 'addHp', payload: -Math.floor(Math.random()*3) })
 		}, 1000)
 		return () => clearInterval(interval)
 	}, [belt.game.hp])
@@ -256,8 +270,12 @@ export default function Story() {
 								Heal
 							</button>
 							<button
-								onClick={() => beltDispatch({ type: 'eat' })}>
-								Eat
+								onClick={() => beltDispatch({ type: 'eat', payload: 'apple'})}>
+								Eat Apple
+							</button>
+							<button
+								onClick={() => beltDispatch({ type: 'eat', payload: 'steak' })}>
+								Eat Steak
 							</button>
 							<button
 								onClick={() =>
@@ -296,7 +314,8 @@ export default function Story() {
 					<Row>
 						<Col>
 							<button
-								onClick={() =>
+								onClick={() =>{
+									if(belt.game.tasks.mine.active) return false
 									beltDispatch({
 										type: 'task',
                                         payload: {
@@ -304,7 +323,7 @@ export default function Story() {
                                             active: true,
                                             time: 5000
                                         }
-									})
+									})}
 								}>
 								Mine
 							</button>
@@ -353,7 +372,7 @@ export default function Story() {
 						border: '3px inset gray'
 					}}>Access Pannel</div>
 				</Col>
-			</Row>
+			</Row><hr/>
 			<Row>
 				<Col><p>These are the things that stand against you.</p>
 					<p>In order to survivel, you must overcome them.</p>
@@ -398,8 +417,9 @@ export default function Story() {
 					</ul>
 				</Col>
 				<Col>
+					GAME STATE<br/><hr/>
 					{JSON.stringify(belt)}
-					{belt.Draw('sword')}
+					{/*belt.Draw('sword')*/}
 				</Col>
 			</Row>
 		</Container>
