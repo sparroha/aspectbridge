@@ -3,6 +3,13 @@ import { Col, Container, Row } from 'react-bootstrap'
 
 export default function Story() {
 	const gameMaxHp = 100
+	const gameModes = {
+		survival: {description: 'survival mode'},
+		adventure: {description: 'adventure mode'},
+		story: {description: 'story mode'},
+		exploration: {description: 'exploration mode'},
+		creative: {description: 'creative mode'},
+	}
 	const [belt, beltDispatch] = useReducer(
 		//reducer
 		(state, action) => {
@@ -377,7 +384,12 @@ export default function Story() {
 						width: '100%',
 						height: '100%',
 						border: '3px inset gray'
-					}}>Access Pannel</div>
+					}}>
+						<h2>Info</h2><br/>
+						Mode: {belt.game.mode}<br/>
+						discription: {gameModes[belt.game.mode.toLowerCase()].description}<br/><br/>
+						Log: {belt.console}
+					</div>
 				</Col>
 			</Row><hr/>
 			<Row hidden>
