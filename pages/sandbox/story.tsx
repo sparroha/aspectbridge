@@ -121,7 +121,13 @@ export default function Story() {
 						default:
 							return state
 					}
-                    
+                case 'mode':
+					console.log('mode select '+JSON.stringify(action.payload))
+					return {
+						//payload: String
+						...state,
+						game: { ...state.game, mode: action.payload }, //payload consists of the mode string
+					}
 				default:
 					return state
 			}
@@ -129,6 +135,7 @@ export default function Story() {
 		//initial state
 		{
 			game: {
+				mode: 'Survival',
 				hp: gameMaxHp,
 				food: 10,
 				foods: {
@@ -237,16 +244,16 @@ export default function Story() {
 			</Row>
 			<Row>
 				<Col>
-					<select>
-						<option>Survival</option>
+					<select onChange={(e)=>{beltDispatch({type: 'mode', payload: e.target.value})}} value={belt.game.mode}>
+						<option value={'Survival'}>Survival</option>
 						{/**goals: [hp, 'do not die'] */}
-						<option>Adventure</option>
+						<option value={'Adventure'}>Adventure</option>
 						{/**goals: [xp, 'unlock capabilities and discover chalenges'] */}
-						<option>Story</option>
+						<option value={'Story'}>Story</option>
 						{/**goals: [story, 'learn the lore'] */}
-						<option>Exploration</option>
+						<option value={'Exploration'}>Exploration</option>
 						{/**goals: [discovery, 'find curiosities'] */}
-						<option>Creation</option>
+						<option value={'Creative'}>Creation</option>
 						{/**goals: [creation, 'build something'] */}
 					</select>
 				</Col>
@@ -255,7 +262,7 @@ export default function Story() {
 				<Col>
 					<Row>
 						<Col>
-							<h2>Survive</h2>
+							<h2>{belt.game.mode}</h2>
 							<input
 								type='range'
 								min='0'
@@ -373,7 +380,7 @@ export default function Story() {
 					}}>Access Pannel</div>
 				</Col>
 			</Row><hr/>
-			<Row>
+			<Row hidden>
 				<Col><p>These are the things that stand against you.</p>
 					<p>In order to survivel, you must overcome them.</p>
 					<ul>
@@ -416,6 +423,8 @@ export default function Story() {
 						<li>secrets: discover the unknown</li>
 					</ul>
 				</Col>
+			</Row>
+			<Row>
 				<Col>
 					GAME STATE<br/><hr/>
 					{JSON.stringify(belt)}
