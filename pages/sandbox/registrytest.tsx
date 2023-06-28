@@ -5,8 +5,8 @@ import useRegister from "../../lib/util/registry"
 export default function Registry(props){
     const [test, setTest] = useRegister('test', 'off')
     const [testobject, setTestobject] = useRegister('testobject', {toggle: 'off'})
-    const [nostyle, setNostyle] = useState({width: '100px', height: '100px'})
-    //const [nostyle, setNostyle] = useRegister('nostyle', {width: '100px', height: '100px'})
+    //const [nostyle, setNostyle] = useRegister('',{width: '100px', height: '100px', left: '10vw', top: '10vh'})
+    //const [nostyle, setNostyle] = useRegister('csswrapper_nostyle', {width: '100px', height: '100px', left: '10vw', top: '10vh'})
 
     return <>
         <div id={'test'}>{JSON.stringify(test)}</div>
@@ -14,10 +14,9 @@ export default function Registry(props){
 
         <div id={'testobject'}>{JSON.stringify(testobject.toggle)}</div>
         <button onClick={()=>{setTestobject({toggle: testobject.toggle=='off'?'on':'off'})}}>Toggle</button>
-
-        <CssSlidersWrapper id={'nostyle'} style={nostyle} setStyle={setNostyle}>
+        
+        <CssSlidersWrapper id={'nostyle'}>
             <div>Wrapper</div>
         </CssSlidersWrapper>
-
     </>
 }

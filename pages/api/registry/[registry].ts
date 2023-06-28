@@ -73,11 +73,15 @@ export default async function registry(req, res) {
 				}
 				break
 			default: //aka get registry
-				const allregistries = registry == 'all'?await sql`SELECT * FROM aspect_registry_;`:null
-				const [register] = registry != 'all'?await sql`SELECT * FROM aspect_registry_ WHERE name = ${registry};`:[null]
-				if (allregistries) res.status(200).json(allregistries)
-				else if (register) res.status(200).json(JSON.parse(register.registry_data))
-				else res.status(200).json({ alert: 'no registry found' })
+				if (registry == 'all') {
+					const allregistries = await sql`SELECT * FROM aspect_registry_;`
+					if (allregistries) res.status(200).json(allregistries)
+					else res.status(200).json({ alert: 'no registries found' })
+				}else{
+					const [register] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${registry};`
+					if (register) {res.status(200).json(JSON.parse(register.registry_data))}
+					else res.status(200).json({ alert: 'no registry found' })
+				}
 				break
 		}
 		

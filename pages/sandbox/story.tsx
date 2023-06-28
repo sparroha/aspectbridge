@@ -1,7 +1,12 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
+import useRegister from '../../lib/util/registry'
+import { Profile } from '../login/[userlogin]'
+import { GetServerSideProps } from 'next'
+import requestIp from 'request-ip';
 
-export default function Story() {
+export default function Story(props) {
+	const [user, setUser] = useState(null)
 	const gameMaxHp = 100
 	const gameModes = {
 		survival: {description: 'survival mode'},
@@ -14,6 +19,8 @@ export default function Story() {
 		//reducer
 		(state, action) => {
 			switch (action.type) {
+				case 'init':
+					return {...state, ...action.payload, console: 'loaded game data from save'}
 				case 'Draw':
 					return {
 						//payload: String
@@ -209,36 +216,47 @@ export default function Story() {
 			console: 'init',
 		}
 	)
+	const registrySave = useRegister(user?.username,{...belt})
+
+
+	useEffect(()=>{
+		console.log('user: '+JSON.stringify(user)+' | registrySave: '+JSON.stringify(registrySave)+' | init: '+JSON.stringify(belt.console))
+		if(registrySave && belt.console == 'init'){//confirm if regsave for falsy
+
+		}
+	},[])
 
 	useEffect(() => {
+		if (belt.console == 'init') return
 		console.log(belt)
 		beltDispatch({ type: 'Draw', payload: 'sword' })
 	}, [])
 	useEffect(() => {
+		if (belt.console == 'init') return//prevents game start from first effect run
 		//regen 1 hp per second
 		//console.log(belt)
 		const interval = setInterval(() => {
 			if (belt.game.hp > 0) beltDispatch({ type: 'addHp', payload: -Math.floor(Math.random()*3) })
 		}, 1000)
 		return () => clearInterval(interval)
-	}, [belt.game.hp])
+	}, [belt.game.hp])//game starts when hp changes
 	useEffect(() => {
 		console.log(belt.console)
 	}, [belt.console])
     useEffect(()=>{
+		if (belt.console == 'init') return
+		//console.log('attempt mine activity progress')
+		if (!belt.game.tasks.mine.active) return
         setTimeout(()=>{
-            //console.log('attempt mine activity progress')
-            if(belt.game.tasks.mine.active){
-                //console.log('mine time left: '+belt.game.tasks.mine.time)
-                beltDispatch({
-                    type: 'task',
-                    payload: {
-                        task: 'mine',
-                        active: belt.game.tasks.mine.time - 1000 > 0,
-                        time: belt.game.tasks.mine.time > 0 ? belt.game.tasks.mine.time - 1000 : 0
-                    }
-                })
-            }
+			//console.log('mine time left: '+belt.game.tasks.mine.time)
+			beltDispatch({
+				type: 'task',
+				payload: {
+					task: 'mine',
+					active: belt.game.tasks.mine.time - 1000 > 0,
+					time: belt.game.tasks.mine.time > 0 ? belt.game.tasks.mine.time - 1000 : 0
+				}
+			})
         },1000)
         //return clearTimeout(timeout)
     },[belt.game.tasks.mine.time])
@@ -277,68 +295,41 @@ export default function Story() {
 								value={belt.game.hp}
 								readOnly
 							/>
-							<button
-								onClick={() =>
-									beltDispatch({ type: 'addHp', payload: 1 })
-								}>
+							<button onClick={() => beltDispatch({ type: 'addHp', payload: 1 })}>
 								Heal
 							</button>
-							<button
-								onClick={() => beltDispatch({ type: 'eat', payload: 'apple'})}>
+							<button onClick={() => beltDispatch({ type: 'eat', payload: 'apple'})}>
 								Eat Apple
 							</button>
-							<button
-								onClick={() => beltDispatch({ type: 'eat', payload: 'steak' })}>
+							<button onClick={() => beltDispatch({ type: 'eat', payload: 'steak' })}>
 								Eat Steak
 							</button>
-							<button
-								onClick={() =>
-									beltDispatch({
-										type: 'addHp',
-										payload: -Math.floor(Math.random() * 8),
-									})
-								}>
+							<button onClick={() => beltDispatch({ type: 'addHp', payload: -Math.floor(Math.random() * 8)})}>
 								Hurt
 							</button>
 						</Col>
 					</Row>
 					<Row>
 						<Col>
-							<button
-								onClick={() =>
-									beltDispatch({
-										type: 'addFood',
-										payload: 1,
-									})
-								}>
+							<button onClick={() => beltDispatch({ type: 'addFood', payload: 1})}>
 								Harvest
 							</button>
 						</Col>
 						<Col>Food</Col>
 						<Col>
-							<input
-								type='range'
-								min='0'
-								max='10'
-								value={belt.game.food}
-								readOnly
-							/>
+							<input type='range' min='0' max='10' value={belt.game.food} readOnly/>
 						</Col>
 					</Row>
 					<Row>
 						<Col>
-							<button
-								onClick={() =>{
-									if(belt.game.tasks.mine.active) return false
-									beltDispatch({
-										type: 'task',
-                                        payload: {
-                                            task: 'mine',
-                                            active: true,
-                                            time: 5000
-                                        }
-									})}
-								}>
+							<button onClick={() =>{
+								if(belt.game.tasks.mine.active) return false
+								beltDispatch({ type: 'task', payload: {
+									task: 'mine',
+									active: true,
+									time: 5000
+								}})
+							}}>
 								Mine
 							</button>
 						</Col>
@@ -443,8 +434,19 @@ export default function Story() {
 					{/*belt.Draw('sword')*/}
 				</Col>
 			</Row>
+			<Row>
+				<Col>
+					<Profile ip={props.ip} setUser={setUser}/>
+				</Col>
+			</Row>
 		</Container>
 	)
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const query = context.query
+    const ip = await requestIp.getClientIp(context.req)
+    return {props: {ip: ip}} 
 }
 
 //VISION

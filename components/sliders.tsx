@@ -2,20 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import Dialog from "./dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import style from "./sliders.module.css";
-import useRegister, { getDB } from "../lib/util/registry";
+import useRegister, { getDB, setDB } from "../lib/util/registry";
 
 // props: style={object.style} setStyle={setStyle} id={'row_'+object.id}}
 export default function CssSlidersWrapper(props) {
     //{children}
     const [registryLoaded, setRegistryLoaded] = useState(false)
     const [controlerOpen, setControlerOpen] = useState(false)
-    const [controlerTarget, setControlerTarget] = useState(null)
     const [state, setState] = useState({});
     const styleRef = useRef({
-        top: "0vh",
-        left: "0vw",
-        width: '100vw',
-        height: '100vh',
+        top: "20vh",
+        left: "20vw",
+        width: '20vw',
+        height: '20vh',
         opacity: '100%',
         borderRadius: '0%',
         borderWidth: '0%',
@@ -33,47 +32,52 @@ export default function CssSlidersWrapper(props) {
         borderShadowColor: 'black',
         ...props.style
     })
-
-    //TODO:: FIX PLS
-    //SAVE LOAD DATA
-    const [styletest, setStyletest] = useRegister('csswrapper_'+props.id, styleRef.current)
-    //load state from db once
-    useEffect(()=>{
-        getDB('csswrapper_'+props.id).then(data=>{
-            console.log('fetch data for '+'csswrapper_'+props.id+': '+JSON.stringify(data))
-            setStyletest(data)
-            console.log('fetch data for register.current: '+JSON.stringify(styletest))
-            setRegistryLoaded(true)
-        })
-        if(!registryLoaded){
-            console.log('Loading Data for csswrapper_'+props.id+'...')
-            console.log('LOAD DATA: '+styletest)
-            console.log('LOAD DATA: '+JSON.stringify(styletest))
-            styleRef.current = styletest
-            console.log('LOAD DATA styleRef.current: '+JSON.stringify(styleRef.current))
-            props.setStyle('csswrapper_'+props.id, styleRef.current)
-            setRegistryLoaded(true)
-            setState({})
-        }
-    },[])
     
+    const [styletest, setStyletest] = useRegister('csswrapper_'+props.id, styleRef.current)
+
+    //BEGIN SAVE LOAD DATA
+    /**CONFIRMED */
+    useEffect(()=>{
+        if(registryLoaded)return
+        if(JSON.stringify(styletest) != JSON.stringify(styleRef.current)){
+            styleRef.current = styletest
+            setRegistryLoaded(true)
+        }
+    },[styletest])
     /**CONFIRMED */
     useEffect(() => {
         if(registryLoaded) {
-            console.log('SAVE DATA: '+JSON.stringify(styleRef.current))
+            //console.log('SAVE DATA: '+JSON.stringify(styleRef.current))
             setStyletest(styleRef.current)
-            props.setStyle('csswrapper_'+props.id, styleRef.current)
+            //setDB('csswrapper_'+props.id, styleRef.current)
             //console.log(props.id+" css sliders wrapper style updated: "+styleRef.current)
         }
-    }, [state])
+    }, [styleRef.current])
     //END SAVE LOAD DATA
 
-    /*const [content, setContent] = useState(<></>)
-        useEffect(()=>{
-            setContent(<>
-                
-            </>)
-        },[])*/
+    
+    return <>
+        <div id={"csswrapper_"+props.id} style={{...styleRef.current, ...styletest, position: 'absolute' }}>
+            <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+                <div id={"csscontrolerbutton_" + props.id} title={'css sliders'}>
+                    <Button id={'csscontroleropen_'+props.id} onClick={
+                        ()=>{setControlerOpen(!controlerOpen)}
+                    }>{controlerOpen?'Close':'Open'}</Button>
+                </div>
+                {props.children}
+            </div>
+        </div>
+        <CssControler state={styletest} style={styleRef.current} styleRef={styleRef} setState={setStyletest} open={controlerOpen}/>
+    </>
+}
+
+export function CssControler(props){
+    const { styleRef, setState, open, state} = props
+    if(!open) return <>{/*
+    {JSON.stringify(props.style)}<br/>
+    {JSON.stringify(props.styleRef.current)}<br/>
+    {JSON.stringify(props.state)}<br/>*/}
+    </>
     const sliders = [
         { name: 'zIndex', min: 0, max: 10},
         { name: 'width', min: 0, max: 100, unit: 'vw' },
@@ -102,62 +106,7 @@ export default function CssSlidersWrapper(props) {
         { name: 'borderColor' },
         { name: 'borderShadowColor' },
     ]
-    const q = false
-    if(q)return (
-        <div id={"csswrapper_"+props.id} style={{ ...props.styleRef, ...styleRef.current, position: 'absolute' }}>
-            <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-                <Dialog id={"csscontrol_" + props.id} className={style.controlStyle} title={'css sliders'} open={'<>'} close={'</>'}>
-                    <Container>
-                        {sliders.map((slider, i) => {
-                            return <Row key={i}>
-                                <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
-                                </Col>
-                                <Col xs={6}><input
-                                    type="range"
-                                    min={slider.min}
-                                    max={slider.max}
-                                    name={slider.name}
-                                    defaultValue={styleRef.current[slider.name].split(slider.unit)[0]}
-                                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value + slider.unit; setState({}); }}
-                                /></Col>
-                            </Row>
-                        })}
-                        {slidersColor.map((slider, i) => {
-                            return <Row key={i}>
-                                <Col xs={6}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
-                                </Col>
-                                <Col xs={6}><input
-                                    type="color"
-                                    name={slider.name}
-                                    defaultValue={styleRef.current[slider.name]}
-                                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({}); }}
-                                /></Col>
-                            </Row>
-                        })}
-                    </Container>
-                </Dialog>
-                {props.children}
-            </div>
-        </div>
-    )
-    else return <>
-        <div id={"csswrapper_"+props.id} style={{...props.styleRef, ...styleRef.current, position: 'absolute' }}>
-            <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-                <div id={"csscontrolerbutton_" + props.id} className={style.controlStyle} title={'css sliders'}>
-                    <Button id={'csscontroleropen_'+props.id} onClick={
-                        ()=>{setControlerOpen(!controlerOpen)}
-                    }>{controlerOpen?'Close':'Open'}</Button>
-                </div>
-                {props.children}
-            </div>
-        </div>
-        {controlerOpen?<CssControler sliders={sliders} slidersOption={slidersOption} slidersColor={slidersColor} styleRef={styleRef} setState={setState}/>:null}
-    </>
 
-}
-
-export function CssControler(props){
-    const {sliders, slidersOption, slidersColor, styleRef, setState} = props
     return <div id={"csscontroler_" + props.id} style={{position: 'absolute', right: '0%', top: '0%', width: '300px', borderRadius: '25px', fontSize: '10px'}}>
         <div id={"csscontrolerBackground_" + props.id} className={'grey-back o4 w100 h100'} style={{position: 'absolute', borderRadius: '25px'}}></div>{/**translucent backdrop */}
         <div id={"csscontroler_" + props.id} style={{position: 'relative', padding: 10}}>
@@ -170,8 +119,8 @@ export function CssControler(props){
                         min={slider.min}
                         max={slider.max}
                         name={slider.name}
-                        defaultValue={slider.unit?styleRef.current[slider.name].split(slider.unit)[0]:styleRef.current[slider.name]}
-                        onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = slider.unit?(e.target.value + slider.unit):e.target.value; setState({}); }}
+                        value={slider.unit?styleRef.current[slider.name].split(slider.unit)[0]:styleRef.current[slider.name]}
+                        onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = slider.unit?(e.target.value + slider.unit):e.target.value; setState({...styleRef.current}); }}
                     /></Col>
                 </Row>
             })}
@@ -181,8 +130,8 @@ export function CssControler(props){
                     </Col>
                     <Col xs={6} style={{margin: 0, padding: 2}}><select
                         name={slider.name}
-                        defaultValue={styleRef.current[slider.name]}
-                        onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({}); }}
+                        value={styleRef.current[slider.name]}
+                        onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({...styleRef.current}); }}
                     >{slider.options.map((option, i) => {
                         return <option key={i} value={option}>{option}</option>
                     })}</select></Col>
@@ -195,8 +144,8 @@ export function CssControler(props){
                     <Col xs={6} style={{margin: 0, padding: 2}}><input
                         type="color"
                         name={slider.name}
-                        defaultValue={styleRef.current[slider.name]}
-                        onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({}); }}
+                        value={styleRef.current[slider.name]}
+                        onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = e.target.value; setState({...styleRef.current}); }}
                     /></Col>
                 </Row>
             })}
