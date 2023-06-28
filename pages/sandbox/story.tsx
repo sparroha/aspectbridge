@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import useRegister from '../../lib/util/registry'
 import { Profile } from '../login/[userlogin]'
@@ -216,53 +216,48 @@ export default function Story(props) {
 			console: 'init',
 		}
 	)
-	const [save, setSave] = useRegister(user?.username+'_beltedGameState',belt)
+	const [save, setSave, saveLoaded] = useRegister(user?user.username+'_beltedGameState':null,belt)
 
 	//BEGIN SAVE LOAD DATA
 	const [registryLoaded, setRegistryLoaded] = useState(false)
     useEffect(()=>{
-        if(registryLoaded)return
-		if(!save || ! user)return
-        console.log('LOADING DATA: '+JSON.stringify(save))
-        //console.log('OVER DATA: '+JSON.stringify(belt))
-        //if(JSON.stringify(save) != JSON.stringify(belt)){//maybe problem here...if they are same, implies default settings
-            //console.log('DATA LOADING: '+JSON.stringify(save))
-            beltDispatch({type: 'init', payload: save})
-            //console.log('DATA LOADED: '+JSON.stringify(belt))
-            setRegistryLoaded(true)
-        //}
-    },[save, user])
-    /**CONFIRMED */
-    useEffect(() => {
-        if(registryLoaded) {
-            setSave(belt)
-        }
-    }, [belt])
-    //END SAVE LOAD DATA
+		if(!saveLoaded || !user || registryLoaded)return
+        console.log('LOADING INIT DATA for '+user.username+'_beltedGameState'+': '+JSON.stringify(save))
+        beltDispatch({type: 'init', payload: save})
+        setRegistryLoaded(true)
+    },[saveLoaded, user])
 
-	useEffect(()=>{
-		console.log('user: '+JSON.stringify(user)+' | save: '+JSON.stringify(save)+' | init: '+JSON.stringify(belt.console))
-		if(save && belt.console == 'init'){//confirm if regsave for falsy
-				//TODO
-		}
-	},[])
+    /**CONFIRMED */
+	//Save Data on State Change
+    useEffect(() => {
+		if(!saveLoaded)return
+		setSave(belt)
+    }, [belt])
+    //END SAVE LOAD DATA\\
+
+	//Signal Init: not needed
 	useEffect(() => {
 		if (belt.console == 'init') return
-		console.log(belt)
+		console.log('@Story> Post Init: '+belt)
 		beltDispatch({ type: 'Draw', payload: 'sword' })
 	}, [])
+
+	//Fatigue Inducer
 	useEffect(() => {
 		if (belt.console == 'init') return//prevents game start from first effect run
 		//regen 1 hp per second
-		//console.log(belt)
 		const interval = setInterval(() => {
 			if (belt.game.hp > 0) beltDispatch({ type: 'addHp', payload: -Math.floor(Math.random()*3) })
 		}, 1000)
 		return () => clearInterval(interval)
 	}, [belt.game.hp])//game starts when hp changes
+
+	//Console Logger
 	useEffect(() => {
 		console.log(belt.console)
 	}, [belt.console])
+
+	//Mine Opperator
     useEffect(()=>{
 		if (belt.console == 'init') return
 		//console.log('attempt mine activity progress')
@@ -280,6 +275,7 @@ export default function Story(props) {
         },1000)
         //return clearTimeout(timeout)
     },[belt.game.tasks.mine.time])
+
 	return (
 		<Container>
 			<Row>
