@@ -13,9 +13,9 @@ export default function useRegister(registry: string, defaultValue: any){
     async function loadDataOnce(registry){
         //if(register)return//overguard
         return getDB(registry).then(data=>{
-            console.log('@useRegister.loadDataOnce://fetch data for '+registry+': '+JSON.stringify(data))
+            //console.log('@useRegister.loadDataOnce://fetch data for '+registry+': '+JSON.stringify(data))
             setRegister(data)
-            console.log('@useRegister.loadDataOnce://fetch data for register.current: '+JSON.stringify(register))
+            //console.log('@useRegister.loadDataOnce://fetch data for register.current: '+JSON.stringify(register))
             setRegistryLoaded(true)
         }).catch(err=>console.log('@useRegister.loadDataOnce://fetch error: '+err))
     }
@@ -24,7 +24,7 @@ export default function useRegister(registry: string, defaultValue: any){
 
     return [register, (data) => {//works and tested
         setRegister(data)
-        console.log('@useRegister.saveRegister://set register '+JSON.stringify(registry)+': '+JSON.stringify(data))
+        //console.log('@useRegister.saveRegister://set register '+JSON.stringify(registry)+': '+JSON.stringify(data))
         setDB(registry, data)
     }]
 }
@@ -37,7 +37,10 @@ export async function setDB(name: string, data: any){
         body: JSON.stringify({
             registry_data: data
         })
-    }).then(res => console.log('@setDB://res: '+res.json()))
+    }).then(res => {
+        console.log('@setDB://res: '+JSON.stringify(res))
+        return res.json()
+    })
 }
 
 export async function getDB(name: string){

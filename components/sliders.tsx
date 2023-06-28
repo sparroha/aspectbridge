@@ -39,8 +39,12 @@ export default function CssSlidersWrapper(props) {
     /**CONFIRMED */
     useEffect(()=>{
         if(registryLoaded)return
-        if(JSON.stringify(styletest) != JSON.stringify(styleRef.current)){
+        console.log('LOADING DATA: '+JSON.stringify(styletest))
+        console.log('OVER DATA: '+JSON.stringify(styleRef.current))
+        if(JSON.stringify(styletest) != JSON.stringify(styleRef.current)){//maybe problem here
+            console.log('DATA LOADING: '+JSON.stringify(styletest))
             styleRef.current = styletest
+            console.log('DATA LOADED: '+JSON.stringify(styleRef.current))
             setRegistryLoaded(true)
         }
     },[styletest])
@@ -119,7 +123,7 @@ export function CssControler(props){
                         min={slider.min}
                         max={slider.max}
                         name={slider.name}
-                        value={slider.unit?styleRef.current[slider.name].split(slider.unit)[0]:styleRef.current[slider.name]}
+                        value={slider.unit?styleRef.current[slider.name]?.split(slider.unit)[0]:styleRef.current[slider.name]}
                         onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef.current[slider.name] = slider.unit?(e.target.value + slider.unit):e.target.value; setState({...styleRef.current}); }}
                     /></Col>
                 </Row>

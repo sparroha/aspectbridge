@@ -80,7 +80,11 @@ export default async function registry(req, res) {
 				}else{
 					const [register] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${registry};`
 					if (register) {res.status(200).json(JSON.parse(register.registry_data))}
-					else res.status(200).json({ alert: 'no registry found' })
+
+					else{
+						await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${registry}, ${JSON.stringify(registry_data) || 0}) ON DUPLICATE KEY UPDATE registry_data = ${JSON.stringify(registry_data) || 0};`
+						res.status(200).json({ alert: 'registry '+registry+' updated: '+ registry_data +' :'+JSON.parse(req.body).registry_data })
+					}
 				}
 				break
 		}

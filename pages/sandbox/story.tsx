@@ -216,16 +216,36 @@ export default function Story(props) {
 			console: 'init',
 		}
 	)
-	const registrySave = useRegister(user?.username,{...belt})
+	const [save, setSave] = useRegister(user?.username+'_beltedGameState',belt)
 
+	//BEGIN SAVE LOAD DATA
+	const [registryLoaded, setRegistryLoaded] = useState(false)
+    useEffect(()=>{
+        if(registryLoaded)return
+		if(!save || ! user)return
+        console.log('LOADING DATA: '+JSON.stringify(save))
+        //console.log('OVER DATA: '+JSON.stringify(belt))
+        //if(JSON.stringify(save) != JSON.stringify(belt)){//maybe problem here...if they are same, implies default settings
+            //console.log('DATA LOADING: '+JSON.stringify(save))
+            beltDispatch({type: 'init', payload: save})
+            //console.log('DATA LOADED: '+JSON.stringify(belt))
+            setRegistryLoaded(true)
+        //}
+    },[save, user])
+    /**CONFIRMED */
+    useEffect(() => {
+        if(registryLoaded) {
+            setSave(belt)
+        }
+    }, [belt])
+    //END SAVE LOAD DATA
 
 	useEffect(()=>{
-		console.log('user: '+JSON.stringify(user)+' | registrySave: '+JSON.stringify(registrySave)+' | init: '+JSON.stringify(belt.console))
-		if(registrySave && belt.console == 'init'){//confirm if regsave for falsy
-
+		console.log('user: '+JSON.stringify(user)+' | save: '+JSON.stringify(save)+' | init: '+JSON.stringify(belt.console))
+		if(save && belt.console == 'init'){//confirm if regsave for falsy
+				//TODO
 		}
 	},[])
-
 	useEffect(() => {
 		if (belt.console == 'init') return
 		console.log(belt)

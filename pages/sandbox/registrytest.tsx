@@ -17,6 +17,12 @@ export default function Registry(props){
         
         <CssSlidersWrapper id={'nostyle'}>
             <div>Wrapper</div>
+        </CssSlidersWrapper>{/*
+        <CssSlidersWrapper id={'nostyle2'}>
+            <div>Wrapper</div>
         </CssSlidersWrapper>
+        <CssSlidersWrapper id={'nostyle3'}>
+            <div>Wrapper</div>
+        </CssSlidersWrapper>*/}
     </>
 }
