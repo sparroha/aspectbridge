@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import useRegister from '../../lib/util/registry'
-import { Profile } from '../login/[userlogin]'
+import useRegister, { getDB, setDB } from '../../lib/util/registry'
+import { ACTIVEUSERS, LoginNav, Profile, useActiveUsers } from '../login/[userlogin]'
 import { GetServerSideProps } from 'next'
 import requestIp from 'request-ip';
 
@@ -216,7 +216,31 @@ export default function Story(props) {
 			console: 'init',
 		}
 	)
+	//current client user state
 	const [save, setSave, saveLoaded] = useRegister(user?user.username+'_beltedGameState':null,belt)
+
+	//{
+	const activeUsers = useActiveUsers()
+	const [selectedUser, setSelectedUser] = useState(null)
+	const [selectedUserState, setSelectedUserState] = useState(null)
+	useEffect(()=>{
+		if(!selectedUser)return
+		getDB(selectedUser+'_beltedGameState').then((data)=>{
+			setSelectedUserState(data)
+		})
+	},[selectedUser,activeUsers,belt])
+	useEffect(()=>{
+		console.log('loading event handler click for active user update')
+		if(!user)return
+		if(!activeUsers)return
+		const L = (e)=>{
+			console.log('why?')
+			setDB(ACTIVEUSERS,[...activeUsers.filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
+		}
+		document.addEventListener('click', L)
+		return ()=>document.removeEventListener('click',L)
+	},[])
+	//}
 
 	//BEGIN SAVE LOAD DATA
 	const [registryLoaded, setRegistryLoaded] = useState(false)
@@ -395,8 +419,16 @@ export default function Story(props) {
 						<h2>Info</h2><br/>
 						Mode: {belt.game.mode}<br/>
 						discription: {gameModes[belt.game.mode.toLowerCase()].description}<br/><br/>
-						Log: {belt.console}
+						Log: {belt.console}<br/><br/>
+						Active Users:<br/>
+						<ActiveUsers activeUsers={activeUsers} setSelectedUser={setSelectedUser}/>
 					</div>
+				</Col>
+				<Col>
+					<div>User: {selectedUser}</div>
+					<div>HP: {selectedUserState?.game.hp}</div>
+					<div>Food: {selectedUserState?.game.food}</div>
+					<div>Ore: {selectedUserState?.game.ore}</div>
 				</Col>
 			</Row><hr/>
 			<Row hidden>
@@ -452,6 +484,9 @@ export default function Story(props) {
 			</Row>
 			<Row>
 				<Col>
+					<LoginNav user={user} homepage={'sandbox/story'}/>
+				</Col>
+				<Col>
 					<Profile ip={props.ip} setUser={setUser}/>
 				</Col>
 			</Row>
@@ -465,6 +500,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {props: {ip: ip}} 
 }
 
+export function ActiveUsers({activeUsers, setSelectedUser}){
+	return <>{activeUsers.map((user, i) => {
+		let lastActive = new Date().getTime() - user.time
+		lastActive = Math.floor(lastActive / 1000)
+		let lastActiveS = lastActive.toString().concat(' seconds')
+		if(lastActive > 5*60) return null
+		return <div key={i}>
+				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
+			</div>
+	})}</>
+}
 //VISION
 // 1. The user can see potential
 

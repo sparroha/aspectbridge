@@ -7,6 +7,7 @@ import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
 import Head from "next/head"
+import useRegister from "../../lib/util/registry"
 
 export type ActiveUser = {
   username: string | string[],
@@ -186,17 +187,30 @@ function UpdateEmailForm({homepage}){
         <Button variant="primary" type="submit" formAction={"/login/update"}>Update</Button>
     </Form>
 }
+export const ACTIVEUSERS = 'active_users'
 export function Profile(props) {
+  const [activeUsers, setActiveUsers, usersloaded] = useRegister(ACTIVEUSERS,[])
   const {ip, setUser, hash} = props
   const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 1000})
   const debug = props.debug
   useEffect(() => {
-    if(data)setUser(data)
+    if(!data) return
+    if(!usersloaded) return
+    setUser(data)
+    console.log('mounting activeUsers: '+JSON.stringify(activeUsers))
+    if(!activeUsers) setActiveUsers([{name: data.username, time: new Date().getTime()}])
+    else setActiveUsers([...activeUsers.filter(
+      ({usertime}) => {
+        if(!usertime) return false
+        if((new Date().getTime()) - usertime > 1000*60*(60/12)) return false//remove users that havent been active in the last hour
+        return true
+      }
+    ), {name: data.username, time: new Date().getTime()}])
     console.log('mounting: '+JSON.stringify(data))
     return () => {
       console.log('unmounting: '+JSON.stringify(data))
     }
-  },[data])
+  },[data,usersloaded])
   if (error) {
     return <Row style={props.style}><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
         {'ERROR:'+JSON.stringify(error)+'\n'}:No such user:{JSON.stringify(props)+'\nDATA:'+JSON.stringify(data)}
@@ -257,6 +271,11 @@ export function LoginNav(props) {
         }>
         {user ? 'Logout ' + user.username : 'Login'}
       </a>
+}
+
+export function useActiveUsers(){
+	const [activeUsers] = useRegister(ACTIVEUSERS,[])
+	return activeUsers
 }
 
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {

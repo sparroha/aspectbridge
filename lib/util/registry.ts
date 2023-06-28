@@ -28,6 +28,7 @@ export default function useRegister(registry: string, defaultValue: any){
         if(!registry)return
         if(registry != currentsave){
             setRegistryLoaded(false)
+            setCurentSave(registry)
         }
         loadDataOnce(registry)
     },[registry])//load registry
@@ -57,7 +58,7 @@ export async function setDB(name: string, data: any){
 export async function getDB(name: string){
     return fetch(`/api/registry/${name}`)
     .then(res=>{
-        console.log('@getDB://fetch res: '+JSON.stringify(res))//always {}
+        //console.log('@getDB://fetch res: '+JSON.stringify(res))//always {}
         return res.json()
     })
 }
