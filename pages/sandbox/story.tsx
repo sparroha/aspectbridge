@@ -221,7 +221,7 @@ export default function Story(props) {
 
 	//{
 	
-	const [activeUsers,,activeUsersLoaded] = useActiveUsers()
+	const [activeUsers,,activeUsersLoaded] = useActiveUsers()//not upating like swr should
 	const [selectedUser, setSelectedUser] = useState(null)
 	const [selectedUserState, setSelectedUserState] = useState(null)
 	useEffect(()=>{
