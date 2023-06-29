@@ -220,9 +220,14 @@ export default function Story(props) {
 	const [save, setSave, saveLoaded] = useRegister(user?user.username+'_beltedGameState':null,belt)
 
 	//{
-	const activeUsers = useActiveUsers()
+	
+	const [activeUsers,,activeUsersLoaded] = useActiveUsers()
 	const [selectedUser, setSelectedUser] = useState(null)
 	const [selectedUserState, setSelectedUserState] = useState(null)
+	useEffect(()=>{
+		//TODO
+	},[])
+
 	useEffect(()=>{
 		if(!selectedUser)return
 		getDB(selectedUser+'_beltedGameState').then((data)=>{
@@ -232,7 +237,7 @@ export default function Story(props) {
 	useEffect(()=>{
 		console.log('loading event handler click for active user update')
 		if(!user)return
-		if(!activeUsers)return
+		if(!activeUsersLoaded)return
 		const L = (e)=>{
 			console.log('why?')
 			setDB(ACTIVEUSERS,[...activeUsers.filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])

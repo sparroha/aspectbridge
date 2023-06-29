@@ -274,8 +274,8 @@ export function LoginNav(props) {
 }
 
 export function useActiveUsers(){
-	const [activeUsers] = useRegister(ACTIVEUSERS,[])
-	return activeUsers
+	const [activeUsers,S,loaded] = useRegister(ACTIVEUSERS,[])
+	return [[...activeUsers],S,loaded]
 }
 
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
