@@ -198,7 +198,7 @@ export function Profile(props) {
     if(!usersloaded) return
     setUser(data)
     console.log('mounting activeUsers: '+JSON.stringify(activeUsers))
-    if(!activeUsers) setActiveUsers([{name: data.username, time: new Date().getTime()}])
+    if(!activeUsers && usersLoaded) setActiveUsers([{name: data.username, time: new Date().getTime()}])
     else setActiveUsers([...activeUsers.filter(
       ({usertime}) => {
         if(!usertime) return false
@@ -277,6 +277,17 @@ export function useActiveUsers(){
 	const [activeUsers,S,loaded] = useRegister(ACTIVEUSERS,[])
 	return [[...activeUsers],S,loaded]
 }
+
+export default setUserActive(username: string){
+const [activeUsers,setActiveUsers,loaded] = useRegister('active_users',[])
+    if(!activeUsers) setActiveUsers([{name: data.username, time: new Date().getTime()}]) 
+     else setActiveUsers([...activeUsers.filter( 
+       ({usertime}) => { 
+         if(!usertime) return false 
+         if((new Date().getTime()) - usertime > 1000*60*(60/12)) return false//remove users that havent been active in the last hour 
+         return true 
+       } 
+     ), {name: data.username, time: new Date().getTime()}])}
 
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   const method = query.userlogin
