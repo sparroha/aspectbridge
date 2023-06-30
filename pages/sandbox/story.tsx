@@ -230,7 +230,7 @@ export default function Story(props) {
 
 	useEffect(()=>{
 		if(!selectedUser)return
-		getDB(selectedUser+'_beltedGameState').then((data)=>{
+		getDB(selectedUser.username+'_beltedGameState').then((data)=>{
 			setSelectedUserState(data)
 		})
 	},[selectedUser,activeUsers,belt])
