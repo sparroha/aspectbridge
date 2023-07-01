@@ -189,7 +189,7 @@ function UpdateEmailForm({homepage}){
 }
 export const ACTIVEUSERS = 'active_users'
 export function Profile(props) {
-  const [activeUsers, setActiveUsers, usersloaded] = useRegister(ACTIVEUSERS,[])
+  const [activeUsers, setActiveUsers, usersloaded]:[string, Function, boolean] = useRegister(ACTIVEUSERS,[])
   const {ip, setUser, hash} = props
   const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 1000})
   const debug = props.debug
@@ -197,9 +197,9 @@ export function Profile(props) {
     if(!data) return
     if(!usersloaded) return
     setUser(data)
-    console.log('mounting activeUsers: '+JSON.stringify(activeUsers))
+    console.log('mounting activeUsers: '+activeUsers)
     if(!activeUsers && usersLoaded) setActiveUsers([{name: data.username, time: new Date().getTime()}])
-    else setActiveUsers([...activeUsers.filter(
+    else setActiveUsers([...JSON.parse(activeUsers).filter(
       ({time}) => {
         if(!time) return false
         if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour
