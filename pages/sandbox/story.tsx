@@ -7,7 +7,7 @@ import requestIp from 'request-ip';
 
 export default function Story(props) {
 	const [user, setUser] = useState(null)
- const [activeUsers, setActiveUsers]:[string, Function] = useState(null)
+	const [activeUsers, setActiveUsers] = useState(null)
 	const gameMaxHp = 100
 	const gameModes = {
 		survival: {description: 'survival mode'},
