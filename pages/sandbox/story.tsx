@@ -515,7 +515,7 @@ export function ActiveUsers({activeUsers, setSelectedUser}){
 		let lastActiveS = lastActive.toString().concat(' seconds')
 		//if(lastActive > 5*60) return null
 		return <div key={i}>
-				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(auser.name)+': Last Active < '+lastActiveS}</a>
+				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
 			</div>
 	})}</>
 }
