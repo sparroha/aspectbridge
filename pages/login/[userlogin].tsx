@@ -280,16 +280,16 @@ export function LoginNav(props) {
 //depeicated
 export function useActiveUsers(){
 	const [activeUsers,S,loaded] = useRegister(ACTIVEUSERS,[])
-	return [[...activeUsers],S,loaded]
+	return [activeUsers,S,loaded]
 }
 
 export function setUserActive(username: string){
-const [activeUsers,setActiveUsers,loaded] = useRegister('active_users',[])
+const [activeUsers,setActiveUsers,loaded] = useRegister(ACTIVEUSERS,[])
     if(!activeUsers) setActiveUsers([{name: data.username, time: new Date().getTime()}]) 
-     else setActiveUsers([...activeUsers.filter( 
-       ({usertime}) => { 
-         if(!usertime) return false 
-         if((new Date().getTime()) - usertime > 1000*60*(60/12)) return false//remove users that havent been active in the last hour 
+     else setActiveUsers([...JSON.parse(activeUsers).filter( 
+       ({time}) => { 
+         if(!time) return false 
+         if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour 
          return true 
        } 
      ), {name: data.username, time: new Date().getTime()}])}
