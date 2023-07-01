@@ -221,7 +221,7 @@ export default function Story(props) {
 
 	//{
 	
-	const [activeUsers,,activeUsersLoaded] = useActiveUsers()//not upating like swr should
+	const [activeUsers, setActiveUsers] = useState("null")//not upating like swr should
 	const [selectedUser, setSelectedUser] = useState(null)
 	const [selectedUserState, setSelectedUserState] = useState(null)
 	useEffect(()=>{
@@ -237,7 +237,7 @@ export default function Story(props) {
 	useEffect(()=>{
 		console.log('loading event handler click for active user update')
 		if(!user)return
-		if(!activeUsersLoaded)return
+		if(!activeUsers)return
 		const L = (e)=>{
 			console.log('why?')
 			setDB(ACTIVEUSERS,[...JSON.parse(activeUsers).filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
@@ -492,7 +492,7 @@ export default function Story(props) {
 					<LoginNav user={user} homepage={'sandbox/story'}/>
 				</Col>
 				<Col>
-					<Profile ip={props.ip} setUser={setUser}/>
+					<Profile ip={props.ip} setUser={setUser} setActiveUsers={setActiveUsers}/>
 				</Col>
 			</Row>
 		</Container>
