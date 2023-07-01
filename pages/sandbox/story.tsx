@@ -7,7 +7,7 @@ import requestIp from 'request-ip';
 
 export default function Story(props) {
 	const [user, setUser] = useState(null)
- const [activeUsers, setActiveUsers] = useState(null)
+ const [activeUsers, setActiveUsers]:[string, Function] = useState(null)
 	const gameMaxHp = 100
 	const gameModes = {
 		survival: {description: 'survival mode'},
@@ -241,11 +241,11 @@ export default function Story(props) {
 		if(!activeUsers)return
 		const L = (e)=>{
 			console.log('why?')
-			setDB(ACTIVEUSERS,[...activeUsers.filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
+			setDB(ACTIVEUSERS,[...JSON.parse(activeUsers).filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
 		}
 		document.addEventListener('click', L)
 		return ()=>document.removeEventListener('click',L)
-	},[])
+	},[activeUsers])
 	//}
 
 	//BEGIN SAVE LOAD DATA
