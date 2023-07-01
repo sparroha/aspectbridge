@@ -237,8 +237,10 @@ export default function Story(props) {
 	},[selectedUser,activeUsers,belt])
 	useEffect(()=>{
 		console.log('loading event handler click for active user update')
-		if(!user)return
-		if(!activeUsers)return
+		if(!user){
+		console.log('user not loaded for active user update');return}
+		if(!activeUsers){
+		console.log('activeUsers not loaded for active user update');return}
 		const L = (e)=>{
 			console.log('why?')
 			setDB(ACTIVEUSERS,[...JSON.parse(activeUsers).filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
