@@ -206,7 +206,9 @@ export function Profile(props) {
         return true
       }
     ), {name: data.username, time: new Date().getTime()}])
+useEffect(()=>{
     props.setActiveUsers(activeUsers)
+},[activeUsers])
     console.log('mounting: '+JSON.stringify(data))
     return () => {
       console.log('unmounting: '+JSON.stringify(data))
@@ -274,6 +276,8 @@ export function LoginNav(props) {
       </a>
 }
 
+
+//depeicated
 export function useActiveUsers(){
 	const [activeUsers,S,loaded] = useRegister(ACTIVEUSERS,[])
 	return [[...activeUsers],S,loaded]
