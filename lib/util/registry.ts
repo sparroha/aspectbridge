@@ -18,7 +18,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
         //if(register)return//overguard
         return getDB(registry).then(data=>{
             console.log('@useRegister.loadDataOnce://fetch data to replace default register: '+register)
-            console.log('@useRegister.loadDataOnce://fetch data for '+registry+': '+JSON.stringify(data))
+            console.log('@useRegister.loadDataOnce://fetch data for '+registry+': '+data)
             setRegister(data)
             setRegistryLoaded(true)
         }).catch(err=>console.log('@useRegister.loadDataOnce://fetch error: '+err))
