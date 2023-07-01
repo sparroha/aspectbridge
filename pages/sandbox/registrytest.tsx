@@ -9,7 +9,7 @@ export default function Registry(props){
     //const [nostyle, setNostyle] = useRegister('csswrapper_nostyle', {width: '100px', height: '100px', left: '10vw', top: '10vh'})
     useEffect(()=>{console.log(testobject)},[testobject])
     return <>
-        <div id={'test'}>{test}</div>
+        <div id={'test'}>{JSON.parse(test)}</div>
         <button onClick={()=>{setTest(JSON.parse(test)=='off'?'on':'off')}}>Toggle</button>
 
         <div id={'testobject'}>{JSON.parse(testobject).toggle}</div>
