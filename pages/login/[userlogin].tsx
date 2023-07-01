@@ -292,7 +292,7 @@ const [activeUsers,setActiveUsers,loaded] = useRegister(ACTIVEUSERS,[])
          if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour 
          return true 
        } 
-     ), {name: data.username, time: new Date().getTime()}])}
+     ), {name: username, time: new Date().getTime()}])}
 
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   const method = query.userlogin
