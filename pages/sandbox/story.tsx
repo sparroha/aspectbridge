@@ -245,7 +245,7 @@ export default function Story(props) {
 		}
 		document.addEventListener('click', L)
 		return ()=>document.removeEventListener('click',L)
-	},[activeUsers])
+	},[user, activeUsers])
 	//}
 
 	//BEGIN SAVE LOAD DATA
