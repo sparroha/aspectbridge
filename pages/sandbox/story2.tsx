@@ -240,7 +240,7 @@ export default function Story(props) {
 		if(!activeUsersLoaded)return
 		const L = (e)=>{
 			console.log('why?')
-			setDB(ACTIVEUSERS,[...activeUsers.filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
+			setDB(ACTIVEUSERS,[...JSON.stringify(activeUsers).filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
 		}
 		document.addEventListener('click', L)
 		return ()=>document.removeEventListener('click',L)
