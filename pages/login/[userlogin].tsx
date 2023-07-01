@@ -198,7 +198,7 @@ export function Profile(props) {
     if(!usersloaded) return
     setUser(data)
     console.log('mounting activeUsers: '+activeUsers)
-    if(!activeUsers && usersLoaded) setActiveUsers([{name: data.username, time: new Date().getTime()}])
+    if(!activeUsers && usersloaded) setActiveUsers([{name: data.username, time: new Date().getTime()}])
     else setActiveUsers([...JSON.parse(activeUsers).filter(
       ({time}) => {
         if(!time) return false
