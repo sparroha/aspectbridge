@@ -7,6 +7,7 @@ import requestIp from 'request-ip';
 
 export default function Story(props) {
 	const [user, setUser] = useState(null)
+ const [activeUsers, setActiveUsers] = useState(null)
 	const gameMaxHp = 100
 	const gameModes = {
 		survival: {description: 'survival mode'},
@@ -221,7 +222,7 @@ export default function Story(props) {
 
 	//{
 	
-	const [activeUsers,,activeUsersLoaded] = useActiveUsers()//not upating like swr should
+	//const [activeUsers,,activeUsersLoaded] = useActiveUsers()//not upating like swr should
 	const [selectedUser, setSelectedUser] = useState(null)
 	const [selectedUserState, setSelectedUserState] = useState(null)
 	useEffect(()=>{
@@ -492,7 +493,7 @@ export default function Story(props) {
 					<LoginNav user={user} homepage={'sandbox/story'}/>
 				</Col>
 				<Col>
-					<Profile ip={props.ip} setUser={setUser}/>
+					<Profile ip={props.ip} setUser={setUser} setActiveUsers={setActiveUsers}/>
 				</Col>
 			</Row>
 		</Container>
