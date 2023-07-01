@@ -7,7 +7,7 @@ export default function Registry(props){
     const [testobject, setTestobject] = useRegister('testobject', {toggle: 'off'})
     //const [nostyle, setNostyle] = useRegister('',{width: '100px', height: '100px', left: '10vw', top: '10vh'})
     //const [nostyle, setNostyle] = useRegister('csswrapper_nostyle', {width: '100px', height: '100px', left: '10vw', top: '10vh'})
-
+    useEffect(()=>{console.log(testobject)},[testobject])
     return <>
         <div id={'test'}>{test}</div>
         <button onClick={()=>{setTest(test=='off'?'on':'off')}}>Toggle</button>
