@@ -9,7 +9,6 @@ export default function CssSlidersWrapper(props) {
     //{children}
     const [registryLoaded, setRegistryLoaded] = useState(false)
     const [controlerOpen, setControlerOpen] = useState(false)
-    const [state, setState] = useState({});
     const styleRef = useRef({
         top: "20vh",
         left: "20vw",
@@ -39,11 +38,11 @@ export default function CssSlidersWrapper(props) {
     /**CONFIRMED */
     useEffect(()=>{
         if(registryLoaded)return
-        console.log('LOADING DATA: '+JSON.stringify(styletest))
+        console.log('LOADING DATA: '+styletest)
         console.log('OVER DATA: '+JSON.stringify(styleRef.current))
-        if(JSON.stringify(styletest) != JSON.stringify(styleRef.current)){//maybe problem here
-            console.log('DATA LOADING: '+JSON.stringify(styletest))
-            styleRef.current = styletest
+        if(styletest != JSON.stringify(styleRef.current)){//maybe problem here
+            console.log('DATA LOADING: '+styletest)
+            styleRef.current = JSON.parse(styletest)
             console.log('DATA LOADED: '+JSON.stringify(styleRef.current))
             setRegistryLoaded(true)
         }
@@ -61,7 +60,7 @@ export default function CssSlidersWrapper(props) {
 
     
     return <>
-        <div id={"csswrapper_"+props.id} style={{...styleRef.current, ...styletest, position: 'absolute' }}>
+        <div id={"csswrapper_"+props.id} style={{...styleRef.current, ...JSON.parse(styletest), position: 'absolute' }}>
             <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
                 <div id={"csscontrolerbutton_" + props.id} title={'css sliders'}>
                     <Button id={'csscontroleropen_'+props.id} onClick={
@@ -71,12 +70,12 @@ export default function CssSlidersWrapper(props) {
                 {props.children}
             </div>
         </div>
-        <CssControler state={styletest} style={styleRef.current} styleRef={styleRef} setState={setStyletest} open={controlerOpen}/>
+        <CssControler style={styleRef.current} styleRef={styleRef} setState={setStyletest} open={controlerOpen}/>
     </>
 }
 
 export function CssControler(props){
-    const { styleRef, setState, open, state} = props
+    const { styleRef, setState, open} = props
     if(!open) return <>{/*
     {JSON.stringify(props.style)}<br/>
     {JSON.stringify(props.styleRef.current)}<br/>
