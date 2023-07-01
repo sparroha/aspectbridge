@@ -283,7 +283,7 @@ export function useActiveUsers(){
 	return [[...activeUsers],S,loaded]
 }
 
-export default setUserActive(username: string){
+export function setUserActive(username: string){
 const [activeUsers,setActiveUsers,loaded] = useRegister('active_users',[])
     if(!activeUsers) setActiveUsers([{name: data.username, time: new Date().getTime()}]) 
      else setActiveUsers([...activeUsers.filter( 
