@@ -10,7 +10,7 @@ export default function Registry(props){
     useEffect(()=>{console.log(testobject)},[testobject])
     return <>
         <div id={'test'}>{test}</div>
-        <button onClick={()=>{setTest(test=='off'?'on':'off')}}>Toggle</button>
+        <button onClick={()=>{setTest(JSON.parse(test)=='off'?'on':'off')}}>Toggle</button>
 
         <div id={'testobject'}>{JSON.parse(testobject).toggle}</div>
         <button onClick={()=>{setTestobject({toggle: JSON.parse(testobject).toggle=='off'?'on':'off'})}}>Toggle</button>
