@@ -35,7 +35,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
     //END INIT
 
     return [register, (data) => {//works and tested
-        setRegister(data)
+        setRegister(JSON.stringify(data))
         //console.log('@useRegister.saveRegister://set register '+JSON.stringify(registry)+': '+JSON.stringify(data))
         setDB(registry, data)
     },registryLoaded]
