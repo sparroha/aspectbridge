@@ -66,33 +66,33 @@ export default function CssSlidersWrapper(props) {
     ]
     const q = false
     if(q)return (
-        <div id={"csswrapper_"+props.id} style={{ ...props.styleRef, ...styleRef, position: 'absolute' }}>
+        <div id={"csswrapper_"+props.id} style={{ ...props.styleRef, ...JSON.parse(styleRef), position: 'absolute' }}>
             <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
                 <Dialog id={"csscontrol_" + props.id} className={style.controlStyle} title={'css sliders'} open={'<>'} close={'</>'}>
                     <Container>
                         {sliders.map((slider, i) => {
                             return <Row key={i}>
-                                <Col xs={6}><label>{slider.name + ': '+styleRef[slider.name]+'  '}</label>
+                                <Col xs={6}><label>{slider.name + ': '+JSON.parse(styleRef)[slider.name]+'  '}</label>
                                 </Col>
                                 <Col xs={6}><input
                                     type="range"
                                     min={slider.min}
                                     max={slider.max}
                                     name={slider.name}
-                                    defaultValue={styleRef[slider.name].split(slider.unit)[0]}
-                                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef[slider.name] = e.target.value + slider.unit; setStyleRef(styleRef); }}
+                                    defaultValue={JSON.parse(styleRef)[slider.name].split(slider.unit)[0]}
+                                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); JSON.parse(styleRef)[slider.name] = e.target.value + slider.unit; setStyleRef(styleRef); }}
                                 /></Col>
                             </Row>
                         })}
                         {slidersColor.map((slider, i) => {
                             return <Row key={i}>
-                                <Col xs={6}><label>{slider.name + ': '+styleRef[slider.name]+'  '}</label>
+                                <Col xs={6}><label>{slider.name + ': '+JSON.parse(styleRef)[slider.name]+'  '}</label>
                                 </Col>
                                 <Col xs={6}><input
                                     type="color"
                                     name={slider.name}
-                                    defaultValue={styleRef[slider.name]}
-                                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); styleRef[slider.name] = e.target.value; setStyleRef(styleRef); }}
+                                    defaultValue={JSON.parse(styleRef)[slider.name]}
+                                    onChange={(e) => { console.log(slider.name + "=" + e.target.value); JSON.parse(styleRef)[slider.name] = e.target.value; setStyleRef(JSON.parse(styleRef)); }}
                                 /></Col>
                             </Row>
                         })}
@@ -103,7 +103,7 @@ export default function CssSlidersWrapper(props) {
         </div>
     )
     else return <>
-        <div id={"csswrapper_"+props.id} style={{...props.styleRef, ...styleRef, position: 'absolute' }}>
+        <div id={"csswrapper_"+props.id} style={{...props.styleRef, ...JSON.parse(styleRef), position: 'absolute' }}>
             <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
                 <div id={"csscontrolerbutton_" + props.id} className={style.controlStyle} title={'css sliders'}>
                     <Button id={'csscontroleropen_'+props.id} onClick={
@@ -113,7 +113,7 @@ export default function CssSlidersWrapper(props) {
                 {props.children}
             </div>
         </div>
-        {controlerOpen?<CssControler sliders={sliders} slidersOption={slidersOption} slidersColor={slidersColor} styleRef={styleRef} setStyleRef={setStyleRef}/>:null}
+        {controlerOpen?<CssControler sliders={sliders} slidersOption={slidersOption} slidersColor={slidersColor} styleRef={JSON.parse(styleRef)} setStyleRef={setStyleRef}/>:null}
     </>
 
 }
