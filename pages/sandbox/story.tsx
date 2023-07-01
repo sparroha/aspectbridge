@@ -238,7 +238,7 @@ export default function Story(props) {
 	useEffect(()=>{
 		console.log('loading event handler click for active user update')
 		if(!user)return
-		if(!activeUsersLoaded)return
+		if(!activeUsers)return
 		const L = (e)=>{
 			console.log('why?')
 			setDB(ACTIVEUSERS,[...activeUsers.filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
