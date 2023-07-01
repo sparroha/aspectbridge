@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import useLog from "../../components/conlog";
 
-export default function useRegister(registry: string, defaultValue: any){
+export default function useRegister(registry: string, defaultValue: any):[string, Function, boolean]{
     
     //useLog('@useRegister://REGISTRY_NAME: '+registry+' :: REGISTRY: '+JSON.stringify(reg))
     const [currentsave, setCurentSave] = useState(registry)//current save
