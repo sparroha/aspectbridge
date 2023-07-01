@@ -6,7 +6,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
     //useLog('@useRegister://REGISTRY_NAME: '+registry+' :: REGISTRY: '+JSON.stringify(reg))
     const [currentsave, setCurentSave] = useState(registry)//current save
     const [registryLoaded, setRegistryLoaded] = useState(false)
-    const [register, setRegister] = useState(defaultValue)//register setter and render function
+    const [register, setRegister] = useState(JSON.stringify(defaultValue))//register setter and render function
     //useLog('@useRegister://REGISTER: '+JSON.stringify(register.current)+' :: LOADED: '+registryLoaded)
     
     //INIT
