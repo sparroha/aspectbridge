@@ -285,7 +285,7 @@ export function useActiveUsers(){
 
 export function setUserActive(username: string){
 const [activeUsers,setActiveUsers,loaded] = useRegister(ACTIVEUSERS,[])
-    if(!activeUsers) setActiveUsers([{name: data.username, time: new Date().getTime()}]) 
+    if(!activeUsers) setActiveUsers([{name: username, time: new Date().getTime()}]) 
      else setActiveUsers([...JSON.parse(activeUsers).filter( 
        ({time}) => { 
          if(!time) return false 
