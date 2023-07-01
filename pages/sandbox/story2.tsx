@@ -5,9 +5,8 @@ import { ACTIVEUSERS, LoginNav, Profile, useActiveUsers } from '../login/[userlo
 import { GetServerSideProps } from 'next'
 import requestIp from 'request-ip';
 
-export default function Story2(props) {
+export default function Story(props) {
 	const [user, setUser] = useState(null)
-	const [activeUsers, setActiveUsers] = useState(null)
 	const gameMaxHp = 100
 	const gameModes = {
 		survival: {description: 'survival mode'},
@@ -222,7 +221,7 @@ export default function Story2(props) {
 
 	//{
 	
-	//const [activeUsers,,activeUsersLoaded] = useActiveUsers()//not upating like swr should
+	const [activeUsers,,activeUsersLoaded] = useActiveUsers()//not upating like swr should
 	const [selectedUser, setSelectedUser] = useState(null)
 	const [selectedUserState, setSelectedUserState] = useState(null)
 	useEffect(()=>{
@@ -237,17 +236,15 @@ export default function Story2(props) {
 	},[selectedUser,activeUsers,belt])
 	useEffect(()=>{
 		console.log('loading event handler click for active user update')
-		if(!user){
-		console.log('user not loaded for active user update');return}
-		if(!activeUsers){
-		console.log('activeUsers not loaded for active user update');return}
+		if(!user)return
+		if(!activeUsersLoaded)return
 		const L = (e)=>{
 			console.log('why?')
-			setDB(ACTIVEUSERS,[...JSON.parse(activeUsers).filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
+			setDB(ACTIVEUSERS,[...activeUsers.filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
 		}
 		document.addEventListener('click', L)
 		return ()=>document.removeEventListener('click',L)
-	},[user, activeUsers])
+	},[])
 	//}
 
 	//BEGIN SAVE LOAD DATA
@@ -495,7 +492,7 @@ export default function Story2(props) {
 					<LoginNav user={user} homepage={'sandbox/story'}/>
 				</Col>
 				<Col>
-					<Profile ip={props.ip} setUser={setUser} setActiveUsers={setActiveUsers}/>
+					<Profile ip={props.ip} setUser={setUser}/>
 				</Col>
 			</Row>
 		</Container>
@@ -513,7 +510,7 @@ export function ActiveUsers({activeUsers, setSelectedUser}){
 		let lastActive = new Date().getTime() - user.time
 		lastActive = Math.floor(lastActive / 1000)
 		let lastActiveS = lastActive.toString().concat(' seconds')
-		//if(lastActive > 5*60) return null
+		if(lastActive > 5*60) return null
 		return <div key={i}>
 				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
 			</div>
