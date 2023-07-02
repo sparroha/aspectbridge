@@ -510,7 +510,7 @@ export function ActiveUsers({activeUsers, setSelectedUser}){
 		let lastActive = new Date().getTime() - user.time
 		lastActive = Math.floor(lastActive / 1000)
 		let lastActiveS = lastActive.toString().concat(' seconds')
-		if(lastActive > 5*60) return null
+		//if(lastActive > 5*60) return null
 		return <div key={i}>
 				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
 			</div>
