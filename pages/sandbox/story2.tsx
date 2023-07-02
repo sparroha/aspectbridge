@@ -229,6 +229,7 @@ export default function Story(props) {
 	},[])
 
 	useEffect(()=>{
+		return
 		if(!selectedUser)return
 		getDB(selectedUser+'_beltedGameState').then((data)=>{
 			setSelectedUserState(JSON.parse(data))
@@ -240,7 +241,7 @@ export default function Story(props) {
 		if(!activeUsers)return
 		const L = (e)=>{
 			console.log('why?')
-			setDB(ACTIVEUSERS,[...(JSON.parse(activeUsers).filter((user)=>{return user.name!=user.username})), {name: user.username, time: new Date().getTime()}])
+			setDB(ACTIVEUSERS,[...JSON.parse(activeUsers).filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
 		}
 		document.addEventListener('click', L)
 		return ()=>document.removeEventListener('click',L)
