@@ -492,7 +492,6 @@ export default function Story2(props) {
 					<LoginNav user={user} homepage={'sandbox/story'}/>
 				</Col>
 				<Col>
-					<Profile ip={props.ip} setUser={setUser} />{/*setActiveUsers={setActiveUsers}*/}
 				</Col>
 			</Row>
 		</Container>
