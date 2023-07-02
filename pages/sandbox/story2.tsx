@@ -516,23 +516,3 @@ export function ActiveUsers({activeUsers, setSelectedUser}){
 			</div>
 	})}</>
 }
-//VISION
-// 1. The user can see potential
-
-//AGENCY
-// 1. The user has the ability to choose a path
-
-//FEEL
-// 1. The user feels immersed in the environment
-// 2. The control set is comfortable and intuitive
-// 3. VFX and SFX are satisfying and immersive
-
-//SYSTEMS
-//toolset
-
-//DISCOVERY
-// 1. The user can discover curiocities
-//reward with surprize and wonder
-
-//RNG
-//MYSTERY
