@@ -242,8 +242,8 @@ export default function Story(props) {
 			console.log('why?')
 			//setDB(ACTIVEUSERS,[...JSON.parse(activeUsers).filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
 		}
-		document.addEventListener('click', L)
-		return ()=>document.removeEventListener('click',L)
+		//document.addEventListener('click', L)
+		//return ()=>document.removeEventListener('click',L)
 	},[])
 	//}
 
