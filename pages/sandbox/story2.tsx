@@ -5,7 +5,7 @@ import { ACTIVEUSERS, LoginNav, Profile, useActiveUsers } from '../login/[userlo
 import { GetServerSideProps } from 'next'
 import requestIp from 'request-ip';
 
-export default function Story(props) {
+export default function Story2(props) {
 	const [user, setUser] = useState(null)
 	const gameMaxHp = 100
 	const gameModes = {
