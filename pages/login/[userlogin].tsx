@@ -9,7 +9,7 @@ import requestIp from 'request-ip'
 import Head from "next/head"
 import useRegister, { getDB, setDB } from "../../lib/util/registry"
 
-export type ActiveUser = {
+export type User = {
   username: string | string[],
   email: string | string[],
   access: string | string[],
@@ -18,6 +18,32 @@ export type ActiveUser = {
   ip: string | string[]
 }
 const debugAccess='2'
+export type ActiveUser = {
+  name: string,
+  time: number,
+}
+
+/**
+ * 
+ * USAGE:
+ * //to create a user variable
+ * const [user, setUser] = useState<User>(null)
+ * 
+ * //to enable user login data, call Profile to get user information. Note: setActiveUsers is optional
+ * <Profile ip={ip} setUser={setUser} setActiveUsers={setActiveUsers}/>
+ * 
+ * //to enable user login from current page, call LoginNav. Note: style is optional
+ * <LoginNav user={user} homepage={homepage} style={style}/>
+ * 
+ * //to access a list of currently active users, creater this variable and send the setter to Profile
+ * const [activeUsers, setActiveUsers] = useState<ActiveUser[]>([])
+ * 
+ * //to set a user as active, call
+ * activateUser(username)
+ * 
+ */
+
+
 
 export default function UserLogin({ip, homepage}) {
     const router = useRouter()

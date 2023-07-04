@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LoginNav, Profile } from '../login/[userlogin]';
+import { ACTIVEUSERS, LoginNav, Profile } from '../login/[userlogin]';
 import { GetServerSideProps } from 'next';
 import requestIp from 'request-ip';
 import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
@@ -21,6 +21,7 @@ const border = {
  */
 export default function Chat(props){
   const [user, setUser] = useState(props.user?props.user:{username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
+  const [activeUsers, setActiveUsers] = useState([])
   const [update, setUpdate] = useState(false)
   const [revalidate, setRevalidate] = useState(false)
   const [name, setName] = useState('')
@@ -83,7 +84,7 @@ export default function Chat(props){
           <Messages update={update} setUpdate={setUpdate} access={user?.access} style={{...scroll, ...border}}/>
         </Col>
         <Col xs={4}>
-          <Users style={scroll} revalidate={revalidate}/>
+          <Users style={scroll} revalidate={revalidate} activeUsers={activeUsers}/>
         </Col>
       </Row>
       <Row>
@@ -92,7 +93,7 @@ export default function Chat(props){
         </Col>
       </Row>
       <Row style={{visibility: 'collapse', height: '0px'}}>
-        <Col xs={12}>{props.ip?<Profile ip={props.ip} setUser={setUser}/>:null}</Col>
+        <Col xs={12}>{props.ip?<Profile ip={props.ip} setUser={setUser} setActiveUsers={setActiveUsers}/>:null}</Col>
       </Row>
   </Container>
 }
@@ -161,7 +162,7 @@ function Messages({update, setUpdate, access, style}){
  * @param style: style
  * @returns 
  */
-function Users(style){
+function Users(style, activeUsers: string){
   const {data, error} = useSWR('/api/chat/users', { refreshInterval: 500 })
   
   useEffect(()=>{
@@ -172,12 +173,31 @@ function Users(style){
     }, 1000*60*1);
     return () => clearInterval(userInterval);
   }, [data])
-  return <div id='active_users' style={{ maxHeight: '50vh', ...style}}>{data?.map((user, i)=>{
+  if(true/* !activeUsers */)return <div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>{data?.map((user, i)=>{
     const User = user.username.split('.')
     const USER = {
       username: User[1],
       access: User[0]=='[**]'?2:User[0]=='[*]'?1:0,
       last_active: user.last_active
+    }
+    const {username, access, last_active} = USER
+    const color = access==2?'red':access==1?'orange':'black';
+    return <div key={i} style={{fontSize: '12px'}}><div style={{color: color, float: 'left'}}>{User[0]}</div>{username}{'['}{last_active}{']'}<br/></div>
+  })}</div>
+
+  {/**TODO update ACTIVEUSERS database for this structure of information OOOOR *update this function to call user data from db based on current ACTIVEUSERS* */}
+  return<div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>{(JSON.parse(activeUsers)).map((user, i)=>{
+    const User = fetch('/api/getUserdetails/'+user, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    }).then(response => response.json()).then(data => {
+      console.log(data)
+      return data
+    }).catch(error => console.error(error));
+    const USER = {
+      username: User[1],
+      access: User[0]=='[**]'?2:User[0]=='[*]'?1:0,
+      last_active: user.time
     }
     const {username, access, last_active} = USER
     const color = access==2?'red':access==1?'orange':'black';
