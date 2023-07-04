@@ -67,7 +67,7 @@ export default function Story(props) {
 						...state.game,
 						hp: state.game.hp + action.payload,
 					}, //payload consists of the amount of hp to add
-					console: 'addHp ' + action.payload,
+					//console: 'addHp ' + action.payload,
 				}
 			case 'eat':
 				let gain = state.game.foods[action.payload].hp
@@ -93,7 +93,7 @@ export default function Story(props) {
 					return {
 						...state,
 						game: { ...state.game, food: state.game.food + 1 },
-						console: 'addFood 1',
+						//console: 'addFood 1',
 					}
 				else
 					return {
@@ -239,7 +239,7 @@ export default function Story(props) {
 		if(!activeUsers){ console.log('activeUsers not loaded for active user update'); return }
 		console.log('loading event handler click for active user update')
 		const L = (e)=>{
-			console.log('why?')
+			//console.log('why?')
 			activateUser(user.username)
 		}
 		document.addEventListener('click', L)
@@ -257,8 +257,8 @@ export default function Story(props) {
 	//Save Data on State Change
     useEffect(() => {
 		if(!saveLoaded)return
-		console.log('save raw: '+save)
-		console.log('save JSON: '+JSON.stringify(save))
+		//console.log('save raw: '+save)
+		//console.log('save JSON: '+JSON.stringify(save))
 		setSave(belt!=0?belt:defaultBelt)
     }, [belt])
     //END SAVE LOAD DATA\\
@@ -507,11 +507,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export function ActiveUsers({activeUsers, setSelectedUser}){
 	if(!activeUsers) return <>Loading Active Users...</>
 	let users = JSON.parse(activeUsers)
-	useLog(activeUsers+'::'+JSON.stringify(activeUsers)+'::'+JSON.parse(activeUsers))
+	//useLog(activeUsers+'::'+JSON.stringify(activeUsers)+'::'+JSON.parse(activeUsers))
 	return <>{users.length?users.map((user, i) => {
 		let lastActive = new Date().getTime() - user.time
-		lastActive = Math.floor(lastActive / 1000)
-		let lastActiveS = lastActive.toString().concat(' seconds')
+		lastActive = Math.floor(lastActive / 1000 / 60 )
+		let lastActiveS = lastActive.toString().concat(' minutes')
 		//if(lastActive > 5*60) return null
 		return <div key={i}>
 				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
