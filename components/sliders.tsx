@@ -7,7 +7,6 @@ import useRegister, { getDB, setDB } from "../lib/util/registry";
 // props: style={object.style} setStyle={setStyle} id={'row_'+object.id}}
 export default function CssSlidersWrapper(props) {
     //{children}
-    const [registryLoaded, setRegistryLoaded] = useState(false)
     const [controlerOpen, setControlerOpen] = useState(false)
     const styleRef = useRef({
         top: "20vh",
@@ -32,7 +31,7 @@ export default function CssSlidersWrapper(props) {
         ...props.style
     })
     
-    const [styletest, setStyletest] = useRegister('csswrapper_'+props.id, styleRef.current)
+    const [styletest, setStyletest, registryLoaded] = useRegister('csswrapper_'+props.id, styleRef.current)
 
     //BEGIN SAVE LOAD DATA
     /**CONFIRMED */
@@ -44,7 +43,6 @@ export default function CssSlidersWrapper(props) {
             console.log('DATA LOADING: '+styletest)
             styleRef.current = JSON.parse(styletest)
             console.log('DATA LOADED: '+JSON.stringify(styleRef.current))
-            setRegistryLoaded(true)
         }
     },[styletest])
     /**CONFIRMED */
@@ -60,7 +58,7 @@ export default function CssSlidersWrapper(props) {
 
     
     return <>
-        <div id={"csswrapper_"+props.id} style={{...styleRef.current, ...JSON.parse(styletest), position: 'absolute' }}>
+        <div id={"csswrapper_"+props.id} style={{...styleRef.current, position: 'absolute' }}>
             <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
                 <div id={"csscontrolerbutton_" + props.id} title={'css sliders'}>
                     <Button id={'csscontroleropen_'+props.id} onClick={

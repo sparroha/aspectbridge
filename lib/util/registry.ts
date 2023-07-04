@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef, useState } from "react";
-import useLog from "../../components/conlog";
+import useSWR from "swr";
 
 export default function useRegister(registry: string, defaultValue: any):[string, Function, boolean]{
     
@@ -7,22 +7,34 @@ export default function useRegister(registry: string, defaultValue: any):[string
     const [currentsave, setCurentSave] = useState(registry)//current save
     const [registryLoaded, setRegistryLoaded] = useState(false)
     const [register, setRegister] = useState(JSON.stringify(defaultValue))//register setter and render function
+    const {data, error} = useSWR('../api/registry/'+registry, { refreshInterval: 500 })//get data from database
     //useLog('@useRegister://REGISTER: '+JSON.stringify(register.current)+' :: LOADED: '+registryLoaded)
-    
+    useEffect(()=>{//load data from database
+        if(!data || !registryLoaded) return
+        if(data == null && data == undefined) return
+        setRegister(JSON.stringify(data))
+    },[data])
     //INIT
     //initialize register from database
-    async function loadDataOnce(registry){
+    async function loadDataOnce(registry, register){
         if(registryLoaded) return
         if(!registry) {console.log('registry: '+registry); return}
         if(registry ==  null) {console.log('registry: '+registry); return}
         //if(register)return//overguard
         return getDB(registry).then(data=>{
-            console.log('@useRegister.loadDataOnce://fetch data to replace default register: '+register)
-            console.log('@useRegister.loadDataOnce://fetch data for '+registry+': '+JSON.stringify(data))
-            setRegister(JSON.stringify(data))
+            if(data == null ) return
+            if(data == undefined) return
+            if(data == 0) {
+                //console.log('@useRegister.loadDataOnce://fetch initializing new register: '+registry+': '+register)
+                setDB(registry, defaultValue)
+                return
+            }
+            //console.log('@useRegister.loadDataOnce://fetch data to replace default register: '+register)
+            //console.log('@useRegister.loadDataOnce://fetch with data for '+registry+': '+JSON.stringify(data))
             setRegistryLoaded(true)
         }).catch(err=>console.log('@useRegister.loadDataOnce://fetch error: '+err))
     }
+
     //load saved data once and if data name changes
     useEffect(()=>{
         if(!registry)return
@@ -30,7 +42,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
             setRegistryLoaded(false)
             setCurentSave(registry)
         }
-        loadDataOnce(registry)
+        loadDataOnce(registry, register)
     },[registry])//load registry
     //END INIT
 

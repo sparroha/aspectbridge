@@ -7,7 +7,7 @@ import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
 import Head from "next/head"
-import useRegister from "../../lib/util/registry"
+import useRegister, { getDB, setDB } from "../../lib/util/registry"
 
 export type ActiveUser = {
   username: string | string[],
@@ -189,33 +189,29 @@ function UpdateEmailForm({homepage}){
 }
 export const ACTIVEUSERS = 'active_users'
 export function Profile(props) {
-  const [activeUsers, usersloaded]:[string, Function, boolean] = useRegister(ACTIVEUSERS,[])
+  const [activeUsers, registerActiveUsers, usersloaded]:[string, Function, boolean] = useRegister(ACTIVEUSERS,[])
   const {ip, setUser, hash, setActiveUsers} = props
   const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 1000})
   const debug = props.debug
   useEffect(() => {
     if(!data) return
-    if(!usersloaded) return
     setUser(data)
-    console.log('mounting activeUsers: '+activeUsers)
-    if(setActiveUsers){
-      if(!activeUsers && usersloaded) setActiveUsers([{name: data.username, time: new Date().getTime()}])
-      else setActiveUsers([...JSON.parse(activeUsers).filter(
-        ({time}) => {
-          if(!time) return false
-          if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour
-          return true
-        }
-      ), {name: data.username, time: new Date().getTime()}])
-    }
-useEffect(()=>{
-    props.setActiveUsers(activeUsers)
-},[activeUsers])
-    console.log('mounting: '+JSON.stringify(data))
+
+    console.log('-mounting activeUsers: '+activeUsers)
+    console.log('--mounting: '+JSON.stringify(data))
+    
+    /**SET ACTIVE USERS */
+    activateUser(data.username)
+
     return () => {
       console.log('unmounting: '+JSON.stringify(data))
     }
   },[data,usersloaded])
+
+  useEffect(()=>{
+    if(activeUsers&&setActiveUsers)setActiveUsers(activeUsers)//send data to external
+  },[activeUsers])
+
   if (error) {
     return <Row style={props.style}><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
         {'ERROR:'+JSON.stringify(error)+'\n'}:No such user:{JSON.stringify(props)+'\nDATA:'+JSON.stringify(data)}
@@ -234,6 +230,28 @@ useEffect(()=>{
       </Row>
   }
 }
+
+export async function activateUser(username){
+  return getDB(ACTIVEUSERS).then(data=>{
+    console.log('activate user '+username+' as '+JSON.stringify(data))
+    if(data == null ) return
+    if(data == undefined) return
+    console.log('starting activate user '+username+' as '+data)
+    if(data == 0 || data.length == 0) {setDB(ACTIVEUSERS, [{name: username, time: new Date().getTime()}]); return}
+    let actuse = data
+    setDB(ACTIVEUSERS, 
+      [...actuse.filter(
+        ({time, name}) => {
+          if(name == username) return false //prevent duplicate user entry
+          if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour
+          return true
+        }
+      ), {name: username, time: new Date().getTime()}]
+    )
+  })
+}
+
+
 /**
  * depricated
  * @param param0 
@@ -278,14 +296,7 @@ export function LoginNav(props) {
       </a>
 }
 
-
-//depeicated
-export function useActiveUsers(){
-	const [activeUsers,S,loaded] = useRegister(ACTIVEUSERS,[])
-	return [activeUsers,S,loaded]
-}
-
-export function setUserActive(username: string){
+/*export async function setUserActive(username: string){
 const [activeUsers,setActiveUsers,loaded] = useRegister(ACTIVEUSERS,[])
     if(!activeUsers) setActiveUsers([{name: username, time: new Date().getTime()}]) 
      else setActiveUsers([...JSON.parse(activeUsers).filter( 
@@ -294,7 +305,7 @@ const [activeUsers,setActiveUsers,loaded] = useRegister(ACTIVEUSERS,[])
          if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour 
          return true 
        } 
-     ), {name: username, time: new Date().getTime()}])}
+     ), {name: username, time: new Date().getTime()}])}*/
 
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   const method = query.userlogin

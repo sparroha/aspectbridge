@@ -1,9 +1,10 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import useRegister, { getDB, setDB } from '../../lib/util/registry'
-import { ACTIVEUSERS, LoginNav, Profile, useActiveUsers } from '../login/[userlogin]'
+import { ACTIVEUSERS, LoginNav, Profile, activateUser } from '../login/[userlogin]'
 import { GetServerSideProps } from 'next'
 import requestIp from 'request-ip';
+import useLog from '../../components/conlog'
 
 export default function Story(props) {
 	const [user, setUser] = useState(null)
@@ -16,212 +17,210 @@ export default function Story(props) {
 		exploration: {description: 'exploration mode'},
 		creative: {description: 'creative mode'},
 	}
-	const [belt, beltDispatch] = useReducer(
-		//reducer
-		(state, action) => {
-			switch (action.type) {
-				case 'init':
-					return {...state, ...action.payload, console: 'loaded game data from save'}
-				case 'Draw':
-					return {
-						//payload: String
-						...state,
-						tools: {
-							...state.tools,
-							[action.payload]: {
-								...state.tools[action.payload],
-								damage: 10,
-							},
-						}, //payload consists of the name of the tool
-						console: 'he draws his ' + action.payload,
-					}
-				case 'Equip':
-					return {
-						//payload: String
-						...state,
-						tools: {
-							...state.tools,
-							[action.payload]: {
-								...state.tools[action.payload],
-								damage: 10,
-							},
-						}, //payload consists of the name of the tool
-					}
-				case 'Unequip':
-					return {
-						//payload: String
-						...state,
-						tools: {
-							...state.tools,
-							[action.payload]: {
-								...state.tools[action.payload],
-								damage: 0,
-							},
-						}, //payload consists of the name of the tool
-					}
-				case 'addHp':
-					return {
-						//payload: Number
-						...state,
-						game: {
-							...state.game,
-							hp: state.game.hp + action.payload,
-						}, //payload consists of the amount of hp to add
-						console: 'addHp ' + action.payload,
-					}
-				case 'eat':
-					let gain = state.game.foods[action.payload].hp
-					let consume = Math.floor(gain/3)
-					if (state.game.food > 0 && state.game.hp < gameMaxHp)
-						return {
-							//payload: Number
-							...state,
-							game: {
-								...state.game,
-								hp: state.game.hp + gain <= gameMaxHp ? state.game.hp + gain : gameMaxHp,
-								food: state.game.food - consume < 0 ? 0 : state.game.food - consume,
-							}, //payload consists of the amount of food to add
-							console: 'addHp '+gain+': food ' + (state.game.food - consume),
-						}
-					else
-						return {
-							...state,
-							console: state.game.food==0?'out of food':'hp is full',
-						}
-				case 'addFood':
-					if (state.game.food < 10)
-						return {
-							...state,
-							game: { ...state.game, food: state.game.food + 1 },
-							console: 'addFood 1',
-						}
-					else
-						return {
-							...state,
-							console: 'carying too much food',
-						}
-				case 'addXp':
+	//reducer
+	const reducer = (state, action) => {
+		switch (action.type) {
+			case 'init':
+				return {...state, ...action.payload, console: 'loaded game data from save'}
+			case 'Draw':
+				return {
+					//payload: String
+					...state,
+					tools: {
+						...state.tools,
+						[action.payload]: {
+							...state.tools[action.payload],
+							damage: 10,
+						},
+					}, //payload consists of the name of the tool
+					console: 'he draws his ' + action.payload,
+				}
+			case 'Equip':
+				return {
+					//payload: String
+					...state,
+					tools: {
+						...state.tools,
+						[action.payload]: {
+							...state.tools[action.payload],
+							damage: 10,
+						},
+					}, //payload consists of the name of the tool
+				}
+			case 'Unequip':
+				return {
+					//payload: String
+					...state,
+					tools: {
+						...state.tools,
+						[action.payload]: {
+							...state.tools[action.payload],
+							damage: 0,
+						},
+					}, //payload consists of the name of the tool
+				}
+			case 'addHp':
+				return {
+					//payload: Number
+					...state,
+					game: {
+						...state.game,
+						hp: state.game.hp + action.payload,
+					}, //payload consists of the amount of hp to add
+					console: 'addHp ' + action.payload,
+				}
+			case 'eat':
+				let gain = state.game.foods[action.payload].hp
+				let consume = Math.floor(gain/3)
+				if (state.game.food > 0 && state.game.hp < gameMaxHp)
 					return {
 						//payload: Number
 						...state,
 						game: {
 							...state.game,
-							xp: state.game.xp + action.payload,
-						}, //payload consists of the amount of xp to add
+							hp: state.game.hp + gain <= gameMaxHp ? state.game.hp + gain : gameMaxHp,
+							food: state.game.food - consume < 0 ? 0 : state.game.food - consume,
+						}, //payload consists of the amount of food to add
+						console: 'addHp '+gain+': food ' + (state.game.food - consume),
 					}
-				case 'setClimate':
+				else
 					return {
-						//payload: Object
 						...state,
-						game: { ...state.game, climate: action.payload }, //payload consists of the climate object
+						console: state.game.food==0?'out of food':'hp is full',
 					}
-                case 'task':
-                    switch(action.payload.task){
-						case 'mine':
-							return {
-								//Payload: String
-								...state,
-								game: {...state.game,
-									ore: state.game.ore + (action.payload.time!=0?1:0),
-									tasks: {
-										...state.game.tasks,
-										[action.payload.task]: {
-											active: action.payload.active,
-											time: action.payload.time
-										}
+			case 'addFood':
+				if (state.game.food < 10)
+					return {
+						...state,
+						game: { ...state.game, food: state.game.food + 1 },
+						console: 'addFood 1',
+					}
+				else
+					return {
+						...state,
+						console: 'carying too much food',
+					}
+			case 'addXp':
+				return {
+					//payload: Number
+					...state,
+					game: {
+						...state.game,
+						xp: state.game.xp + action.payload,
+					}, //payload consists of the amount of xp to add
+				}
+			case 'setClimate':
+				return {
+					//payload: Object
+					...state,
+					game: { ...state.game, climate: action.payload }, //payload consists of the climate object
+				}
+			case 'task':
+				switch(action.payload.task){
+					case 'mine':
+						return {
+							//Payload: String
+							...state,
+							game: {...state.game,
+								ore: state.game.ore + (action.payload.time!=0?1:0),
+								tasks: {
+									...state.game.tasks,
+									[action.payload.task]: {
+										active: action.payload.active,
+										time: action.payload.time
 									}
-								},
-								console: 'task timer '+action.payload.task+': '+action.payload.time
-							}
-						default:
-							return state
-					}
-                case 'mode':
-					console.log('mode select '+JSON.stringify(action.payload))
-					return {
-						//payload: String
-						...state,
-						game: { ...state.game, mode: action.payload }, //payload consists of the mode string
-					}
-				default:
-					return state
+								}
+							},
+							console: 'task timer '+action.payload.task+': '+action.payload.time
+						}
+					default:
+						return state
+				}
+			case 'mode':
+				console.log('mode select '+JSON.stringify(action.payload))
+				return {
+					//payload: String
+					...state,
+					game: { ...state.game, mode: action.payload }, //payload consists of the mode string
+				}
+			default:
+				return state
+		}
+	}
+	//initial state
+	const defaultBelt = {
+		game: {
+			mode: 'Survival',
+			hp: gameMaxHp,
+			food: 10,
+			foods: {
+				apple: {
+					name: 'apple',
+					weight: 1,
+					hp: 3,
+				},
+				steak: {
+					name: 'steak',
+					weight: 1,
+					hp: 6,
+				},
+			},
+			xp: 0,
+			ore: 0,
+			climate: {
+				temperature: '0',
+				humidity: '0',
+				wind: '0',
+				precipitation: '0',
+			},
+			entities: [
+				{
+					name: 'cain',
+					aspects: ['knowing', 'powerful', 'cunning'],
+				},
+				{ name: 'abel', aspects: ['having', 'capacity'] },
+			],
+			tasks: {
+				mine: {active: false, time: 0}
 			}
 		},
-		//initial state
-		{
-			game: {
-				mode: 'Survival',
-				hp: gameMaxHp,
-				food: 10,
-				foods: {
-					apple: {
-						name: 'apple',
-						weight: 1,
-						hp: 3,
-					},
-					steak: {
-						name: 'steak',
-						weight: 1,
-						hp: 6,
-					},
-				},
-				xp: 0,
-                ore: 0,
-				climate: {
-					temperature: '0',
-					humidity: '0',
-					wind: '0',
-					precipitation: '0',
-				},
-				entities: [
-					{
-						name: 'cain',
-						aspects: ['knowing', 'powerful', 'cunning'],
-					},
-					{ name: 'abel', aspects: ['having', 'capacity'] },
-				],
-                tasks: {
-                    mine: {active: false, time: 0}
-                }
+		Draw: (tool: string) => {
+			//beltDispatch({type: 'Draw', payload: tool})
+			return <p>He draws his {tool}</p>
+		},
+		tools: {
+			sword: {
+				name: 'sword',
+				damage: 10,
+				weight: 5,
+				type: 'weapon',
 			},
-			Draw: (tool: string) => {
-				//beltDispatch({type: 'Draw', payload: tool})
-				return <p>He draws his {tool}</p>
+			shield: {
+				name: 'shield',
+				damage: 0,
+				weight: 10,
+				type: 'armor',
 			},
-			tools: {
-				sword: {
-					name: 'sword',
-					damage: 10,
-					weight: 5,
-					type: 'weapon',
-				},
-				shield: {
-					name: 'shield',
-					damage: 0,
-					weight: 10,
-					type: 'armor',
-				},
+		},
+		characters: {
+			cain: { aspects: ['knowing', 'powerful', 'cunning'] },
+			abel: { aspects: ['having', 'capacity'] },
+		},
+		trees: {
+			treeOfLife: {
+				aspects: ['life', 'knowledge', 'power'],
 			},
-			characters: {
-				cain: { aspects: ['knowing', 'powerful', 'cunning'] },
-				abel: { aspects: ['having', 'capacity'] },
+			treeOfKnowledge: {
+				aspects: ['knowledge', 'power'],
 			},
-			trees: {
-				treeOfLife: {
-					aspects: ['life', 'knowledge', 'power'],
-				},
-				treeOfKnowledge: {
-					aspects: ['knowledge', 'power'],
-				},
-			},
-			console: 'init',
-		}
-	)
+		},
+		console: 'init',
+	}
+	//Reducer
+	const [belt, beltDispatch] = useReducer(reducer,defaultBelt)
 	//current client user state
 	const [save, setSave, saveLoaded] = useRegister(user?user.username+'_beltedGameState':null,belt)
 
-	//{
-	
 	//const [activeUsers,,activeUsersLoaded] = useActiveUsers()//not upating like swr should
 	const [selectedUser, setSelectedUser] = useState(null)
 	const [selectedUserState, setSelectedUserState] = useState(null)
@@ -236,34 +235,31 @@ export default function Story(props) {
 		})
 	},[selectedUser,activeUsers,belt])
 	useEffect(()=>{
+		if(!user){ console.log('user not loaded for active user update'); return }
+		if(!activeUsers){ console.log('activeUsers not loaded for active user update'); return }
 		console.log('loading event handler click for active user update')
-		if(!user){
-		console.log('user not loaded for active user update');return}
-		if(!activeUsers){
-		console.log('activeUsers not loaded for active user update');return}
 		const L = (e)=>{
 			console.log('why?')
-			setDB(ACTIVEUSERS,[...JSON.parse(activeUsers).filter((user)=>{return user.name!=user.username}), {name: user.username, time: new Date().getTime()}])
+			activateUser(user.username)
 		}
 		document.addEventListener('click', L)
 		return ()=>document.removeEventListener('click',L)
-	},[user, activeUsers])
-	//}
+	},[user, activeUsers])//??[]
 
 	//BEGIN SAVE LOAD DATA
-	const [registryLoaded, setRegistryLoaded] = useState(false)
     useEffect(()=>{
-		if(!saveLoaded || !user || registryLoaded)return
-        console.log('LOADING INIT DATA for '+user.username+'_beltedGameState'+': '+JSON.stringify(save))
-        beltDispatch({type: 'init', payload: save})
-        setRegistryLoaded(true)
+		if(!saveLoaded || !user)return
+        console.log('LOADING INIT DATA for '+user.username+'_beltedGameState'+': '+save)
+        beltDispatch({type: 'init', payload: JSON.parse(save)})
     },[saveLoaded, user])
 
     /**CONFIRMED */
 	//Save Data on State Change
     useEffect(() => {
 		if(!saveLoaded)return
-		setSave(belt)
+		console.log('save raw: '+save)
+		console.log('save JSON: '+JSON.stringify(save))
+		setSave(belt!=0?belt:defaultBelt)
     }, [belt])
     //END SAVE LOAD DATA\\
 
@@ -509,7 +505,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 export function ActiveUsers({activeUsers, setSelectedUser}){
-	return <>{activeUsers.map((user, i) => {
+	if(!activeUsers) return <>Loading Active Users...</>
+	let users = JSON.parse(activeUsers)
+	useLog(activeUsers+'::'+JSON.stringify(activeUsers)+'::'+JSON.parse(activeUsers))
+	return <>{users.length?users.map((user, i) => {
 		let lastActive = new Date().getTime() - user.time
 		lastActive = Math.floor(lastActive / 1000)
 		let lastActiveS = lastActive.toString().concat(' seconds')
@@ -517,7 +516,7 @@ export function ActiveUsers({activeUsers, setSelectedUser}){
 		return <div key={i}>
 				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
 			</div>
-	})}</>
+	}):'No Active Users'}</>
 }
 //VISION
 // 1. The user can see potential
