@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import Mouse, { useMousePosition } from "../../components/mouse";
+import Mouse, { Position, useMousePosition } from "../../components/mouse";
 import { fireball, icicle, missile, newProjectile } from "./entity";
 import { arrayMoveObj, moveClientObj, vec, vecObj } from "./movement";
 //engine.js + game.ts + index.html from old version
@@ -312,7 +312,7 @@ export default function WASD() {
             onKeyUpD();
         }
     }
-    function OnClick(e: Event, mousepos: { x: number; y: number; })
+    function OnClick(e: Event, mousepos: Position)
     {
         if(e === null)e = window.event;
         //console.log(JSON.stringify(e)+'\n'+JSON.stringify(mousepos));
@@ -329,7 +329,7 @@ export default function WASD() {
     var keyF = ['','','','','','','','','','','','',''];
     function actionKey1(){
         if(localPlayer){
-            let p = newProjectile(vecObjs,fireball,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+            let p = newProjectile(vecObjs,fireball,localPlayer,{x: mousepos.left, y: mousepos.top},1000,4);
             //setEntities((e)=>{e.push(p);return e;})
             let i = setInterval(()=> p, 200);
             setTimeout(()=> clearInterval(i), 8000);
@@ -337,14 +337,14 @@ export default function WASD() {
     }
     function actionKey2(){
         if(localPlayer){
-            let p = newProjectile(vecObjs,icicle,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+            let p = newProjectile(vecObjs,icicle,localPlayer,{x: mousepos.left, y: mousepos.top},1000,4);
             let i = setInterval(()=> p, 200);
             setTimeout(()=> clearInterval(i), 8000);
         }
     }
     function actionKey3(){
         if(localPlayer){
-            let p = newProjectile(setVecObjs,missile,localPlayer,{x: mousepos.x, y: mousepos.y},1000,4);
+            let p = newProjectile(setVecObjs,missile,localPlayer,{x: mousepos.left, y: mousepos.top},1000,4);
             let i = setInterval(()=> p, 200);
             setTimeout(()=> clearInterval(i), 8000);
         }console.log('localPlayer: '+localPlayer)
@@ -393,7 +393,7 @@ export default function WASD() {
     return <Container id={'body'}>
                 <Row className={'tcenter'}>
                     <Col sm={'3'} id={"debug"} style={{position: 'relative', visibility: 'visible'}}>
-                        <Mouse mousepos={mousepos} clickpos={clickpos}/>
+                        <Mouse mousepos={mousepos} clickpos={clickpos} debug marker/>
                         <br/>{debugfeed[debugfeed.length-1]/*.map((f)=>f)*/}
                     </Col>
                     <Col sm={'3'}><h4 className={'col-sm-6'}><b>Control the Object With "W/A/S/D". Press 1 - 3 to file.</b></h4></Col>
