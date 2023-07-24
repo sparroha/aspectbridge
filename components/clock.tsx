@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
 
 export function Clock(){
-    const [time, setTime] = useState(new Date())
+    const time = useRef(new Date())
     
     useEffect(()=>{
-        const t = setInterval(()=>setTime(new Date()),1000)
+        const t = setInterval(()=>time.current = new Date()),1000)
         return () => clearInterval(t)
-    },[time])
+    },[time.current])
     
-    return <div style={{color: 'white', background: 'gray', borderRadius: '15px', textAlign: 'center'}}>{time.getHours() + ':' + time.getMinutes() +':'+ time.getSeconds()}</div>
+    return <div style={{color: 'white', background: 'gray', borderRadius: '15px', textAlign: 'center'}}>{time.current.getHours() + ':' + time.current.getMinutes() +':'+ time.current.getSeconds()}</div>
 }
     
