@@ -13,42 +13,56 @@ export default function TLiterator(props){
                 </Form.Group>
             </Form>
 }
+export type TLitter = {
+    uni: string,
+    number: number,
+    order: number,
+    char?: string,
+    color?: string,
+}
 export const alephbeth = {
     aleph: {
         uni: '\u05D0',
         number: 1,
         order: 1,
-        char: 'א'
+        char: 'א',
+        color: 'red',
     },
     beth: {
         uni: '\u05D1',
         number: 2,
         order: 2,
+        color: 'orange',
     },
     gimel: {
         uni: '\u05D2',
         number: 3,
         order: 3,
+        color: 'yellow',
     },
     daleth: {
         uni: '\u05D3',
         number: 4,
         order: 4,
+        color: 'green',
     },
     hey: {
         uni: '\u05D4',
         number: 5,
         order: 5,
+        color: 'blue',
     },
     vav: {
         uni: '\u05D5',
         number: 6,
         order: 6,
+        color: 'purple',
     },
     zain: {
         uni: '\u05D6',
         number: 7,
         order: 7,
+        color: 'lightgray',
     },
     keth: {
         uni: '\u05D7',
