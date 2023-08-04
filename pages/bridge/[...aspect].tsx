@@ -15,7 +15,7 @@ import SimpleNav from '../../components/simplenav';
 import DiceWidget, { diceInitProps, useDiceRoll } from '../../components/dice';
 import TLiterator from '../../components/hebrew';
 import requestIp from 'request-ip';
-import { Clock } from '../../components/clock';
+import Clock from '../../components/clock';
 import Chat from '../chat';
 
 /**CSS module *//not working/
@@ -41,14 +41,22 @@ export default function AspectBridge({ip}) {
             <ContainerHeader user={user?user:null}/>
             <Row id="content" className={""}>
                 <NavLeftDefault />
-                <DynamicInfo user={user}/>
+                <Col sm={8} style={{background: 'white'}}>
+                    <UserMenu user={user} homepage={'bridge'}/>
+                </Col>
+                {//<DynamicInfo user={user}/>
+                }
                 <NavRightDefault user={user}/>
             </Row>
-            <Row>
-                <Col sm={5}><CalendarTab /></Col>
-                <Col sm={7} style={{background: 'white'}}><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
+            <Row className={'justify-content-md-center'}>
+                {//<Col sm={5}><CalendarTab /></Col>
+                }
+                <NavLeftDefault />
+                <Col sm={8} style={{background: 'white'}}><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
+                <NavRightDefault user={user}/>
             </Row>
-            <Footer />
+            {//<Footer />
+            }
         </Container>
     </>
 }
@@ -245,6 +253,27 @@ function Placeholder({user}){
                 <p>Swe: Stir</p>
             </Col>
         </Row>
+}
+
+function UserMenu({user, homepage}){
+    return <>
+        <UserSettings />
+        <UserLog_in_out user={user} homepage={homepage} />
+        <UserStats />
+    </>
+}
+function UserSettings(){
+    return <></>
+}
+function UserLog_in_out({user, homepage}){
+    return <Col>
+        <Row><Nav.Link style={{color: 'blue'}} href={"/login/"+(user?'logout':'login')+'?homepage='+homepage+(user?'&username='+user.username:'')}>
+            {user?('Logout '+user.username):'Login'}
+        </Nav.Link></Row>{' '}
+    </Col>
+}
+function UserStats(){
+    return <></>
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
