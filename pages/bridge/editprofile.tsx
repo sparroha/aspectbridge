@@ -29,7 +29,7 @@ export default function EditProfile({user}: {user: Partial<User>}){
     </Row>
 }
 function EditUsername({user}: {user: Partial<User>}){
-    const [username, setUsername] = useState(user.username || '')
+    const [username, setUsername] = useState(user?.username)
     const updateUsername = async ()=>{
         await fetch('/api/user/'+user.hash, {
             method: 'POST',
