@@ -31,13 +31,13 @@ export default function EditProfile({user}: {user: Partial<User>}){
 function EditUsername({user}: {user: Partial<User>}){
     const [username, setUsername] = useState(user?.username)
     const updateUsername = async ()=>{
-        await fetch('/api/user/'+user.hash, {
+        await fetch('/api/user/'+user?.hash, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: user.id,
+                id: user?.id,
                 username: username,
                 collumn: 'username',
                 command: 'update'
@@ -53,10 +53,10 @@ function EditUsername({user}: {user: Partial<User>}){
     </div>
 }function EditEmail({user}: {user: Partial<User>}){
     const [pass, setPass] = useState('')
-    const [newMail, setNewMail] = useState(user.email)
+    const [newMail, setNewMail] = useState(user?.email)
     const [showPass, setShowPass] = useState(false)
     const [showPassTip, setShowPassTip] = useState(false)
-    const [newHash, setNewHash] = useState(user.hash)
+    const [newHash, setNewHash] = useState(user?.hash)
     const sethashpass = (e)=>{
         let p = e.target.value
         let h = sha224(newMail?.toString().toLocaleLowerCase()+''+p)
@@ -74,21 +74,21 @@ function EditUsername({user}: {user: Partial<User>}){
         console.log(newHash)
     }
     const updateHashMail = async ()=>{
-        let passwordcomparehash = sha224(user.email?.toString().toLocaleLowerCase()+''+pass)
-        let passwordcorrect = passwordcomparehash == user.hash
+        let passwordcomparehash = sha224(user?.email?.toString().toLocaleLowerCase()+''+pass)
+        let passwordcorrect = passwordcomparehash == user?.hash
         if(!passwordcorrect){
             alert('incorrect password')
             return
         }
-        console.log('pushing newHash to user '+user.username+': hash = '+newHash)
+        console.log('pushing newHash to user '+user?.username+': hash = '+newHash)
 
-        await fetch('/api/user/'+user.hash, {
+        await fetch('/api/user/'+user?.hash, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: user.id,
+                id: user?.id,
                 newHash: newHash,
                 email: newMail,
                 collumn: 'email',
@@ -104,7 +104,7 @@ function EditUsername({user}: {user: Partial<User>}){
         <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={sethashpass} value={pass} />
         <br/>
         <label>Current Email:</label><br/>
-        <label style={textFieldStyle}>{user.email}</label>
+        <label style={textFieldStyle}>{user?.email}</label>
         <br/>
         <label>New Email:</label><br/>
         <input style={textFieldStyle} type={'text'} onChange={sethashmail} value={newMail} />
@@ -117,31 +117,31 @@ function EditPassword({user}: {user: Partial<User>}){
     const [newPass, setNewPass] = useState('')
     const [showPass, setShowPass] = useState(false)
     const [showPassTip, setShowPassTip] = useState(false)
-    const [newHash, setNewHash] = useState(user.hash)
+    const [newHash, setNewHash] = useState(user?.hash)
     const sethashpass = (e)=>{
         let p = e.target.value
-        let h = sha224(user.email?.toString().toLocaleLowerCase()+''+p)
+        let h = sha224(user?.email?.toString().toLocaleLowerCase()+''+p)
         setNewPass(p)
         setNewHash(h)
         console.log(h)
         console.log(newHash)
     }
     const updateHash = async ()=>{
-        let passwordcomparehash = sha224(user.email?.toString().toLocaleLowerCase()+''+password)
-        let passwordcorrect = passwordcomparehash == user.hash
+        let passwordcomparehash = sha224(user?.email?.toString().toLocaleLowerCase()+''+password)
+        let passwordcorrect = passwordcomparehash == user?.hash
         if(!passwordcorrect){
             alert('incorrect password')
             return
         }
-        console.log('pushing newHash to user '+user.username+': hash = '+newHash)
+        console.log('pushing newHash to user '+user?.username+': hash = '+newHash)
         
-        await fetch('/api/user/'+user.hash, {
+        await fetch('/api/user/'+user?.hash, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: user.id,
+                id: user?.id,
                 newHash: newHash,
                 collumn: 'password',
                 command: 'update'
