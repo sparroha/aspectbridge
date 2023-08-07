@@ -1,21 +1,24 @@
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 export default function Clock(props){
-    const time = useRef(new Date())
-    const clocktime = useMemo(()=>time.current.getHours() + ':' + time.current.getMinutes() +':'+ time.current.getSeconds(),[time.current])
+    const [time , setTime] = useState('00:00:00')
+    //const clocktime = useMemo(()=>time.current.getHours() + ':' + time.current.getMinutes() +':'+ time.current.getSeconds(),[time.current])
     
     useEffect(()=>{
-        const t = setInterval(()=>time.current = new Date(),1000)
+        const t = setInterval(()=>{
+            let now = new Date()
+            setTime((t)=>{return now.getHours() + ':' + now.getMinutes() +':'+ now.getSeconds()})
+        },1000)
         return () => clearInterval(t)
-    },[time.current])
+    },[])
     
     return <div style={{
         color: 'white',
         background: 'gray',
         borderRadius: '15px',
-        textAlign: 'center'}}
-    >
-        {clocktime}
+        textAlign: 'center'
+    }}>
+        {time}
     </div>
 }
     

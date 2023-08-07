@@ -7,7 +7,7 @@ import requestIp from 'request-ip';
 import { GetServerSideProps } from "next";
 import { LoginNav, Profile } from "../login/[userlogin]";
 import SimpleNav from "../../components/simplenav";
-import { Clock } from "../../components/clock";
+import Clock from "../../components/clock";
 import TLiterator from "../../components/hebrew";
 import Mouse from "../../components/mouse";
 import { useMousePosition } from "../../components/mouse";
