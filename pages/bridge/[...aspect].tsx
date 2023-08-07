@@ -1,5 +1,5 @@
 "use strict";
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Dispatch, useMemo } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import NavIndex from '../../components/ab/nav';
 import navComponentObject from '../../components/ab/navigaton';
 import { GetServerSideProps } from 'next';
-import { Profile} from '../login/[userlogin]';
+import { Profile, User} from '../login/[userlogin]';
 import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
@@ -17,6 +17,7 @@ import TLiterator from '../../components/hebrew';
 import requestIp from 'request-ip';
 import Clock from '../../components/clock';
 import Chat from '../chat';
+import UserMenu from './usermenu';
 
 /**CSS module *//not working/
 //TODO is working
@@ -27,6 +28,10 @@ import Chat from '../chat';
 /*THERE'S A BETTER WAY THAN THIS*/
 const componentObject = navComponentObject()
 
+
+export type UserSettingsProps = {
+    user: User
+}
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
@@ -52,7 +57,7 @@ export default function AspectBridge({ip}) {
                 {//<Col sm={5}><CalendarTab /></Col>
                 }
                 <NavLeftDefault />
-                <Col sm={8} style={{background: 'white'}}><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
+                <Col sm={8} style={{background: 'white'}}>Bridge Chat:<br/><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
                 <NavRightDefault user={user}/>
             </Row>
             {//<Footer />
@@ -253,27 +258,6 @@ function Placeholder({user}){
                 <p>Swe: Stir</p>
             </Col>
         </Row>
-}
-
-function UserMenu({user, homepage}){
-    return <>
-        <UserSettings />
-        <UserLog_in_out user={user} homepage={homepage} />
-        <UserStats />
-    </>
-}
-function UserSettings(){
-    return <></>
-}
-function UserLog_in_out({user, homepage}){
-    return <Col>
-        <Row><Nav.Link style={{color: 'blue'}} href={"/login/"+(user?'logout':'login')+'?homepage='+homepage+(user?'&username='+user.username:'')}>
-            {user?('Logout '+user.username):'Login'}
-        </Nav.Link></Row>{' '}
-    </Col>
-}
-function UserStats(){
-    return <></>
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

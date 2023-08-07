@@ -17,7 +17,7 @@ export type User = {
   homepage: string | string[],
   ip: string | string[]
 }
-const debugAccess='2'
+const debugAccess='2' 
 export type ActiveUser = {
   name: string,
   time: number,
@@ -52,25 +52,28 @@ export default function UserLogin({ip, homepage}) {
     const [user, setUser] = useState(null)
     const [menu, setMenu] = useState('show')
     const loginLayout = {
-      backgroundColor: '#0c0',
+      backgroundImage: 'linear-gradient(to bottom right, #4b4, #7c7, #ada)',
+      //backgroundColor: '#0c0',
       padding: '10px',
       paddingLeft: '20px',
       paddingRight: '20px',
-      borderRadius: '10px'
+      borderRadius: '5px'
     }
     const registerLayout = {
-      backgroundColor: '#cc0',
+      backgroundImage: 'linear-gradient(to bottom right, #44b, #77c, #aad)',
+      //backgroundColor: '#cc0',
       padding: '10px',
       paddingLeft: '20px',
       paddingRight: '20px',
-      borderRadius: '10px'
+      borderRadius: '5px'
     }
     const menuLayout = {
-      backgroundColor: '#c0c',
+      backgroundImage: 'linear-gradient(to bottom right, #557, #77a, #aad)',
+      //backgroundColor: '#c0c',
       padding: '10px',
       paddingLeft: '20px',
       paddingRight: '20px',
-      borderRadius: '10px'
+      borderRadius: '5px'
     }
     
     useEffect(() => { 
@@ -247,8 +250,16 @@ export function Profile(props) {
   else {
     let {username, email, access} = data
     data.message = 'Welcome back '+data.username+'!'
-    return <div style={{...props.style, color: 'white', background: 'gray', borderRadius: '90px', padding: 12, textAlign: 'center'}}>
-        hello {username}!{`\<${email}\>`} Your access level is {access}.
+    return <div style={{...props.style,
+      color: 'white',
+      background: 'none repeat scroll 0 0 #000000',
+      borderRadius: '20px',
+      padding: 12,
+      textAlign: 'center',
+      border: '2px outset #bbb',
+      backgroundImage: 'linear-gradient(to bottom right, #777, #aaa, #ddd, #fff)'
+      }}>
+        hello {username}!{` \<${email}\> `} Your access level is {access}.
       </div>
   }
 }
@@ -336,15 +347,21 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   const hash = sha224(query.email?.toString().toLocaleLowerCase()+''+query.password)
   const homepage = query.homepage!=undefined?query.homepage:'bridge'
   const ip = await requestIp.getClientIp(req)
-  if(method === 'logout'){
-    await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
-  }
-  if(method === 'register'){
-    const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${hash}`
-    if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
-  }
-  if(method === 'update'){
-    await sql`UPDATE aspect_users_ SET email = ${query.nemail.toString().toLowerCase()}, hash=${sha224(query.nemail.toString().toLocaleLowerCase()+''+query.password)} WHERE hash = ${sha224(query.cemail+''+query.password)}`
-  }
+  switch(method){
+    case  'logout':
+      await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
+      break
+    case 'register':
+      const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${hash}`
+      if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
+      break
+    case 'update':
+      await sql`UPDATE aspect_users_ SET email = ${query.nemail.toString().toLowerCase()}, hash=${sha224(query.nemail.toString().toLocaleLowerCase()+''+query.password)} WHERE hash = ${sha224(query.cemail+''+query.password)}`
+      break
+    case 'login':
+      break
+    default:
+      break
+  } 
   return {props: {ip: ip, homepage: homepage}}
 }
