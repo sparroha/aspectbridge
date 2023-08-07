@@ -46,7 +46,7 @@ function EditUsername({user}: {user: Partial<User>}){
     }
     return <div>
         <label>Current Username:</label><br/>
-        <label style={textFieldStyle}>{user.username}</label><br/>
+        <label style={textFieldStyle}>{user?.username}</label><br/>
         <label>New Username:</label><br/>
         <input style={textFieldStyle} type='text' onChange={(e)=>setUsername(e.target.value)} value={username} /><br/>
         <button style={buttonStyle} onClick={updateUsername}>save Username</button>
