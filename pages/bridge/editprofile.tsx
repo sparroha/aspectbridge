@@ -1,81 +1,166 @@
 import { sha224 } from "js-sha256"
-import sql from "../../lib/,base/sql"
 import { User } from "../login/[userlogin]"
+import { useState } from "react"
+import { Col, Row } from "react-bootstrap"
 
-export default function EditProfile({user}){
-    return <div>
-        <h1>Edit Profile</h1>
-    </div>
+const buttonStyle = {
+    backgroundColor: '#777',
+    color: '#fff',
+    border: '2px solid #888',
+    borderRadius: '5px',
+    padding: '0px 5px 0px 5px',
+    margin: '5px',
 }
-async function updateProfile({collomn, value, user, password}){
-    switch(collomn){
-        case 'username':
-            //await updateUsername(value, user, hash)
-            break
-        case 'email':
-            //await updateEmail(value, user, hash)
-            break
-        default:
-            break
-    }
-    async function updateUsername(value, user: User, password) {
-        let hash = sha224(user.email?.toString().toLocaleLowerCase()+''+password)
-        const response = await fetch(`api/user/${hash}`, {
+const textFieldStyle = {
+    overflow: 'hidden',
+    backgroundColor: '#eee',
+    color: '#000',
+    border: '2px solid #888',
+    borderRadius: '5px',
+    padding: '0px 5px 0px 5px',
+    margin: '0px 5px 0px 5px',
+    width: '80%'
+}
+export default function EditProfile({user}: {user: Partial<User>}){
+    return <Row xs={1} sm={1} md={2}>
+        <Col><EditUsername user={user} /></Col>
+        <Col><EditPassword user={user} /></Col>
+        <Col><EditEmail user={user} /></Col>
+    </Row>
+}
+function EditUsername({user}: {user: Partial<User>}){
+    const [username, setUsername] = useState(user.username)
+    const updateUsername = async ()=>{
+        await fetch('/api/user/'+user.hash, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: user.username,
-                email: user.email,
-                access: 0,
-                message: '',
-                homepage: user.homepage,
-                ip: user.ip,
-                password: '',
+                id: user.id,
+                username: username,
                 collumn: 'username',
-                command: 'update',
+                command: 'update'
             })
-        }).then(res => res.json())
-        .then(data => console.log(data))
+        }).then(res => {console.log(res); res.json()}).then(data => console.log(data))
     }
-    const response = await fetch('api/updateprofile', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            command: 'update',
-            username: user.username,
-            email: ''
-        })
-    }).then(res => res.json())
-    .then(data => console.log(data))
+    return <div>
+        <label>Current Username:</label><br/>
+        <label style={textFieldStyle}>{user.username}</label><br/>
+        <label>New Username:</label><br/>
+        <input style={textFieldStyle} type='text' onChange={(e)=>setUsername(e.target.value)} value={username} /><br/>
+        <button style={buttonStyle} onClick={updateUsername}>save Username</button>
+    </div>
+}function EditEmail({user}: {user: Partial<User>}){
+    const [pass, setPass] = useState('')
+    const [newMail, setNewMail] = useState(user.email)
+    const [showPass, setShowPass] = useState(false)
+    const [showPassTip, setShowPassTip] = useState(false)
+    const [newHash, setNewHash] = useState(user.hash)
+    const sethashpass = (e)=>{
+        let p = e.target.value
+        let h = sha224(newMail?.toString().toLocaleLowerCase()+''+p)
+        setPass(p)
+        setNewHash(h)
+        console.log(h)
+        console.log(newHash)
+    }
+    const sethashmail = (e)=>{
+        let m = e.target.value
+        let h = sha224(m.toString().toLocaleLowerCase()+''+pass)
+        setNewMail(m.toLowerCase())
+        setNewHash(h)
+        console.log(h)
+        console.log(newHash)
+    }
+    const updateHashMail = async ()=>{
+        let passwordcomparehash = sha224(user.email?.toString().toLocaleLowerCase()+''+pass)
+        let passwordcorrect = passwordcomparehash == user.hash
+        if(!passwordcorrect){
+            alert('incorrect password')
+            return
+        }
+        console.log('pushing newHash to user '+user.username+': hash = '+newHash)
+
+        await fetch('/api/user/'+user.hash, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: user.id,
+                newHash: newHash,
+                email: newMail,
+                collumn: 'email',
+                command: 'update'
+            })
+        }).then(res => {console.log(res); res.json()}).then(data => console.log(JSON.stringify(data)))
+    }
+    return <div>
+        <label>Current Password:</label>
+        <input type='checkbox' onMouseOver={()=>setShowPassTip(true)} onMouseOut={()=>setShowPassTip(false)} onChange={(e)=>setShowPass(e.target.checked)} checked={showPass} />
+        <label hidden={!showPassTip}>Show Password</label>
+        <br/>
+        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={sethashpass} value={pass} />
+        <br/>
+        <label>Current Email:</label><br/>
+        <label style={textFieldStyle}>{user.email}</label>
+        <br/>
+        <label>New Email:</label><br/>
+        <input style={textFieldStyle} type={'text'} onChange={sethashmail} value={newMail} />
+        <br/>
+        <button style={buttonStyle} onClick={updateHashMail}>save Email</button>
+    </div>
 }
-/**
- * api async functions
- * @param req 
- * @param res 
- */
-async function apiSetUserAccess(req, res) {
-    const {username, access} = req.query;
-    await sql`Update aspect_users_ SET access = ${access} WHERE username = ${username}`
-    res.status(200).json({message: username+"'s user access set to "+access});
-}
-async function apiUpdateUsername(req, res) {
-    const {value, user, password} = req.query;
-    const hash = sha224(user.email?.toString().toLocaleLowerCase()+''+password)
-    const response = await fetch('api/getuserdetails', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            command: 'update',
-            collomn: 'username',
-            username: user.username,
-            email: user.email,
-        })
-    }).then(res => res.json())
-    .then(data => console.log(data))
+function EditPassword({user}: {user: Partial<User>}){
+    const [password, setPassword] = useState('')
+    const [newPass, setNewPass] = useState('')
+    const [showPass, setShowPass] = useState(false)
+    const [showPassTip, setShowPassTip] = useState(false)
+    const [newHash, setNewHash] = useState(user.hash)
+    const sethashpass = (e)=>{
+        let p = e.target.value
+        let h = sha224(user.email?.toString().toLocaleLowerCase()+''+p)
+        setNewPass(p)
+        setNewHash(h)
+        console.log(h)
+        console.log(newHash)
+    }
+    const updateHash = async ()=>{
+        let passwordcomparehash = sha224(user.email?.toString().toLocaleLowerCase()+''+password)
+        let passwordcorrect = passwordcomparehash == user.hash
+        if(!passwordcorrect){
+            alert('incorrect password')
+            return
+        }
+        console.log('pushing newHash to user '+user.username+': hash = '+newHash)
+        
+        await fetch('/api/user/'+user.hash, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: user.id,
+                newHash: newHash,
+                collumn: 'password',
+                command: 'update'
+            })
+        }).then(res => {console.log(res); res.json()}).then(data => console.log(JSON.stringify(data)))
+    }
+    return <div>
+        <label>Current Password:</label>
+        <input type='checkbox' onMouseOver={()=>setShowPassTip(true)} onMouseOut={()=>setShowPassTip(false)} onChange={(e)=>setShowPass(e.target.checked)} checked={showPass} />
+        <label hidden={!showPassTip}>Show Password</label>
+        <br/>
+        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={(e)=>setPassword(e.target.value)} value={password} />
+        <br/>
+        <label>New Password:</label>
+        <input type='checkbox' onMouseOver={()=>setShowPassTip(true)} onMouseOut={()=>setShowPassTip(false)} onChange={(e)=>setShowPass(e.target.checked)} checked={showPass} />
+        <label hidden={!showPassTip}>Show Password</label>
+        <br/>
+        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={sethashpass} value={newPass} />
+        <br/>
+        <button style={buttonStyle} onClick={updateHash}>save Password</button>
+    </div>
 }

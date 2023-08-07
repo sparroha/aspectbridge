@@ -30,7 +30,7 @@ const componentObject = navComponentObject()
 
 
 export type UserSettingsProps = {
-    user: User
+    user: Partial<User>
 }
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
@@ -38,7 +38,7 @@ export type UserSettingsProps = {
  * @returns This web site
  */
 export default function AspectBridge({ip}) {
-    const [user, setUser] = useState(null)
+    const [user, setUser]: [user: Partial<User>, setUser: React.Dispatch<any>] = useState(null)
     return <>
         <Profile ip={ip} setUser={setUser}/>
         <Headers />
@@ -46,7 +46,7 @@ export default function AspectBridge({ip}) {
             <ContainerHeader user={user?user:null}/>
             <Row id="content" className={""}>
                 <NavLeftDefault />
-                <Col sm={8} style={{background: 'white'}}>
+                <Col xs={12} sm={9} md={8} style={{background: 'white'}}>
                     <UserMenu user={user} homepage={'bridge'}/>
                 </Col>
                 {//<DynamicInfo user={user}/>
@@ -56,8 +56,8 @@ export default function AspectBridge({ip}) {
             <Row className={'justify-content-md-center'}>
                 {//<Col sm={5}><CalendarTab /></Col>
                 }
-                <NavLeftDefault />
-                <Col sm={8} style={{background: 'white'}}>Bridge Chat:<br/><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
+                <NavRightDefault />
+                <Col xs={12} sm={12} md={8} style={{background: '#eee'}}>Bridge Chat:<br/><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
                 <NavRightDefault user={user}/>
             </Row>
             {//<Footer />
@@ -137,9 +137,9 @@ function NavLeftDefault(){
                 </Row>
             </Col>
 }
-function NavRightDefault({user}){  
+function NavRightDefault({user}: {user?: Partial<User>}){  
     const [hide, setHide] = useState('hidden')
-    return <Col xs={12} sm={3} md={2} id="nav-right" className={"p0"}>
+    return <Col xs={0} sm={0} md={2} id="nav-right" className={"p0"}>
                 <Row className={'w100 h100'} style={{visibility: 'visible', position: 'relative', zIndex: '5', color: 'white'}}>{/**this error is invalid. visibility still works */}
                     <Col style={{zIndex: '5'}}>
                         Username: {user?user.username:''} <br />

@@ -10,12 +10,14 @@ import Head from "next/head"
 import useRegister, { getDB, setDB } from "../../lib/util/registry"
 
 export type User = {
-  username: string | string[],
-  email: string | string[],
-  access: string | string[],
-  message: string | string[],
-  homepage: string | string[],
-  ip: string | string[]
+  id: number,
+  username: string,
+  email: string,
+  hash: string,
+  access: number,
+  ip: string
+  message: string,
+  homepage: string,
 }
 const debugAccess='2' 
 export type ActiveUser = {
@@ -131,6 +133,15 @@ export default function UserLogin({ip, homepage}) {
               }</Col>
               <Col sm={4} lg={5}></Col>
             </Row>
+            <Row>
+              <Col sm={4} lg={5}></Col>
+              <Col xs={12} sm={4} lg={2} style={registerLayout}>{
+                method === 'forgot'?
+                <ForgotForm homepage={homepage}/>
+                :<Button variant="primary" type="submit" onClick={() => {/*setMethod('forgot')*/}}>{/*'Forgot User Email'*/}</Button>
+              }</Col>
+              <Col sm={4} lg={5}></Col>
+            </Row>
           </Container>
 }
 
@@ -214,6 +225,27 @@ function UpdateEmailForm({homepage}){
             <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
         </Form.Group>
         <Button variant="primary" type="submit" formAction={"/login/update"}>Update</Button>
+    </Form>
+}
+/**
+ * TODO
+ * @param param0 
+ * @returns 
+ */
+function ForgotForm({homepage}){
+  return <Form id={'forgotForm'}>
+        <Form.Group controlId="formEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control required type="email" name="email" placeholder={"email"}/>
+        </Form.Group>
+        <Form.Group controlId="formPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control required type="password" name="password" placeholder="password"/>
+        </Form.Group>
+        <Form.Group controlId="formHidden">
+            <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
+        </Form.Group>
+        <Button variant="primary" type="submit" formAction={"/login/forgot"}>Forgot</Button>
     </Form>
 }
 export const ACTIVEUSERS = 'active_users'

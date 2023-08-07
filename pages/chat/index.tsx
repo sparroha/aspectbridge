@@ -59,26 +59,6 @@ export default function Chat(props){
   }, [revalidate])
   
   return <Container>{<LoginNav user={user?.username?.substring(0,5)!='guest'?user:null} homepage={props.homepage?props.homepage:'chat'}/>}
-      {/*<Row>
-        <Col xs={8}>
-          <Row>
-            <Col xs={12} style={border}>
-              <Messages update={update} setUpdate={setUpdate} access={user?.access} style={{...scroll, ...border}}/>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} style={border}>
-              <Send name={name} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
-            </Col>
-          </Row>
-        </Col>
-        <Col xs={4}>
-          <Users style={scroll} revalidate={revalidate}/>
-        </Col>
-      </Row>
-      <Row style={{visibility: 'collapse', height: '0px'}}>
-        <Col xs={12}>{props.ip?<Profile ip={props.ip} setUser={setUser}/>:null}</Col>
-      </Row>*/}
       <Row>
         <Col xs={8} style={border}>
           <Messages update={update} setUpdate={setUpdate} access={user?.access} style={{...scroll, ...border}}/>
@@ -130,7 +110,7 @@ function Messages({update, setUpdate, access, style}){
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }, 
       body: JSON.stringify({
-        time: message.timestamp,
+        messageid: message.id,
         message: message.message
       })
     })

@@ -2,7 +2,7 @@ import sql from "../../../lib/,base/sql"
 
 export default async function chat(req, res) {
   const { request } = req.query
-  const { username, send, time, message, access } = req.body
+  const { username, send, time, message, access, messageid } = req.body
   const method = req.method
   if (method === 'POST') {
     try {
@@ -20,7 +20,7 @@ export default async function chat(req, res) {
           res.status(200).json({ alert: 'user added' })
           break
         case 'deletesend':
-          await sql`DELETE FROM aspect_chat_messages_ WHERE message = ${message};`
+          await sql`DELETE FROM aspect_chat_messages_ WHERE id = ${messageid};`
           res.status(200).json({ alert: 'message deleted' })
           break
         case 'deletetimesend':

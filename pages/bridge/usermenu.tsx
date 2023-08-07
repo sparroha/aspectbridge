@@ -1,8 +1,11 @@
 import { useMemo, useState } from "react"
 import { Col, Nav, Row } from "react-bootstrap"
 import { UserSettingsProps } from "./[...aspect]"
+import EditProfile from "./editprofile"
+import { User } from "../login/[userlogin]"
+import EditUsers from "./editusers"
 
-export default function UserMenu({user, homepage}){
+export default function UserMenu({user, homepage}: {user: Partial<User>, homepage: string}){
     if(!user) return <UserLog_in_out user={user} homepage={homepage} />
     const userSettings: UserSettingsProps = useMemo(() => {return {
         user: user
@@ -14,25 +17,23 @@ export default function UserMenu({user, homepage}){
         <UserSettings user={user} />
     </>
 }
-function UserSettings({user}){
+function UserSettings({user}: {user: Partial<User>}){
     const [showUserSettings, setShowUserSettings] = useState(false)
     const [modShowUsers, setModShowUsers] = useState(false)
     const [adminShowUsers, setAdminShowUsers] = useState(false)
     return <>
-        {user.access>=0?<Row style={{borderTop: '2px solid black'}}>
-            <Row>User Settings</Row>
+        {user?.access>=0?<Row style={{borderTop: '2px solid black'}}><Col sm={12}>
+            <Row>User Settings<hr/></Row>
             <Row>
-                <Col sm={3}>
+                <Col sm={1}>
                     <input style={{backgroundColor: '#777'}} type='checkbox' onChange={e=>setShowUserSettings(e.target.checked)} checked={showUserSettings} />
                 </Col>
-            </Row>
-            <Row>
-                <Col sm={3}>
-                    {showUserSettings?<>TODO: user settings</>:null} 
+                <Col sm={11}>
+                    <h4>Edit Profile</h4><br/>{showUserSettings?<EditProfile user={user}/>:null} 
                 </Col>
             </Row>
-        </Row>:null}
-        {user.access>=1?<Row style={{borderTop: '2px solid black'}}>
+        </Col></Row>:null}
+        {user?.access>=1?<Row style={{borderTop: '2px solid black'}}>
             <Row>Moderator Settings</Row>
             <Row>
                 <Col sm={3}>
@@ -45,16 +46,14 @@ function UserSettings({user}){
                 </Col>
             </Row>
         </Row>:null}
-        {user.access>=2?<Row style={{borderTop: '2px solid black'}}><Col>
+        {user?.access>=2?<Row style={{borderTop: '2px solid black'}}><Col>
             <Row>Admin Settings</Row>
             <Row>
-                <Col sm={3}>
+                <Col sm={1}>
                     <input style={{backgroundColor: '#777'}} type='checkbox' onChange={e=>setAdminShowUsers(e.target.checked)} checked={adminShowUsers} />
                 </Col>
-            </Row>
-            <Row>
-                <Col sm={3}>
-                    {adminShowUsers?<>TODO: user list</>:null} 
+                <Col sm={11}>
+                    <h4>Edit Permissions</h4><br/>{adminShowUsers?<EditUsers adminuser={user}/>:null}
                 </Col>
             </Row>
         </Col></Row>:null}
