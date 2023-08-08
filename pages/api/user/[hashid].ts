@@ -30,30 +30,30 @@ export default async function userProfileApi(req, res){
         case 'update':
         switch(collumn){
             case 'email':
-                if(!newHash) res.status(400).json({message: 'No hash provided.'})
-                if(!email) res.status(400).json({message: 'No email provided.'})
-                if(!id) res.status(400).json({message: 'No id provided.'})
+                if(!newHash) return res.status(400).json({message: 'No hash provided.'})
+                if(!email) return res.status(400).json({message: 'No email provided.'})
+                if(!id) return res.status(400).json({message: 'No id provided.'})
                 let resEmail = await sql`UPDATE aspect_users_ SET hash = ${newHash}, email = ${email} WHERE id = ${id}`
-                res.status(200).json(resEmail);
+                return res.status(200).json(resEmail);
                 break;
             case 'username':
-                if(!username) res.status(400).json({message: 'No username provided.'})
-                if(!id) res.status(400).json({message: 'No id provided.'})
+                if(!username) return res.status(400).json({message: 'No username provided.'})
+                if(!id) return res.status(400).json({message: 'No id provided.'})
                 user = await sql`UPDATE aspect_users_ SET username = ${username} WHERE id = ${id}`
-                .then(res.status(200).json(user))
+                return res.status(200).json(user)
                 break;
             case 'password':
-                if(!newHash) res.status(400).json({message: 'No hash provided.'})
-                if(!id) res.status(400).json({message: 'No id provided.'})
+                if(!newHash) return res.status(400).json({message: 'No hash provided.'})
+                if(!id) return res.status(400).json({message: 'No id provided.'})
                 let resObj = await sql`UPDATE aspect_users_ SET hash = ${newHash} WHERE id = ${id}`
                 //let resObj = setHashById(newHash, id)
-                res.status(200).json(resObj);
+                return res.status(200).json(resObj);
                 break;
             case 'access':
-                if(newAccess!=0 && !newAccess) {res.status(400).json({message: 'No new access provided.'});break;}
-                if(!id) res.status(400).json({message: 'No id provided.'})
+                if(newAccess!=0 && !newAccess) return res.status(400).json({message: 'No new access provided.'})
+                if(!id) return res.status(400).json({message: 'No id provided.'})
                 user = await sql`UPDATE aspect_users_ SET access = ${newAccess} WHERE id = ${id}`
-                res.status(200).json(user);
+                return res.status(200).json(user);
                 break;
             default:
                 break;
@@ -63,10 +63,10 @@ export default async function userProfileApi(req, res){
             break;
     }
     } catch (error) {
-        res.status(400).json({message: error})
+        return res.status(400).json({message: error})
     }
     //if no hash is provided, return an error
-    res.status(400).json({message: 'Bad Request.'})
+    return res.status(400).json({message: 'Bad Request.'})
     
 }
 async function setHashById(hash: string, id: number) {

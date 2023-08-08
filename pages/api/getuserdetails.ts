@@ -15,18 +15,18 @@ export default async function getUserDetails(req, res): Promise<Partial<User>> {
         case 'delete':
             if(!username) return res.status(400).json({message: 'No username provided.'})
             let deluser = await deleteUser(username)
-            res.status(200).json(deluser);
+            return res.status(200).json(deluser);
             break;
         case 'deleteid':
             if(!id) return res.status(400).json({message: 'No id provided.'})
             let deluserid = await deleteUserById(id)
-            res.status(200).json(deluserid);
+            return res.status(200).json(deluserid);
             break;
         case 'sethashid':
             if(!hash) return res.status(400).json({message: 'No hash provided.'})
             if(!id) return res.status(400).json({message: 'No id provided.'})
             let uhash = await setHashById(hash, id)
-            res.status(200).json(uhash);
+            return res.status(200).json(uhash);
             break;
         case 'getbyemail':
             break;
@@ -42,7 +42,7 @@ export default async function getUserDetails(req, res): Promise<Partial<User>> {
     else if( email ) user = await getUserByEmail(email)
     else if( username ) user = await getUserByUsername(username)
     else return res.status(400).json({message: 'No email, username or hash provided.'})
-    res.status(200).json(user);
+    return res.status(200).json(user);
 }
 //ONLY FOR LOGIN
 async function getUserByHash(hash, ip) {
