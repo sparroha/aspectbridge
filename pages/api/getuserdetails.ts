@@ -9,8 +9,8 @@ export default async function getUserDetails(req, res): Promise<Partial<User>> {
     if(command) switch(command){
         case 'getall':
             user = await getAllUsers()
-            if(!user) res.status(400).json({message: 'No users found.'})
-            res.status(200).json(user);
+            if(!user) return res.status(400).json({message: 'No users found.'})
+            return res.status(200).json(user);
             break;
         case 'delete':
             if(!username) return res.status(400).json({message: 'No username provided.'})
