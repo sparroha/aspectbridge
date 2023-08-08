@@ -10,7 +10,7 @@ export default function useDomainRoot(props){
         console.log('@useDomainRoot('+domain+'||'+window.location.href+')')
         if(domain != 'localhost:3000/'){
             //if loading from 'aspectbridge.' or 'www.' then redirect to [...aspect]
-            if(domain == "aspectbridge" || domain == "www"){router.push({pathname: '/bridge/'+(username?username:(domain?domain:'')), query: router.query})}
+            if(domain == "aspectbridge" || domain == "www"){router.push({pathname: '/bridge/'+(username?username:''), query: router.query})}
             //if loading from 'logan.' then redirect to [josh/[...client]...aspect]
             else if(domain == "logan"){router.push({pathname: '/josh/'+(username?username:(domain?domain:'')), query: router.query})}
         }

@@ -7,7 +7,7 @@ export default function NavIndex({ user, root }) {
     const domain = getDomain()
     const router = useRouter()
     const [local, setLocal] = useState(domain=='localhost:3000/'?'true':'false')
-    const [homepage, setHomepage] = useState(root || router.pathname)
+    const [homepage, setHomepage] = useState(root || router.pathname.split('/')[1])
     const [search, setSearch] = useState('')
     /*useEffect(()=>{
         return setLocal(domain=='localhost:3000/'?'true':'false')
@@ -73,7 +73,7 @@ export default function NavIndex({ user, root }) {
                             <NavPartners />{' '}
                             <NavProjects user={user}/>{' '}
                             <NavResources />{' '}
-                            <Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+homepage+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}
+                            <Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+(root || homepage)+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}
                             
                         </Nav>{' '}
                     </Navbar.Collapse>
