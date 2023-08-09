@@ -30,17 +30,47 @@ export default function NavIndex({ user, root }) {
         </NavDropdown>)
     }
     function NavProjects({user}){
-        return user&&user.access=='2'?(
-            <NavDropdown title="Projects" id="navbarProjectsDropdown">
-                <Nav.Link href="/dragons">Dragons</Nav.Link>
-                <Nav.Link href="/grid/index.html">Grid</Nav.Link>
+        const [disabled, setDisabled] = useState(true)
+        const [selected, setSelected] = useState('')
+        useEffect(()=>{
+            if(user&&(user.access=='2'||user.access=='1')){
+                setDisabled(false)
+            }else{
+                setDisabled(true)
+            }
+        },[user])
+        const ifstyle = {
+            width: 250,
+            height: 200,
+            border: '1px solid black',
+            overflow: 'hidden',
+        }
+        const plinks = [
+            ['0','canvas'],
+            ['0','chat'],
+            ['0','cost'],
+            ['1','cost_dev'],
+            ['0','dragons'],
+            ['0','gather'],
+            ['0','sandbox'],
+            ['1','slidersCss'],
+            ['1','talents'],
+            ['0','toolbelt']
+        ]
+        return <NavDropdown title="Projects" id="navbarProjectsDropdown">
+                {
+                    plinks.map((link, i)=>{
+                        return <Nav.Link href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>{link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"https://aspectbridge.com/"+link[1]}></iframe>}</Nav.Link>
+                    })
+                }
                 <NavDropdown.Divider />
-                <Nav.Link href="/sandbox/wasd" disabled>Sandbox: wasd</Nav.Link>
+                <label>Static Sites</label>
+                <Nav.Link href="/grid/index.html" disabled={disabled}>Grid{/*public static*/}</Nav.Link>
+                <Nav.Link href="/sandbox/wasd/index.html"  disabled={disabled}>Sandbox: wasd{/*public static*/}</Nav.Link>
             </NavDropdown>
-        ):<></>
     }
     function NavResources(){
-        return <NavDropdown title="Resources" id="navbarResourcesDropdown">
+        return <NavDropdown title="Resources" id="navbarResourcesDropdown" disabled>
             <NavDropdown.Item href="https://javascript.plainenglish.io/connect-mysql-and-authentication-on-next-js-761d12340e4f">AccessMysql...</NavDropdown.Item>
             <NavDropdown.Item href="https://www.phpmyadmin.co/server_databases.php?db=" disabled>phpMyAdmin</NavDropdown.Item>
             <NavDropdown.Divider />

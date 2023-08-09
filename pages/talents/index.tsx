@@ -25,5 +25,5 @@ export default function Talents(props: any){
     const P1 = useSWR('player1', ()=>{})
     const P2 = useSWR('player2', ()=>{})
 
-    return <></>
+    return <>New Project: Not Started</>
 }
