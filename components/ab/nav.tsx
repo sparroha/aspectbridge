@@ -57,7 +57,7 @@ export default function NavIndex({ user, root }) {
             ['1','talents'],
             ['0','toolbelt']
         ]
-        return <NavDropdown title="Projects" id="navbarProjectsDropdown">
+        return <NavDropdown title="Projects" id="navbarProjectsDropdown" onClick={()=>setSelected('')}>
                 {
                     plinks.map((link, i)=>{
                         return <Nav.Link href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>{link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"https://aspectbridge.com/"+link[1]}></iframe>}</Nav.Link>
