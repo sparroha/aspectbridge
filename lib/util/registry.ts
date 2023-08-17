@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 
 /**
@@ -40,7 +40,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
     
     //useLog('@useRegister://REGISTRY_NAME: '+registry+' :: REGISTRY: '+JSON.stringify(reg))
     const [currentsave, setCurentSave] = useState(registry)//current save
-    const [registryLoaded, setRegistryLoaded] = useState(false)
+    const registryLoaded = useRef(false)
     const [register, setRegister] = useState(JSON.stringify(defaultValue))//register setter and render function
     const {data, error} = useSWR('../api/registry/'+registry, { refreshInterval: 500 })//get data from database
     //useLog('@useRegister://REGISTER: '+JSON.stringify(register.current)+' :: LOADED: '+registryLoaded)
@@ -51,12 +51,11 @@ export default function useRegister(registry: string, defaultValue: any):[string
     },[data])
     //INIT
     //initialize register from database
-    async function loadDataOnce(registry, register){
-        if(registryLoaded) return
-        if(!registry) {console.log('registry: '+registry); return}
-        if(registry ==  null) {console.log('registry: '+registry); return}
-        //if(register)return//overguard
-        return getDB(registry).then(data=>{
+    async function loadDataOnce(registry,  signal?: AbortSignal){
+        if(registryLoaded.current) return
+        if(!registry) {console.log('@useRegister://REGISTER: '+'registry: '+registry); return}
+        if(registry ==  null) {console.log('@useRegister://REGISTER: '+'registry: '+registry); return}
+        return getDB(registry, signal).then(data=>{
             //if(!data) return
             if(data == null ) return
             if(data == undefined) return
@@ -67,19 +66,21 @@ export default function useRegister(registry: string, defaultValue: any):[string
             }
             //console.log('@useRegister.loadDataOnce://fetch data to replace default register: '+register)
             //console.log('@useRegister.loadDataOnce://fetch with data for '+registry+': '+JSON.stringify(data))
-            setRegistryLoaded(true)
+            registryLoaded.current = true
         }).catch(err=>console.log('@useRegister.loadDataOnce://fetch error: '+err))
     }
 
     //load saved data once and if data name changes
     useEffect(()=>{
+        let controller = new AbortController();
         if(!registry)return
         if(registry != currentsave){
-            setRegistryLoaded(false)
+            registryLoaded.current = false
             setCurentSave(registry)
         }
-        loadDataOnce(registry, register)
-    },[registry])//load registry
+        loadDataOnce(registry/*, controller.signal*/)
+        return () => controller?.abort();
+    },[registry/*, registryLoaded.current*/])//load registry
     //END INIT
 
     const saveData = useCallback((data) => {//save data to database{//works and tested
@@ -87,7 +88,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
         //console.log('@useRegister.saveRegister://set register '+JSON.stringify(registry)+': '+JSON.stringify(data))
         setDB(registry, data)
     },[registry])
-    return [register, saveData, registryLoaded]
+    return [register, saveData, registryLoaded.current]
 }
 
 //updates database with current register ref
@@ -104,8 +105,8 @@ export async function setDB(name: string, data: any){
     })
 }
 
-export async function getDB(name: string){
-    return fetch(`/api/registry/${name}`)
+export async function getDB(name: string, signal?: AbortSignal){
+    return fetch(`/api/registry/${name}`,{signal: signal})
     .then(res=>{
         //console.log('@getDB://fetch res: '+JSON.stringify(res))//always {}
         return res.json()

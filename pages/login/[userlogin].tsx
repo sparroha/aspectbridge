@@ -258,14 +258,14 @@ export function Profile(props) {
     if(!data) return
     setUser(data)
 
-    console.log('-mounting activeUsers: '+activeUsers)
-    console.log('--mounting: '+JSON.stringify(data))
+    //console.log('@Profile@[userlogin]:-mounting activeUsers: '+activeUsers)
+    //console.log('@Profile@[userlogin]:--mounting: '+JSON.stringify(data))
     
     /**SET ACTIVE USERS */
     activateUser(data.username)
 
     return () => {
-      console.log('unmounting: '+JSON.stringify(data))
+      //console.log('@Profile@[userlogin]:-unmounting: '+JSON.stringify(data))
     }
   },[data,usersloaded])
 
@@ -298,10 +298,10 @@ export function Profile(props) {
 
 export async function activateUser(username){
   return getDB(ACTIVEUSERS).then(data=>{
-    console.log('activate user '+username+' as '+JSON.stringify(data))
+    //console.log('@activateUser@[userlogin]:-activate user '+username+' as '+JSON.stringify(data))
     if(data == null ) return
     if(data == undefined) return
-    console.log('starting activate user '+username+' as '+data)
+    //console.log('@activateUser@[userlogin]:-starting activate user '+username+' as '+data)
     if(data == 0 || data.length == 0) {setDB(ACTIVEUSERS, [{name: username, time: new Date().getTime()}]); return}
     let actuse = data
     setDB(ACTIVEUSERS, 

@@ -7,8 +7,8 @@ import { PromiseReturn } from './type-util'
  */
 const unsafePool = mysql.createPool({
   host: process.env.MYSQL_HOST,
-  database: process.env.MYSQL_DB || 'anthymn_aspectbridge',
-  user: process.env.MYSQL_USER || 'anthymn_aspectbridge',
+  database: process.env.MYSQL_DB,
+  user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASS,
 }).promise()
 
