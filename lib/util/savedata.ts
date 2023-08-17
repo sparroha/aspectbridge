@@ -1,8 +1,8 @@
 import { useCallback, useRef } from "react";
 import useSWR from "swr";
 
-export default function useSave(uuid: string){
-    const {data, error} = useSWR(`/api/registry/${uuid}`, { refreshInterval: 1000 })
+export default function useSave(uuid: string, interval?: number){
+    const {data, error} = useSWR(`/api/registry/${uuid}`, { refreshInterval: interval || 1000 })
     const parseData = useRef(data)
     try{
         parseData.current = JSON.parse(data)
@@ -13,7 +13,7 @@ export default function useSave(uuid: string){
         method: 'POST',
         body: JSON.stringify(data)
     }).then(res => res.json())
-    .then(resdata => console.log('Save Successful:', resdata))
+    //.then(resdata => console.log('Save Successful:', resdata))
     .catch(error => {
         console.log('error saving:'+JSON.stringify(error));
     }),[uuid])

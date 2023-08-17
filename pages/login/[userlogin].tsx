@@ -252,7 +252,7 @@ export const ACTIVEUSERS = 'active_users'
 export function Profile(props) {
   const [activeUsers, registerActiveUsers, usersloaded]:[string, Function, boolean] = useRegister(ACTIVEUSERS,[])
   const {ip, setUser, hash, setActiveUsers} = props
-  const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 1000})
+  const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 10000})
   const debug = props.debug
   useEffect(() => {
     if(!data) return
