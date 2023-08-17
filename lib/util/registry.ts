@@ -96,9 +96,7 @@ export async function setDB(name: string, data: any){
     //console.log('@setDB://set '+name+' to '+JSON.stringify(data))
     await fetch(`/api/registry/${name}`, {
         method: 'POST',
-        body: JSON.stringify({
-            registry_data: data
-        })
+        body: JSON.stringify(data)
     }).then(res => {
         //console.log('@setDB://res: '+JSON.stringify(res))//always {}
         return res.json()

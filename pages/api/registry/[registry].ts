@@ -2,7 +2,7 @@ import sql from "../../../lib/,base/sql"
 
 export default async function registry(req, res) {
 	const { registry , command, id } = req.query //NAME: the dynamic file name associated with the target registry
-	const { registry_data } = req.body?JSON.parse(req.body):'default' //DATA: the data to be stored in the registry || the command to run on registry
+	const registry_data = req.body || 'default' //DATA: the data to be stored in the registry || the command to run on registry
     const reset = false //(req.query.reset == 'resetregistries') //RESET: if true, reset the registry
 	const method = req.method
 	
@@ -35,17 +35,16 @@ export default async function registry(req, res) {
                 break
             default: //aka update registry
 				//if(!registry_data) break
-                await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${registry}, ${JSON.stringify(registry_data) || 0}) ON DUPLICATE KEY UPDATE registry_data = ${JSON.stringify(registry_data) || 0};`
-                res.status(200).json({ alert: 'registry '+registry+' updated: '+ registry_data +' :'+JSON.parse(req.body).registry_data })
+                await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${registry}, ${registry_data}) ON DUPLICATE KEY UPDATE registry_data = ${registry_data};`
+                res.status(200).json({ alert: 'registry '+registry+' updated: ', registry_data })
                 break
 			}
 		} catch (error) {
 			res.status(500).json({
-				alert: 'Server error',
+				alert: 'Server error for '+registry+' : '+registry_data,
 				name: registry,
 				error: error,
-				data: registry_data,
-				body: JSON.parse(req.body)
+				//body: JSON.parse(req.body)
 			})
 		}
 	} else if (method === 'GET') { try {
@@ -79,11 +78,10 @@ export default async function registry(req, res) {
 					else res.status(200).json({ alert: 'no registries found' })
 				}else{
 					const [register] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${registry};`
-					if (register) {res.status(200).json(JSON.parse(register.registry_data))}
-
+					if (register) {res.status(200).json(register.registry_data)}
 					else{
-						await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${registry}, ${JSON.stringify(registry_data) || 'default'}) ON DUPLICATE KEY UPDATE registry_data = ${JSON.stringify(registry_data) || 0};`
-						res.status(200).json({ alert: 'registry '+registry+' updated: '+ JSON.stringify(registry_data) +' :'+JSON.parse(req.body).registry_data })
+						await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${registry}, ${registry_data || 'default'}) ON DUPLICATE KEY UPDATE registry_data = ${registry_data || 'default'};`
+						res.status(200).json({ alert: 'registry '+registry+' updated: '+ registry_data})
 					}
 				}
 				break
@@ -91,11 +89,10 @@ export default async function registry(req, res) {
 		
 	} catch (error) {
 		res.status(500).json({
-			alert: 'Server error',
+			alert: 'Server error for '+registry+' : '+registry_data,
 			name: registry,
 			error: error,
-			data: registry_data,
-			body: JSON.parse(req.body)
+			//body: JSON.parse(req.body)
 		})
 	}}
 }

@@ -302,8 +302,8 @@ export async function activateUser(username){
     if(data == null ) return
     if(data == undefined) return
     //console.log('@activateUser@[userlogin]:-starting activate user '+username+' as '+data)
-    if(data == 0 || data.length == 0) {setDB(ACTIVEUSERS, [{name: username, time: new Date().getTime()}]); return}
-    let actuse = data
+    if(data == "default" || data.length == 0) {setDB(ACTIVEUSERS, [{name: username, time: new Date().getTime()}]); return}
+    let actuse = JSON.parse(data)
     setDB(ACTIVEUSERS, 
       [...actuse.filter(
         ({time, name}) => {
@@ -331,7 +331,7 @@ export function ProfileByIp({ip, setUser}) {
   },[data])
   if (error) {
     return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
-        {JSON.stringify(error)}:User not cached. Please login or register.
+        {error}:User not cached. Please login or register.
       </Col></Row>
   }
   if (!data) return <div>loading...</div>

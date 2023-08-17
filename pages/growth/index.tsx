@@ -1,36 +1,52 @@
 import { relative } from "path";
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { LoginNav, Profile } from "../login/[userlogin]";
 import { GetServerSideProps } from "next";
 import useSave from "../../lib/util/savedata";
 
+type Storehouse = {[key: string]: number}
+
+type Crop = {
+    planted: boolean,
+    resource: string,
+    growth: number,
+    plantedAt: number
+}
+type CropFarm = [[Crop,Crop,Crop],[Crop,Crop,Crop],[Crop,Crop,Crop]]
+const initialGrid: CropFarm = [//spread deep
+    [//shallow
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+    ],
+    [
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+    ],
+    [
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+        {planted: false, resource: '', growth: 0, plantedAt: null},
+    ]
+]
 export default function Growth(props){
+
+    /**
+     * Initialize user specific and data
+     */
     const [init, setInit] = useState(false)
     const [user, setUser] = useState(null)
-    const {data, error, save} = useSave(user?.username)
-    const initialGrid = [//spread deep
-        [//shallow
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-        ],
-        [
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-        ],
-        [
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-            {planted: false, resource: '', growth: 0, plantedAt: null},
-        ]
-    ]
+    const {data, error, save} = useSave('growth'+user?.username)
+    const safeToInit: boolean = useMemo(()=> data && user && !init,[data, user, init])
 
     
-    //register>>
-    const [resource, setResource] = useState({fruit: 0, herb: 0, grain: 0})
-    const [grid, dispatch] = useReducer((state, action)=>{
+    /**
+     * Local State
+     */
+    const [resource, setResource]: [Storehouse, Dispatch<SetStateAction<Storehouse>>] = useState({fruit: 0, herb: 0, grain: 0})
+    const [grid, dispatch]: [CropFarm, Dispatch<any>] = useReducer((state, action)=>{
         switch(action.type){
             case 'init':
                 let i = action.payload
@@ -79,7 +95,11 @@ export default function Growth(props){
                 return state
         }
     }, initialGrid)
-    const safeToInit: boolean = useMemo(()=> data && user && !init,[data, user, init])
+    const safeToSave: boolean = useMemo(()=> data && grid && init && user,[data, grid, init, user])
+
+    /**
+     * Load initial data to local state
+     */
     useEffect(()=>{
         if(!safeToInit) return
         //console.log('loadedData', data)
@@ -87,7 +107,10 @@ export default function Growth(props){
         dispatch({type: 'init', payload: data?.grid || initialGrid})
         setResource((r) => data.resource || r)
     },[safeToInit])
-    const safeToSave: boolean = useMemo(()=> data && grid && init && user,[data, grid, init, user])
+
+    /**
+     * Save local state to data
+     */
     useEffect(()=>{
         if(!safeToSave) return
         //console.log('Saveing grid to data')
@@ -167,7 +190,7 @@ export default function Growth(props){
                 </Col>})}
         </Row>})}
         {//'GRID DATA:'+JSON.stringify(grid)
-        }
+        }<br/>
         {//'RESOURCE:'+JSON.stringify(resource)
         }
     </Container>

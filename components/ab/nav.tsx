@@ -55,12 +55,13 @@ export default function NavIndex({ user, root }) {
             ['0','sandbox'],
             ['1','slidersCss'],
             ['1','talents'],
-            ['0','toolbelt']
+            ['0','toolbelt'],
+            ['0','growth']
         ]
         return <NavDropdown title="Projects" id="navbarProjectsDropdown" onClick={()=>setSelected('')}>
                 {
                     plinks.map((link, i)=>{
-                        return <Nav.Link href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>{link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"https://aspectbridge.com/"+link[1]}></iframe>}</Nav.Link>
+                        return <Nav.Link key={i} href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>{link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"/"+link[1]}></iframe>}</Nav.Link>
                     })
                 }
                 <NavDropdown.Divider />

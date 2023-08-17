@@ -1,8 +1,46 @@
-import { useCallback, useMemo, useReducer, useRef } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import useLog from "../components/conlog";
+import useSave from "../lib/util/savedata";
 
-export default function Examples(){
+export default function ExampleMain(){
+
+    const initialState = {}
+    /**
+     * Initialize user specific and data
+     */
+    const [init, setInit] = useState(false)
+    const [user, setUser] = useState(null)
+    const {data, error, save} = useSave('ExampleApp_uuid:'+user?.username)
+    const safeToInit: boolean = useMemo(()=> data && user && !init,[data, user, init])
+    /**
+     * Local State
+     */
+    const [localState, setLocalState] = useState(initialState)
+    const safeToSave: boolean = useMemo(()=> data && localState && init && user,[data, localState, init, user])
+
+    /**
+     * Load initial data to local state
+     */
+    useEffect(()=>{
+        if(!safeToInit) return
+        setLocalState((state)=> data || state)
+    },[safeToInit])
+    /**
+     * Save local state to data
+     */
+    useEffect(()=>{
+        if(!safeToSave) return
+        //console.log('Saveing grid to data')
+        save(localState)
+    },[localState])
+
+
+
+
+
+
+
 
     //useReducer => dynamic state
     const add = 'increment'
