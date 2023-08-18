@@ -4,6 +4,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { LoginNav, Profile } from "../login/[userlogin]";
 import { GetServerSideProps } from "next";
 import useSave from "../../lib/util/savedata";
+import { TLitter, alephbeth, getTLitter } from "../../components/hebrew";
 
 type Storehouse = {[key: string]: number}
 
@@ -13,6 +14,8 @@ type Crop = {
     growth: number,
     plantedAt: number
 }
+type Mana = {[key: number]: TLitter}
+
 type CropFarm = Crop[][]
 const initialGrid: CropFarm = [//spread deep
     [//shallow
@@ -32,6 +35,7 @@ const initialGrid: CropFarm = [//spread deep
     ]
 ]
 export default function Growth(props){
+    const [initState, setInitState] = useState({})
 
     /**
      * Initialize user specific and data
@@ -45,7 +49,7 @@ export default function Growth(props){
     /**
      * Local State
      */
-    const [resource, setResource]: [Storehouse, Dispatch<SetStateAction<Storehouse>>] = useState({fruit: 0, herb: 0, grain: 0})
+    const [resource, setResource]: [Storehouse, Dispatch<SetStateAction<Storehouse>>] = useState({})
     const [grid, dispatch]: [CropFarm, Dispatch<any>] = useReducer((state: CropFarm, action)=>{
         switch(action.type){
             case 'init':
@@ -53,8 +57,8 @@ export default function Growth(props){
                 setInit(true)
                 return i
             case 'newPlot':
-                if(resource.fruit<7||resource.herb<7||resource.grain<7){
-                    alert('You need 7 or each resource to purchase a new plot!')
+                if(resource.keth<8){
+                    alert('You need 8 or walls plot!')
                     return state
                 }
                 //let vacantFound = false
@@ -65,59 +69,59 @@ export default function Growth(props){
                 let newPlotState 
                 if(rows < 12 && cols >= 12){
                     newPlotState = [...state, [{planted: false, resource: '', growth: 0, plantedAt: null}]]
-                    setResource((f)=>{return {fruit: f.fruit-7, herb: f.herb-7, grain: f.grain-7}})
+                    setResource((f)=>{return {...f, keth: f.keth-8}})
                 }
                 else if(cols < 12) {
                     newPlotState = state.map((row,i)=>{
                         if(i!=rows-1) return row
                         return [...row, {planted: false, resource: '', growth: 0, plantedAt: null}]
                     })
-                    setResource((f)=>{return {fruit: f.fruit-7, herb: f.herb-7, grain: f.grain-7}})
+                    setResource((f)=>{return {...f, keth: f.keth-8}})
                 }
                 else {
                     newPlotState = state
                     console.log('You have reached the maximum number of plots!')
                 }
                 return newPlotState
-
-                /*if(rows>=12){
-                    console.log('You have reached the maximum number of rows!')
-                    if(cols>=12){
-                        console.log('You have reached the maximum number of plots!')
-                        return state
-                    }else return state.map((row,i)=>{
-                        if(vacantFound) return row
-                        if(row.length<12) {
-                            vacantFound = true
-                            setResource((f)=>{return {fruit: f.fruit-7, herb: f.herb-7, grain: f.grain-7}})
-                            return [...row, {planted: false, resource: '', growth: 0, plantedAt: null}]
-                        }
-                        return row
-                    })
-                }else if(cols>=12){
-                        console.log('You have reached the maximum number of plots for row '+rows+'!')
-                        setResource((f)=>{return {fruit: f.fruit-7, herb: f.herb-7, grain: f.grain-7}})
-                        return [...state, [{planted: false, resource: '', growth: 0, plantedAt: null}]]
-                }*/
-                //console.log('something went wrong adding plots.')
-                //return state
-                /*let newPlotState = state.map((row,i)=>{
-                    if(vacantFound) return row
-                    if(row.length<12) {
-                        vacantFound = true
-                        let newRow = [...row, {planted: false, resource: '', growth: 0, plantedAt: null}]
-                        setResource((f)=>{return {fruit: f.fruit-2, herb: f.herb-2, grain: f.grain-2}})
-                        return newRow
-                    }
-                    return row
-                })*/
-                //return newPlotState
-            case 'plant'://dispatch({type: 'plant', payload: [0,0]})
+            case 'plant':
+                let crop: Crop = {planted: true, resource: action.payload.resource, growth: 1, plantedAt: Date.now()}
+                let loc = action.payload.location
+                
+                //setResource((f)=>{return {fruit: f.fruit-7, herb: f.herb-7, grain: f.grain-7}})
                 let plantState = state.map((a,i)=>
                     a.map((b,j)=>{
-                        if(i==action.payload.location[0]&&j==action.payload.location[1]&&b.planted==false){
-                            console.log('planted')
-                            return {...b, planted: true, plantedAt: Date.now(), resource: action.payload.resource, growth: 1}
+                        if(i==loc[0]&&j==loc[1]&&b.planted==false){
+                            switch(action.payload.resource){
+                                case 'aleph':
+                                    if(resource.nun<7){
+                                        alert('You need 7 nun to attract an aleph!')
+                                        return b
+                                    }else{
+                                        setResource((f)=>{return {...f, nun: f.nun-7}})
+                                        //console.log('planted')
+                                        return {...b, ...crop}
+                                    }
+                                case 'beth':
+                                    if(resource.aleph<7 || resource.nun<7*7){
+                                        alert('You need 7 aleph and 7*7 nun to build a beth!')
+                                        return b
+                                    }else{
+                                        setResource((f)=>{return {...f, aleph: f.aleph-7, nun: f.nun-7*7}})
+                                        //console.log('planted')
+                                        return {...b, ...crop}
+                                    }
+                                case 'nun':
+                                    if(resource.nun<alephbeth['nun'].order){
+                                        alert('You need '+alephbeth['nun'].order+' nun to plant nun!')
+                                        return b
+                                    }else{
+                                        setResource((f)=>{return {...f, nun: f.nun-alephbeth['nun'].order}})
+                                        //console.log('planted')
+                                        return {...b, ...crop}
+                                    }
+                                default:
+                                    return {...b, ...crop}
+                            }
                         }
                         return b
                     })
@@ -128,10 +132,24 @@ export default function Growth(props){
                     a.map((b,j)=>{
                         if(b.planted){
                             if(b.growth>=100){
-                                console.log('harvested')
+                                console.log('harvested '+b.resource)
                                 setResource((f)=>{
                                     let newresource = {...f}
-                                    newresource[b.resource]++
+                                    switch(b.resource){
+                                        case 'aleph':
+                                            newresource.aleph = (newresource.aleph || 0)+1
+                                            newresource.nun = (newresource.nun || 0)+1
+                                            break
+                                        case 'beth':
+                                            newresource.aleph = (newresource.aleph || 0)+5
+                                            newresource.beth = (newresource.beth || 0)+1
+                                            break
+                                        case 'nun':
+                                            newresource.nun = (newresource.nun || 0)+alephbeth.nun.order*alephbeth.nun.order
+                                        default:
+                                            newresource[b.resource] = (newresource[b.resource] || 0)+1
+                                            break
+                                    }
                                     return newresource
                                 })
                                 return {...b, planted: false, plantedAt: null, resource: '', growth: 0}
@@ -160,12 +178,30 @@ export default function Growth(props){
     /**
      * Load initial data to local state
      */
+    /*useEffect(()=>{
+        setInitState((state)=> {
+            let s = state
+            Object.keys(alephbeth).forEach((element) => {
+                s[element] = 0
+            });
+            setResource(s)
+            return s
+        })
+    },[])*/
     useEffect(()=>{
         if(!safeToInit) return
         //console.log('loadedData', data)
         //console.log('loadedGrid', grid)
+        setInitState((state)=> {
+            let s = state
+            Object.keys(alephbeth).forEach((element) => {
+                s[element] = 0
+            });
+            setResource({...s, ...data.resource})
+            return s
+        })
         dispatch({type: 'init', payload: data?.grid || initialGrid})
-        setResource((r) => data.resource || r)
+        //setResource((r) => data.resource || r)
     },[safeToInit])
 
     /**
@@ -184,7 +220,27 @@ export default function Growth(props){
         if(!safeToSave) return
         const f = setInterval(() => {
             //setProgress((p)=>p<100?p+1:0)
+            setResource((f)=>{
+                let newresource = {...f}
+                Object.entries(newresource).forEach((element) => {
+                    switch(element[0]){
+                        case 'aleph':
+                            break
+                        case 'beth':
+                            let alp = 0
+                            for(let x=0;x<element[1];x++){
+                                alp += (Math.floor(Math.random()*22))==2?1:0
+                            }
+                            newresource.aleph = (newresource.aleph || 0)+alp
+                            break
+                        default:
+                            break
+                    }
+                });
+                return {...f, ...newresource}
+            })
             dispatch({type: 'grow', payload: 5})
+            
         }, 5000); 
         return () => clearInterval(f);
     }, [safeToSave])
@@ -226,21 +282,42 @@ export default function Growth(props){
         </div>
         <Row>
             <Col>
-                <button onClick={
-                    (e)=>{dispatch({type: 'harvest', payload: null})}
-                }>harvest</button>
+                <Row>
+                    <Col>
+                        <button onClick={
+                            (e)=>{dispatch({type: 'harvest', payload: null})}
+                        }>harvest</button>
+                    </Col>
+                    <Col>
+                        <button onClick={
+                            (e)=>{dispatch({type: 'newPlot', payload: null})}
+                        }>newPlot</button>
+                    </Col>
+                </Row>
+                <Row>{Object.entries(resource).map((a,i)=>{
+                    try{
+                        return (alephbeth[a[0]].order<=22)?<Col xs={4} sm={3} md={2} lg={1} key={i} >
+                            <div style={{float: 'left'}}>{a[0]}:</div>
+                            <div style={{float: 'left', width: '25px', height: 25+'px', borderRadius: '50%', border: '1px solid black',
+                                backgroundColor:
+                                    alephbeth[a[0]]?.order%7==1?'red':
+                                    alephbeth[a[0]]?.order%7==2?'orange':
+                                    alephbeth[a[0]]?.order%7==3?'yellow':
+                                    alephbeth[a[0]]?.order%7==4?'green':
+                                    alephbeth[a[0]]?.order%7==5?'skyblue':
+                                    alephbeth[a[0]]?.order%7==6?'violet':
+                                    alephbeth[a[0]]?.order%7==0?'white':
+                                    '#777',
+                                textAlign: 'center', verticalAlign: 'middle'}}
+                            >{a[1]}</div>
+                        </Col>:null
+                    }catch(e){
+                        console.log(e)
+                        console.log(a[0])
+                        return null
+                    }
+                })}</Row>
             </Col>
-            <Col>
-                <button onClick={
-                    (e)=>{dispatch({type: 'newPlot', payload: null})}
-                }>newPlot</button>
-            </Col>
-            {Object.entries(resource).map((a,i)=>{
-                return <Col key={i}>
-                    <div style={{float: 'left'}}>{a[0]}:</div>
-                    <div style={{float: 'left', width: '25px', height: 25+'px', borderRadius: '50%',backgroundColor: a[0]=='fruit'?'red':a[0]=='herb'?'lightgreen':a[0]=='grain'?'tan':'#777', textAlign: 'center', verticalAlign: 'middle'}}>{a[1]}</div>
-                </Col>
-            })}
         </Row>
         {grid.map((row, i)=>{return <Row key={-i}>
             {row.map((cell, j)=>{return <Col key={i+j}>
@@ -265,14 +342,32 @@ export function CropPlot({cell, dispatch, i, j}){
             (e)=>{e.target.value && dispatch({type: 'plant', payload: {location: [i,j], resource: e.target.value}})}
         }>
             <option></option>
-            <option>fruit</option>
-            <option>herb</option>
-            <option>grain</option>
+            {Object.entries(alephbeth).map((a,i)=>{
+                return(a[1].order<=22)?<option key={i}>{a[0]}</option>:null
+            })}
         </select>
         
-        <div id={'growth_progress'} style={{position: 'absolute', left: '0px', bottom: '0px', width: '10px', height: '100px', backgroundImage: 'linear-gradient(to top, red, orange, yellow, yellow, lightgreen, lightgreen, lightgreen, green, green, green, green, green, green, green, blue, purple, white)'}}>
-            <div id={'growth_progress'} style={{position: 'absolute', left: '0px', top: '0px', width: '10px', height: 100-cell.growth+'px', backgroundColor: '#777'}}></div>
+        <div id={'growth_progress'} style={{position: 'absolute', left: '0px', bottom: '0px', width: '10px', height: '100px', backgroundImage: 'linear-gradient(to top, red, orange, yellow, yellow, lightgreen, lightgreen, lightgreen, green, green, green, green, green, green, green, blue, violet, white)'}}>
+            <div id={'growth_progress'} style={{position: 'absolute', left: '0px', top: '0px', width: '10px', height: 100-(cell.growth<100?cell.growth:100)+'px', backgroundColor: '#777'}}></div>
         </div>
-        <div id={'growth_resource'} style={{position: 'absolute', left: 50-20+'px', top: 50-20+'px', width: '40px', height: 40+'px', borderRadius: '50%',backgroundColor: cell.resource=='fruit'?'red':cell.resource=='herb'?'lightgreen':cell.resource=='grain'?'tan':'#777', textAlign: 'center', verticalAlign: 'middle'}}><div style={{textAlign: 'center', verticalAlign: 'middle',marginTop: '6px'}}>{cell.resource}</div></div>
+        <div id={'growth_resource'} style={{position: 'absolute', left: 50-20+'px', top: 50-20+'px', width: '40px', height: 40+'px', borderRadius: '50%',
+            backgroundColor:
+                alephbeth[cell.resource]?.order%7==1?'red':
+                alephbeth[cell.resource]?.order%7==2?'orange':
+                alephbeth[cell.resource]?.order%7==3?'yellow':
+                alephbeth[cell.resource]?.order%7==4?'green':
+                alephbeth[cell.resource]?.order%7==5?'blue':
+                alephbeth[cell.resource]?.order%7==6?'purple':
+                alephbeth[cell.resource]?.order%7==0?'white':
+                '#777',
+            textAlign: 'center', verticalAlign: 'middle'}}
+        ><div style={{textAlign: 'center', verticalAlign: 'middle',marginTop: '6px'}}>{cell.resource}</div></div>
     </div>
 }
+/*
+
+1,8,15,22
+
+
+
+*/

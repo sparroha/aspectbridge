@@ -20,7 +20,7 @@ export type TLitter = {
     char?: string,
     color?: string,
 }
-export const alephbeth = {
+export const alephbeth: {[key: string]: TLitter} = {
     aleph: {
         uni: '\u05D0',
         number: 1,
@@ -164,6 +164,10 @@ export const alephbeth = {
         number: 400,
         order: 22,
     }
+}
+
+export function getTLitter(key: string){
+    return alephbeth[key]
 }
 export const grammar = {
     pre: {
