@@ -14,8 +14,8 @@ export default function Dialog(props){
         if(!id) return
         const openModal = document.querySelector('#open'+id)
         const closeModal = document.querySelector('#close'+id)
-        const modal = document.querySelector('#modal'+id)
-        const modalInfo = document.querySelector('#modal_info'+id)
+        const modal: HTMLDialogElement = document.querySelector('#modal'+id)
+        const modalInfo: HTMLDialogElement = document.querySelector('#modal_info'+id)
         const openF = ()=>{modal.showModal()}
         const closeF = ()=>{modal.close()}
         const openInfo = ()=>{modalInfo.show()}
