@@ -39,16 +39,17 @@ interface pageProps{params: {aspect: string[]}}
  */
 const page: FC<pageProps> = ({params})=>{
     const {aspect} = params
+	const users = useUsers()
     return <>
         {aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px'}}>{a}</p>)}<br/>
         <hr style={{border: '1px solid white'}}/>
         <UserProfile />
-        <AspectBridge/>
+        <AspectBridge {...users}/>
     </>
 }
 export default page
-function AspectBridge(){
-	const {ip, user, activeUsers} = useUsers()
+function AspectBridge(props){
+	const {ip, user, activeUsers} = props
     return <>
         <Headers />
         <Container className={'aspect'}>
