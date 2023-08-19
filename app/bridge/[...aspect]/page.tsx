@@ -47,7 +47,7 @@ const page: FC<pageProps> = ({params})=>{
     </>
 }
 export default page
-export function AspectBridge(){
+function AspectBridge(){
 	const {ip, user, activeUsers} = useUsers()
     return <>
         <Headers />
