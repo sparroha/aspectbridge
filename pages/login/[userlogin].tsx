@@ -1,7 +1,7 @@
 import { sha224 } from "js-sha256"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
@@ -51,7 +51,7 @@ export default function UserLogin({ip, homepage}) {
     const router = useRouter()
     const [method, setMethod] = useState(router.query.userlogin)
     const [hash, setHash] = useState(null)
-    const [user, setUser] = useState(null)
+    const [user, setUser]: [Partial<User>, Dispatch<SetStateAction<Partial<User>>>] = useState({})
     const [menu, setMenu] = useState('show')
     const loginLayout = {
       backgroundImage: 'linear-gradient(to bottom right, #4b4, #7c7, #ada)',
@@ -79,10 +79,13 @@ export default function UserLogin({ip, homepage}) {
     }
     
     useEffect(() => { 
-      if(user)router.push({pathname: '/'+homepage/*+'/'+user.username*/, query: {
-        username: user.username, email: user.email, access: user.access, message: user.message
-      }}
-    )},[user])
+      if(user.username){
+        router.push({pathname: '/'+homepage/*+'/'+user.username*/, query: {
+          username: user.username, email: user.email, access: user.access, message: user.message
+        }})
+      }
+    },[user])
+
 
     return <Container style={{textAlign: 'center', maxWidth: '100vw'}}>
             <Headers/>
@@ -270,7 +273,17 @@ export function Profile(props) {
   },[data,usersloaded])
 
   useEffect(()=>{
-    if(activeUsers&&setActiveUsers)setActiveUsers(activeUsers)//send data to external
+    if(!usersloaded || !activeUsers) return console.log('No activateUsers')
+    if(!setActiveUsers) return console.log('No setActiveUsers function provided')
+    if(activeUsers=='default') return console.log('No active users')
+    let au: ActiveUser[]
+    try{
+      au = JSON.parse(activeUsers)
+    }catch(e){
+      console.log('Error parsing active users: '+activeUsers+':'+e)
+      return
+    }
+    setActiveUsers(au)//send data to external
   },[activeUsers])
 
   if (error) {
@@ -295,25 +308,27 @@ export function Profile(props) {
       </div>
   }
 }
-
 export async function activateUser(username){
-  return getDB(ACTIVEUSERS).then(data=>{
-    //console.log('@activateUser@[userlogin]:-activate user '+username+' as '+JSON.stringify(data))
-    if(data == null ) return
-    if(data == undefined) return
-    //console.log('@activateUser@[userlogin]:-starting activate user '+username+' as '+data)
-    if(data == "default" || data.length == 0) {setDB(ACTIVEUSERS, [{name: username, time: new Date().getTime()}]); return}
-    let actuse = JSON.parse(data)
-    setDB(ACTIVEUSERS, 
-      [...actuse.filter(
-        ({time, name}) => {
-          if(name == username) return false //prevent duplicate user entry
-          if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour
-          return true
-        }
-      ), {name: username, time: new Date().getTime()}]
-    )
-  })
+  return getDB(ACTIVEUSERS)
+    .then((data: string)=>{
+      if(!data || data == "default") return []
+      return JSON.parse(data)
+    }).then((data: ActiveUser[])=>{
+      if(data == null ) return
+      if(data == undefined) return
+      if(data.length == 0){
+        setDB(ACTIVEUSERS, [{name: username, time: new Date().getTime()}])
+      }else setDB(ACTIVEUSERS, 
+        [...(data.filter(
+          ({time, name}) => {
+            if(name == username) return false //prevent duplicate user entry
+            if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour
+            return true
+          }
+        )), {name: username, time: new Date().getTime()}]
+      )
+    }
+  )
 }
 
 
@@ -373,9 +388,10 @@ const [activeUsers,setActiveUsers,loaded] = useRegister(ACTIVEUSERS,[])
      ), {name: username, time: new Date().getTime()}])}*/
 
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
-  const method = query.userlogin
-  const username = query.username
-  const email = query.email?.toString().toLocaleLowerCase()
+  const method = query.userlogin?.toString().toLocaleLowerCase()
+  const username = query.username?.toString().toLocaleLowerCase() || ''
+  const email = query.email?.toString().toLocaleLowerCase() || ''
+  const nemail = query.nemail?.toString().toLocaleLowerCase() || ''
   const hash = sha224(query.email?.toString().toLocaleLowerCase()+''+query.password)
   const homepage = query.homepage!=undefined?query.homepage:'bridge'
   const ip = await requestIp.getClientIp(req)
@@ -388,7 +404,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
       if (!user) await sql`INSERT INTO aspect_users_ (username, email, hash, access, ip) values (${username}, ${email}, ${hash}, 0, ${ip});`
       break
     case 'update':
-      await sql`UPDATE aspect_users_ SET email = ${query.nemail.toString().toLowerCase()}, hash=${sha224(query.nemail.toString().toLocaleLowerCase()+''+query.password)} WHERE hash = ${sha224(query.cemail+''+query.password)}`
+      await sql`UPDATE aspect_users_ SET email = ${nemail}, hash=${sha224(nemail+''+query.password)} WHERE hash = ${sha224(query.cemail+''+query.password)}`
       break
     case 'login':
       break

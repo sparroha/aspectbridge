@@ -47,7 +47,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
     useEffect(()=>{//load data from database
         if(!data) return
         if(data == null || data == undefined) return
-        setRegister(JSON.stringify(data))
+        setRegister(data)
     },[data])
     //INIT
     //initialize register from database
@@ -55,17 +55,11 @@ export default function useRegister(registry: string, defaultValue: any):[string
         if(registryLoaded.current) return
         if(!registry) {console.log('@useRegister://REGISTER: '+'registry: '+registry); return}
         if(registry ==  null) {console.log('@useRegister://REGISTER: '+'registry: '+registry); return}
-        return getDB(registry, signal).then(data=>{
-            //if(!data) return
-            if(data == null ) return
-            if(data == undefined) return
-            if(!data || data == 0) {
-                //console.log('@useRegister.loadDataOnce://fetch initializing new register: '+registry+': '+register)
+        return getDB(registry, signal).then((data: string)=>{
+            if(data == null || data == undefined || !data || data == "default") {
+                //init registry: only sets default if data not exist
                 setDB(registry, defaultValue)
-                //return
             }
-            //console.log('@useRegister.loadDataOnce://fetch data to replace default register: '+register)
-            //console.log('@useRegister.loadDataOnce://fetch with data for '+registry+': '+JSON.stringify(data))
             registryLoaded.current = true
         }).catch(err=>console.log('@useRegister.loadDataOnce://fetch error: '+err))
     }
@@ -103,7 +97,7 @@ export async function setDB(name: string, data: any){
     })
 }
 
-export async function getDB(name: string, signal?: AbortSignal){
+export async function getDB(name: string, signal?: AbortSignal): Promise<string>{
     return fetch(`/api/registry/${name}`,{signal: signal})
     .then(res=>{
         //console.log('@getDB://fetch res: '+JSON.stringify(res))//always {}
