@@ -1,10 +1,11 @@
+'use client'
 import { GetServerSideProps } from "next";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import requestIp from 'request-ip';
-import { Profile } from "../login/[userlogin]";
-import { LoginNav } from "../login/[userlogin]";
-import Dialog from "../../components/dialog";
+import { Profile } from "../../../pages/login/[userlogin]";
+import { LoginNav } from "../../../pages/login/[userlogin]";
+import Dialog from "../../../components/dialog";
 
 export const raise = (n, prestige)=>{return (Math.pow(10,n)/10)*prestige}
 export const magnitude = (n)=>{return Math.floor(Math.log10(n))}

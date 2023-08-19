@@ -1,10 +1,11 @@
+'use client'
 import { useEffect, useState } from "react"
 import useRegister from "../../lib/util/registry"
-import { LoginNav, Profile } from "../login/[userlogin]"
+import { LoginNav, Profile } from "../../pages/login/[userlogin]"
 import { GetServerSideProps } from "next"
 import requestIp from 'request-ip';
 import { set } from "@legendapp/state/src/ObservableObject";
-import StrBldr from "../class/stringbuilder";
+import StrBldr from "../../components/stringbuilder";
 
 export default function Init(props){
     const [user, setUser] = useState(null)

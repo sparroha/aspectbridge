@@ -1,9 +1,10 @@
+'use client'
 import { GetServerSideProps } from "next";
 import { useEffect, useMemo, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import requestIp from 'request-ip';
-import { Profile } from "../login/[userlogin]";
-import { LoginNav } from "../login/[userlogin]";
+import { Profile } from "../../pages/login/[userlogin]";
+import { LoginNav } from "../../pages/login/[userlogin]";
 
 
 export default function Cost(props) {
