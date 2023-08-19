@@ -1,21 +1,25 @@
 'use client'
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { Profile } from "../../pages/login/[userlogin]";
+import { ActiveUser, Profile, User } from "../../pages/login/[userlogin]";
 import { LoginNav } from "../../pages/login/[userlogin]";
 import { magnitude, tenTo, raise, prestigeCost } from "./util/functions";
 import { getState } from "./util/functions";
 
 
 export default function Cost() {
-    const [ip, setIp] = useState('')
+    const [ip, setIp]: [string, Dispatch<SetStateAction<string>>] = useState('')
+	const [user, setUser]: [Partial<User>, Dispatch<SetStateAction<Partial<User>>>] = useState({})
+	const [activeUsers, setActiveUsers]:[ActiveUser[], Dispatch<SetStateAction<ActiveUser[]>>] = useState([])
     useEffect(()=>{
-        fetch('/api/getip').then((res)=>res.json()).then((ip)=>setIp(ip))
-    }, [])
+        if(!ip)fetch('/api/getip').then((res)=>res.json()).then((ip)=>setIp(ip))
+        if(ip&&!user)fetch('/api/getuserdetails?ip='+ip).then((res)=>res.json()).then((data)=>setUser(data))
+        if(!activeUsers)fetch('/api/activeusers').then((res)=>res.json()).then((data)=>setActiveUsers(data))
+    }, [ip])
+
     const [prestige, setPrestige] = useState(0)
     const [coin, setCoin] = useState(0)
     const [income, setIncome] = useState(0)
-    const [user, setUser] = useState(null)
     const [update, setUpdate] = useState(false)
     const [level, setLevel] = useState(0)
 
@@ -41,20 +45,18 @@ export default function Cost() {
     }, [coin])
     useEffect(() => {
         const interval = setInterval(() => {
-            setCoin((c)=>{return c+getState(setIncome)}); console.log('income')
+            setCoin((c)=>{return c+getState(setIncome)}); //console.log('income')
         }, 1000);
         //return () => clearInterval(interval);
     }, []);
         
-    return (
-        <Container>
-            <LoginNav user={user} homepage={'cost'} />
-            <Profile ip={ip} setUser={setUser}/>
+    return <Container>
+            <Profile ip={ip} setUser={setUser} setActiveUsers={setActiveUsers}/>
+            <LoginNav user={user} homepage={'cost'}/>
             <Header />
             <Labels props={{coin: coin, income: income, prestige: prestige, setCoin: setCoin, setIncome: setIncome, setPrestige: setPrestige, setUpdate: setUpdate, prestigeCost: prestigeCost}} />
             <RenderButtons props={{level: level, prestige: prestige, setIncome: setIncome, setCoin: setCoin, setUpdate: setUpdate, raise: raise, tenTo: tenTo}} />
         </Container>
-    );
 }
 //extracted components to manage rerendering
 function Header(){

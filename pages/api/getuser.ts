@@ -1,7 +1,3 @@
-
-/**
- * DEPRICATED use getuser.ts
- */
 import sql from "../../lib/,base/sql";
 import { User } from "../login/[userlogin]";
 //url params use query

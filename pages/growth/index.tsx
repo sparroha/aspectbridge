@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useReducer, 
 import { Col, Container, Row } from "react-bootstrap";
 import { LoginNav, Profile } from "../login/[userlogin]";
 import { GetServerSideProps } from "next";
-import useSave from "../../lib/util/savedata";
+import useSave from "../../lib/util/^save";
 import { TLitter, alephbeth, getTLitter } from "../../components/hebrew";
 
 type Storehouse = {[key: string]: number}

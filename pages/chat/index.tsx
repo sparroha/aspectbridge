@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { ACTIVEUSERS, LoginNav, Profile } from '../login/[userlogin]';
+import { ACTIVEUSERS, ActiveUser, LoginNav, Profile } from '../login/[userlogin]';
 import { GetServerSideProps } from 'next';
 import requestIp from 'request-ip';
 import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
 import useSWR from 'swr';
 import useLog from '../../components/conlog';
+import useUsers from '../../lib/util/^users';
 
 const scroll = {
   overflowY: 'scroll'
@@ -20,19 +21,21 @@ const border = {
  * @returns 
  */
 export default function Chat(props){
-  const [user, setUser] = useState(props.user?props.user:{username: 'guest'+props.ip.split(".")[3], email: '', access: 0})
-  const [activeUsers, setActiveUsers] = useState([])
+  const {ip, user, activeUsers} = useUsers()
+  const [userState, setUserState] = useState({username: user?.username || ('guest'+(ip?.split(".")[3] || null)), email: user?.email || '', access: user?.access || 0})
   const [update, setUpdate] = useState(false)
   const [revalidate, setRevalidate] = useState(false)
   const [name, setName] = useState('')
   useEffect(()=>{
-    console.log('Chat: '+JSON.stringify(user))
-    if(user)setName(user.username)
-  }, [user])
+    setUserState({username:  user?.username || ('guest'+(ip?.split(".")[3] || null)), email: user?.email || '', access: user?.access || 0})
+    if(!user)return
+    console.log('Chat: '+JSON.stringify(userState))
+    if(userState)setName(userState.username)
+  }, [ip, user])
   useEffect(()=>{
     if(name) {
       const inactivate = ()=>{
-        if(name)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**].':(user?.access==1?'[*].':''))+name})})
+        if(name)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (userState?.access==2?'[**].':(userState?.access==1?'[*].':''))+name})})
         .then((res)=>res.json())
         .then((data)=>{console.log(data?'user '+name+' left':'user not removed')})
         .catch(error => console.error(error))
@@ -47,7 +50,7 @@ export default function Chat(props){
     if(revalidate){
       const activate = ()=>{
         //console.log('Rv3: '+JSON.stringify(user))
-        if(name)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**].':(user?.access==1?'[*].':''))+name})})
+        if(name)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (userState?.access==2?'[**].':(userState?.access==1?'[*].':''))+name})})
         .then((res)=>res.json())
         .then((data)=>{console.log(data?'user '+name+' active':'user not active')})
         .catch(error => console.error(error))
@@ -58,10 +61,10 @@ export default function Chat(props){
     }
   }, [revalidate])
   
-  return <Container>{<LoginNav user={user?.username?.substring(0,5)!='guest'?user:null} homepage={props.homepage?props.homepage:'chat'}/>}
+  return <Container>{<LoginNav user={userState?.username?.substring(0,5)!='guest'?userState:null} homepage={props.homepage?props.homepage:'chat'}/>}
       <Row>
         <Col xs={8} style={border}>
-          <Messages update={update} setUpdate={setUpdate} access={user?.access} style={{...scroll, ...border}}/>
+          <Messages update={update} setUpdate={setUpdate} access={userState?.access} style={{...scroll, ...border}}/>
         </Col>
         <Col xs={4}>
           <Users style={scroll} revalidate={revalidate} activeUsers={activeUsers}/>
@@ -69,11 +72,8 @@ export default function Chat(props){
       </Row>
       <Row>
         <Col xs={12} style={border}>
-          <Send name={name} access={user?.access} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
+          <Send name={name} access={userState?.access} setUpdate={setUpdate} setRevalidate={setRevalidate}/>
         </Col>
-      </Row>
-      <Row style={{visibility: 'collapse', height: '0px'}}>
-        <Col xs={12}>{props.ip?<Profile ip={props.ip} setUser={setUser} setActiveUsers={setActiveUsers}/>:null}</Col>
       </Row>
   </Container>
 }
@@ -142,7 +142,7 @@ function Messages({update, setUpdate, access, style}){
  * @param style: style
  * @returns 
  */
-function Users(style, activeUsers: string){
+function Users(style, activeUsers: ActiveUser[]){
   const {data, error} = useSWR('/api/chat/users', { refreshInterval: 500 })
   
   useEffect(()=>{
@@ -166,7 +166,7 @@ function Users(style, activeUsers: string){
   })}</div>
 
   {/**TODO update ACTIVEUSERS database for this structure of information OOOOR *update this function to call user data from db based on current ACTIVEUSERS* */}
-  return<div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>{(JSON.parse(activeUsers)).map((user, i)=>{
+  return<div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>{activeUsers.map((user, i)=>{
     const User = fetch('/api/getUserdetails/'+user, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
@@ -291,9 +291,3 @@ const scrollFloor = ()=>{
     messages.scrollTop = messages.scrollHeight;
   }, 100);
 }
-
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const ip = await requestIp.getClientIp(context.req);
-  return { props: { ip } };
-};

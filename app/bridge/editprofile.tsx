@@ -1,5 +1,5 @@
 import { sha224 } from "js-sha256"
-import { User } from "../login/[userlogin]"
+import { User } from "../../pages/login/[userlogin]"
 import { useState } from "react"
 import { Col, Row } from "react-bootstrap"
 

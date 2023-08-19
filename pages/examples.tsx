@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import useLog from "../components/conlog";
-import useSave from "../lib/util/savedata";
+import useSave from "../lib/util/^save";
 
 export default function ExampleMain(){
 

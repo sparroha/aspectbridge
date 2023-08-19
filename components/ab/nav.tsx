@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";

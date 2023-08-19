@@ -1,6 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'public/css/styles_asb.css'
+import 'public/css/style.css'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {

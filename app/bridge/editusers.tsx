@@ -1,6 +1,6 @@
 import { sha224 } from "js-sha256"
 import sql from "../../lib/,base/sql"
-import { User } from "../login/[userlogin]"
+import { User } from "../../pages/login/[userlogin]"
 import { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { Col, Row } from "react-bootstrap"
 import useSWR from "swr"

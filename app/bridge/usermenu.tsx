@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react"
 import { Col, Nav, Row } from "react-bootstrap"
-import { UserSettingsProps } from "./[...aspect]"
+import { UserSettingsProps } from "./[...aspect]/page"
 import EditProfile from "./editprofile"
-import { User } from "../login/[userlogin]"
+import { User } from "../../pages/login/[userlogin]"
 import EditUsers from "./editusers"
 
 export default function UserMenu({user, homepage}: {user: Partial<User>, homepage: string}){

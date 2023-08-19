@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function useDomainRoot(props){
@@ -10,9 +10,9 @@ export default function useDomainRoot(props){
         console.log('@useDomainRoot('+domain+'||'+window.location.href+')')
         if(domain != 'localhost:3000/'){
             //if loading from 'aspectbridge.' or 'www.' then redirect to [...aspect]
-            if(domain == "aspectbridge" || domain == "www"){router.push({pathname: '/bridge/'+(username?username:''), query: router.query})}
+            if(domain == "aspectbridge" || domain == "www"){router.push('/bridge/'+(username?username:''))}
             //if loading from 'logan.' then redirect to [josh/[...client]...aspect]
-            else if(domain == "logan"){router.push({pathname: '/josh/'+(username?username:(domain?domain:'')), query: router.query})}
+            else if(domain == "logan"){router.push('/josh/'+(username?username:(domain?domain:'')))}
         }
         return ()=> {
             /**

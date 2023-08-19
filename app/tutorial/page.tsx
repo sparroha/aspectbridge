@@ -1,10 +1,10 @@
 import React from 'react'
 import ContextBlock from './context'
-import fetchIP from '../../lib/util/fetchip'
+import useIP from '../../lib/util/^ip'
 
 
 export default async function TutorialContextProvider({params, searchParams}){
-    const ip = await fetchIP()
+    const ip = useIP()
    
     return <div>
         <ContextBlock>

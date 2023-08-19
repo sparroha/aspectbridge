@@ -1,23 +1,26 @@
-"use strict";
-import React, { useState, useEffect, Dispatch, useMemo } from 'react'
+'use client'
+import React, { useState, useEffect, Dispatch, useMemo, SetStateAction, FC } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
 import { useRouter } from 'next/router';
-import NavIndex from '../../components/ab/nav';
-import navComponentObject from '../../components/ab/navigaton';
+import NavIndex from '../../../components/ab/nav';
+import navComponentObject from '../../../components/ab/navigaton';
 import { GetServerSideProps } from 'next';
-import { Profile, User} from '../login/[userlogin]';
-import Calendar from 'react-calendar';
+//import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
-import SimpleNav from '../../components/simplenav';
-import DiceWidget, { diceInitProps, useDiceRoll } from '../../components/dice';
-import TLiterator from '../../components/hebrew';
-import requestIp from 'request-ip';
-import Clock from '../../components/clock';
-import Chat from '../chat';
-import UserMenu from './usermenu';
+import SimpleNav from '../../../components/simplenav';
+import DiceWidget, { diceInitProps, useDiceRoll } from '../../../components/dice';
+import TLiterator from '../../../components/hebrew';
+import Clock from '../../../components/clock';
+import Chat from '../../../pages/chat';
+import UserMenu from '../usermenu';
+import UserProfile from '../../userprofile';
+import useUsers from '../../../lib/util/^users';
+import { ActiveUser, User } from '../../../pages/login/[userlogin]';
+
+
 
 /**CSS module *//not working/
 //TODO is working
@@ -28,19 +31,25 @@ import UserMenu from './usermenu';
 /*THERE'S A BETTER WAY THAN THIS*/
 const componentObject = navComponentObject()
 
-
-export type UserSettingsProps = {
-    user: Partial<User>
-}
+interface pageProps{params: {aspect: string[]}}
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
  * @returns This web site
  */
-export default function AspectBridge({ip}) {
-    const [user, setUser]: [user: Partial<User>, setUser: React.Dispatch<any>] = useState(null)
+const page: FC<pageProps> = ({params})=>{
+    const {aspect} = params
     return <>
-        <Profile ip={ip} setUser={setUser}/>
+        {aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px'}}>{a}</p>)}<br/>
+        <hr style={{border: '1px solid white'}}/>
+        <UserProfile />
+        <AspectBridge/>
+    </>
+}
+export default page
+export function AspectBridge(){
+	const {ip, user, activeUsers} = useUsers()
+    return <>
         <Headers />
         <Container className={'aspect'}>
             <ContainerHeader user={user?user:null}/>
@@ -58,7 +67,7 @@ export default function AspectBridge({ip}) {
                 }
                 <NavRightDefault />
                 <Col xs={12} sm={12} md={8} style={{background: '#eee'}}>Bridge Chat:<br/><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
-                <NavRightDefault user={user}/>
+                <NavRightDefault activeUsers={activeUsers}/>
             </Row>
             {//<Footer />
             }
@@ -112,7 +121,8 @@ function ContainerHeader({ user }){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
-                    <NavIndex user={user} root={"bridge"}/>
+                    {//<NavIndex user={user} root={"bridge"}/>
+                    }
                 </Col>
             </Row>
 }
@@ -137,17 +147,22 @@ function NavLeftDefault(){
                 </Row>
             </Col>
 }
-function NavRightDefault({user}: {user?: Partial<User>}){  
+function NavRightDefault({user, activeUsers}: {user?: User, activeUsers?: ActiveUser[]}){  
     const [hide, setHide] = useState('hidden')
     return <Col xs={0} sm={0} md={2} id="nav-right" className={"p0"}>
-                <Row className={'w100 h100'} style={{visibility: 'visible', position: 'relative', zIndex: '5', color: 'white'}}>{/**this error is invalid. visibility still works */}
+                {user?<Row className={'w100 h100'} style={{visibility: 'visible', position: 'relative', zIndex: '5', color: 'white'}}>{/**this error is invalid. visibility still works */}
                     <Col style={{zIndex: '5'}}>
-                        Username: {user?user.username:''} <br />
-                        Access: {user?user.access:''} <br />
-                        Message: {user?user.message:''} <br />
+                        Username: {user?.username} <br />
+                        Access: {user?.access} <br />
+                        Message: {user?.message} <br />
                     </Col>
                     <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
-                </Row>
+                </Row>:null}
+                {activeUsers?<Row>
+                    {activeUsers?.map((user, i)=>{
+                        return <div key={i} style={{color: 'white'}}>{user.name}{' (active '}{Math.floor((new Date().getTime()-new Date(user.time).getTime())/60000)}{' m ago)'}</div>
+                    })}
+                </Row>:null}
             </Col>
 }
 function Footer(){
@@ -258,10 +273,4 @@ function Placeholder({user}){
                 <p>Swe: Stir</p>
             </Col>
         </Row>
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const query = context.query
-    const ip = await requestIp.getClientIp(context.req)
-    return {props: {ip: ip}} 
 }
