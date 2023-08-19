@@ -26,7 +26,7 @@ export default function TutorialContextProvider(props){
 //Context user
 //Context Component
 //Component with useContext
-export function ToggleContext(props){
+export function ToggleContext(){
     const toggleElementContext = React.useContext(TutorialContextToggle)
     return  <>
         <input type={'checkbox'} checked={React.useContext(TutorialContext) || false} onChange={(e)=>toggleElementContext((bool)=>!bool)}/>
@@ -36,7 +36,7 @@ export function ToggleContext(props){
 //Context user
 //Context Component
 //Component with useContext
-export function DisplayContext(props){
+export function DisplayContext(){
     const elementContext = React.useContext(TutorialContext)
     return  <>{JSON.stringify(elementContext) || 'no context'}</>
 }
