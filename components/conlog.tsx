@@ -1,5 +1,5 @@
 import { useEffect } from "react"
 
-export default function useLog(obj){
-    useEffect(()=>{console.log(obj)})
+export default function useLog(log: any){
+    useEffect(()=>{console.log(log)})
 }

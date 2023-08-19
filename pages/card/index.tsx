@@ -1,6 +1,6 @@
 import { Dispatch, MouseEventHandler, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { TLitter, alephbeth, alephbethList } from "../../components/hebrew"
-import { FTCard, FTCardPropsPartial } from "./class/ftcard"
+import { TLitter, alephbeth } from "../../components/hebrew"
+import { FTCard } from "./class/ftcard"
 import { TCard } from "./class/tcard"
 import Card from "./class/card"
 import { Col, Container, Row } from "react-bootstrap"

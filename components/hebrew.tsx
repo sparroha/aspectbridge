@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { useState } from "react";
+import { Form } from "react-bootstrap";
 export default function TLiterator(props){
     const [tlword, setTLWord] = useState('')
 

@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Dialog from "./dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import style from "./sliders.module.css";
 import useRegister, { getDB, setDB } from "../lib/util/registry";
 
 // props: style={object.style} setStyle={setStyle} id={'row_'+object.id}}

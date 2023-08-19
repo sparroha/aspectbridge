@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export default function useDomainRoot(props){
     const router = useRouter()
     const [domain, setDomain] = useState('')
-    const [username, setUsername] = useState(props.username?props.username:'')
+    const [username, ] = useState(props.username?props.username:'')
     useEffect(() => {
         setDomain(/:\/\/([^\.]+)/.exec(window.location.href)[1])
         console.log('@useDomainRoot('+domain+'||'+window.location.href+')')
