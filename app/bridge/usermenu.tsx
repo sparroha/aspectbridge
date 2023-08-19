@@ -1,13 +1,12 @@
 import { useMemo, useState } from "react"
 import { Col, Nav, Row } from "react-bootstrap"
-import { UserSettingsProps } from "./[...aspect]/page"
 import EditProfile from "./editprofile"
 import { User } from "../../pages/login/[userlogin]"
 import EditUsers from "./editusers"
 
 export default function UserMenu({user, homepage}: {user: Partial<User>, homepage: string}){
     if(!user) return <UserLog_in_out user={user} homepage={homepage} />
-    const userSettings: UserSettingsProps = useMemo(() => {return {
+    const userSettings = useMemo(() => {return {
         user: user
     }},[user])
     return <>
