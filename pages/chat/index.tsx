@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from 'react';
 import { ACTIVEUSERS, ActiveUser, LoginNav, Profile } from '../login/[userlogin]';
 import { GetServerSideProps } from 'next';
