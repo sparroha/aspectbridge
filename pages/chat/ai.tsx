@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Configuration, OpenAIApi } from "openai";
+import { ClientOptions, OpenAI } from "openai";
 ///////import readline from 'readline';
 
 //import { Configuration, OpenAIApi } from "openai";
@@ -27,11 +27,11 @@ const OpenAITextGenerator = () => {
     const text = completions.choices[0].text;
     setResponse(text);
   };*/
-    const configuration = new Configuration({
-      organization: "org-D6bxJ0oEpJKcCxKzmI6ewjwO",
-      apiKey: process.env.OPENAI_API_KEY
-    });
-    const openai = new OpenAIApi(configuration);
+    const configuration: ClientOptions = {
+      apiKey: process.env.OPENAI_API_KEY,
+      organization: "org-D6bxJ0oEpJKcCxKzmI6ewjwO"
+    }
+    const openai = new OpenAI(configuration);
     /*const userInterface = readline.createInterface({
         input: process.stdin,
         output: process.stdout
@@ -54,7 +54,7 @@ const OpenAITextGenerator = () => {
       console.log('API : ' + res.data.choices[0].message.content);
       userInterface.prompt();
     });*/
-    const generateText = async () => {
+    /*const generateText = async () => {
       const res = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [
@@ -65,7 +65,7 @@ const OpenAITextGenerator = () => {
       }).catch((error) => {
           console.error('AIE: '+error);
       });
-    };
+    };*/
     /*const generateText = async () => {
         //const response = await openai.listEngines();
         await fetch('https://api.openai.com/v1/completions', {
@@ -96,7 +96,8 @@ const OpenAITextGenerator = () => {
   return (
     <div>
       <input type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-      <button onClick={generateText}>Generate Text</button>
+      {//<button onClick={generateText}>Generate Text</button>
+}
       <div>{JSON.stringify(response)}</div>
     </div>
   );
