@@ -4,10 +4,13 @@ import useRegister from "../../lib/util/registry"
 import { LoginNav, Profile } from "../../pages/login/[userlogin]"
 import { GetServerSideProps } from "next"
 import requestIp from 'request-ip';
-import { set } from "@legendapp/state/src/ObservableObject";
 import StrBldr from "../../components/stringbuilder";
 
-export default function Init(props){
+export default function Init(){
+    const [ip, setIp] = useState('')
+    useEffect(()=>{
+        fetch('/api/getip').then((res)=>res.json()).then((ip)=>setIp(ip))
+    }, [])
     const [user, setUser] = useState(null)
     const [register, saveData, registryLoaded] = useRegister('story', ['berashith'])
     const [what, setWhat] = useState('')
@@ -51,7 +54,7 @@ export default function Init(props){
     return !registryLoaded?<>Loading...</>:
     <div style={{perspective: '720px', height: '100vh', backgroundImage: 'linear-gradient(to right, #557, #77a, #aad)'}}>
         <LoginNav user={user} homepage={'story'} setUser={setUser}/>
-        <Profile hidden ip={props.ip} setUser={setUser}/>
+        <Profile hidden ip={ip} setUser={setUser}/>
         <Story story={story} saveData={saveData} setWhat={setWhat} setWhy={setWhy} setWho={setWho} user={user}/>
         <div style={{textAlign: 'center', width: '360px', border: '2px outset #bbb', backgroundImage: 'linear-gradient(to bottom right, #aaa, #ccc, #ddd, #fff)', backgroundSize: 'cover', translate: '100px 0px '+pulse+'px', transform: 'rotateY('+trnsfrm+'deg)', boxShadow: (Math.abs(shadow))/2+'px 10px 10px 0 #333', transition: 'translate 1s linear, transform 1s linear, box-shadow 1s linear'}}>
             <WhatHappens what={what} setWhat={setWhat} save={save} submitTooltip={submitTooltip} toggleSubmitTooltip={toggleSubmitTooltip}/>
@@ -139,11 +142,4 @@ function WhoIsInvolved({who, setWho, save, submitTooltip, toggleSubmitTooltip}){
         <input type={'submit'} value={'save'} onMouseOver={toggleSubmitTooltip} onMouseOut={toggleSubmitTooltip}/><br/>
         <label hidden={!submitTooltip} style={{border: '4px inset #0000ee', padding: '5px', fontSize: '12px', width: '300px'}}>- add your page to the story</label>
     </form>
-}
-
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const query = context.query
-    const ip = await requestIp.getClientIp(context.req)
-    return {props: {ip: ip}} 
 }

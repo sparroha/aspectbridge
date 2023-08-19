@@ -1,13 +1,15 @@
 'use client'
-import { GetServerSideProps } from "next";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import requestIp from 'request-ip';
 import { Profile } from "../../pages/login/[userlogin]";
 import { LoginNav } from "../../pages/login/[userlogin]";
 
 
-export default function Cost(props) {
+export default function Cost() {
+    const [ip, setIp] = useState('')
+    useEffect(()=>{
+        fetch('/api/getip').then((res)=>res.json()).then((ip)=>setIp(ip))
+    }, [])
     const [prestige, setPrestige] = useState(0)
     const [coin, setCoin] = useState(0)
     const [income, setIncome] = useState(0)
@@ -56,8 +58,8 @@ export default function Cost(props) {
         
     return (
         <Container>
-            <LoginNav user={user} homepage={props.homepage || 'cost'} />
-            <Profile ip={props.ip} setUser={setUser}/>
+            <LoginNav user={user} homepage={'cost'} />
+            <Profile ip={ip} setUser={setUser}/>
             <Header />
             <Labels props={{coin: coin, income: income, prestige: prestige, setCoin: setCoin, setIncome: setIncome, setPrestige: setPrestige, setUpdate: setUpdate, prestigeCost: prestigeCost}} />
             <RenderButtons props={{level: level, prestige: prestige, setIncome: setIncome, setCoin: setCoin, setUpdate: setUpdate, raise: raise, tenTo: tenTo}} />
@@ -117,9 +119,4 @@ function updatePlayer(user, coin, income, prestige){
         //console.log(data)
     })
     .catch((e)=>{console.log(e)})
-}
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const query = context.query
-    const ip = await requestIp.getClientIp(context.req)
-    return {props: {ip: ip}} 
 }
