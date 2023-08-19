@@ -7,17 +7,19 @@ import { Button } from "react-bootstrap"
  * @returns 
  */
 export default function Dialog(props){
+
     const {id, title, content, children, open, close, style, info} = props
 
     useEffect(()=>{//TODO: handle escape key
+        if(!id) return
         const openModal = document.querySelector('#open'+id)
         const closeModal = document.querySelector('#close'+id)
-        const modal: HTMLDialogElement = document.querySelector('#modal'+id)
-        const modalInfo: HTMLDialogElement = document.querySelector('#modal_info'+id)
-        const openF = ()=>{modal?.showModal()}
-        const closeF = ()=>{modal?.close()}
-        const openInfo = ()=>{modalInfo?.show()}
-        const closeInfo = ()=>{modalInfo?.close()}
+        const modal = document.querySelector('#modal'+id)
+        const modalInfo = document.querySelector('#modal_info'+id)
+        const openF = ()=>{modal.showModal()}
+        const closeF = ()=>{modal.close()}
+        const openInfo = ()=>{modalInfo.show()}
+        const closeInfo = ()=>{modalInfo.close()}
         openModal.addEventListener('click', openF)
         closeModal.addEventListener('click', closeF)
         openModal.addEventListener('mouseover', openInfo)
@@ -28,7 +30,7 @@ export default function Dialog(props){
             openModal.removeEventListener('mouseover', openInfo)
             openModal.removeEventListener('mouseout', closeInfo)
         }
-    },[])
+    },[id])
 
     return <div style={style}>
         <Button id={'open'+id} data-open-modal>{open?open:'Open'}</Button>
