@@ -4,16 +4,8 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Profile } from "../../../pages/login/[userlogin]";
 import { LoginNav } from "../../../pages/login/[userlogin]";
 import Dialog from "../../../components/dialog";
-
-export function raise(n, prestige){return (Math.pow(10,n)/10)*prestige}
-export const magnitude = (n)=>{return Math.floor(Math.log10(n))}
-export const tenTo = (n)=>{return Math.pow(10,n)}
-export const lol = (n)=>{return n/tenTo(magnitude(n))}//some tiny fraction. n/10^log10(n)
-export const getState = (setState)=>{//get state from setState rather than state
-    let current = 0
-    setState((i)=>{current=i;return i})
-    return current
-}
+import { magnitude, tenTo } from "../util/functions";
+import { raise } from "xstate/lib/actions";
 
 export default function Cost() {
     const [ip, setIp] = useState('')
