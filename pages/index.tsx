@@ -6,13 +6,13 @@ export default function Main(props) {
     useDomainRoot(props)
     return <Row>
         <Col sm={12}>Redirecting...{JSON.stringify(props)}</Col>
-        <Col sm={12}><Link href="/bridge"><a>Aspect Bridge</a></Link></Col>
-        <Col sm={12}><Link href="/josh"><a>Sunrise Landscapes</a></Link></Col>
-        <Col sm={12}><Link href="/sandbox"><a>Sandbox</a></Link></Col>
-        <Col sm={12}><Link href="/xstate"><a>X State: machine</a></Link></Col>
-        <Col sm={12}><Link href="/canvas"><a>Canvas</a></Link></Col>
-        <Col sm={12}><Link href="/chat"><a>Chat</a></Link></Col>
-        <Col sm={12}><Link href="/dragons"><a>Dragons</a></Link></Col>
-        <Col sm={12}><Link href="/wasd"><a>wasd</a></Link></Col>
+        <Col sm={12}><Link href="/bridge" legacyBehavior><a>Aspect Bridge</a></Link></Col>
+        <Col sm={12}><Link href="/josh" legacyBehavior><a>Sunrise Landscapes</a></Link></Col>
+        <Col sm={12}><Link href="/sandbox" legacyBehavior><a>Sandbox</a></Link></Col>
+        <Col sm={12}><Link href="/xstate" legacyBehavior><a>X State: machine</a></Link></Col>
+        <Col sm={12}><Link href="/canvas" legacyBehavior><a>Canvas</a></Link></Col>
+        <Col sm={12}><Link href="/chat" legacyBehavior><a>Chat</a></Link></Col>
+        <Col sm={12}><Link href="/dragons" legacyBehavior><a>Dragons</a></Link></Col>
+        <Col sm={12}><Link href="/wasd" legacyBehavior><a>wasd</a></Link></Col>
     </Row>
 }
