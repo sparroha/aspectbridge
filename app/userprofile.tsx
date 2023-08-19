@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from "react"
 import useRegister from "../lib/util/registry"
 import useSWR from 'swr'

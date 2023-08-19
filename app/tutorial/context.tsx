@@ -1,11 +1,12 @@
 'use client'
-
 import React from "react"
 import ElementContext from "../../pages/element/element_context_provider"
+import useIP from "../../lib/util/^ip"
 
 export const TutorialContext = React.createContext(false)//recieves elementContext
 export const TutorialContextToggle: React.Context<any> = React.createContext(null)//recieves toggleElementContext
 export default function ContextBlock(props){
+    const ip = useIP()
     const [elementContext, setElementContext] = React.useState(false)
     return <TutorialContext.Provider value={elementContext}>
         <TutorialContextToggle.Provider value={setElementContext}>
