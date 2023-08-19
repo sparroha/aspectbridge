@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from 'react';
 //import { createCanvas } from 'canvas';
 
-const Canvas = ({formula, cw, ch}) => {
+const Canvas = (props) => {
+  const {formula, cw, ch} = props
   const canvasRef = useRef(formula);
   //const [isPending, startTransition] = useTransition();
 
