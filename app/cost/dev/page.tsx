@@ -5,7 +5,7 @@ import { Profile } from "../../../pages/login/[userlogin]";
 import { LoginNav } from "../../../pages/login/[userlogin]";
 import Dialog from "../../../components/dialog";
 
-export const raise = (n, prestige)=>{return (Math.pow(10,n)/10)*prestige}
+export function raise(n, prestige){return (Math.pow(10,n)/10)*prestige}
 export const magnitude = (n)=>{return Math.floor(Math.log10(n))}
 export const tenTo = (n)=>{return Math.pow(10,n)}
 export const lol = (n)=>{return n/tenTo(magnitude(n))}//some tiny fraction. n/10^log10(n)
