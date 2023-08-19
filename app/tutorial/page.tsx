@@ -1,42 +1,19 @@
-'use client'
-
 import React from 'react'
-import ElementContext from '../../pages/element/element_context_provider'
-
-export const TutorialContext = React.createContext(false)//recieves elementContext
-export const TutorialContextToggle: React.Context<any> = React.createContext(null)//recieves toggleElementContext
-
-export default function TutorialContextProvider(props){
-    const [elementContext, setElementContext] = React.useState(false)
-
-    return <>
-        <TutorialContext.Provider value={elementContext}>
-            <TutorialContextToggle.Provider value={setElementContext}>
-                {props.children}
-                <ToggleContext/>
-                <DisplayContext/>
-            </TutorialContextToggle.Provider>
-        </TutorialContext.Provider>
+import ContextBlock from './context'
+import fetchIP from '../../lib/util/fetchip'
 
 
-        <br/><ElementContext title={'Element'}/>
-    </>
+export default async function TutorialContextProvider({params, searchParams}){
+    const ip = await fetchIP()
+   
+    return <div>
+        <ContextBlock>
+            <br/>params:{JSON.stringify(params)}
+            <br/>searchParams:{JSON.stringify(searchParams)}
+        </ContextBlock>
+            <br/>params:{JSON.stringify(params)}
+            <br/>searchParams:{JSON.stringify(searchParams)}
+    </div>
 }
 
-//Context user
-//Context Component
-//Component with useContext
-export function ToggleContext(){
-    const toggleElementContext = React.useContext(TutorialContextToggle)
-    return  <>
-        <input type={'checkbox'} checked={React.useContext(TutorialContext) || false} onChange={(e)=>toggleElementContext((bool)=>!bool)}/>
-        <button onClick={()=>toggleElementContext((bool)=>!bool)}>Toggle Element Context</button>
-    </>
-}
-//Context user
-//Context Component
-//Component with useContext
-export function DisplayContext(){
-    const elementContext = React.useContext(TutorialContext)
-    return  <>{JSON.stringify(elementContext) || 'no context'}</>
-}
+

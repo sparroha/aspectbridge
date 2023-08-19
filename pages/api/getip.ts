@@ -1,4 +1,3 @@
-
 import requestIp from 'request-ip';
 export default async function getIp(req, res){
     const ip = await requestIp.getClientIp(req)
