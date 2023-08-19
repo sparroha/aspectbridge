@@ -11,8 +11,10 @@ export default function ContextBlock(props){
         <TutorialContextToggle.Provider value={setElementContext}>
             <ToggleContext/>
             <DisplayContext/>
+            <hr/>
+            <ElementContext title={'Element'}/>
+            <hr/>
             {props.children}
-        <br/><ElementContext title={'Element'}/>
         </TutorialContextToggle.Provider>
     </TutorialContext.Provider>
 }

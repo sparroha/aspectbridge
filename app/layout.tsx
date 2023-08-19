@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   viewport: 'width=device-width, initial-scale=1',
   creator: 'Keith Dockery',
   publisher: 'Aspect Bridge',
-  //icons: 'favicon.ico',
+  //icons: 'assets/binary2.png',
   //assets: 'https://aspectbridge.com/assets',
 }
 

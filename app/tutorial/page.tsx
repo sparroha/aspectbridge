@@ -11,8 +11,6 @@ export default async function TutorialContextProvider({params, searchParams}){
             <br/>params:{JSON.stringify(params)}
             <br/>searchParams:{JSON.stringify(searchParams)}
         </ContextBlock>
-            <br/>params:{JSON.stringify(params)}
-            <br/>searchParams:{JSON.stringify(searchParams)}
     </div>
 }
 

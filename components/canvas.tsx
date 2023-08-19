@@ -1,13 +1,14 @@
-import { useEffect, useRef } from 'react';
+'use client'
+import { useEffect, useRef, useState } from 'react';
 //import { createCanvas } from 'canvas';
 
-const Canvas = ({formula}) => {
-  const canvasRef = useRef(null);
+const Canvas = ({formula, cw, ch}) => {
+  const canvasRef = useRef(formula);
   //const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d');
     const width = canvas.width;
     const height = canvas.height;
 
@@ -21,7 +22,7 @@ const Canvas = ({formula}) => {
     }
   }, [formula]);
 
-  return <canvas ref={canvasRef} width={1280} height={720} />;
+  return <canvas ref={canvasRef} width={cw || 1280} height={ch || 720} />;
 };
 
 export default Canvas;
