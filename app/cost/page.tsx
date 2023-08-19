@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Profile } from "../../pages/login/[userlogin]";
 import { LoginNav } from "../../pages/login/[userlogin]";
+import { magnitude, tenTo, raise, prestigeCost } from "./util/functions";
+import { getState } from "./util/functions";
 
 
 export default function Cost() {
@@ -16,18 +18,6 @@ export default function Cost() {
     const [user, setUser] = useState(null)
     const [update, setUpdate] = useState(false)
     const [level, setLevel] = useState(0)
-
-    //helper functions
-    const raise = (n, prestige)=>{return (Math.pow(10,n)/10)*prestige}
-    const magnitude = (n)=>{return Math.floor(Math.log10(n))}
-    const tenTo = (n)=>{return Math.pow(10,n)}
-    const lol = (n)=>{return n/tenTo(magnitude(n))}
-    const prestigeCost = ()=>{return tenTo(prestige)}
-    const getState = (setState)=>{
-        let current = 0
-        setState((i)=>{current=i;return i})
-        return current
-    }
 
     useEffect(() => {//get initial user data
         if(user){

@@ -4,8 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Profile } from "../../../pages/login/[userlogin]";
 import { LoginNav } from "../../../pages/login/[userlogin]";
 import Dialog from "../../../components/dialog";
-import { magnitude, tenTo } from "../util/functions";
-import { raise } from "xstate/lib/actions";
+import { magnitude, tenTo, raise } from "../util/functions";
 
 export default function Cost() {
     const [ip, setIp] = useState('')
