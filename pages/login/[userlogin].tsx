@@ -80,9 +80,10 @@ export default function UserLogin({ip, homepage}) {
     
     useEffect(() => { 
       if(user.username){
-        router.push({pathname: '/'+homepage/*+'/'+user.username*/, query: {
+        /*router.push({pathname: '/'+homepage+(user?('/'+user.username):''), query: {
           username: user.username, email: user.email, access: user.access, message: user.message
-        }})
+        }})*/
+        router.push({pathname: `/${homepage}${user?('/'+user.username):''}`})
       }
     },[user])
 

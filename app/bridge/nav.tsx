@@ -1,14 +1,13 @@
 'use client'
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
-import { getDomain } from "../domain";
+import { getDomain } from "../../components/domain";
 
 export default function NavIndex({ user, root }) {
     const domain = getDomain()
     const router = useRouter()
     const [local, setLocal] = useState(domain=='localhost:3000/'?'true':'false')
-    const [homepage, setHomepage] = useState(root || router.pathname.split('/')[1])
     const [search, setSearch] = useState('')
     /*useEffect(()=>{
         return setLocal(domain=='localhost:3000/'?'true':'false')
@@ -105,7 +104,9 @@ export default function NavIndex({ user, root }) {
                             <NavPartners />{' '}
                             <NavProjects user={user}/>{' '}
                             <NavResources />{' '}
-                            <Nav.Link href={"/login/"+(user?'logout':'login')+'?homepage='+(root || homepage)+(user?'&username='+user.username:'')}>{user?('Logout '+user.username):'Login'}</Nav.Link>{' '}
+                            <Nav.Link href={`/login/${user?'logout':'login'}?homepage=${root}${user?`&username=${user.username}`:''}`}>
+                                {user?('Logout '+user.username):'Login'}
+                            </Nav.Link>{' '}
                             
                         </Nav>{' '}
                     </Navbar.Collapse>

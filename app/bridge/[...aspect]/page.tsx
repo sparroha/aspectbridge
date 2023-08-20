@@ -3,10 +3,9 @@ import React, { useState, useEffect, Dispatch, useMemo, SetStateAction, FC } fro
 import Head from "next/head";
 import Script from 'next/script';
 import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
-import { useRouter } from 'next/router';
-import NavIndex from '../../../components/ab/nav';
-import navComponentObject from '../../../components/ab/navigaton';
-import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/navigation';
+import NavIndex from '../nav';
+import navComponentObject from '../navigaton';
 //import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
@@ -38,8 +37,17 @@ interface pageProps{params: {aspect: string[]}}
  * @returns This web site
  */
 const page: FC<pageProps> = ({params})=>{
+    const router = useRouter()
     const {aspect} = params
 	const users = useUsers()
+    const currentUsername = useMemo(()=>users?.user?.username || 'guest',[users.user])
+
+    useEffect(() => { 
+        if(!users.user) return
+        if(currentUsername != aspect[0]){
+          router.push(`/bridge/${currentUsername}${aspect.length>1?'/'+aspect[1]:''}${aspect.length>2?'/'+aspect[2]:''}`)
+        }
+    },[users.user])
     return <>
         {aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px'}}>{a}</p>)}<br/>
         <hr style={{border: '1px solid white'}}/>
@@ -59,7 +67,7 @@ function AspectBridge(props){
                 <Col xs={12} sm={9} md={8} style={{background: 'white'}}>
                     <UserMenu user={user} homepage={'bridge'}/>
                 </Col>
-                {//<DynamicInfo user={user}/>
+                {//<DynamicInfo user={user} aspect={user?.username}/>
                 }
                 <NavRightDefault user={user}/>
             </Row>
@@ -122,7 +130,7 @@ function ContainerHeader({ user }){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
-                    {//<NavIndex user={user} root={"bridge"}/>
+                    {<NavIndex user={user} root={"bridge"}/>
                     }
                 </Col>
             </Row>
@@ -209,9 +217,9 @@ function Footer(){
  * 
  * @returns DynamicInfo
  */
-function DynamicInfo({user}){
-    const router = useRouter()
-    const { aspect } = router.query //query url props
+function DynamicInfo({aspect, user}){
+    //const router = useRouter()
+    //const { aspect } = router.query //query url props
     const [bridge, setBridge] = useState(<></>)
     //these 3 are redundant useage because they are contained within args(props).query
     const [dir, setDir] = useState('')
