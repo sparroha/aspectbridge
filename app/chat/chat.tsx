@@ -12,9 +12,13 @@ const scroll = {
 const border = {
   border: '1px outset black',
   borderRadius: '5px',
-  padding: '3px',
-  paddingTop: '0px',
-  
+  padding: '1px',
+}
+
+const strip = {
+  margin: '0px',
+  padding: '0px',
+  border: '0px',
 }
 
 /**
@@ -31,7 +35,7 @@ export default function Chat(props){
     }
     
       <Row>
-        <Col xs={12} sm={9} style={border}>
+        <Col xs={12} sm={9} style={strip}>
           <Messages update={update} setUpdate={setUpdate} user={user} homepage={props.homepage} style={{...scroll, ...border, maxHeight: props.maxHeight || '20vh', minHeight: '20px'}}/>
         </Col>
         <Col xs={12} sm={3}>
@@ -39,7 +43,7 @@ export default function Chat(props){
         </Col>
       </Row>
       <Row>
-        <Col xs={12} style={border}>
+        <Col xs={12} style={strip}>
           <SendForm ip={ip} user={user} setUpdate={setUpdate}/>
         </Col>
       </Row>
@@ -110,7 +114,7 @@ function Messages({update, setUpdate, user, homepage, style}){
     .catch(error => console.error(error));
   }}
   return <Row><Col style={{margin: '0px', padding: '0px'}}>
-    <Row>
+    <Row style={{...style, overflowY: 'auto'}}>
       <Col xs={3} sm={2} md={2}>Search:</Col>
       <Col xs={9} sm={6} md={6} lg={7}>
         <input style={searchInputProps} type='text' defaultValue={''} onChange={(event)=>{
@@ -190,6 +194,7 @@ function Users({style, activeUsers}: {style: any, activeUsers: ActiveUser[]}){
 function SendForm({ip, user, setUpdate}){
   const [send, setSend] = useState('')
   const [command, setCommand] = useState(null)
+  const h2em = {height: '2em'}
   
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -239,11 +244,11 @@ function SendForm({ip, user, setUpdate}){
       setCommand('')
     }, 100)
   }
-  return <Form onSubmit={handleSubmit} style={{ maxHeight: '20vh'}}>
+  return <Form onSubmit={handleSubmit} style={{margin: '0px', padding: '0px'}}>
       <Form.Control type='text' style={{visibility: 'collapse', border: '0px', margin: '0px', padding: '0px', height: '0px'}} name='username' defaultValue={user?.username}/> 
-      <Row>
-          <Col xs={10}>
-            <Form.Control type='text' name='send' style={{width: '100%'}}
+      <Row style={{margin: '0px', padding: '0px'}}>
+          <Col xs={10} style={{margin: '0px', padding: '0px'}}>
+            <Form.Control type='text' name='send' style={{width: '100%', height: '2em'}}
               onChange={(event)=>{
                 let out = event.target.value.toLowerCase()
                 let command = out.charAt(0)=='/'?out.replace('/', '').split(' ')[0]:null
@@ -251,8 +256,8 @@ function SendForm({ip, user, setUpdate}){
                 setSend(event.target.value)
               }} value={send}/>
           </Col>
-          <Col xs={2}>
-            <Button type='submit'>Send</Button>
+          <Col xs={2} style={{margin: '0px', padding: '0px'}}>
+            <Button type='submit' style={{margin: '0px', padding: '0px 5px 0px 5px', height: '2em'}}>Send</Button>
           </Col>
       </Row>
   </Form>

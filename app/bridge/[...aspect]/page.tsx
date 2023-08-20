@@ -50,12 +50,12 @@ const page: FC<pageProps> = ({params})=>{
           router.push(`/bridge/${currentUsername}${aspect.length>1?'/'+aspect[1]:''}${aspect.length>2?'/'+aspect[2]:''}`)
         }
     },[users.user])
-    return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}>
+    return <SWRConfig value={{ fetcher: jsonFetch }}>
         {aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px'}}>{a}</p>)}<br/>
         <hr style={{border: '1px solid white'}}/>
         <UserProfile />
         <AspectBridge {...users}/>
-    </SWRConfig></SSRProvider>
+    </SWRConfig>
 }
 export default page
 function AspectBridge(props){

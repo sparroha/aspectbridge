@@ -7,7 +7,7 @@ import { SWRConfig } from 'swr';
 import jsonFetch from '../lib/,base/jsonFetch';
 export default function Main(props) {
     useDomainRoot(props)
-    return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}><Row>
+    return <SWRConfig value={{ fetcher: jsonFetch }}><Row>
         <Col sm={12}>Redirecting...{JSON.stringify(props)}</Col>
         <Col sm={12}><Link href="/bridge" legacyBehavior><a>Aspect Bridge</a></Link></Col>
         <Col sm={12}><Link href="/josh" legacyBehavior><a>Sunrise Landscapes</a></Link></Col>
@@ -17,5 +17,5 @@ export default function Main(props) {
         <Col sm={12}><Link href="/chat" legacyBehavior><a>Chat</a></Link></Col>
         <Col sm={12}><Link href="/dragons" legacyBehavior><a>Dragons</a></Link></Col>
         <Col sm={12}><Link href="/wasd" legacyBehavior><a>wasd</a></Link></Col>
-    </Row></SWRConfig></SSRProvider>
+    </Row></SWRConfig>
 }
