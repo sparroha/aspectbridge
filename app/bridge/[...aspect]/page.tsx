@@ -57,8 +57,9 @@ const page: FC<pageProps> = ({params})=>{
         }
     },[users.user])
     return <SWRConfig value={{ fetcher: jsonFetch }}>
-        {aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px'}}>{a}</p>)}<br/>
-        <hr style={{border: '1px solid white'}}/>
+        {aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px', fontSize: '.8em'}}>{a}</p>)}<br/>
+        {//<hr style={{border: '1px solid white'}}/>
+        }
         <UserProfile />
         <AspectBridge {...users}/>
     </SWRConfig>
@@ -184,8 +185,8 @@ function NavRightDefault({user, activeUsers}: {user?: User, activeUsers?: Active
                         let now = Date.now()
                         let then = new Date(user.time).getTime()
                         let seconds = Math.floor((now-then)/1000)
-                        let minutes = Math.floor((now-then)/60000)
-                        let minutseconds = minutes+':'+seconds
+                        let minutes = Math.floor(seconds/60)
+                        let minutseconds = (minutes<10?'0':'')+minutes+':'+(seconds%60<10?'0':'')+seconds%60
                         return <div key={i} style={{color: 'white'}}>
                             {user.name}{' (active '}{minutseconds}{' ago)'}
                         </div>

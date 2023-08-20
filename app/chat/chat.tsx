@@ -124,7 +124,7 @@ function Messages({update, setUpdate, user, homepage, style}){
         }}/>
       </Col>
       <Col xs={12} sm={4} md={4} lg={3}>
-        <LoginNav user={user} homepage={ homepage || 'chat'} style={{fontSize: '14px'}}/>
+        <LoginNav user={user} homepage={ homepage || 'chat'} style={{fontSize: '1em', fontWeight: 'bold'}}/>
       </Col>
     </Row>
     <div id='messages' style={style}>
