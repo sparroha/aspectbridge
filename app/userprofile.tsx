@@ -43,7 +43,7 @@ function ProfileLoc(props) {
       //console.log('@Profile@[userlogin]:--mounting: '+JSON.stringify(data))
       
       /**SET ACTIVE USERS */
-      activateUser(data.username)
+      activateUser(data)
       //console.log('@Profile@[userlogin]:-mounting activeUsers: '+activeUsers)
   
       return () => {

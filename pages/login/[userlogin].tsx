@@ -22,6 +22,7 @@ export type User = {
 const debugAccess='2' 
 export type ActiveUser = {
   name: string,
+  access: number,
   time: number,
 }
 
@@ -44,8 +45,6 @@ export type ActiveUser = {
  * activateUser(username)
  * 
  */
-
-
 
 export default function UserLogin({ip, homepage}) {
     const router = useRouter()
@@ -266,7 +265,7 @@ export function Profile(props) {
     //console.log('@Profile@[userlogin]:--mounting: '+JSON.stringify(data))
     
     /**SET ACTIVE USERS */
-    activateUser(data.username)
+    activateUser(data)
 
     return () => {
       //console.log('@Profile@[userlogin]:-unmounting: '+JSON.stringify(data))
@@ -309,25 +308,23 @@ export function Profile(props) {
       </div>
   }
 }
-export async function activateUser(username){
+export async function activateUser(user: Partial<User>){
+  //console.log('activateUser: '+username)
   return getDB(ACTIVEUSERS)
-    .then((data: string)=>{
-      if(!data || data == "default") return []
-      return JSON.parse(data)
-    }).then((data: ActiveUser[])=>{
-      if(data == null ) return
-      if(data == undefined) return
+    .then((data: string)=>JSON.parse(data) || [])
+    .then((data: ActiveUser[])=>{
       if(data.length == 0){
-        setDB(ACTIVEUSERS, [{name: username, time: new Date().getTime()}])
-      }else setDB(ACTIVEUSERS, 
-        [...(data.filter(
-          ({time, name}) => {
-            if(name == username) return false //prevent duplicate user entry
-            if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour
-            return true
-          }
-        )), {name: username, time: new Date().getTime()}]
-      )
+        setDB(ACTIVEUSERS, [{name: user.username, access: user.access || 0, time: new Date().getTime()}])
+      }else{
+        //remove current and old users
+        let dataArr = data.filter(({time, name}) => {
+          if(name == user.username) return false //prevent duplicate user entry
+          if((new Date().getTime() - time) > (1000*60*60)) return false//remove users that havent been active in the last hour
+          return true
+        })
+        dataArr.push({name: user.username, access: user.access, time: new Date().getTime()})
+        setDB(ACTIVEUSERS, dataArr)
+      }
     }
   )
 }

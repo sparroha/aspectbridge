@@ -13,7 +13,7 @@ import SimpleNav from '../../../components/simplenav';
 import DiceWidget, { diceInitProps, useDiceRoll } from '../../../components/dice';
 import TLiterator from '../../../components/hebrew';
 import Clock from '../../../components/clock';
-import Chat from '../../../pages/chat';
+import Chat from '../../../pages/chat/chat';
 import UserMenu from '../usermenu';
 import UserProfile from '../../userprofile';
 import useUsers from '../../../lib/util/^users';
@@ -169,7 +169,14 @@ function NavRightDefault({user, activeUsers}: {user?: User, activeUsers?: Active
                 </Row>:null}
                 {activeUsers?<Row>
                     {activeUsers?.map((user, i)=>{
-                        return <div key={i} style={{color: 'white'}}>{user.name}{' (active '}{Math.floor((new Date().getTime()-new Date(user.time).getTime())/60000)}{' m ago)'}</div>
+                        let now = Date.now()
+                        let then = new Date(user.time).getTime()
+                        let seconds = Math.floor((now-then)/1000)
+                        let minutes = Math.floor((now-then)/60000)
+                        let minutseconds = minutes+':'+seconds
+                        return <div key={i} style={{color: 'white'}}>
+                            {user.name}{' (active '}{minutseconds}{' ago)'}
+                        </div>
                     })}
                 </Row>:null}
             </Col>

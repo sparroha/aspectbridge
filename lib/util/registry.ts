@@ -98,9 +98,5 @@ export async function setDB(name: string, data: any){
 }
 
 export async function getDB(name: string, signal?: AbortSignal): Promise<string>{
-    return fetch(`/api/registry/${name}`,{signal: signal})
-    .then(res=>{
-        //console.log('@getDB://fetch res: '+JSON.stringify(res))//always {}
-        return res.json()
-    })
+    return fetch(`/api/registry/${name}`,{signal: signal}).then(res=>res.json())
 }

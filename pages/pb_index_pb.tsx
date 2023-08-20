@@ -26,7 +26,7 @@ export default function Index(props) {
 	}, [])*/
 	useEffect(()=>{
 		const clickHandler = (e)=>{
-			if(user.username)activateUser(user.username)
+			if(user)activateUser(user)
 		}
 		window.addEventListener('click', clickHandler)
 		return ()=>{

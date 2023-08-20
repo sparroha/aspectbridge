@@ -240,7 +240,7 @@ export default function Story(props) {
 		console.log('loading event handler click for active user update')
 		const L = (e)=>{
 			//console.log('why?')
-			activateUser(user.username)
+			activateUser(user)
 		}
 		document.addEventListener('click', L)
 		return ()=>document.removeEventListener('click',L)

@@ -44,7 +44,7 @@ function DiceCompact({udr}){
             let r = sides?sides:dice[Math.floor(rand()*8)]
             selectSides(r)
             setValue(Math.floor(rand()*r)+1)
-            console.log(r+' sided dice roll!')
+            //console.log(r+' sided dice roll!')
         }
     }, [setValue])
 
@@ -110,7 +110,7 @@ export function useDiceRoll(props: diceInitProps): diceProps{
         if(roller=='false') return
         const i = setInterval(() => {
             setValue(Math.floor(rand()*sides)+1);
-            console.log('dice roll every '+speed+' seconds!');
+            //console.log('dice roll every '+speed+' seconds!');
         }, speed*1000);
         return () => clearInterval(i)
     }, [sides, roller])

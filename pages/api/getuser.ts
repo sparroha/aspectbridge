@@ -68,7 +68,7 @@ async function getHashByIp(ip) {
     return hash
 }
 export async function getUserByIp(ip) {
-    const [user] = await sql`SELECT * FROM aspect_users_ WHERE ip = ${ip}`
+    const [user]: [User] = await sql`SELECT * FROM aspect_users_ WHERE ip = ${ip}`
     return user // || await getUserByHash(await getHashByIp(ip), ip)
 }
 async function getAllUsers() {
