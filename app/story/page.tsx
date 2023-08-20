@@ -1,5 +1,5 @@
 'use client'
-import { Dispatch, useCallback, useEffect, useState } from "react"
+import { Dispatch, useCallback, useEffect, useState, FC} from "react"
 import useRegister from "../../lib/util/registry"
 import { LoginNav } from "../../pages/login/[userlogin]"
 import StrBldr from "../../components/stringbuilder";
@@ -12,12 +12,13 @@ import jsonFetch from "../../lib/,base/jsonFetch";
 
 export type Story = string | {what?: string, why?: string, who?: string}
 export type StoryBoard = Story[]
-export default function Page({params}){
+const page: FC<any> = ({params})=>{
     return <SWRConfig value={{ fetcher: jsonFetch }}>
         <Init/>
     </SWRConfig>
 }
-export function Init(props){
+export default page
+function Init(props){
     const {ip, user, activeUsers} = useUsers()
     const [register, saveData, registryLoaded] = useRegister('story', ['berashith'])
 
@@ -57,7 +58,8 @@ export function Init(props){
     const [trnsfrm , setTrnsfrm] = useState(0)
     const [shadow, setShadow] = useState(-90)
     const [pulse, setPulse] = useState(0)
-    useEffect(()=>{return
+    //useEffect(()=>{
+        //return
         /*let fun = ()=>{
             setTrnsfrm((deg)=>deg+10)
             setShadow((deg)=>deg>=180?-180+20:deg+20)
@@ -65,7 +67,7 @@ export function Init(props){
         }
         let i =setInterval(fun, 1000)
         return ()=>clearInterval(i)*/
-    },[])
+    //},[])
     //use: story, page, setPage, save
     return !registryLoaded?<>Loading...</>:
     <div style={{perspective: '720px', height: '100vh', backgroundImage: 'linear-gradient(to right, #557, #77a, #aad)'}}>
