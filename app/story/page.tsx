@@ -1,5 +1,5 @@
 'use client'
-import { Dispatch, useCallback, useEffect, useState, FC} from "react"
+import { Dispatch, useCallback, useEffect, useState, FC, SetStateAction} from "react"
 import useRegister from "../../lib/util/registry"
 import { LoginNav } from "../../pages/login/[userlogin]"
 import StrBldr from "../../components/stringbuilder";
@@ -25,9 +25,10 @@ function Init(props){
     const [what, setWhat] = useState('')
     const [why, setWhy] = useState('')
     const [who, setWho] = useState('')
-    const [story, setStory]: [StoryBoard, Dispatch<any>] = useState([])
+    const [story, setStory]: [StoryBoard, Dispatch<SetStateAction<StoryBoard>>] = useState([])
     
     useEffect(()=>{
+        console.log('registryLoaded', register)
         if(!registryLoaded)return
         let regipage: any[] = JSON.parse(register)
         let rp: StoryBoard = regipage.map((p,i)=>typeof p === 'string' ?{what: p, why: '', who: ''}:p)
@@ -40,15 +41,14 @@ function Init(props){
         //let rp: StoryBoard = story.map((p,i)=>typeof p === 'string' ?{what: p, why: '', who: ''}:p)
         console.log('save data')
         setStory((s)=>{
-            let sty = [...s]
-            sty.push({what: what, why: why, who: who})
+            let sty = [...s, {what: what, why: why, who: who}]
             saveData(sty)
             setWhat('')
             setWhy('')
             setWho('')
             return sty
         })
-    },[story])
+    },[who, what, why])
 
     const [submitTooltip, setSubmitTooltip] = useState(false)
     function toggleSubmitTooltip(){
