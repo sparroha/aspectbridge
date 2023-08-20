@@ -33,6 +33,12 @@ import Chat from '../../chat/chat';
 const componentObject = navComponentObject()
 
 interface pageProps{params: {aspect: string[]}}
+
+/*export async function generateMetadata({params}: pageProps) {
+    return {
+        title: `${params.aspect[0]+"'s " || ''}Bridge Page`,
+    }
+  }*/
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
