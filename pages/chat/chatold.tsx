@@ -62,7 +62,8 @@ export default function Chat(props){
     }
   }, [revalidate])
   
-  return <Container>{<LoginNav user={userState?.username?.substring(0,5)!='guest'?userState:null} homepage={props.homepage?props.homepage:'chat'}/>}
+  return <Container>{'DEPRICATED'}<hr/>
+    {<LoginNav user={userState?.username?.substring(0,5)!='guest'?userState:null} homepage={props.homepage?props.homepage:'chat'}/>}
       <Row>
         <Col xs={8} style={border}>
           <Messages update={update} setUpdate={setUpdate} access={userState?.access} style={{...scroll, ...border}}/>

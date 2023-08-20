@@ -1,9 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { ACTIVEUSERS, ActiveUser, LoginNav, Profile } from '../../pages/login/[userlogin]';
-import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
-import useSWR from 'swr';
+import { Button, Col, Container, Form, Nav, Row, SSRProvider } from 'react-bootstrap';
+import useSWR, { SWRConfig } from 'swr';
 import useUsers from '../../lib/util/^users';
+import jsonFetch from '../../lib/,base/jsonFetch';
 
 const scroll = {
   overflowY: 'scroll'
@@ -20,47 +21,12 @@ const border = {
  */
 export default function Chat(props){
   const {ip, user, activeUsers} = useUsers()
-  //const [userState, setUserState] = useState({username: user?.username || ('guest'+(ip?.split(".")[3] || null)), email: user?.email || '', access: user?.access || 0})
   const [update, setUpdate] = useState(false)
-  //const [revalidate, setRevalidate] = useState(false)
-  /**
-   * INIT userState
-   */
-  //useEffect(()=>{
-  //  setUserState({...user, username:  user?.username || ('guest'+(ip?.split(".")[3] || ''))})
-  //}, [user])
-  //useEffect(()=>{
-    //if(!user)return
-
-    /*const inactivate = ()=>{
-      if(user)fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (user?.access==2?'[**].':(user?.access==1?'[*].':''))+user.username})})
-      .then((res)=>res.json())
-      .then((data)=>{console.log(data?'user '+name+' left':'user not removed')})
-      .catch(error => console.error(error))
-    }*/
-    //console.log('Rv1: '+JSON.stringify(user?user:name))
-    //window.addEventListener('unload', inactivate)
-    //window.addEventListener('beforeunload', inactivate)
-    //setRevalidate(true)
-  //}, [userState])
-  /*useEffect(()=>{
-    if(revalidate){
-      const activate = ()=>{
-        //console.log('Rv3: '+JSON.stringify(user))
-        if(name)fetch('/api/chat/users', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: (userState?.access==2?'[**].':(userState?.access==1?'[*].':''))+name})})
-        .then((res)=>res.json())
-        .then((data)=>{console.log(data?'user '+name+' active':'user not active')})
-        .catch(error => console.error(error))
-      }
-      //console.log('Rv2: '+JSON.stringify(user?user:name))
-      activate()
-      setRevalidate(false)
-    }
-  }, [revalidate])*/
   
-  return <Container>
-    
-    {<LoginNav user={user} homepage={props.homepage?props.homepage:'chat'}/>}
+  return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}><Container>
+    {//<>{ip}<br/>{JSON.stringify(user)}<br/>{JSON.stringify(activeUsers)}<br/></>
+    }
+    <LoginNav user={user} homepage={props.homepage?props.homepage:'chat'}/>
       <Row>
         <Col xs={8} style={border}>
           <Messages update={update} setUpdate={setUpdate} access={user?.access} style={{...scroll, ...border}}/>
@@ -74,7 +40,7 @@ export default function Chat(props){
           <SendForm ip={ip} user={user} setUpdate={setUpdate}/>
         </Col>
       </Row>
-  </Container>
+  </Container></SWRConfig></SSRProvider>
 }
 
 /**
@@ -87,18 +53,22 @@ function Messages({update, setUpdate, access, style}){
   const {data, error, mutate} = useSWR('/api/chat/messages', { refreshInterval: 500 })
   const [filteredData, setFilteredData] = useState(null)
   let refresh = false
+  //initialize messages
   useEffect(()=>{
-    if(data) {
-      setFilteredData(data);
-      scrollFloor()
-    }
+    if(!data) return
+
+    setFilteredData(data);
+    scrollFloor()
+    
   }, [data])
+  //update messages
   useEffect(()=>{
-    if(update) {
-      mutate()
-      setUpdate(false)
-      scrollFloor()
-    }
+    if(!update) return
+    
+    mutate()
+    setUpdate(false)
+    scrollFloor()
+    
   }, [update])
   function handleDelete(message){return () =>{
     const date = new Date(message.timestamp);
@@ -129,6 +99,7 @@ function Messages({update, setUpdate, access, style}){
       }))
     }}/>
     <div id='messages' style={{maxHeight: '50vh', minHeight: '20px', ...style}}>
+      
       {filteredData?.map((message, i)=>{
         return <p key={i} style={{fontSize: '14px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'< '}{message.timestamp}{' > ['}{message.username}{'] '}{message.message}<br/></p>
       })}
@@ -142,18 +113,18 @@ function Messages({update, setUpdate, access, style}){
  * @returns 
  */
 
-function Users(style, activeUsers: ActiveUser[]){
-  if(activeUsers)return <div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>
+function Users({style, activeUsers}: {style: any, activeUsers: ActiveUser[]}){
+  return <div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>
     {activeUsers?.map((user, i)=>{
       const {name, time} = user
       const color = user.access==2?'red':user.access==1?'orange':'black';
       const access = user.access==2?'[**]':user.access==1?'[*]':'';
-
+      const dateTime = new Date(time).toLocaleTimeString();
       return <div key={i} style={{fontSize: '12px'}}>
         <div style={{color: color, float: 'left'}}>
           {access}
         </div>
-        {user.name}{'['}{time}{']'}<br/>
+        {user.name}{'['}{dateTime}{']'}<br/>
       </div>
     })}
   </div>
@@ -236,7 +207,7 @@ function SendForm({ip, user, setUpdate}){
     }, 100)
   }
   return <Form onSubmit={handleSubmit} style={{ maxHeight: '20vh'}}>
-      <Form.Control type='text' style={{visibility: 'collapse', border: '0px', margin: '0px', padding: '0px', height: '0px'}} name='username' defaultValue={user.username}/> 
+      <Form.Control type='text' style={{visibility: 'collapse', border: '0px', margin: '0px', padding: '0px', height: '0px'}} name='username' defaultValue={user?.username}/> 
       <Row>
           <Col xs={10}>
             <Form.Control type='text' name='send' style={{width: '100%'}}
@@ -254,27 +225,6 @@ function SendForm({ip, user, setUpdate}){
   </Form>
 }
 
-/**
- * Remove Inactive Users
- * @param users: array of users
- * @param inactivePeriod: in milliseconds
- */
-const removeInactiveUsers = async (users, inactivePeriod) => {
-  const now = new Date();
-  const inactiveTime = now.getTime() - inactivePeriod;
-
-  users?.forEach(user => {
-    let lastActive = new Date(user.last_active).getTime();
-    if(lastActive <= inactiveTime){
-      fetch('/api/chat/deleteuser', {method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({username: user.username})})
-      .then((res)=>res.json())
-      .then((data)=>{
-        console.log(data?'user '+user.username+' removed for inactivity':'error removing user for inactivity')
-      })
-      .catch((err)=>console.error(err))
-    }
-  });
-}
 const scrollFloor = ()=>{
   const messages = document.getElementById('messages')
   setTimeout(() => {

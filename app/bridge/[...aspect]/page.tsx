@@ -1,8 +1,8 @@
 'use client'
-import React, { useState, useEffect, Dispatch, useMemo, SetStateAction, FC } from 'react'
+import React, { useState, useEffect, useMemo, FC } from 'react'
 import Head from "next/head";
 import Script from 'next/script';
-import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, NavLink, Row, Nav, Navbar, SSRProvider} from "react-bootstrap";
 import { useRouter } from 'next/navigation';
 import NavIndex from '../nav';
 import navComponentObject from '../navigaton';
@@ -13,11 +13,13 @@ import SimpleNav from '../../../components/simplenav';
 import DiceWidget, { diceInitProps, useDiceRoll } from '../../../components/dice';
 import TLiterator from '../../../components/hebrew';
 import Clock from '../../../components/clock';
-import Chat from '../../../pages/chat/chat';
 import UserMenu from '../usermenu';
 import UserProfile from '../../userprofile';
 import useUsers from '../../../lib/util/^users';
 import { ActiveUser, User } from '../../../pages/login/[userlogin]';
+import { SWRConfig } from 'swr';
+import jsonFetch from '../../../lib/,base/jsonFetch';
+import Chat from '../../chat/chat';
 
 
 
@@ -48,12 +50,12 @@ const page: FC<pageProps> = ({params})=>{
           router.push(`/bridge/${currentUsername}${aspect.length>1?'/'+aspect[1]:''}${aspect.length>2?'/'+aspect[2]:''}`)
         }
     },[users.user])
-    return <>
+    return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}>
         {aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px'}}>{a}</p>)}<br/>
         <hr style={{border: '1px solid white'}}/>
         <UserProfile />
         <AspectBridge {...users}/>
-    </>
+    </SWRConfig></SSRProvider>
 }
 export default page
 function AspectBridge(props){

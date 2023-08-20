@@ -2,7 +2,7 @@ import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import DiceWidget, { useDiceRoll } from "../../components/dice";
 import Dialog from "../../components/dialog";
-import Chat from "../chat/chat";
+import Chat from "../chat/chatold";
 import requestIp from 'request-ip';
 import { GetServerSideProps } from "next";
 import { LoginNav, Profile } from "../login/[userlogin]";

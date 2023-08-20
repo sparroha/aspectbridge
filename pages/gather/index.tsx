@@ -7,7 +7,7 @@ import Dialog from "../../components/dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import ContainerOverlay from "../../components/overlay";
 import useSWR from "swr";
-import Chat from "../chat/chat";
+import Chat from "../chat/chatold";
 import Field from "./field";
 
 export type Item = {name: string, value: number, amount: number}

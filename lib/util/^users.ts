@@ -7,6 +7,7 @@ export default function useUsers(): {ip: string, user: User, activeUsers: Active
     const [user, setUser] = useState(null)
     const [activeUsers, setActiveUsers] = useState(null)
     useEffect(()=>{
+        console.log('@useUsers:useEffect(): ip_'+ip+' user_'+JSON.stringify(user || {})+' activeUsers_'+JSON.stringify(activeUsers || []))
         if(!ip)fetch('/api/getip').then((res)=>res.json()).then((ip)=>setIp(ip))
         if(ip && !user)fetch('/api/getuser?ip='+ip).then((res)=>res.json()).then((data)=>{setUser(data);activateUser(data)})
         if(user) {

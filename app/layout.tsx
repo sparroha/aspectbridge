@@ -22,8 +22,13 @@ export const metadata: Metadata = {
   //icons: 'assets/binary2.png',
   //assets: 'https://aspectbridge.com/assets',
 }
-
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export async function generateMetadata({params}) {
+  if(params.aspect)return {
+    ...metadata,
+    title: `${params.aspect[0]+"'s " || ''}Bridge`,
+  }
+}
+export default async function RootLayout({children}: {children: React.ReactNode}) {
   return <html lang={'en'}>
       <body>{children}</body>
     </html>
