@@ -319,7 +319,7 @@ export async function activateUser(user: Partial<User>){
         //remove current and old users
         let dataArr = data.filter(({time, name}) => {
           if(name == user.username) return false //prevent duplicate user entry
-          if((new Date().getTime() - time) > (1000*60*60)) return false//remove users that havent been active in the last hour
+          if((new Date().getTime() - time) > (1000*60*60)/6) return false//remove users that havent been active in the last hour...last 10 min
           return true
         })
         dataArr.push({name: user.username, access: user.access, time: new Date().getTime()})
