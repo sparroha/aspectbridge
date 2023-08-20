@@ -44,13 +44,13 @@ function EditUsername({user}: {user: Partial<User>}){
             })
         }).then(res => {console.log(res); res.json()}).then(data => console.log(data))
     }
-    return <div>
+    return <form>
         <label>Current Username:</label><br/>
         <label style={textFieldStyle}>{user?.username}</label><br/>
         <label>New Username:</label><br/>
         <input style={textFieldStyle} type='text' onChange={(e)=>setUsername(e.target.value)} value={username} /><br/>
         <button style={buttonStyle} onClick={updateUsername}>save Username</button>
-    </div>
+    </form>
 }function EditEmail({user}: {user: Partial<User>}){
     const [pass, setPass] = useState('')
     const [newMail, setNewMail] = useState(user?.email)
@@ -96,12 +96,12 @@ function EditUsername({user}: {user: Partial<User>}){
             })
         }).then(res => {console.log(res); res.json()}).then(data => console.log(JSON.stringify(data)))
     }
-    return <div>
+    return <form>
         <label>Current Password:</label>
         <input type='checkbox' onMouseOver={()=>setShowPassTip(true)} onMouseOut={()=>setShowPassTip(false)} onChange={(e)=>setShowPass(e.target.checked)} checked={showPass} />
         <label hidden={!showPassTip}>Show Password</label>
         <br/>
-        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={sethashpass} value={pass} />
+        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={sethashpass} value={pass} autoComplete={"on"}/>
         <br/>
         <label>Current Email:</label><br/>
         <label style={textFieldStyle}>{user?.email}</label>
@@ -110,7 +110,7 @@ function EditUsername({user}: {user: Partial<User>}){
         <input style={textFieldStyle} type={'text'} onChange={sethashmail} value={newMail} />
         <br/>
         <button style={buttonStyle} onClick={updateHashMail}>save Email</button>
-    </div>
+    </form>
 }
 function EditPassword({user}: {user: Partial<User>}){
     const [password, setPassword] = useState('')
@@ -148,19 +148,19 @@ function EditPassword({user}: {user: Partial<User>}){
             })
         }).then(res => {console.log(res); res.json()}).then(data => console.log(JSON.stringify(data)))
     }
-    return <div>
+    return <form>
         <label>Current Password:</label>
         <input type='checkbox' onMouseOver={()=>setShowPassTip(true)} onMouseOut={()=>setShowPassTip(false)} onChange={(e)=>setShowPass(e.target.checked)} checked={showPass} />
         <label hidden={!showPassTip}>Show Password</label>
         <br/>
-        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={(e)=>setPassword(e.target.value)} value={password} />
+        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={(e)=>setPassword(e.target.value)} value={password} autoComplete={"on"}/>
         <br/>
         <label>New Password:</label>
         <input type='checkbox' onMouseOver={()=>setShowPassTip(true)} onMouseOut={()=>setShowPassTip(false)} onChange={(e)=>setShowPass(e.target.checked)} checked={showPass} />
         <label hidden={!showPassTip}>Show Password</label>
         <br/>
-        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={sethashpass} value={newPass} />
+        <input style={textFieldStyle} type={!showPass?'password':'text'} onChange={sethashpass} value={newPass} autoComplete={"off"}/>
         <br/>
         <button style={buttonStyle} onClick={updateHash}>save Password</button>
-    </div>
+    </form>
 }
