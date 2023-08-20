@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { ACTIVEUSERS, ActiveUser, LoginNav, Profile } from '../../pages/login/[userlogin]';
-import { Button, Col, Container, Form, Nav, Row, SSRProvider } from 'react-bootstrap';
+import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
 import useSWR, { SWRConfig } from 'swr';
 import useUsers from '../../lib/util/^users';
 import jsonFetch from '../../lib/,base/jsonFetch';
@@ -30,7 +30,7 @@ export default function Chat(props){
   const {ip, user, activeUsers} = useUsers()
   const [update, setUpdate] = useState(false)
   
-  return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}><div style={{padding: '1px', ...(props.homepage!='chat'?{margin: '0px'}:{})}}>
+  return <SWRConfig value={{ fetcher: jsonFetch }}><div style={{padding: '1px', ...(props.homepage!='chat'?{margin: '0px'}:{})}}>
     {//<>{ip}<br/>{JSON.stringify(user)}<br/>{JSON.stringify(activeUsers)}<br/></>
     }
     
@@ -47,7 +47,7 @@ export default function Chat(props){
           <SendForm ip={ip} user={user} setUpdate={setUpdate}/>
         </Col>
       </Row>
-  </div></SWRConfig></SSRProvider>
+  </div></SWRConfig>
 }
 
 /**
