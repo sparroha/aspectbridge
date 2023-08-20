@@ -9,13 +9,15 @@ import requestIp from 'request-ip'
 import Head from "next/head"
 import useRegister, { getDB, setDB } from "../../lib/util/registry"
 
-export type User = {
+export type StoredUser = {
   id: number,
   username: string,
   email: string,
   hash: string,
   access: number,
   ip: string
+}
+export type User = StoredUser & {
   message: string,
   homepage: string,
 }
@@ -309,7 +311,7 @@ export function Profile(props) {
   }
 }
 export async function activateUser(user: Partial<User>){
-  //console.log('activateUser: '+username)
+  if(!user) return console.log('No user provided')
   return getDB(ACTIVEUSERS)
     .then((data: string)=>JSON.parse(data) || [])
     .then((data: ActiveUser[])=>{

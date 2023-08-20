@@ -1,5 +1,5 @@
 import sql from "../../lib/,base/sql";
-import { User } from "../login/[userlogin]";
+import { StoredUser, User } from "../login/[userlogin]";
 //url params use query
 //form submits use query
 //fetch uses body
@@ -35,9 +35,10 @@ export default async function getUser(req, res): Promise<Partial<User>> {
         default:
             break;
     }
-    else if(ip){
-        if (hash&&hash!=null) user = await getUserByHash(hash, ip)
+    else if(ip && ip!=null){
+        if (hash && hash!=null) user = await getUserByHash(hash, ip)
         else user = await getUserByIp(ip)
+        if(!user) return res.status(400).json({message: 'No user record with ip '+ip+''})
     }
     else if( email ) user = await getUserByEmail(email)
     else if( username ) user = await getUserByUsername(username)
@@ -68,7 +69,7 @@ async function getHashByIp(ip) {
     return hash
 }
 export async function getUserByIp(ip) {
-    const [user]: [User] = await sql`SELECT * FROM aspect_users_ WHERE ip = ${ip}`
+    const [user]: [StoredUser] = await sql`SELECT * FROM aspect_users_ WHERE ip = ${ip}`
     return user // || await getUserByHash(await getHashByIp(ip), ip)
 }
 async function getAllUsers() {

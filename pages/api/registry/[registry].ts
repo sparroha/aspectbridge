@@ -1,5 +1,9 @@
 import sql from "../../../lib/,base/sql"
-
+export type RegistryCollomn = {
+	id: number
+	name: string
+	registry_data: string
+}
 export default async function registry(req, res) {
 	const { registry , command, id } = req.query //NAME: the dynamic file name associated with the target registry
 	const registry_data = req.body || 'default' //DATA: the data to be stored in the registry || the command to run on registry
