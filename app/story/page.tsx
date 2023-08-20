@@ -69,7 +69,7 @@ function Init(props){
         return ()=>clearInterval(i)*/
     //},[])
     //use: story, page, setPage, save
-    return !registryLoaded?<>Loading...</>:
+    return (!registryLoaded)?<>Loading...</>:
     <div style={{perspective: '720px', height: '100vh', backgroundImage: 'linear-gradient(to right, #557, #77a, #aad)'}}>
         {what}<br/>{why}<br/>{who}<br/>
         <LoginNav user={user} homepage={'story'}/>
