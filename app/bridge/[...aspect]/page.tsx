@@ -77,7 +77,11 @@ function AspectBridge(props){
                 {//<Col sm={5}><CalendarTab /></Col>
                 }
                 <NavRightDefault />
-                <Col xs={12} sm={12} md={8} style={{background: '#eee'}}>Bridge Chat:<br/><Chat user={user} homepage={'bridge'} ip={ip} /></Col>
+                <Col xs={12} sm={12} md={8} style={{
+                        backgroundImage: 'linear-gradient(to bottom, #777, #fff)'
+                    }}>
+                    <Chat user={user} homepage={'bridge'} ip={ip} maxHeight={'10vh'}/>
+                </Col>
                 <NavRightDefault activeUsers={activeUsers}/>
             </Row>
             {//<Footer />

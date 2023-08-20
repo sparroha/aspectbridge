@@ -11,7 +11,10 @@ const scroll = {
 }
 const border = {
   border: '1px outset black',
-  borderRadius: '5px'
+  borderRadius: '5px',
+  padding: '3px',
+  paddingTop: '0px',
+  
 }
 
 /**
@@ -23,16 +26,16 @@ export default function Chat(props){
   const {ip, user, activeUsers} = useUsers()
   const [update, setUpdate] = useState(false)
   
-  return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}><Container>
+  return <SSRProvider><SWRConfig value={{ fetcher: jsonFetch }}><div style={{padding: '1px', ...(props.homepage!='chat'?{margin: '0px'}:{})}}>
     {//<>{ip}<br/>{JSON.stringify(user)}<br/>{JSON.stringify(activeUsers)}<br/></>
     }
-    <LoginNav user={user} homepage={props.homepage?props.homepage:'chat'}/>
+    
       <Row>
-        <Col xs={8} style={border}>
-          <Messages update={update} setUpdate={setUpdate} access={user?.access} style={{...scroll, ...border}}/>
+        <Col xs={12} sm={9} style={border}>
+          <Messages update={update} setUpdate={setUpdate} user={user} homepage={props.homepage} style={{...scroll, ...border, maxHeight: props.maxHeight || '20vh', minHeight: '20px'}}/>
         </Col>
-        <Col xs={4}>
-          <Users style={scroll} activeUsers={activeUsers}/>
+        <Col xs={12} sm={3}>
+          <Users activeUsers={activeUsers} style={{...scroll, maxHeight: props.maxHeight || '20vh', minHeight: '20px'}}/>
         </Col>
       </Row>
       <Row>
@@ -40,7 +43,7 @@ export default function Chat(props){
           <SendForm ip={ip} user={user} setUpdate={setUpdate}/>
         </Col>
       </Row>
-  </Container></SWRConfig></SSRProvider>
+  </div></SWRConfig></SSRProvider>
 }
 
 /**
@@ -48,8 +51,22 @@ export default function Chat(props){
  * @param param0: update, setUpdate, access, style 
  * @returns 
  */
-function Messages({update, setUpdate, access, style}){
+function Messages({update, setUpdate, user, homepage, style}){
   //const [dataSorted, setDataSorted] = useState(null)
+  const deleteButtonProps = {
+      fontSize: 'inherit',
+      height: 'inherit',
+      margin: '0px',
+      padding: '0px 3px 0px 3px',
+  }
+  const searchInputProps = {
+    minWidth: '100px',
+    width: '50vw',
+    maxWidth: '100%',
+    margin: '0px',
+    padding: '0px',
+    height: '1.5em'
+  }
   const {data, error, mutate} = useSWR('/api/chat/messages', { refreshInterval: 500 })
   const [filteredData, setFilteredData] = useState(null)
   let refresh = false
@@ -92,19 +109,35 @@ function Messages({update, setUpdate, access, style}){
     })
     .catch(error => console.error(error));
   }}
-  return <>
-    Search: <input type='text' defaultValue={''} onChange={(event)=>{
-      setFilteredData(data.filter((message)=>{
-        return message.message.includes(event.target.value)
-      }))
-    }}/>
-    <div id='messages' style={{maxHeight: '50vh', minHeight: '20px', ...style}}>
+  return <Row><Col style={{margin: '0px', padding: '0px'}}>
+    <Row>
+      <Col xs={3} sm={2} md={2}>Search:</Col>
+      <Col xs={9} sm={6} md={6} lg={7}>
+        <input style={searchInputProps} type='text' defaultValue={''} onChange={(event)=>{
+          setFilteredData(data.filter((message)=>{
+            return message.message.includes(event.target.value)
+          }))
+        }}/>
+      </Col>
+      <Col xs={12} sm={4} md={4} lg={3}>
+        <LoginNav user={user} homepage={ homepage || 'chat'} style={{fontSize: '14px'}}/>
+      </Col>
+    </Row>
+    <div id='messages' style={style}>
       
       {filteredData?.map((message, i)=>{
-        return <p key={i} style={{fontSize: '14px'}}>{access==2?<Button onClick={handleDelete(message)} style={{fontSize: 'inherit'}}>Delete</Button>:null}{'< '}{message.timestamp}{' > ['}{message.username}{'] '}{message.message}<br/></p>
+        let t = new Date(message.timestamp)
+        let stamp = t.getMonth()+'/'+t.getDate()+
+            ' '+(t.getHours()<10?'0':'')+(t.getHours()-(t.getHours()>12?12:0))+
+            ':'+(t.getMinutes()<10?'0':'')+t.getMinutes()+
+            ':'+(t.getSeconds()<10?'0':'')+t.getSeconds()
+        return <p key={i} style={{fontSize: '14px'}}>
+          {style.access==2?<Button onClick={handleDelete(message)} style={deleteButtonProps}>Delete</Button>:null}
+          {'< '}{stamp}{' > ['}{message.username}{'] '}{message.message}<br/>
+        </p>
       })}
     </div>
-  </>
+  </Col></Row>
 }
 
 /**
@@ -114,7 +147,7 @@ function Messages({update, setUpdate, access, style}){
  */
 
 function Users({style, activeUsers}: {style: any, activeUsers: ActiveUser[]}){
-  return <div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>
+  return <Row id={ACTIVEUSERS} style={style}>
     {activeUsers?.map((user, i)=>{
       const {name, time} = user
       const color = user.access==2?'red':user.access==1?'orange':'black';
@@ -127,7 +160,7 @@ function Users({style, activeUsers}: {style: any, activeUsers: ActiveUser[]}){
         {user.name}{'['}{dateTime}{']'}<br/>
       </div>
     })}
-  </div>
+  </Row>
 
   {/**TODO update ACTIVEUSERS database for this structure of information OOOOR *update this function to call user data from db based on current ACTIVEUSERS* */}
   return<div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>{activeUsers.map((user, i)=>{
