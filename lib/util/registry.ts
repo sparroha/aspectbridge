@@ -40,7 +40,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
     
     //useLog('@useRegister://REGISTRY_NAME: '+registry+' :: REGISTRY: '+JSON.stringify(reg))
     const [currentsave, setCurentSave] = useState(registry)//current save
-    const registryLoaded = useRef(false)
+    const [registryLoaded, setRegistryLoaded] = useState(false)
     const [register, setRegister] = useState(JSON.stringify(defaultValue))//register setter and render function
     const {data, error} = useSWR('../api/registry/'+registry, { refreshInterval: 500 })//get data from database
     //useLog('@useRegister://REGISTER: '+JSON.stringify(register.current)+' :: LOADED: '+registryLoaded)
@@ -52,28 +52,28 @@ export default function useRegister(registry: string, defaultValue: any):[string
     //INIT
     //initialize register from database
     async function loadDataOnce(registry,  signal?: AbortSignal){
-        if(registryLoaded.current) return
-        if(!registry) {console.log('@useRegister://REGISTER: '+'registry: '+registry); return}
-        if(registry ==  null) {console.log('@useRegister://REGISTER: '+'registry: '+registry); return}
+        if(registryLoaded) return
+        if(!registry) {console.log('@useRegister://REGISTER: '+'no registry: '+registry); return}
+        if(registry ==  null) {console.log('@useRegister://REGISTER: '+'null registry: '+registry); return}
         return getDB(registry, signal).then((data: string)=>{
             if(data == null || data == undefined || !data || data == "default") {
                 //init registry: only sets default if data not exist
                 setDB(registry, defaultValue)
             }
-            registryLoaded.current = true
+            setRegistryLoaded(true)
         }).catch(err=>console.log('@useRegister.loadDataOnce://fetch error: '+err))
     }
 
     //load saved data once and if data name changes
     useEffect(()=>{
-        let controller = new AbortController();
+        //let controller = new AbortController();
         if(!registry)return
         if(registry != currentsave){
-            registryLoaded.current = false
+            setRegistryLoaded(false)
             setCurentSave(registry)
         }
         loadDataOnce(registry/*, controller.signal*/)
-        return () => controller?.abort();
+        //return () => controller?.abort();
     },[registry/*, registryLoaded.current*/])//load registry
     //END INIT
 
@@ -82,7 +82,7 @@ export default function useRegister(registry: string, defaultValue: any):[string
         //console.log('@useRegister.saveRegister://set register '+JSON.stringify(registry)+': '+JSON.stringify(data))
         setDB(registry, data)
     },[registry])
-    return [register, saveData, registryLoaded.current]
+    return [register, saveData, registryLoaded]
 }
 
 //updates database with current register ref

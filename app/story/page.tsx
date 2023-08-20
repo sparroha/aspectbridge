@@ -28,8 +28,8 @@ function Init(props){
     const [story, setStory]: [StoryBoard, Dispatch<SetStateAction<StoryBoard>>] = useState([])
     
     useEffect(()=>{
-        console.log('registryLoaded', register)
         if(!registryLoaded)return
+        console.log('registryLoaded', register)
         let regipage: any[] = JSON.parse(register)
         let rp: StoryBoard = regipage.map((p,i)=>typeof p === 'string' ?{what: p, why: '', who: ''}:p)
         //console.log(register)
@@ -69,8 +69,8 @@ function Init(props){
         return ()=>clearInterval(i)*/
     //},[])
     //use: story, page, setPage, save
-    return (!registryLoaded)?<>Loading...</>:
-    <div style={{perspective: '720px', height: '100vh', backgroundImage: 'linear-gradient(to right, #557, #77a, #aad)'}}>
+    if(!registryLoaded)return <>Loading...</>
+    return <div style={{perspective: '720px', height: '100vh', backgroundImage: 'linear-gradient(to right, #557, #77a, #aad)'}}>
         {what}<br/>{why}<br/>{who}<br/>
         <LoginNav user={user} homepage={'story'}/>
         <UserProfile/>
