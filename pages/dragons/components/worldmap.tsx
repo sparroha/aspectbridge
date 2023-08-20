@@ -63,7 +63,7 @@ export default function MapFollow({game}: {game: GameData}){
         {game.activeMap.regions?.map((row, i) => (game.position.z==i)?<Row key={i}>Floor {i+1}<Col xs={12}>
             {row.map((col, j) => (j>=(game.position.x-game.viewDistance))&&(j<=(game.position.x+game.viewDistance))?<Row key={j}><Col xs={12} style={{padding: 0}}>
                 {col.map((cell, k) => ((k>=game.position.y-game.viewDistance)&&(k<=game.position.y+game.viewDistance))?
-                <Region indexkey={k} region={cell} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)} />
+                <div key={k}><Region region={cell} disabled={(game.position.x==j&&game.position.y==k&&game.position.z==i?false:true)} /></div>
                 :<div key={k}></div>)}
             </Col></Row>:<div key={j}></div>)}
         </Col></Row>:<div key={i}></div>)}

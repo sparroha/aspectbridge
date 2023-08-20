@@ -18,7 +18,7 @@ const border = {
 const strip = {
   margin: '0px',
   padding: '0px',
-  border: '0px',
+  //border: '0px',
 }
 
 /**
@@ -113,8 +113,8 @@ function Messages({update, setUpdate, user, homepage, style}){
     })
     .catch(error => console.error(error));
   }}
-  return <Row><Col style={{margin: '0px', padding: '0px'}}>
-    <Row style={{...style, overflowY: 'auto'}}>
+  return <Row style={strip}><Col style={{margin: '0px', padding: '0px'}}>
+    <Row style={{...style, ...strip, overflowY: 'none'}}>
       <Col xs={3} sm={2} md={2}>Search:</Col>
       <Col xs={9} sm={6} md={6} lg={7}>
         <input style={searchInputProps} type='text' defaultValue={''} onChange={(event)=>{

@@ -3,8 +3,6 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import useLog from "../../components/conlog"
 import Landscape from "../../components/ll/css/layout"
-import sql from "../../lib/,base/sql"
-import { stat } from "fs"
 
 export type Game = {
     playerLocalHP: number,

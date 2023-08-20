@@ -87,7 +87,8 @@ function AspectBridge(props){
                 <Col xs={12} sm={12} md={8} style={{
                         backgroundImage: 'linear-gradient(to bottom, #777, #fff)'
                     }}>
-                    <Chat user={user} homepage={'bridge'} ip={ip} maxHeight={'10vh'}/>
+                    {//<Chat user={user} homepage={'bridge'} ip={ip} maxHeight={'10vh'}/>
+}
                 </Col>
                 <NavRightDefault activeUsers={activeUsers}/>
             </Row>

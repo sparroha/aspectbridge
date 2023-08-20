@@ -11,9 +11,11 @@ import Controls from "./controls";
 import MapFollow, { getMap, MapData } from "./components/worldmap";
 import { EventData } from "./components/event";
 import sql from "../../lib/,base/sql";
+import useUsers from "../../lib/util/^users";
+import UserProfile from "../../app/userprofile";
 
-export default function NetDragons({ip, M, E}: {ip: string, M: MapData[], E: EventData[]}){
-    const [user, setUser] = useState(null)
+export default function NetDragons({M, E}: {M: MapData[], E: EventData[]}){
+    const {ip, user, activeUsers} = useUsers()
     const startPosition: Position = {x: 1, y: 1, z: 0, pixel:{x: 0, y: 0}}
     const [playerPosition, setPlayerPosition] = useState(startPosition)
     const player: Player = {name: user?.username, access: user?.access, position: playerPosition}
@@ -35,7 +37,7 @@ export default function NetDragons({ip, M, E}: {ip: string, M: MapData[], E: Eve
                 <MapFollow game={game}/>
             </Col>
         </Row>
-        <ProfileByIp ip={ip} setUser={setUser}/>
+        <UserProfile/>
     </div>
 }
 

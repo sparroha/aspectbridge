@@ -1,14 +1,12 @@
 import { GetServerSideProps } from "next";
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react"
+import { useEffect, useReducer, useRef, useState } from "react"
 import requestIp from 'request-ip';
 import { LoginNav, Profile } from "../login/[userlogin]";
-import useLog from "../../components/conlog";
 import Dialog from "../../components/dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import ContainerOverlay from "../../components/overlay";
 import useSWR from "swr";
-import Chat from "../chat/chatold";
 import Field from "./field";
+import Chat from "../../app/chat/chat";
 
 export type Item = {name: string, value: number, amount: number}
 export type Player = {
@@ -158,7 +156,7 @@ export default function Gather(props: { ip: any; }){
 
         <Row id={'community'}>
             <Col xs={12} sm={8} md={9} style={{backgroundColor: 'lightgrey'}}>
-                <Chat ip={props.ip} user={user.current}/>
+                <Chat homepage={'gather'}/>
             </Col>
             <Col xs={12} sm={4} md={3} style={{backgroundColor: 'darkgrey'}}>
                 <Users/>

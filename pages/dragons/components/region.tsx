@@ -41,9 +41,9 @@ export type RegionData = {
     destination?: Position,
     destinationMap?: string,
 }
-export default function Region({indexkey, region, disabled}: {indexkey: number, region: RegionData, disabled: boolean}){//('url("./public/dragons/assets/'+region.image+'")')
+export default function Region({region, disabled}: {region: RegionData, disabled: boolean}){//('url("./public/dragons/assets/'+region.image+'")')
     if(!region) return <>Tile Loading...</>
-        return <div key={indexkey} style={{float: 'left', position: 'relative', ...square}}>
+        return <div style={{float: 'left', position: 'relative', ...square}}>
             <Button style={{...regionButton, ...background, position: 'relative', backgroundImage: 'url("dragons/assets/'+region.image+'")'}} disabled={disabled}>
                 <Walls paths={region.paths}>
                     <Row height={'33vh'}>

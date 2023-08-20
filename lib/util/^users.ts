@@ -17,7 +17,7 @@ export default function useUsers(): {ip: string, user: User, activeUsers: Active
     },[ip, user])
     useEffect(()=>{
         const f = setInterval(()=>{
-            fetch('/api/getactiveusers').then((res)=>res.json()).then((data)=>setActiveUsers(data))
+            //fetch('/api/getactiveusers').then((res)=>res.json()).then((data)=>setActiveUsers(data))
         }, 1000)
         return ()=>clearInterval(f)
     },[])
