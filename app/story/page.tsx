@@ -12,12 +12,12 @@ import jsonFetch from "../../lib/,base/jsonFetch";
 
 export type Story = string | {what?: string, why?: string, who?: string}
 export type StoryBoard = Story[]
-export default function Page(){
+export default function Page({params}){
     return <SWRConfig value={{ fetcher: jsonFetch }}>
         <Init/>
     </SWRConfig>
 }
-export function Init(){
+export function Init(props){
     const {ip, user, activeUsers} = useUsers()
     const [register, saveData, registryLoaded] = useRegister('story', ['berashith'])
 
