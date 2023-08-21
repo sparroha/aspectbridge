@@ -13,7 +13,7 @@ export default function useDomainRoot(props){
             if(domain == "aspectbridge" || domain == "www"){router.push('/bridge/'+(username?username:''))}
             //if loading from 'logan.' then redirect to [josh/[...client]...aspect]
             else if(domain == "logan"){router.push('/josh/'+(username?username:(domain?domain:'')))}
-            else if(domain == "dev"){router.push('/bridge/DEV'+(username?username:(domain?domain:'')))}
+            else if(domain == "dev"){router.push('/dev/'+(username?username:(domain?domain:'')))}
         }
         return ()=> {
             /**
