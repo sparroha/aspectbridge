@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink} from "react-bootstrap";
+import { Button, Col, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink, Row} from "react-bootstrap";
 import { getDomain } from "../../components/domain";
 
 export default function NavIndex({ user, root }) {
@@ -46,22 +46,44 @@ export default function NavIndex({ user, root }) {
             overflow: 'hidden',
         }
         const plinks = [
+            ['1','api'],
+            ['0','bridge'],
             ['0','canvas'],
             ['0','chat'],
             ['0','cost'],
             ['1','cost_dev'],
+            ['0','card'],
+            ['0','home'],
             ['0','dragons'],
+            ['1','elements'],
+            ['1','fetchexamples'],
             ['0','gather'],
+            ['0','growth'],
+            ['0','neuralnet'],
+            ['0','registry/all'],
             ['0','sandbox'],
             ['1','slidersCss'],
+            ['1','static'],
+            ['0','story'],
             ['1','talents'],
             ['0','toolbelt'],
-            ['0','growth']
+            ['0','tutorial'],
+            ['1','wasd'],
+            ['1','xstate'],
         ]
         return <NavDropdown title="Projects" id="navbarProjectsDropdown" onClick={()=>setSelected('')}>
                 {
-                    plinks.map((link, i)=>{
+                    /*plinks.map((link, i)=>{
                         return <Nav.Link key={i} href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>{link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"/"+link[1]}></iframe>}</Nav.Link>
+                    })*/
+                    plinks.map((link, i)=>{
+                        if(i%2==1){
+                            return <Row key={i}><Col>
+                                <Nav.Link key={i} href={"/"+plinks[i-1][1]} disabled={plinks[i-1][0]=='1'?disabled:false} onMouseOver={()=>setSelected(plinks[i-1][1])}>{plinks[i-1][1]}{selected!=plinks[i-1][1]?null:<iframe style={ifstyle} src={"/"+plinks[i-1][1]}></iframe>}</Nav.Link>
+                                </Col><Col>
+                                <Nav.Link key={i} href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>{link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"/"+link[1]}></iframe>}</Nav.Link>
+                            </Col></Row>
+                        }return null
                     })
                 }
                 <NavDropdown.Divider />
