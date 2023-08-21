@@ -78,11 +78,17 @@ export default function NavIndex({ user, root }) {
                     })*/
                     plinks.map((link, i)=>{
                         if(i%2==1){
-                            return <Row key={i}><Col>
-                                <Nav.Link key={i} href={"/"+plinks[i-1][1]} disabled={plinks[i-1][0]=='1'?disabled:false} onMouseOver={()=>setSelected(plinks[i-1][1])}>{plinks[i-1][1]}{selected!=plinks[i-1][1]?null:<iframe style={ifstyle} src={"/"+plinks[i-1][1]}></iframe>}</Nav.Link>
-                                </Col><Col>
-                                <Nav.Link key={i} href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>{link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"/"+link[1]}></iframe>}</Nav.Link>
-                            </Col></Row>
+                            return <Row key={i} style={{width: '22vw'}}>
+                                <Col style={{border: '1px solid black'}}>
+                                    <Nav.Link key={i} href={"/"+plinks[i-1][1]} disabled={plinks[i-1][0]=='1'?disabled:false} onMouseOver={()=>setSelected(plinks[i-1][1])}>
+                                        {plinks[i-1][1]}{selected!=plinks[i-1][1]?null:<iframe style={ifstyle} src={"/"+plinks[i-1][1]}></iframe>}
+                                    </Nav.Link>
+                                </Col><Col style={{border: '1px solid black'}}>
+                                    <Nav.Link key={i} href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>
+                                        {link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"/"+link[1]}></iframe>}
+                                    </Nav.Link>
+                                </Col>
+                            </Row>
                         }return null
                     })
                 }

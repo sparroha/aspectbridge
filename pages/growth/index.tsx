@@ -5,6 +5,8 @@ import { LoginNav, Profile } from "../login/[userlogin]";
 import { GetServerSideProps } from "next";
 import useSave from "../../lib/util/^save";
 import { TLitter, alephbeth, getTLitter } from "../../components/hebrew";
+import useUsers from "../../lib/util/^users";
+import UserProfile from "../../app/userprofile";
 
 type Storehouse = {[key: string]: number}
 
@@ -35,13 +37,13 @@ const initialGrid: CropFarm = [//spread deep
     ]
 ]
 export default function Growth(props){
+    const {ip, user, activeUsers} = useUsers()
     const [initState, setInitState] = useState({})
 
     /**
      * Initialize user specific and data
      */
     const [init, setInit] = useState(false)
-    const [user, setUser] = useState(null)
     const {data, error, save} = useSave('growth'+user?.username, 10000)
     const safeToInit: boolean = useMemo(()=> data && user && !init,[data, user, init])
 
@@ -173,7 +175,7 @@ export default function Growth(props){
                 return state
         }
     }, initialGrid)
-    const safeToSave: boolean = useMemo(()=> data && grid && init && user,[data, grid, init, user])
+    const safeToSave: boolean = useMemo(()=> data!=undefined && grid!=undefined && init!=undefined && user!=undefined,[data, grid, init, user])
 
     /**
      * Load initial data to local state
@@ -252,7 +254,7 @@ export default function Growth(props){
     if(!user) return <div style={{position: 'relative'}}>
         Login to tend to your crops!
         <div style={{position: 'relative', textAlign: 'center'}}>
-            <Profile ip={props.ip} setUser={setUser}/>
+            <UserProfile/>
             <LoginNav user={user} homepage={'growth'}/>
         </div>
         <div style={{position: 'absolute', left: '50vw', top: '50vh'}}>
@@ -268,7 +270,7 @@ export default function Growth(props){
         GRID_DATA:{JSON.stringify(grid)}<br/>
 
         <div style={{position: 'relative', textAlign: 'center'}}>
-            <Profile ip={props.ip} setUser={setUser}/>
+            <UserProfile/>
             <LoginNav user={user} homepage={'growth'}/>
         </div>
     </>
@@ -277,7 +279,7 @@ export default function Growth(props){
         {//'DATA:'+JSON.stringify(data)
         }<br/>
         <div style={{position: 'relative', textAlign: 'center'}}>
-            <Profile ip={props.ip} setUser={setUser}/>
+            <UserProfile/>
             <LoginNav user={user} homepage={'growth'}/>
         </div>
         <Row>
@@ -329,11 +331,6 @@ export default function Growth(props){
         {//'RESOURCE:'+JSON.stringify(resource)
         }
     </Container>
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const ip = context.req.headers['x-forwarded-for'] || context.req.connection.remoteAddress;
-    return { props: { ip: ip } }
 }
 
 export function CropPlot({cell, dispatch, i, j}){
