@@ -6,7 +6,8 @@ import { TCard } from "./class/tcard"
 import Card from "./class/card"
 import { Col, Container, Row } from "react-bootstrap"
 import useRegister from "../../lib/util/^register"
-export const progStateNum = 22
+
+const progStateNum = 22
 export default function CardIndexPage({params}) {
     /**
      * INITIALIZATION
