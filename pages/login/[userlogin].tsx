@@ -11,6 +11,7 @@ import Head from "next/head"
 import useRegister, { getDB, setDB } from "../../lib/util/^register"
 import useUsers from "../../lib/util/^users"
 import UserProfile from "../../app/userprofile"
+import useIP from "../../lib/util/^ip"
 
 export type StoredUser = {
   id: number,
@@ -69,11 +70,12 @@ export type ActiveUser = {
  */
 
 export default function UserLogin({homepage}) {
-    const {ip, user}: {ip: string, user: Partial<User>} = useUsers()
+    const ip = useIP()
     const router = useRouter()
     const [method, setMethod] = useState(router.query.userlogin)
     const [hash, setHash] = useState(null)
     const [menu, setMenu] = useState('show')
+    const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 10000})
     const loginLayout = {
       backgroundImage: 'linear-gradient(to bottom right, #4b4, #7c7, #ada)',
       //backgroundColor: '#0c0',
@@ -100,13 +102,13 @@ export default function UserLogin({homepage}) {
     }
     
     useEffect(() => { 
-      if(user.username){
+      if(data?.username){
         /*router.push({pathname: '/'+homepage+(user?('/'+user.username):''), query: {
           username: user.username, email: user.email, access: user.access, message: user.message
         }})*/
-        router.push({pathname: `/${homepage}${user?('/'+user.username):''}`})
+        router.push({pathname: `/${homepage}${data?('/'+data.username):''}`})
       }
-    },[user])
+    },[data])
 
 
     return <Container style={{textAlign: 'center', maxWidth: '100vw'}}>
@@ -117,7 +119,9 @@ export default function UserLogin({homepage}) {
               {/*<ProfileByIp ip={ip} setUser={setUser}/>*/}
               {/**Profile is used to login if session is not saved */}
               <Col xs={12}>
-                <UserProfile/>
+                {//JSON.stringify('ip: '+ip+' user: '+JSON.stringify(user)+' method: '+method+' hash: '+hash+' menu: '+menu+' homepage: '+homepage+' router: '+JSON.stringify(router))
+                }
+                <Profile/>
               </Col>
             </Row>
             <Row>
@@ -206,7 +210,7 @@ function LoginForm({setHash}){
       </Form.Group>
       <Form.Group controlId="formPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control required type="password" name="password" placeholder={"password"} onChange={(e)=>setPassword(e.target.value)}/>
+          <Form.Control required type="password" name="password" placeholder={"password"} autoComplete={"on"} onChange={(e)=>setPassword(e.target.value)}/>
       </Form.Group>
       <Button type="submit" >Login</Button>
   </Form>
@@ -224,7 +228,7 @@ function RegisterForm({homepage}){
         </Form.Group>
         <Form.Group controlId="formPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control required type="password" name="password" placeholder="password"/>
+            <Form.Control required type="password" name="password" placeholder="password" autoComplete={"on"}/>
         </Form.Group>
         <Form.Group controlId="formHidden">
             <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
@@ -244,7 +248,7 @@ function UpdateEmailForm({homepage}){
         </Form.Group>
         <Form.Group controlId="formPassword">
             <Form.Label>Current Password</Form.Label>
-            <Form.Control required type="password" name="password" placeholder="password"/>
+            <Form.Control required type="password" name="password" autoComplete={"on"} placeholder="password"/>
         </Form.Group>
         <Form.Group controlId="formHidden">
             <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
@@ -265,7 +269,7 @@ function ForgotForm({homepage}){
         </Form.Group>
         <Form.Group controlId="formPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control required type="password" name="password" placeholder="password"/>
+            <Form.Control required type="password" name="password" autoComplete={"on"} placeholder="password"/>
         </Form.Group>
         <Form.Group controlId="formHidden">
             <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
@@ -415,6 +419,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   const hash = sha224(query.email?.toString().toLocaleLowerCase()+''+query.password)
   const homepage = query.homepage!=undefined?query.homepage:'bridge'
   const ip = await requestIp.getClientIp(req)
+  console.log('ip: '+ip+' method: '+method+' username: '+username+' email: '+email+' nemail: '+nemail+' hash: '+hash)
   switch(method){
     case  'logout':
       await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`

@@ -3,6 +3,7 @@ import { Button, Col, Row } from 'react-bootstrap'
 import abclayout from '../../components/tcg/css/abc.module.css'
 import sql from '../../lib/,base/sql'
 import requestIp from 'request-ip'
+import '../../public/css/cardgame.css'
 
 export type ABCard = {
 	key: number

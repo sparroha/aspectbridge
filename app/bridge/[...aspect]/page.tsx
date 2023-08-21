@@ -20,6 +20,7 @@ import { ActiveUser, User } from '../../../pages/login/[userlogin]';
 import { SWRConfig } from 'swr';
 import jsonFetch from '../../../lib/,base/jsonFetch';
 import Chat from '../../chat/chat';
+import { Metadata, ResolvingMetadata } from 'next';
 
 
 
@@ -39,6 +40,22 @@ interface pageProps{params: {aspect: string[]}}
         title: `${params.aspect[0]+"'s " || ''}Bridge Page`,
     }
   }*/
+  
+export async function generateMetadata({ params }: pageProps, parent: ResolvingMetadata): Promise<Metadata> {
+    // read route params
+    const aspect: string[] = params.aspect
+   
+    // fetch data
+    //const product = await fetch(`https://.../${id}`).then((res) => res.json())
+   
+    // optionally access and extend (rather than replace) parent metadata
+    const arkTitle = (await parent).title
+   
+    return {
+      title: arkTitle+' '+aspect[0],
+      icons: '/public/assets/binary2.png',
+    }
+  }
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
@@ -68,33 +85,20 @@ export default page
 function AspectBridge(props){
 	const {ip, user, activeUsers} = props
     return <>
-        <Headers />
-        <Container className={'aspect'}>
-            <ContainerHeader user={user?user:null}/>
-            <Row id="content" className={""}>
-                <NavLeftDefault />
-                <Col xs={12} sm={9} md={8} style={{background: 'white'}}>
+            {//<ContainerHeader user={user?user:null}/>
+            }
+            <Row id={'profile_editor'} className={""}>
+                <Col xs={12}style={{background: 'white'}}>
                     <UserMenu user={user} homepage={'bridge'}/>
                 </Col>
-                {//<DynamicInfo user={user} aspect={user?.username}/>
-                }
-                <NavRightDefault user={user}/>
             </Row>
-            <Row className={'justify-content-md-center'}>
-                {//<Col sm={5}><CalendarTab /></Col>
-                }
-                <NavRightDefault />
-                <Col xs={12} sm={12} md={8} style={{
+            <Row id={'chat'} className={'justify-content-md-center'}>
+                <Col xs={12}style={{
                         backgroundImage: 'linear-gradient(to bottom, #777, #fff)'
                     }}>
-                    {<Chat user={user} homepage={'bridge'} ip={ip} maxHeight={'10vh'}/>
-}
+                    <Chat user={user} homepage={'bridge'} ip={ip} maxHeight={'10vh'}/>
                 </Col>
-                <NavRightDefault activeUsers={activeUsers}/>
             </Row>
-            {//<Footer />
-            }
-        </Container>
     </>
 }
 function CalendarTab(){
@@ -140,7 +144,7 @@ function Headers(){
  * 
  * @returns Title bar and Navbar
  */
-function ContainerHeader({ user }){
+export function ContainerHeader({ user }){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
@@ -173,7 +177,7 @@ function NavLeftDefault(){
 function NavRightDefault({user, activeUsers}: {user?: User, activeUsers?: ActiveUser[]}){  
     const [hide, setHide] = useState('hidden')
     return <Col xs={0} sm={0} md={2} id="nav-right" className={"p0"}>
-                {user?<Row className={'w100 h100'} style={{visibility: 'visible', position: 'relative', zIndex: '5', color: 'white'}}>{/**this error is invalid. visibility still works */}
+                {user?.username?<Row className={'w100 h100'} style={{visibility: 'visible', position: 'relative', zIndex: '5', color: 'white'}}>{/**this error is invalid. visibility still works */}
                     <Col style={{zIndex: '5'}}>
                         Username: {user?.username} <br />
                         Access: {user?.access} <br />
@@ -182,6 +186,7 @@ function NavRightDefault({user, activeUsers}: {user?: User, activeUsers?: Active
                     <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
                 </Row>:null}
                 <ActiveUserList activeUsers={activeUsers}/>
+                <WhiteboardNav />
             </Col>
 }
 function ActiveUserList({activeUsers}){
@@ -197,6 +202,25 @@ function ActiveUserList({activeUsers}){
                 {user.name}{' (active '}{minutseconds}{' ago)'}
             </div>
         })}
+    </Row>
+}
+function WhiteboardNav(){
+    const [focus, setFocus] = useState(false)
+    return <Row id="nav-whiteboard" className={"p0"}>
+        <Col xs={12} sm={12} md={12} className={"p0 m0"} 
+            style={{
+                border: '1px outset green', 
+                borderBottom: '4px solid black', 
+                height: '10em',
+                backgroundImage: `linear-gradient(to bottom right, ${focus?'#eee':'#ccc'}, #fff)`
+            }}
+            onClick={()=>{window.location.href='/whiteboard'}}
+            onMouseEnter={()=>{setFocus(true)}}
+            onMouseLeave={()=>{setFocus(false)}}
+        >
+            {//<NavLink href="/whiteboard" className={'white-font'}>Whiteboard</NavLink>
+            }
+        </Col>
     </Row>
 }
 function Footer(){
