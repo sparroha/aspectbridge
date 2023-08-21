@@ -24,7 +24,6 @@ export const metadata: Metadata = {
 }
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   return <html lang={'en'}>
-    <header><h1>DEV</h1></header>
     <body>{children}</body>
   </html>
 }
