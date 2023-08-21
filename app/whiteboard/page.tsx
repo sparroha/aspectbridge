@@ -1,7 +1,9 @@
 'use client'
+import { useEffect, useMemo, useState } from "react";
 import useUsers from "../../lib/util/^users";
 import { ActiveUser, User, activateUser } from "../../pages/login/[userlogin]";
 import Hello from "./client/hello";
+import ActiveUsers from "../../lib/-activeusers-";
 //import { headers } from "next/headers";
 
 export type StdUserProps = {
@@ -18,20 +20,11 @@ export type StdUserProps = {
     const res = {ip, user, activeUsers}
     return res
 }*/
-export default function Page(){
-    const {ip, user, activeUsers} = useUsers()
-
-    /*const req = {
-        headers: {
-          host: await headers().get('host'),
-        },
-      };*/
+export default function Page({params}){
+    const {user} = useUsers()
     return <div>
         <Hello/>
-        {ip}
         {JSON.stringify(user)}
-        {JSON.stringify(activeUsers)}
-        {//JSON.stringify(req.headers)
-        }
+        <ActiveUsers/>
         </div>
 }

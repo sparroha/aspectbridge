@@ -21,6 +21,7 @@ import { SWRConfig } from 'swr';
 import jsonFetch from '../../../lib/,base/jsonFetch';
 import Chat from '../../chat/chat';
 import { Metadata, ResolvingMetadata } from 'next';
+import ActiveUsers from '../../../lib/-activeusers-';
 
 
 
@@ -83,7 +84,7 @@ const page: FC<pageProps> = ({params})=>{
 }
 export default page
 function AspectBridge(props){
-	const {ip, user, activeUsers} = props
+	const {user} = props
     return <>
             {//<ContainerHeader user={user?user:null}/>
             }
@@ -96,7 +97,7 @@ function AspectBridge(props){
                 <Col xs={12}style={{
                         backgroundImage: 'linear-gradient(to bottom, #777, #fff)'
                     }}>
-                    <Chat user={user} homepage={'bridge'} ip={ip} maxHeight={'10vh'}/>
+                    <Chat user={user} homepage={'bridge'} ip={null} maxHeight={'10vh'}/>
                 </Col>
             </Row>
     </>
@@ -144,7 +145,7 @@ function Headers(){
  * 
  * @returns Title bar and Navbar
  */
-export function ContainerHeader({ user }){
+function ContainerHeader({ user }){
     return <Row id='header' className={"well-sm tcenter"}>
                 <Col sm={12} className='tcenter navy_back title logo'>
                     <h1>Aspect Bridge</h1>
@@ -185,7 +186,7 @@ function NavRightDefault({user, activeUsers}: {user?: User, activeUsers?: Active
                     </Col>
                     <div className={"grey-back o4 w100 h100"} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
                 </Row>:null}
-                <ActiveUserList activeUsers={activeUsers}/>
+                <ActiveUsers/>
                 <WhiteboardNav />
             </Col>
 }

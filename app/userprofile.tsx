@@ -8,7 +8,7 @@ import useUsers from "../lib/util/^users"
 
 
 export default function UserProfile(props){
-  const {ip, user, activeUsers} = useUsers()
+  const {user} = useUsers()
   if (!user) return <Row style={props.style}>loading...</Row>
 
   let {username, email, access, message} = user

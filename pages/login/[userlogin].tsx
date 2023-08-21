@@ -2,7 +2,7 @@
 import { sha224 } from "js-sha256"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
@@ -12,6 +12,7 @@ import useRegister, { getDB, setDB } from "../../lib/util/^register"
 import useUsers from "../../lib/util/^users"
 import UserProfile from "../../app/userprofile"
 import useIP from "../../lib/util/^ip"
+import { useHashCookie } from "../../lib/util/^hashcookie"
 
 export type StoredUser = {
   id: number,
@@ -70,12 +71,18 @@ export type ActiveUser = {
  */
 
 export default function UserLogin({homepage}) {
-    const ip = useIP()
+
+
+    //const ip = useIP()//Depricated
     const router = useRouter()
     const [method, setMethod] = useState(router.query.userlogin)
-    const [hash, setHash] = useState(null)
+    const [hash, setHash] = useHashCookie()
     const [menu, setMenu] = useState('show')
-    const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 10000})
+    const { data, error} = useSWR('../api/getuser?hash='+hash, {refreshInterval: 2200})
+
+
+
+
     const loginLayout = {
       backgroundImage: 'linear-gradient(to bottom right, #4b4, #7c7, #ada)',
       //backgroundColor: '#0c0',
@@ -112,29 +119,11 @@ export default function UserLogin({homepage}) {
 
 
     return <Container style={{textAlign: 'center', maxWidth: '100vw'}}>
-            <Headers/>
             <Row>
-              {/**ProfileByIp is used to login if session ip is saved */}
-              {/**ProfileByIp will not work if user has logged out */}
-              {/*<ProfileByIp ip={ip} setUser={setUser}/>*/}
-              {/**Profile is used to login if session is not saved */}
               <Col xs={12}>
-                {//JSON.stringify('ip: '+ip+' user: '+JSON.stringify(user)+' method: '+method+' hash: '+hash+' menu: '+menu+' homepage: '+homepage+' router: '+JSON.stringify(router))
-                }
                 <Profile/>
+                <UserProfile/>
               </Col>
-            </Row>
-            <Row>
-              {/**Menu Dropdown example*/}
-              <Col sm={4} md={5}></Col>
-              <Col xs={12} sm={4} md={2} style={{visibility: 'collapse', ...menuLayout}}>{'Depricated Nav'/*
-                menu === 'show'?<>
-                  <Button onClick={() => {setMenu('hide')}}>{'\u21E3'}</Button>
-                  <SimpleNav root={"./"} title={"login/login"} links={["login", "logout", "registernew"]} args={''}/>
-                </>
-                :<Button onClick={() => {setMenu('show')}}>{'\u2911'}</Button>
-              */}</Col>
-              <Col sm={4} md={5}></Col>
             </Row>
             <Row>
               <Col sm={4} lg={5}></Col>
@@ -174,14 +163,6 @@ export default function UserLogin({homepage}) {
           </Container>
 }
 
-/*good example but doesnt work
-export function StateToggle( {setState, state, key, name, style, children}){
-  return <div style={style}>{
-    state===key?
-    children
-    :<Button onClick={setState(key)}>{name}</Button>
-  }</div>
-}*/
 /**
  * The Head section contains all the complicated important stuff.
  * The brains if you will.
@@ -203,16 +184,21 @@ function LoginForm({setHash}){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash(sha224(email+''+password))}} >
-      <Form.Group controlId="formEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value.toLowerCase())}/>
-      </Form.Group>
-      <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control required type="password" name="password" placeholder={"password"} autoComplete={"on"} onChange={(e)=>setPassword(e.target.value)}/>
-      </Form.Group>
-      <Button type="submit" >Login</Button>
+  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash((h)=>{
+      console.log('Hash Old', h);
+      let newHash = sha224(email+''+password)
+      console.log('Hash New', newHash);
+      return newHash
+    });}}>
+    <Form.Group controlId="formEmail">
+        <Form.Label>Email address</Form.Label>
+        <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value.toLowerCase())}/>
+    </Form.Group>
+    <Form.Group controlId="formPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control required type="password" name="password" placeholder={"password"} autoComplete={"on"} onChange={(e)=>setPassword(e.target.value)}/>
+    </Form.Group>
+    <Button type="submit" >Login</Button>
   </Form>
 }
 

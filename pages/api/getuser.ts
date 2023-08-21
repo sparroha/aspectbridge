@@ -35,20 +35,21 @@ export default async function getUser(req, res): Promise<Partial<User>> {
         default:
             break;
     }
-    else if(ip && ip!=null){
+    else if(ip && ip!=null) user = await getUserByIp(ip)/*{
         if (hash && hash!=null) user = await getUserByHash(hash, ip)
         else user = await getUserByIp(ip)
         if(!user) return res.status(400).json({message: 'No user record with ip '+ip+''})
-    }
+    }*/
+    else if( hash && hash!=null ) user = await getUserByHash(hash)
     else if( email ) user = await getUserByEmail(email)
     else if( username ) user = await getUserByUsername(username)
     else return res.status(400).json({message: 'No email, username or hash provided.'})
     return res.status(200).json(user);
 }
 //ONLY FOR LOGIN
-async function getUserByHash(hash, ip) {
+async function getUserByHash(hash/*, ip*/) {
     const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${hash}`
-    if (user) await sql`Update aspect_users_ SET ip = ${ip} WHERE hash = ${hash}`
+    //if (user) await sql`Update aspect_users_ SET ip = ${ip} WHERE hash = ${hash}`
     return user
 }//4194b857972439ee6bd294b9889c2ebec9cbbaa03a9312a16935225c
 async function setHashById(hash: string, id: number) {
