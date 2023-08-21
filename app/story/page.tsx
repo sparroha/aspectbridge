@@ -1,6 +1,6 @@
 'use client'
 import { Dispatch, useCallback, useEffect, useState, FC, SetStateAction} from "react"
-import useRegister from "../../lib/util/registry"
+import useRegister from "../../lib/util/^register"
 import { LoginNav } from "../../pages/login/[userlogin]"
 import StrBldr from "../../components/stringbuilder";
 import { Button } from "react-bootstrap"

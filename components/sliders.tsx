@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import useRegister, { getDB, setDB } from "../lib/util/registry";
+import useRegister, { getDB, setDB } from "../lib/util/^register";
 
 // props: style={object.style} setStyle={setStyle} id={'row_'+object.id}}
 export default function CssSlidersWrapper(props) {

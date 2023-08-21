@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Dialog from "./dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import style from "./sliders.module.css";
-import useRegister, { getDB } from "../lib/util/registry";
+import useRegister, { getDB } from "../lib/util/^register";
 
 // props: style={object.style} setStyle={setStyle} id={'row_'+object.id}}
 export default function CssSlidersWrapper(props) {

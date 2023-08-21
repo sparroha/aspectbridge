@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import useRegister, { getDB, setDB } from '../../lib/util/registry'
+import useRegister, { getDB, setDB } from '../../lib/util/^register'
 import { ACTIVEUSERS, LoginNav, Profile, activateUser } from '../login/[userlogin]'
 import { GetServerSideProps } from 'next'
 import requestIp from 'request-ip';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import CssSlidersWrapper from "../../components/sliders"
-import useRegister from "../../lib/util/registry"
+import useRegister from "../../lib/util/^register"
 
 export default function Registry(props){
     const [test, setTest] = useRegister('test', 'off')

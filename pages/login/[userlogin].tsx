@@ -8,7 +8,7 @@ import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
 import Head from "next/head"
-import useRegister, { getDB, setDB } from "../../lib/util/registry"
+import useRegister, { getDB, setDB } from "../../lib/util/^register"
 import useUsers from "../../lib/util/^users"
 import UserProfile from "../../app/userprofile"
 

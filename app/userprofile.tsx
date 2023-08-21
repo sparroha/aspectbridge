@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react"
-import useRegister from "../lib/util/registry"
+import useRegister from "../lib/util/^register"
 import useSWR from 'swr'
 import { ACTIVEUSERS, ActiveUser, activateUser } from "../pages/login/[userlogin]"
 import { Col, Row } from "react-bootstrap"

@@ -4,7 +4,7 @@ import { FTCard } from "./class/ftcard"
 import { TCard } from "./class/tcard"
 import Card from "./class/card"
 import { Col, Container, Row } from "react-bootstrap"
-import useRegister from "../../lib/util/registry"
+import useRegister from "../../lib/util/^register"
 export const progStateNum = 22
 export default function CardIndex({setCardIndex}) {
     /**
