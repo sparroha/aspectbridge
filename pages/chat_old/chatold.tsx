@@ -1,11 +1,7 @@
-'use client'
 import { useState, useEffect } from 'react';
 import { ACTIVEUSERS, ActiveUser, LoginNav, Profile } from '../login/[userlogin]';
-import { GetServerSideProps } from 'next';
-import requestIp from 'request-ip';
 import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
 import useSWR from 'swr';
-import useLog from '../../components/conlog';
 import useUsers from '../../lib/util/^users';
 
 const scroll = {

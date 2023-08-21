@@ -1,6 +1,5 @@
 import { alephbeth } from "../../../components/hebrew"
-import { FTCard, FTCardPropsPartial } from "./ftcard"
-import { TCard, TCardPropsPartial } from "./tcard"
+import { FTCardPropsPartial } from "./ftcard"
 
 export default function Card(props: FTCardPropsPartial ) {
     const { name, order, image, strimage, type, click, color, logo, children }: FTCardPropsPartial = props

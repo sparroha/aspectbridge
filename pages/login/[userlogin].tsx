@@ -1,3 +1,4 @@
+'use client'
 import { sha224 } from "js-sha256"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
@@ -8,6 +9,8 @@ import useSWR from 'swr'
 import requestIp from 'request-ip'
 import Head from "next/head"
 import useRegister, { getDB, setDB } from "../../lib/util/registry"
+import useUsers from "../../lib/util/^users"
+import UserProfile from "../../app/userprofile"
 
 export type StoredUser = {
   id: number,
@@ -31,6 +34,23 @@ export type ActiveUser = {
 /**
  * 
  * USAGE:
+ * 
+ * // get user data from server
+ * const {ip, user, activeUsers} = useUsers()
+ * 
+ * //display user profile preview data
+ * <UserProfile/>
+ * 
+ * //to enable user login from current page, call LoginNav. Note: style is optional
+ * <LoginNav user={user} homepage={homepage} style={style}/>
+ * 
+ * //to set a user as active, call
+ * activateUser(username)
+ * 
+ */
+/** 
+ * DEPRICATED
+ * USAGE_OLD:
  * //to create a user variable
  * const [user, setUser] = useState<User>(null)
  * 
@@ -48,11 +68,11 @@ export type ActiveUser = {
  * 
  */
 
-export default function UserLogin({ip, homepage}) {
+export default function UserLogin({homepage}) {
+    const {ip, user}: {ip: string, user: Partial<User>} = useUsers()
     const router = useRouter()
     const [method, setMethod] = useState(router.query.userlogin)
     const [hash, setHash] = useState(null)
-    const [user, setUser]: [Partial<User>, Dispatch<SetStateAction<Partial<User>>>] = useState({})
     const [menu, setMenu] = useState('show')
     const loginLayout = {
       backgroundImage: 'linear-gradient(to bottom right, #4b4, #7c7, #ada)',
@@ -97,7 +117,7 @@ export default function UserLogin({ip, homepage}) {
               {/*<ProfileByIp ip={ip} setUser={setUser}/>*/}
               {/**Profile is used to login if session is not saved */}
               <Col xs={12}>
-                <Profile style={{height: '30vh'}} hash={hash} ip={ip} setUser={setUser}/>
+                <UserProfile/>
               </Col>
             </Row>
             <Row>

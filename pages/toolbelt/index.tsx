@@ -2,7 +2,6 @@ import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import DiceWidget, { useDiceRoll } from "../../components/dice";
 import Dialog from "../../components/dialog";
-import Chat from "../chat/chatold";
 import requestIp from 'request-ip';
 import { GetServerSideProps } from "next";
 import { LoginNav, Profile } from "../login/[userlogin]";
@@ -11,6 +10,7 @@ import Clock from "../../components/clock";
 import TLiterator from "../../components/hebrew";
 import Mouse from "../../components/mouse";
 import { useMousePosition } from "../../components/mouse";
+import Chat from "../../app/chat/chat";
 
 export const styleFlat = {
     border: '0px',
@@ -218,7 +218,7 @@ export default function Toolbelt(props) {
             name: 'Chat_Window',
             description: 'discorse apon a bridge',
             image: '',
-            jsx: <Chat user={state.user} homepage={'toolbelt'} ip={props.ip}/>,
+            jsx: <Chat homepage={'toolbelt'}/>,
         },
         {/** SimpleNav */
             name: 'Simple_Nav',

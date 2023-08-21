@@ -1,5 +1,4 @@
 import { MouseEventHandler, useRef } from "react"
-import { alephbeth } from "../../../components/hebrew"
 import { TCard, TCardProps } from "./tcard"
 
 export type FTCardProps = TCardProps & {
