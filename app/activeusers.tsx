@@ -1,3 +1,4 @@
+'use client'
 import { Row } from "react-bootstrap"
 
 export default function ActiveUserList({activeUsers}){

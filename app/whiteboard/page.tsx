@@ -2,7 +2,7 @@
 import useUsers from "../../lib/util/^users";
 import { ActiveUser, User, activateUser } from "../../pages/login/[userlogin]";
 import Hello from "./client/hello";
-import ActiveUsers from "../../lib/-activeusers-";
+import ActiveUsers from "../../lib/util/-activeusers-";
 //import { headers } from "next/headers";
 
 export type StdUserProps = {

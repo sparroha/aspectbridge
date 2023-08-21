@@ -21,7 +21,7 @@ import { SWRConfig } from 'swr';
 import jsonFetch from '../../../lib/,base/jsonFetch';
 import Chat from '../../chat/chat';
 import { Metadata, ResolvingMetadata } from 'next';
-import ActiveUsers from '../../../lib/-activeusers-';
+import ActiveUsers from '../../../lib/util/-activeusers-';
 
 
 

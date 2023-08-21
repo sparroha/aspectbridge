@@ -1,4 +1,4 @@
-import useActiveUsers from "./util/^activeusers"
+import useActiveUsers from "./^activeusers"
 
 export default function ActiveUsers(){
     const activeUsers = useActiveUsers()

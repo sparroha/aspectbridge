@@ -1,3 +1,4 @@
+'use client'
 import { Col, Row } from "react-bootstrap"
 import DiceWidget, { diceInitProps, useDiceRoll } from "../components/dice"
 import SimpleNav from "../components/simplenav"
