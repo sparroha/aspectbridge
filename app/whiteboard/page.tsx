@@ -1,8 +1,8 @@
-
-
+'use client'
+import useUsers from "../../lib/util/^users";
 import { ActiveUser, User, activateUser } from "../../pages/login/[userlogin]";
 import Hello from "./client/hello";
-import { headers } from "next/headers";
+//import { headers } from "next/headers";
 
 export type StdUserProps = {
     ip: string,
@@ -10,27 +10,28 @@ export type StdUserProps = {
     activeUsers: ActiveUser[]
 }
 
-async function getUserProps(): Promise<StdUserProps>{
+/*async function getUserProps(): Promise<StdUserProps>{
     const ip: string = await fetch('/api/getip').then((res)=>res.json()).then((data)=>typeof data==='string'?data:JSON.stringify(data))
     const user: User = await fetch('/api/getuser?ip='+ip).then((res)=>res.json())
     if(user.username)activateUser(user)
     const activeUsers: ActiveUser[] = await fetch('/api/getactiveusers').then((res)=>res.json())
     const res = {ip, user, activeUsers}
     return res
-}
-export default async function Page(){
-    const {ip, user, activeUsers} = await getUserProps()
+}*/
+export default function Page(){
+    const {ip, user, activeUsers} = useUsers()
 
-    const req = {
+    /*const req = {
         headers: {
-          host: headers(),
+          host: await headers().get('host'),
         },
-      };
+      };*/
     return <div>
         <Hello/>
         {ip}
         {JSON.stringify(user)}
         {JSON.stringify(activeUsers)}
-        {JSON.stringify(req.headers)}
+        {//JSON.stringify(req.headers)
+        }
         </div>
 }

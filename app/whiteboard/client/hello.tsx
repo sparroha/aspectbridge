@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 
-export default async function Hello(){
+export default function Hello(){
     useEffect(()=>{
         console.log('Hello')
     },[])
