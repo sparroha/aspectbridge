@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: pageProps, parent: ResolvingM
       title: arkTitle+' '+aspect[0],
       icons: '/public/assets/binary2.png',
     }
-  }
+}
 /**
  * This is the Primary function of the web site. All dunamic rendering is processed here
  * 
