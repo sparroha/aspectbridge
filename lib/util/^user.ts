@@ -11,8 +11,8 @@ import { activateUser } from "./^activeusers"
  * @param searchParams 
  * @returns 
  */
-export default function useUser(searchParams?): User {
-    const [hash, ] = useHashCookie(searchParams)
+export default function useUser(): User {
+    const [hash, ] = useHashCookie()
     const [user, setUser] = useState(null)
     useEffect(()=>{
         if(hash)fetch('/api/getuser?hash='+hash)
