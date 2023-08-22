@@ -19,17 +19,17 @@ export const metadata: Metadata = {
   //assets: 'https://aspectbridge.com/assets',
 }
 export default async function RootLayout({children}: {children: React.ReactNode}) {
-  return <html lang={'en'} style={{maxHeight: '100vh'}}>
-    <body style={{height: '100vh'}}>
-      <div className='container-fluid aspect' style={{height: '10vh'}}>
-        <div id='header' className='row well-sm tcenter'>
+  return <html lang={'en'} /*style={{maxHeight: '100vh'}}*/>
+    <body /*style={{height: '100vh'}}*/>
+      <div className='container-fluid aspect' style={{height: '100vh'}}>
+        <div id='header' className='row well-sm tcenter' style={{height: '10%'}}>
           <div className='col-12 tcenter navy_back title logo'>
             <h1>Aspect Bridge</h1>
             <LayoutHeader root={'bridge'}/>
           </div>
         </div>
-        <div id="content" className='row' style={{height: '90vh'}}>
-          <div className='col-12'>
+        <div id="content" className='row' style={{height: '90%'}}>
+          <div className='col-12' style={{height: '100%'}}>
             {children}
           </div>
         </div>
