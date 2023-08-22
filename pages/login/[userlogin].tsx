@@ -70,13 +70,13 @@ export type ActiveUser = {
  * 
  */
 
-export default function UserLogin({homepage}) {
+export default function UserLogin({homepage, searchParams}: Partial<any>) {
 
 
     //const ip = useIP()//Depricated
     const router = useRouter()
     const [method, setMethod] = useState(router.query.userlogin)
-    const [hash, setHash] = useHashCookie()
+    const [hash, setHash] = useHashCookie(searchParams) 
     const [menu, setMenu] = useState('show')
     const { data, error} = useSWR('../api/getuser?hash='+hash, {refreshInterval: 2200})
 
@@ -113,7 +113,9 @@ export default function UserLogin({homepage}) {
         /*router.push({pathname: '/'+homepage+(user?('/'+user.username):''), query: {
           username: user.username, email: user.email, access: user.access, message: user.message
         }})*/
-        router.push({pathname: `/${homepage}${data?('/'+data.username):''}`})
+        router.push({ pathname: `/${homepage}${data?('/'+data.username):''}`, query: {hash: data.hash} })
+
+        //alert(JSON.stringify({data, hash, document.cookie}))
       }
     },[data])
 
