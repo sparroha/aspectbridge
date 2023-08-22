@@ -92,12 +92,28 @@ export async function setDB(name: string, data: any){
     await fetch(`/api/registry/${name}`, {
         method: 'POST',
         body: JSON.stringify(data)
-    }).then(res => {
-        //console.log('@setDB://res: '+JSON.stringify(res))//always {}
-        return res.json()
-    })
+    }).then(res => res.json())
 }
 
 export async function getDB(name: string, signal?: AbortSignal): Promise<string>{
     return fetch(`/api/registry/${name}`,{signal: signal}).then(res=>res.json())
 }
+
+
+/**
+Error: Ensure bailed, found path does not match ensure type (pages/app)
+    at ensurePageImpl (C:\GitHub\aspectbridge\node_modules\next\dist\server\dev\on-demand-entry-handler.js:483:23)
+- error Error: Ensure bailed, found path does not match ensure type (pages/app)
+    at ensurePageImpl (C:\GitHub\aspectbridge\node_modules\next\dist\server\dev\on-demand-entry-handler.js:483:23) {
+  digest: undefined
+
+^register.ts:102     GET http://localhost:3000/api/registry/active_users 500 (Internal Server Error)
+getDB @ ^register.ts:102
+activateUser @ [userlogin].tsx:327
+eval @ ^users.ts:15
+Promise.then (async)
+eval @ ^users.ts:15
+
+VM17587:1 Uncaught (in promise) SyntaxError: Unexpected token '<', "
+
+ */
