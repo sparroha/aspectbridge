@@ -1,14 +1,16 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import useRegister, { getDB, setDB } from '../../lib/util/^register'
-import { ACTIVEUSERS, LoginNav, Profile, activateUser } from '../login/[userlogin]'
 import { GetServerSideProps } from 'next'
 import requestIp from 'request-ip';
-import useLog from '../../components/conlog'
+import UserLogin from '../../lib/util/-userlogin-';
+import UserProfile from '../../lib/util/-userprofile-';
+import useUser from '../../lib/util/^user';
+import useActiveUsers from '../../lib/util/^activeusers';
 
 export default function Story(props) {
-	const [user, setUser] = useState(null)
-	const [activeUsers, setActiveUsers] = useState(null)
+	const user = useUser()
+	const activeUsers = useActiveUsers()
 	const gameMaxHp = 100
 	const gameModes = {
 		survival: {description: 'survival mode'},
@@ -234,17 +236,6 @@ export default function Story(props) {
 			setSelectedUserState(data)
 		})
 	},[selectedUser,activeUsers,belt])
-	useEffect(()=>{
-		if(!user){ console.log('user not loaded for active user update'); return }
-		if(!activeUsers){ console.log('activeUsers not loaded for active user update'); return }
-		console.log('loading event handler click for active user update')
-		const L = (e)=>{
-			//console.log('why?')
-			activateUser(user)
-		}
-		document.addEventListener('click', L)
-		return ()=>document.removeEventListener('click',L)
-	},[user, activeUsers])//??[]
 
 	//BEGIN SAVE LOAD DATA
     useEffect(()=>{
@@ -488,10 +479,10 @@ export default function Story(props) {
 			</Row>
 			<Row>
 				<Col>
-					<LoginNav user={user} homepage={'sandbox/story'}/>
+					<UserLogin homepage={'sandbox/story'}/>
 				</Col>
 				<Col>
-					<Profile ip={props.ip} setUser={setUser} setActiveUsers={setActiveUsers}/>
+					<UserProfile/>
 				</Col>
 			</Row>
 		</Container>
