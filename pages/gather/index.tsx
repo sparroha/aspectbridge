@@ -1,12 +1,13 @@
 import { GetServerSideProps } from "next";
 import { useEffect, useReducer, useRef, useState } from "react"
 import requestIp from 'request-ip';
-import { LoginNav, Profile } from "../login/[userlogin]";
 import Dialog from "../../components/dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import useSWR from "swr";
 import Field from "./field";
 import Chat from "../../app/chat/chat";
+import UserLogin from "../../lib/util/-userlogin-";
+import UserProfile from "../../lib/util/-userprofile-";
 
 export type Item = {name: string, value: number, amount: number}
 export type Player = {
@@ -135,11 +136,11 @@ export default function Gather(props: { ip: any; }){
                 <Debug/>
             </Col>
             <Col xs={4} style={{textAlign: 'center'}}>{/*provides standard login link for redirect;homepage=here*/}
-                <LoginNav user={user.current} homepage={'gather'} style={{textAlign: 'center'}}/>
+                <UserLogin user={user.current} homepage={'gather'} style={{textAlign: 'center'}}/>
             </Col>
             <Col xs={4} style={{visibility: 'collapse'}}>
                 {/*sets user state to provide user authentiation*/}
-                <Profile ip={props.ip} setUser={(data: any)=>{user.current=data;render()}}/>
+                <UserProfile/>
             </Col>
         </Row>
         <Row id={'Econ'} style={{textAlign: 'center'}}>

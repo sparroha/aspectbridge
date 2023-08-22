@@ -1,12 +1,12 @@
 import { relative } from "path";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { LoginNav, Profile } from "../login/[userlogin]";
 import { GetServerSideProps } from "next";
 import useSave from "../../lib/util/^save";
 import { TLitter, alephbeth, getTLitter } from "../../components/hebrew";
-import useUsers from "../../lib/util/^user";
+import useUser from "../../lib/util/^user";
 import UserProfile from "../../lib/util/-userprofile-";
+import UserLogin from "../../lib/util/-userlogin-";
 
 type Storehouse = {[key: string]: number}
 
@@ -37,7 +37,7 @@ const initialGrid: CropFarm = [//spread deep
     ]
 ]
 export default function Growth(props){
-    const {ip, user, activeUsers} = useUsers()
+    const user = useUser()
     const [initState, setInitState] = useState({})
 
     /**
@@ -255,7 +255,7 @@ export default function Growth(props){
         Login to tend to your crops!
         <div style={{position: 'relative', textAlign: 'center'}}>
             <UserProfile/>
-            <LoginNav user={user} homepage={'growth'}/>
+            <UserLogin homepage={'growth'}/>
         </div>
         <div style={{position: 'absolute', left: '50vw', top: '50vh'}}>
             <CropPlot cell={grid[0][0]} dispatch={dispatch} i={0} j={0}/>
@@ -271,7 +271,7 @@ export default function Growth(props){
 
         <div style={{position: 'relative', textAlign: 'center'}}>
             <UserProfile/>
-            <LoginNav user={user} homepage={'growth'}/>
+            <UserLogin homepage={'growth'}/>
         </div>
     </>
     
@@ -280,7 +280,7 @@ export default function Growth(props){
         }<br/>
         <div style={{position: 'relative', textAlign: 'center'}}>
             <UserProfile/>
-            <LoginNav user={user} homepage={'growth'}/>
+            <UserLogin homepage={'growth'}/>
         </div>
         <Row>
             <Col>

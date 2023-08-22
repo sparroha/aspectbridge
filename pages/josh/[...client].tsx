@@ -12,8 +12,8 @@ import jsObjs from '../../components/ll/jsobjs';
 import ClientInfoCard, { useInit } from '../../components/ll/client_info_card';
 import SimpleNav from '../../components/simplenav';
 import { GetServerSideProps } from 'next';
-import { ProfileByIp } from '../login/[userlogin]';
-import { DisplayClientByName } from '../../components/ll/clientform';
+import UserProfile from '../../lib/util/-userprofile-';
+import useUser from '../../lib/util/^user';
 //import { NavBarSelect } from '../../components/ll/navigation/navigaton';
 
 //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: [], nav: [], subnav: []}}
@@ -25,13 +25,13 @@ const jsObj = jsObjs();
  */
 export default function Clients({ip}) {
 
-    const [user, setUser] = useState(null)
+    const user = useUser()
     //const i = {path: {dir: '', sub : '', nest: ''}, data: {info: <></>, nav: <></>, subnav: <></>}}
     const pageInfo = useInit()
     return <>
         {/**ProfileByIp is used to login if session ip is saved */}
         {/**ProfileByIp will not work if user has logged out */}
-        <ProfileByIp ip={ip} setUser={setUser}/>
+        <UserProfile/>
         <Headers />
         <Container className={'logan'}>
             <Row id="header" className={'tcenter'}>

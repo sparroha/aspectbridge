@@ -4,11 +4,11 @@ import { Button, Col, Container, Form, FormGroup, Row } from "react-bootstrap";
 import { GetServerSideProps } from "next";
 import sql from "../../lib/,base/sql";
 import useSWR from "swr";
-import requestIp from 'request-ip'
-import { Profile } from "../login/[userlogin]";
-import { LoginNav } from "../login/[userlogin]";
 import useLog from "../../components/conlog";
 import CssSlidersWrapper from "../../components/sliders";
+import useUser from "../../lib/util/^user";
+import UserProfile from "../../lib/util/-userprofile-";
+import UserLogin from "../../lib/util/-userlogin-";
 
 
 const ACTIONS = {
@@ -21,7 +21,7 @@ const ACTIONS = {
 export default function WebSiteDesign(props){
     //VARIABLES AND CONSTANTS
     const [titleState, setTitleState] = useState('Saved')
-    const [user, setUser] = useState(null)
+    const user = useUser()
     useLog('props='+JSON.stringify(props))
     const [dev, setDev] = useState(props.dev || user?.username || null)//i.e.:dev=John
 
@@ -79,8 +79,8 @@ export default function WebSiteDesign(props){
     //const showSiteProps = {...props,...{}}
     return <Container>
         <h4>Web Layout Test</h4>
-        <Profile ip={props.ip} setUser={setUser}/>
-        <LoginNav as={'a'} user={user} homepage={'sandbox/test'}/>
+        <UserProfile/>
+        <UserLogin homepage={'sandbox/test'}/>
         <h5>dev: {dev}</h5>
         <Form>
             <FormSiteTitle visible={dev} title={titleState} setTitle={setTitleState} mutate={mutate}/><br/>
@@ -147,13 +147,11 @@ function updateSite(user, props, mutate?){//update database with current player_
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = context.query
-    //const value = query.param
-    const ip = await requestIp.getClientIp(context.req)
-    //return {props: {ip: ip}}
-    if(!query.dev)return {props: {...query, ip} }
-    if(!query.title)return {props: {...query, ip} }
+    if(!query.dev)return {props: {...query} }
+    if(!query.title)return {props: {...query} }
+    
     const [data] = await sql`SELECT * FROM aspect_sites_devpack_ WHERE username = '${query.dev}' AND title = '${query.title}'`
-    if(!data)return {props: {...query, ip} }
+    if(!data)return {props: {...query} }
 
     const {title, pages, content, footer} = data
     const siteProps: SiteProps = {
@@ -162,7 +160,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         content: content || 'Content: getServerSideProps',
         footer: footer || 'Footer: getServerSideProps'
     }
-    return {props: {...query, ...siteProps, ip: ip} }
+    return {props: {...query, ...siteProps} }
 }
 
 

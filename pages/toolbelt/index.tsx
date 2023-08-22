@@ -4,13 +4,12 @@ import DiceWidget, { useDiceRoll } from "../../components/dice";
 import Dialog from "../../components/dialog";
 import requestIp from 'request-ip';
 import { GetServerSideProps } from "next";
-import { LoginNav, Profile } from "../login/[userlogin]";
 import SimpleNav from "../../components/simplenav";
 import Clock from "../../components/clock";
 import TLiterator from "../../components/hebrew";
-import Mouse from "../../components/mouse";
-import { useMousePosition } from "../../components/mouse";
 import Chat from "../../app/chat/chat";
+import UserLogin from "../../lib/util/-userlogin-";
+import UserProfile from "../../lib/util/-userprofile-";
 
 export const styleFlat = {
     border: '0px',
@@ -297,10 +296,10 @@ export default function Toolbelt(props) {
                     <Debug/>
                 </Col>
                 <Col xs={8} style={{textAlign: 'center'}}>{/*provides standard login link for redirect;homepage=here*/}
-                    <LoginNav user={state.user} homepage={'gather'} style={{textAlign: 'center'}}/>
+                    <UserLogin homepage={'gather'} style={{textAlign: 'center'}}/>
                 </Col>
                 <Col xs={12} style={{visibility: 'visible'}}>{/*sets user state to provide user authentiation*/}
-                    <Profile ip={props.ip} setUser={(data: any)=>{dispatch({type: ACTIONS.SETUSER, payload: {user: data}})}}/>
+                    <UserProfile/>
                 </Col>
             </Row>
             <ButtonToolbeltShop/>

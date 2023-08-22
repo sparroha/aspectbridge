@@ -1,38 +1,17 @@
 import React, { Dispatch, SetStateAction, use, useEffect, useMemo } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { BuildContents, BuildRow, ColBuilder, ContentBuilder, RowBuilder } from '../components/page_builder'
-import { ActiveUser, LoginNav, Profile, User, activateUser } from './login/[userlogin]'
 import { GetServerSideProps } from 'next'
 import requestIp from 'request-ip';
 import { Vector, useVectorTransition } from '../components/vectortransition'
+import UserProfile from '../lib/util/-userprofile-';
+import useUser from '../lib/util/^user';
+import useActiveUsers, { activateUser } from '../lib/util/^activeusers';
+import UserLogin from '../lib/util/-userlogin-';
 
 export default function Index(props) {
-	const [user, setUser]: [Partial<User>, Dispatch<SetStateAction<Partial<User>>>] = React.useState({})
-	const [activeUsers, setActiveUsers]:[ActiveUser[], Dispatch<SetStateAction<ActiveUser[]>>] = React.useState([])
-	/*useEffect(()=>{//LOL copilot made a sily anchor tag handler
-		const clickHandler = (e)=>{
-			if(e.target.tagName.toLowerCase()=='a'){
-				e.preventDefault()
-				const href = e.target.getAttribute('href')
-				window.history.pushState({}, '', href)
-				const navEvent = new PopStateEvent('popstate')
-				window.dispatchEvent(navEvent)
-			}
-		}
-		window.addEventListener('click', clickHandler)
-		return ()=>{
-			window.removeEventListener('click', clickHandler)
-		}
-	}, [])*/
-	useEffect(()=>{
-		const clickHandler = (e)=>{
-			if(user)activateUser(user)
-		}
-		window.addEventListener('click', clickHandler)
-		return ()=>{
-			window.removeEventListener('click', clickHandler)
-		}
-	}, [user])
+	const user = useUser()
+	const activeUsers = useActiveUsers()
 
 	const displayActiveUsers: ColBuilder = useMemo(()=>{ return {
 		id: 'active-users',
@@ -57,7 +36,7 @@ export default function Index(props) {
 			{
 				id: 'user',
 				label: 'User Details',
-				content: <Profile ip={props.ip} setUser={setUser} setActiveUsers={setActiveUsers}/>,
+				content: <UserProfile/>,
 				style: {
 					backgroundColor: '#aaa',
 					color: 'black',
@@ -72,7 +51,7 @@ export default function Index(props) {
 			{
 				id: 'user',
 				label: 'User Login',
-				content: <LoginNav user={user} homepage={'index'} />,
+				content: <UserLogin homepage={'index'} />,
 				style: {
 					backgroundColor: '#ccc',
 					color: 'black'

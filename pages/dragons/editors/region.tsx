@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
-import { ProfileByIp } from "../../login/[userlogin]"
 import useSWR from "swr"
 import requestIp from 'request-ip'
 import { a_d_tiles_ } from "../../api/dragons/regions"
 import useLog from "../../../components/conlog"
 import { GetServerSideProps } from "next"
+import UserProfile from "../../../lib/util/-userprofile-"
 
 export type ActiveUser = {
     username: string | string[],
@@ -60,7 +60,7 @@ export default function RegionEditor({ip}) {
                     <EditTiles access={user?.access} tiles={tiles}/>
                 </Col>
             </Row>
-            <ProfileByIp ip={ip} setUser={setUser}/>
+            <UserProfile/>
           </Container>
 }
 export function useTiles(setTiles){

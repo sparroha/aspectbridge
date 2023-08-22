@@ -2,8 +2,6 @@ import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
-import useLog from "../../components/conlog";
-import { ProfileByIp } from "../login/[userlogin]";
 import { GameData, Player, Position } from "../../public/dragons/tileTypes";
 import Inventory, { useInventory } from "./components/inventory";
 import MapSettings from "./mapsettings";
@@ -11,11 +9,11 @@ import Controls from "./controls";
 import MapFollow, { getMap, MapData } from "./components/worldmap";
 import { EventData } from "./components/event";
 import sql from "../../lib/,base/sql";
-import useUsers from "../../lib/util/^user";
+import useUser from "../../lib/util/^user";
 import UserProfile from "../../lib/util/-userprofile-";
 
 export default function NetDragons({M, E}: {M: MapData[], E: EventData[]}){
-    const {ip, user, activeUsers} = useUsers()
+    const user = useUser()
     const startPosition: Position = {x: 1, y: 1, z: 0, pixel:{x: 0, y: 0}}
     const [playerPosition, setPlayerPosition] = useState(startPosition)
     const player: Player = {name: user?.username, access: user?.access, position: playerPosition}

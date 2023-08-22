@@ -1,11 +1,8 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Col, Container, Form, FormGroup, Row } from "react-bootstrap";
-import { GetServerSideProps } from "next";
-import sql from "../../lib/,base/sql";
-import requestIp from 'request-ip'
-import { Profile } from "../login/[userlogin]";
-import { LoginNav } from "../login/[userlogin]";
 import CssSlidersWrapper from "../../components/sliders";
+import UserLogin from "../../lib/util/-userlogin-";
+import UserProfile from "../../lib/util/-userprofile-";
 
 type RowObj = {id: string, obj: string, style?: React.CSSProperties}
 export default function CSliders(props){
@@ -35,10 +32,10 @@ export default function CSliders(props){
                     }}>Add Row</button>
                 </Col>
                 <Col>
-                    <Profile ip={props.ip} setUser={setUser}/>
+                    <UserProfile ip={props.ip} setUser={setUser}/>
                 </Col>
                 <Col sm={2} md={1}>
-                    <LoginNav as={'a'} user={user} homepage={'sandbox/test'}/>
+                    <UserLogin homepage={'sandbox/test'}/>
                 </Col>
             </Row>
             <Row style={{position: 'relative'}}>
@@ -55,13 +52,4 @@ export default function CSliders(props){
                 )}
             </Row>
         </Container>
-}
-
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const query = context.query
-    //const value = query.param
-    const ip = await requestIp.getClientIp(context.req)
-    //return {props: {ip: ip}}
-    return {props: {...query, ip: ip} }
 }

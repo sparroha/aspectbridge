@@ -4,13 +4,13 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
 import { a_d_maps_ } from "../../api/dragons/maps"
-import useLog from "../../../components/conlog"
-import { ProfileByIp } from "../../login/[userlogin]"
 import Region, { RegionData } from "../components/region"
 import { GameData } from "../../../public/dragons/tileTypes"
 import { useTiles } from "./region"
 import { a_d_tiles_ } from "../../api/dragons/regions"
 import { MapData } from "../components/worldmap"
+import UserProfile from "../../../lib/util/-userprofile-"
+import useUser from "../../../lib/util/^user"
 
 export type ActiveUser = {
   username: string | string[],
@@ -49,7 +49,7 @@ const background = {
 export default function MapEditor({ip}) {
     const [mapname, setMapname] = useState('tree')
     const [map, setMap] = useState(null)
-    const [user, setUser] = useState(null)
+    const user = useUser()
     useMap(mapname, setMap)
 
     return <Container>
@@ -60,7 +60,7 @@ export default function MapEditor({ip}) {
             <Row><Col xs={12}>
               <EditMap user={user} map={map} setMap={setMap}/>
             </Col></Row>
-            <Row><Col xs={12}><ProfileByIp ip={ip} setUser={setUser}/></Col></Row>
+            <Row><Col xs={12}><UserProfile/></Col></Row>
           </Container>
 }
 
