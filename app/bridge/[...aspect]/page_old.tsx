@@ -15,7 +15,7 @@ import 'react-calendar/dist/Calendar.css';
 //import Clock from '../../../components/clock';
 import UserMenu from '../usermenu';
 import UserProfile from '../../../lib/util/-userprofile-';
-import useUsers from '../../../lib/util/^user';
+import useUser from '../../../lib/util/^user';
 //import { ActiveUser, User } from '../../../pages/login/[userlogin]';
 import { SWRConfig } from 'swr';
 import jsonFetch from '../../../lib/,base/jsonFetch';

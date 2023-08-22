@@ -4,7 +4,7 @@ import {Col, Row} from "react-bootstrap";
 import { useRouter } from 'next/navigation';
 import UserMenu from '../usermenu';
 import UserProfile from '../../../lib/util/-userprofile-';
-import useUsers from '../../../lib/util/^user';
+import useUser from '../../../lib/util/^user';
 import Chat from '../../chat/chat';
 import useActiveUsers from '../../../lib/util/^activeusers';
 
@@ -18,7 +18,7 @@ interface pageProps{params: {aspect: string[]}, searchParams}
 const page: FC<pageProps> = ({params, searchParams})=>{
     const router = useRouter()
     const {aspect} = params
-	const user = useUsers(searchParams)
+	const user = useUser()
 	const activeUsers = useActiveUsers(10000)
     const currentUsername = useMemo(()=>user?.username || 'guest',[user])
 
