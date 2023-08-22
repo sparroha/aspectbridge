@@ -1,13 +1,12 @@
 'use client'
 import React from 'react'
 import { SWRConfig } from 'swr'
-import { LoginNav } from '../../pages/login/[userlogin]'
 import jsonFetch from '../../lib/,base/jsonFetch'
-import UserProfile from '../userprofile';
-import useUsers from '../../lib/util/^users'
+import UserProfile from '../../lib/util/-userprofile-';
+import useUser from '../../lib/util/^user'
 
 export default function Home({params, searchParams}){
-    const {ip, user, activeUsers} = useUsers()
+    const user = useUser()
 
     return <SWRConfig value={{ fetcher: jsonFetch }}>
         <UserProfile/>

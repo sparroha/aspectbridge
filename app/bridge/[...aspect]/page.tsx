@@ -3,11 +3,12 @@ import React, { useEffect, useMemo, FC } from 'react'
 import {Col, Row} from "react-bootstrap";
 import { useRouter } from 'next/navigation';
 import UserMenu from '../usermenu';
-import UserProfile from '../../userprofile';
-import useUsers from '../../../lib/util/^users';
+import UserProfile from '../../../lib/util/-userprofile-';
+import useUsers from '../../../lib/util/^user';
 import { SWRConfig } from 'swr';
 import jsonFetch from '../../../lib/,base/jsonFetch';
 import Chat from '../../chat/chat';
+import useActiveUsers from '../../../lib/util/^activeusers';
 
 interface pageProps{params: {aspect: string[]}, searchParams}
 
@@ -19,7 +20,8 @@ interface pageProps{params: {aspect: string[]}, searchParams}
 const page: FC<pageProps> = ({params, searchParams})=>{
     const router = useRouter()
     const {aspect} = params
-	const {user, activeUsers} = useUsers(searchParams)
+	const user = useUsers(searchParams)
+	const activeUsers = useActiveUsers(10000)
     const currentUsername = useMemo(()=>user?.username || 'guest',[user])
 
     useEffect(() => { 
@@ -43,7 +45,8 @@ export default page
 function AspectBridge(props){
 	const {user, activeUsers, aspect} = props
     return <>
-        {aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px', fontSize: '.8em'}}>{a}</p>)}
+        {//aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px', fontSize: '.8em'}}>{a}</p>)}<hr/>
+        }
         <Row id={'profile_editor'} className={""}>
             <Col xs={12}style={{background: 'white'}}>
                 <UserMenu user={user} homepage={'bridge'}/>

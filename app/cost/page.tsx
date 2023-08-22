@@ -1,21 +1,16 @@
 'use client'
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { ActiveUser, Profile, User } from "../../pages/login/[userlogin]";
-import { LoginNav } from "../../pages/login/[userlogin]";
 import { magnitude, tenTo, raise, prestigeCost } from "./util/functions";
 import { getState } from "./util/functions";
+import useUser from "../../lib/util/^user";
+import useActiveUsers from "../../lib/util/^activeusers";
+import UserProfile from "../../lib/util/-userprofile-";
 
 
 export default function Cost() {
-    const [ip, setIp]: [string, Dispatch<SetStateAction<string>>] = useState('')
-	const [user, setUser]: [Partial<User>, Dispatch<SetStateAction<Partial<User>>>] = useState({})
-	const [activeUsers, setActiveUsers]:[ActiveUser[], Dispatch<SetStateAction<ActiveUser[]>>] = useState([])
-    useEffect(()=>{
-        if(!ip)fetch('/api/getip').then((res)=>res.json()).then((ip)=>setIp(ip))
-        if(ip&&!user)fetch('/api/getuserdetails?ip='+ip).then((res)=>res.json()).then((data)=>setUser(data))
-        if(!activeUsers)fetch('/api/activeusers').then((res)=>res.json()).then((data)=>setActiveUsers(data))
-    }, [ip])
+    const user = useUser()
+    const activeUsers = useActiveUsers()
 
     const [prestige, setPrestige] = useState(0)
     const [coin, setCoin] = useState(0)
@@ -51,9 +46,7 @@ export default function Cost() {
     }, []);
         
     return <Container>
-            <Profile ip={ip} setUser={setUser} setActiveUsers={setActiveUsers}/>
-            <LoginNav user={user} homepage={'cost'}/>
-            <Header />
+            <UserProfile/>
             <Labels props={{coin: coin, income: income, prestige: prestige, setCoin: setCoin, setIncome: setIncome, setPrestige: setPrestige, setUpdate: setUpdate, prestigeCost: prestigeCost}} />
             <RenderButtons props={{level: level, prestige: prestige, setIncome: setIncome, setCoin: setCoin, setUpdate: setUpdate, raise: raise, tenTo: tenTo}} />
         </Container>

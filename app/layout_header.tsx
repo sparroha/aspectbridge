@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { Button, Col, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink, Row} from "react-bootstrap";
 import { getDomain } from "../components/domain";
 import { User } from "../pages/login/[userlogin]";
+import UserLogin from "../lib/util/-userlogin-";
 
-export default function GlobalHeader({ user, root }: { user?: User, root?: string }) {
+export default function LayoutHeader({ user, root }: { user?: User, root?: string }) {
     const domain = getDomain()
     const router = useRouter()
     const [local, setLocal] = useState(domain=='localhost:3000/'?'true':'false')
@@ -132,9 +133,7 @@ export default function GlobalHeader({ user, root }: { user?: User, root?: strin
                         <NavPartners />{' '}
                         <NavProjects user={user}/>{' '}
                         <NavResources />{' '}
-                        <Nav.Link href={`/login/${user?'logout':'login'}?homepage=${root}${user?`&username=${user.username}`:''}`}>
-                            {user?('Logout '+user.username):'Login'}
-                        </Nav.Link>{' '}
+                        <UserLogin homepage={root} className={'nav-link'}/>
                         
                     </Nav>{' '}
                 </Navbar.Collapse>

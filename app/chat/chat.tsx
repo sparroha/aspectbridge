@@ -1,20 +1,25 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { ACTIVEUSERS, ActiveUser, LoginNav, Profile } from '../../pages/login/[userlogin]';
-import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
+import { Button, Col, Form, Nav, Row } from 'react-bootstrap';
 import useSWR, { SWRConfig } from 'swr';
-import useUsers from '../../lib/util/^users';
+import useUser from '../../lib/util/^user';
 import jsonFetch from '../../lib/,base/jsonFetch';
+import ActiveUsers from '../../lib/util/-activeusers-';
 
 const scroll = {
-  overflowY: 'scroll'
+  overflow: 'scroll'
 }
 const border = {
   border: '1px outset black',
   borderRadius: '5px',
   padding: '1px',
+  maxHeight: '100vh',
+  minHeight: '20vh',
 }
-
+const fill = {
+  width: '100%',
+  height: '100%',
+}
 const strip = {
   margin: '0px',
   padding: '0px',
@@ -27,29 +32,76 @@ const strip = {
  * @returns 
  */
 export default function Chat(props){
-  const {ip, user, activeUsers} = useUsers()
+  const user = useUser()
   const [update, setUpdate] = useState(false)
   
-  return <SWRConfig value={{ fetcher: jsonFetch }}><div style={{padding: '1px', ...(props.homepage!='chat'?{margin: '0px'}:{})}}>
-    {//<>{ip}<br/>{JSON.stringify(user)}<br/>{JSON.stringify(activeUsers)}<br/></>
-    }
-    
-      <Row>
+  return <SWRConfig value={{ fetcher: jsonFetch }}>
+    <div style={{padding: '1px', ...fill, ...(props.homepage!='chat'?{margin: '0px'}:{})}}>
+      <Row style={{height: '80%'}}>
         <Col xs={12} sm={9} style={strip}>
-          <Messages update={update} setUpdate={setUpdate} user={user} homepage={props.homepage} style={{...scroll, ...border, maxHeight: props.maxHeight || '20vh', minHeight: '20px'}}/>
+          <Messages update={update} setUpdate={setUpdate} user={user} homepage={props.homepage} style={{...border}}/>
         </Col>
         <Col xs={12} sm={3}>
-          <Users activeUsers={activeUsers} style={{...scroll, maxHeight: props.maxHeight || '20vh', minHeight: '20px'}}/>
+          <ActiveUsers style={{...scroll}}/>
         </Col>
       </Row>
-      <Row>
+      <Row style={{height: '20%'}}>
         <Col xs={12} style={strip}>
-          <SendForm ip={ip} user={user} setUpdate={setUpdate}/>
+          <SendForm ip={null} user={user} setUpdate={setUpdate}/>
         </Col>
       </Row>
-  </div></SWRConfig>
+    </div>
+  </SWRConfig>
 }
-
+function ChatWindow({user, data, filteredData, setFilteredData, handleDelete}){
+  return <Row style={{...strip, height: '2em'}}>
+      <Col>
+        <SearchHeader data={data} setFilteredData={setFilteredData}/>
+        <MessageWindow user={user} filteredData={filteredData} handleDelete={handleDelete}/>
+      </Col>
+    </Row>
+}
+function SearchHeader({data, setFilteredData}){
+  const searchInputProps = {
+    minWidth: '100px',
+    width: '50vw',
+    maxWidth: '100%',
+    margin: '0px',
+    padding: '0px',
+    height: '1.5em'
+  }
+  return <Row id={'search'} style={{...strip, height: '2em'}}>
+  <Col xs={3} sm={2} md={2}>Search:</Col>
+  <Col xs={9} sm={6} md={6} lg={7}>
+    <input style={searchInputProps} type='text' defaultValue={''} onChange={(event)=>{
+      setFilteredData(data.filter((message)=>{
+        return message.message.includes(event.target.value)
+      }))
+    }}/>
+  </Col>
+</Row>
+}
+function MessageWindow({user, filteredData, handleDelete}){
+  const deleteButtonProps = {
+    fontSize: 'inherit',
+    height: 'inherit',
+    margin: '0px',
+    padding: '0px 3px 0px 3px',
+  }
+  return <Row id={'messages'} style={{...scroll, maxHeight: '100vh', minHeight: '20vh', height: '20em'}}>
+    {filteredData?.map((message, i)=>{
+      let t = new Date(message.timestamp)
+      let stamp = t.getMonth()+'/'+t.getDate()+
+          ' '+(t.getHours()<10?'0':'')+(t.getHours()-(t.getHours()>12?12:0))+
+          ':'+(t.getMinutes()<10?'0':'')+t.getMinutes()+
+          ':'+(t.getSeconds()<10?'0':'')+t.getSeconds()
+      return <p key={i} style={{fontSize: '14px'}}>
+        {user?.access==2?<Button onClick={handleDelete(message)} style={deleteButtonProps}>Delete</Button>:null}
+        {'< '}{stamp}{' > ['}{message.username}{'] '}{message.message}<br/>
+      </p>
+    })}
+  </Row>
+}
 /**
  * Messages
  * @param param0: update, setUpdate, access, style 
@@ -113,77 +165,7 @@ function Messages({update, setUpdate, user, homepage, style}){
     })
     .catch(error => console.error(error));
   }}
-  return <Row style={strip}><Col style={{margin: '0px', padding: '0px'}}>
-    <Row style={{...style, ...strip, overflowY: 'none'}}>
-      <Col xs={3} sm={2} md={2}>Search:</Col>
-      <Col xs={9} sm={6} md={6} lg={7}>
-        <input style={searchInputProps} type='text' defaultValue={''} onChange={(event)=>{
-          setFilteredData(data.filter((message)=>{
-            return message.message.includes(event.target.value)
-          }))
-        }}/>
-      </Col>
-      <Col xs={12} sm={4} md={4} lg={3}>
-        <LoginNav user={user} homepage={ homepage || 'chat'} style={{fontSize: '1em', fontWeight: 'bold'}}/>
-      </Col>
-    </Row>
-    <div id='messages' style={style}>
-      
-      {filteredData?.map((message, i)=>{
-        let t = new Date(message.timestamp)
-        let stamp = t.getMonth()+'/'+t.getDate()+
-            ' '+(t.getHours()<10?'0':'')+(t.getHours()-(t.getHours()>12?12:0))+
-            ':'+(t.getMinutes()<10?'0':'')+t.getMinutes()+
-            ':'+(t.getSeconds()<10?'0':'')+t.getSeconds()
-        return <p key={i} style={{fontSize: '14px'}}>
-          {style.access==2?<Button onClick={handleDelete(message)} style={deleteButtonProps}>Delete</Button>:null}
-          {'< '}{stamp}{' > ['}{message.username}{'] '}{message.message}<br/>
-        </p>
-      })}
-    </div>
-  </Col></Row>
-}
-
-/**
- * Users
- * @param style: style
- * @returns 
- */
-
-function Users({style, activeUsers}: {style: any, activeUsers: ActiveUser[]}){
-  return <Row id={ACTIVEUSERS} style={style}>
-    {activeUsers?.map((user, i)=>{
-      const {name, time} = user
-      const color = user.access==2?'red':user.access==1?'orange':'black';
-      const access = user.access==2?'[**]':user.access==1?'[*]':'';
-      const dateTime = new Date(time).toLocaleTimeString();
-      return <div key={i} style={{fontSize: '12px'}}>
-        <div style={{color: color, float: 'left'}}>
-          {access}
-        </div>
-        {user.name}{'['}{dateTime}{']'}<br/>
-      </div>
-    })}
-  </Row>
-
-  {/**TODO update ACTIVEUSERS database for this structure of information OOOOR *update this function to call user data from db based on current ACTIVEUSERS* */}
-  return<div id={ACTIVEUSERS} style={{ maxHeight: '50vh', ...style}}>{activeUsers.map((user, i)=>{
-    const User = fetch('/api/getUserdetails/'+user, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    }).then(response => response.json()).then(data => {
-      console.log(data)
-      return data
-    }).catch(error => console.error(error));
-    const USER = {
-      username: User[1],
-      access: User[0]=='[**]'?2:User[0]=='[*]'?1:0,
-      last_active: user.time
-    }
-    const {username, access, last_active} = USER
-    const color = access==2?'red':access==1?'orange':'black';
-    return <div key={i} style={{fontSize: '12px'}}><div style={{color: color, float: 'left'}}>{User[0]}</div>{username}{'['}{last_active}{']'}<br/></div>
-  })}</div>
+  return <ChatWindow user={user} data={data} filteredData={filteredData} setFilteredData={setFilteredData} handleDelete={handleDelete}/>
 }
 
 /**

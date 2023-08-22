@@ -4,7 +4,7 @@ import '../public/css/styles_asb.css'
 import '../public/css/style.css'
 import '../public/css/helper.css'
 import { Metadata } from 'next'
-import NavSegment from './globalheader'
+import LayoutHeader from './layout_header'
 
 export const metadata: Metadata = {
   title: 'Aspect Bridge',
@@ -25,7 +25,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         <div id='header' className='row well-sm tcenter'>
           <div className='col-12 tcenter navy_back title logo'>
             <h1>Aspect Bridge</h1>
-            <NavSegment root={'bridge'}/>
+            <LayoutHeader root={'bridge'}/>
           </div>
         </div>
         <div id="content" className='row'>

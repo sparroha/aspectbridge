@@ -1,14 +1,14 @@
 'use client'
 import { Dispatch, useCallback, useEffect, useState, FC, SetStateAction} from "react"
 import useRegister from "../../lib/util/^register"
-import { LoginNav } from "../../pages/login/[userlogin]"
 import StrBldr from "../../components/stringbuilder";
 import { Button } from "react-bootstrap"
 import downloadFile from "../../lib/util/downloadfile"
-import useUsers from "../../lib/util/^users";
-import UserProfile from "../userprofile";
+import useUser from "../../lib/util/^user";
+import UserProfile from "../../lib/util/-userprofile-";
 import { SWRConfig } from "swr";
 import jsonFetch from "../../lib/,base/jsonFetch";
+import UserLogin from "../../lib/util/-userlogin-";
 
 export type Story = string | {what?: string, why?: string, who?: string}
 export type StoryBoard = Story[]
@@ -19,7 +19,7 @@ const page: FC<any> = ({params})=>{
 }
 export default page
 function Init(props){
-    const {ip, user, activeUsers} = useUsers()
+    const user = useUser()
     const [register, saveData, registryLoaded] = useRegister('story', ['berashith'])
 
     const [what, setWhat] = useState('')
@@ -72,7 +72,7 @@ function Init(props){
     if(!registryLoaded)return <>Loading...</>
     return <div style={{perspective: '720px', height: '100vh', backgroundImage: 'linear-gradient(to right, #557, #77a, #aad)'}}>
         {what}<br/>{why}<br/>{who}<br/>
-        <LoginNav user={user} homepage={'story'}/>
+        <UserLogin user={user} homepage={'story'}/>
         <UserProfile/>
         <Story story={story} saveData={saveData} setWhat={setWhat} setWhy={setWhy} setWho={setWho} user={user}/>
         <div style={{textAlign: 'center', width: '360px', border: '2px outset #bbb', backgroundImage: 'linear-gradient(to bottom right, #aaa, #ccc, #ddd, #fff)', backgroundSize: 'cover', translate: '100px 0px '+pulse+'px', transform: 'rotateY('+trnsfrm+'deg)', boxShadow: (Math.abs(shadow))/2+'px 10px 10px 0 #333', transition: 'translate 1s linear, transform 1s linear, box-shadow 1s linear'}}>

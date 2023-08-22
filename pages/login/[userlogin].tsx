@@ -1,17 +1,13 @@
 'use client'
 import { sha224 } from "js-sha256"
 import { GetServerSideProps } from "next"
-import { useRouter } from "next/router"
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import sql from "../../lib/,base/sql"
 import useSWR from 'swr'
 import requestIp from 'request-ip'
-import Head from "next/head"
-import useRegister, { getDB, setDB } from "../../lib/util/^register"
-import useUsers from "../../lib/util/^users"
-import UserProfile from "../../app/userprofile"
-import useIP from "../../lib/util/^ip"
+import UserProfile from "../../lib/util/-userprofile-"
 import { useHashCookie } from "../../lib/util/^hashcookie"
 
 export type StoredUser = {
@@ -26,62 +22,12 @@ export type User = StoredUser & {
   message: string,
   homepage: string,
 }
-const debugAccess='2' 
-export type ActiveUser = {
-  name: string,
-  access: number,
-  time: number,
-}
-
-/**
- * 
- * USAGE:
- * 
- * // get user data from server
- * const {ip, user, activeUsers} = useUsers()
- * 
- * //display user profile preview data
- * <UserProfile/>
- * 
- * //to enable user login from current page, call LoginNav. Note: style is optional
- * <LoginNav user={user} homepage={homepage} style={style}/>
- * 
- * //to set a user as active, call
- * activateUser(username)
- * 
- */
-/** 
- * DEPRICATED
- * USAGE_OLD:
- * //to create a user variable
- * const [user, setUser] = useState<User>(null)
- * 
- * //to enable user login data, call Profile to get user information. Note: setActiveUsers is optional
- * <Profile ip={ip} setUser={setUser} setActiveUsers={setActiveUsers}/>
- * 
- * //to enable user login from current page, call LoginNav. Note: style is optional
- * <LoginNav user={user} homepage={homepage} style={style}/>
- * 
- * //to access a list of currently active users, creater this variable and send the setter to Profile
- * const [activeUsers, setActiveUsers] = useState<ActiveUser[]>([])
- * 
- * //to set a user as active, call
- * activateUser(username)
- * 
- */
-
-export default function UserLogin({homepage, searchParams}: Partial<any>) {
-
-
-    //const ip = useIP()//Depricated
+export default function LoginApp({params, searchParams}) {
+    const homepage = searchParams?.homepage || 'bridge'
     const router = useRouter()
-    const [method, setMethod] = useState(router.query.userlogin)
-    const [hash, setHash] = useHashCookie(searchParams) 
-    const [menu, setMenu] = useState('show')
+    const [method, setMethod] = useState(params?.userlogin || 'login')
+    const [hash, setHash] = useHashCookie(searchParams)
     const { data, error} = useSWR('../api/getuser?hash='+hash, {refreshInterval: 2200})
-
-
-
 
     const loginLayout = {
       backgroundImage: 'linear-gradient(to bottom right, #4b4, #7c7, #ada)',
@@ -99,31 +45,16 @@ export default function UserLogin({homepage, searchParams}: Partial<any>) {
       paddingRight: '20px',
       borderRadius: '5px'
     }
-    const menuLayout = {
-      backgroundImage: 'linear-gradient(to bottom right, #557, #77a, #aad)',
-      //backgroundColor: '#c0c',
-      padding: '10px',
-      paddingLeft: '20px',
-      paddingRight: '20px',
-      borderRadius: '5px'
-    }
     
     useEffect(() => { 
-      if(data?.username){
-        /*router.push({pathname: '/'+homepage+(user?('/'+user.username):''), query: {
-          username: user.username, email: user.email, access: user.access, message: user.message
-        }})*/
-        router.push({ pathname: `/${homepage}${data?('/'+data.username):''}`, query: {hash: data.hash} })
-
-        //alert(JSON.stringify({data, hash, document.cookie}))
-      }
+      if(!data) return
+      router.push(`/${homepage}/${data?.username}`)
     },[data])
 
 
     return <Container style={{textAlign: 'center', maxWidth: '100vw'}}>
             <Row>
               <Col xs={12}>
-                <Profile/>
                 <UserProfile/>
               </Col>
             </Row>
@@ -170,7 +101,7 @@ export default function UserLogin({homepage, searchParams}: Partial<any>) {
  * The brains if you will.
  * 
  * @returns <Head>{els}</Head>
- */
+ *
 function Headers(){
   return <Head>
               <title>Bridge Login</title>
@@ -181,7 +112,7 @@ function Headers(){
               <meta name="description" content="" />
               <link rel="shortcut icon" href="/assets/binary2.png" type="image/x-icon" />
           </Head>
-}
+}*/
 function LoginForm({setHash}){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -203,7 +134,6 @@ function LoginForm({setHash}){
     <Button type="submit" >Login</Button>
   </Form>
 }
-
 function RegisterForm({homepage}){
   return <Form id={'registerForm'}>
         <Form.Group controlId="formUsername">
@@ -265,117 +195,9 @@ function ForgotForm({homepage}){
         <Button variant="primary" type="submit" formAction={"/login/forgot"}>Forgot</Button>
     </Form>
 }
-export const ACTIVEUSERS = 'active_users'
-export function Profile(props) {
-  const [activeUsers, registerActiveUsers, usersloaded]:[string, Function, boolean] = useRegister(ACTIVEUSERS,[])
-  const {ip, setUser, hash, setActiveUsers} = props
-  const { data, error } = useSWR('../api/getuserdetails?ip='+ip+(hash&&hash!=null?'&hash='+hash:''), {refreshInterval: 10000})
-  const debug = props.debug
-  useEffect(() => {
-    if(!data) return
-    setUser(data)
-
-    //console.log('@Profile@[userlogin]:-mounting activeUsers: '+activeUsers)
-    //console.log('@Profile@[userlogin]:--mounting: '+JSON.stringify(data))
-    
-    /**SET ACTIVE USERS */
-    activateUser(data)
-
-    return () => {
-      //console.log('@Profile@[userlogin]:-unmounting: '+JSON.stringify(data))
-    }
-  },[data,usersloaded])
-
-  useEffect(()=>{
-    if(!usersloaded || !activeUsers) return console.log('No activateUsers')
-    if(!setActiveUsers) return console.log('No setActiveUsers function provided')
-    if(activeUsers=='default') return console.log('No active users')
-    let au: ActiveUser[]
-    try{
-      au = JSON.parse(activeUsers)
-    }catch(e){
-      console.log('Error parsing active users: '+activeUsers+':'+e)
-      return
-    }
-    setActiveUsers(au)//send data to external
-  },[activeUsers])
-
-  if (error) {
-    return <Row style={props.style}><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
-        {'ERROR:'+JSON.stringify(error)+'\n'}:No such user:{JSON.stringify(props)+'\nDATA:'+JSON.stringify(data)}
-      </Col></Row>
-  }
-  if (!data) return <Row style={props.style}>loading...</Row>
-  else {
-    let {username, email, access} = data
-    data.message = 'Welcome back '+data.username+'!'
-    return <div style={{...props.style,
-      color: 'white',
-      background: 'none repeat scroll 0 0 #000000',
-      borderRadius: '20px',
-      padding: 12,
-      textAlign: 'center',
-      border: '2px outset #bbb',
-      backgroundImage: 'linear-gradient(to bottom right, #777, #aaa, #ddd, #fff)'
-      }}>
-        hello {username}!{` \<${email}\> `} Your access level is {access}.
-      </div>
-  }
-}
-export async function activateUser(user: Partial<User>){
-  if(!user) return console.log('No user provided')
-  return getDB(ACTIVEUSERS)
-    .then((data: string)=>JSON.parse(data) || [])
-    .then((data: ActiveUser[])=>{
-      if(data.length == 0){
-        setDB(ACTIVEUSERS, [{name: user.username, access: user.access || 0, time: new Date().getTime()}])
-      }else{
-        //remove current and old users
-        let dataArr = data.filter(({time, name}) => {
-          if(name == user.username) return false //prevent duplicate user entry
-          if((new Date().getTime() - time) > (1000*60*60)/6) return false//remove users that havent been active in the last hour...last 10 min
-          return true
-        })
-        dataArr.push({name: user.username, access: user.access, time: new Date().getTime()})
-        setDB(ACTIVEUSERS, dataArr)
-      }
-    }
-  )
-}
 
 
-/**
- * depricated
- * @param param0 
- * @returns 
- */
-export function ProfileByIp({ip, setUser}) {
-  const { data, error } = useSWR('/api/getuserdetails?ip='+ip, { revalidateOnFocus: false })
-  const debug = true
-  useEffect(() => {
-    console.log('[ProfileByIp]This function is deprecated. Use Profile instead.');
-    setUser(data)
-  },[data])
-  if (error) {
-    return <Row><Col style={{visibility: (debug?'visible':'hidden'), position: (debug?'relative':'absolute')}}>
-        {error}:User not cached. Please login or register.
-      </Col></Row>
-  }
-  if (!data) return <div>loading...</div>
-  else {
-    let {username, email, access} = data
-    data.message = 'Welcome back '+data.username+'!'
-    return <Row>
-        <Col sm={4}></Col>
-        <Col sm={4} className={'tcenter'} style={{color: 'white', background: 'gray', borderRadius: '90px'}}>
-          hello {username}!{`\<${email}\>`} Your access level is {access}.
-        </Col>
-        <Col sm={4}></Col>
-      </Row>
-  }
-}
-
-export function LoginNav(props) {
+/*export function LoginNav(props) {
   const { user, homepage, style } = props
   return <a 
         style={style}
@@ -386,7 +208,7 @@ export function LoginNav(props) {
         }>
         {user ? 'Logout ' + user.username : 'Login'}
       </a>
-}
+}*/
 
 /*export async function setUserActive(username: string){
 const [activeUsers,setActiveUsers,loaded] = useRegister(ACTIVEUSERS,[])

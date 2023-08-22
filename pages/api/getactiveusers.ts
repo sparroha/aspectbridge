@@ -1,5 +1,5 @@
 import sql from '../../lib/,base/sql';
-import { ACTIVEUSERS, ActiveUser } from '../login/[userlogin]';
+import { ACTIVEUSERS, ActiveUser } from '../../lib/util/^activeusers';
 import { RegistryCollomn } from './registry/[registry]';
 export default async function getActiveUsers(req, res){
     const nonuser: ActiveUser = {name: '420: No Users Active', access: 2, time: Date.now()}

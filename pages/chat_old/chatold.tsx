@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ACTIVEUSERS, ActiveUser, LoginNav, Profile } from '../login/[userlogin]';
 import { Button, Col, Container, Form, Nav, Row } from 'react-bootstrap';
 import useSWR from 'swr';
-import useUsers from '../../lib/util/^users';
+import useUsers from '../../lib/util/^user';
 
 const scroll = {
   overflowY: 'scroll'

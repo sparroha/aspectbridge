@@ -5,8 +5,8 @@ import { LoginNav, Profile } from "../login/[userlogin]";
 import { GetServerSideProps } from "next";
 import useSave from "../../lib/util/^save";
 import { TLitter, alephbeth, getTLitter } from "../../components/hebrew";
-import useUsers from "../../lib/util/^users";
-import UserProfile from "../../app/userprofile";
+import useUsers from "../../lib/util/^user";
+import UserProfile from "../../lib/util/-userprofile-";
 
 type Storehouse = {[key: string]: number}
 

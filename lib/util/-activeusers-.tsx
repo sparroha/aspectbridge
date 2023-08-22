@@ -1,8 +1,9 @@
 import useActiveUsers from "./^activeusers"
 
-export default function ActiveUsers(){
-    const activeUsers = useActiveUsers()
-    return <>{activeUsers?.map((user, i)=>{
+export default function ActiveUsers(props){
+    const {style} = props
+    const activeUsers = useActiveUsers(10000)
+    return <div style={style}>{activeUsers?.map((user, i)=>{
         let now = Date.now()
         let then = new Date(user.time).getTime()
         let seconds = Math.floor((now-then)/1000)
@@ -11,5 +12,5 @@ export default function ActiveUsers(){
         return <div key={i} style={{color: 'white'}}>
             {user.name}{' (active '}{minutseconds}{' ago)'}
         </div>
-    })}</>
+    })}</div>
 }

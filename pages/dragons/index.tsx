@@ -11,8 +11,8 @@ import Controls from "./controls";
 import MapFollow, { getMap, MapData } from "./components/worldmap";
 import { EventData } from "./components/event";
 import sql from "../../lib/,base/sql";
-import useUsers from "../../lib/util/^users";
-import UserProfile from "../../app/userprofile";
+import useUsers from "../../lib/util/^user";
+import UserProfile from "../../lib/util/-userprofile-";
 
 export default function NetDragons({M, E}: {M: MapData[], E: EventData[]}){
     const {ip, user, activeUsers} = useUsers()

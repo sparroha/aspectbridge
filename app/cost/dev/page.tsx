@@ -1,16 +1,14 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { Profile } from "../../../pages/login/[userlogin]";
-import { LoginNav } from "../../../pages/login/[userlogin]";
 import Dialog from "../../../components/dialog";
 import { magnitude, tenTo, raise } from "../util/functions";
+import UserProfile from "../../../lib/util/-userprofile-";
+import useUser from "../../../lib/util/^user";
 
 export default function Cost() {
-    const [ip, setIp] = useState('')
-    useEffect(()=>{
-        fetch('/api/getip').then((res)=>res.json()).then((ip)=>setIp(ip))
-    }, [])
+    const user = useUser()
+
     const r = useState({})[1]
     const render = ()=>r({})
     const prestigeRef = useRef(0)
@@ -30,7 +28,6 @@ export default function Cost() {
         {name: 'item10', value: 10, amount: 0},
     ]
     const invItems = useRef(shopItems)
-    const [user, setUser] = useState(null)
     const [update, setUpdate] = useState(false)
     const [level, setLevel] = useState(0)
 
@@ -75,8 +72,7 @@ export default function Cost() {
     }
     return (
         <Container>
-            <LoginNav user={user} homepage={'cost'} />
-            <Profile ip={ip} setUser={setUser}/>
+            <UserProfile/>
             <Header />
             <Labels props={{wallet: wallet(coinRef.current, gemRef.current), incomeRef: incomeRef, prestigeRef: prestigeRef, coinRef: coinRef, gemRef: gemRef, setUpdate: setUpdate, prestigeCost: prestigeCost}} />
             <RenderButtons props={{level: level, prestigeRef: prestigeRef, incomeRef: incomeRef, coinRef: coinRef, gemRef: gemRef, setUpdate: setUpdate, raise: raise, tenTo: tenTo}} />
