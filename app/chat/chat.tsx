@@ -7,7 +7,7 @@ import jsonFetch from '../../lib/,base/jsonFetch';
 import ActiveUsers from '../../lib/util/-activeusers-';
 
 const scroll = {
-  overflow: 'scroll'
+  overflow: 'auto'
 }
 const border = {
   border: '1px outset black',
@@ -35,72 +35,66 @@ export default function Chat(props){
   const user = useUser()
   const [update, setUpdate] = useState(false)
   
-  return <SWRConfig value={{ fetcher: jsonFetch }}>
-    <div style={{padding: '1px', ...fill, ...(props.homepage!='chat'?{margin: '0px'}:{})}}>
-      <Row style={{height: '80%'}}>
-        <Col xs={12} sm={9} style={strip}>
+  return <div style={{padding: '1px', ...fill, ...props.style, ...(props.homepage!='chat'?{margin: '0px'}:{})}}>
+      <Row id={'main_row'} style={{height: '90%'}}>
+        <Col xs={12} sm={9} style={{...strip, height: '100%'}}>
           <Messages update={update} setUpdate={setUpdate} user={user} homepage={props.homepage} style={{...border}}/>
         </Col>
         <Col xs={12} sm={3}>
           <ActiveUsers style={{...scroll}}/>
         </Col>
       </Row>
-      <Row style={{height: '20%'}}>
+      <Row id={'submit_row'} style={{height: '2em'}}>
         <Col xs={12} style={strip}>
           <SendForm ip={null} user={user} setUpdate={setUpdate}/>
         </Col>
       </Row>
     </div>
-  </SWRConfig>
 }
 function ChatWindow({user, data, filteredData, setFilteredData, handleDelete}){
-  return <Row style={{...strip, height: '2em'}}>
-      <Col>
-        <SearchHeader data={data} setFilteredData={setFilteredData}/>
-        <MessageWindow user={user} filteredData={filteredData} handleDelete={handleDelete}/>
-      </Col>
-    </Row>
-}
-function SearchHeader({data, setFilteredData}){
-  const searchInputProps = {
-    minWidth: '100px',
-    width: '50vw',
-    maxWidth: '100%',
-    margin: '0px',
-    padding: '0px',
-    height: '1.5em'
-  }
-  return <Row id={'search'} style={{...strip, height: '2em'}}>
-  <Col xs={3} sm={2} md={2}>Search:</Col>
-  <Col xs={9} sm={6} md={6} lg={7}>
-    <input style={searchInputProps} type='text' defaultValue={''} onChange={(event)=>{
+  
+  function SearchHeader(props){
+    const {style} = props
+    const searchInputProps = {
+      minWidth: '100px',
+      width: '50vw',
+      maxWidth: '100%',
+      margin: '0px',
+      padding: '0px',
+      height: '1.5em'
+    }
+    return <>Search:&nbsp;<input id={'search'} style={{...searchInputProps, ...style}} type='text' defaultValue={''} onChange={(event)=>{
       setFilteredData(data.filter((message)=>{
         return message.message.includes(event.target.value)
       }))
-    }}/>
-  </Col>
-</Row>
-}
-function MessageWindow({user, filteredData, handleDelete}){
-  const deleteButtonProps = {
-    fontSize: 'inherit',
-    height: 'inherit',
-    margin: '0px',
-    padding: '0px 3px 0px 3px',
+    }}/></>
   }
-  return <Row id={'messages'} style={{...scroll, maxHeight: '100vh', minHeight: '20vh', height: '20em'}}>
-    {filteredData?.map((message, i)=>{
-      let t = new Date(message.timestamp)
-      let stamp = t.getMonth()+'/'+t.getDate()+
-          ' '+(t.getHours()<10?'0':'')+(t.getHours()-(t.getHours()>12?12:0))+
-          ':'+(t.getMinutes()<10?'0':'')+t.getMinutes()+
-          ':'+(t.getSeconds()<10?'0':'')+t.getSeconds()
-      return <p key={i} style={{fontSize: '14px'}}>
-        {user?.access==2?<Button onClick={handleDelete(message)} style={deleteButtonProps}>Delete</Button>:null}
-        {'< '}{stamp}{' > ['}{message.username}{'] '}{message.message}<br/>
-      </p>
-    })}
-  </Row>
+  function MessageWindow(props){
+    const {style} = props
+    const deleteButtonProps = {
+      fontSize: 'inherit',
+      height: 'inherit',
+      margin: '0px',
+      padding: '0px 3px 0px 3px',
+    }
+    return <div id={'messages'} style={style}>
+      {filteredData?.map((message, i)=>{
+        let t = new Date(message.timestamp)
+        let stamp = t.getMonth()+'/'+t.getDate()+
+            ' '+(t.getHours()<10?'0':'')+(t.getHours()-(t.getHours()>12?12:0))+
+            ':'+(t.getMinutes()<10?'0':'')+t.getMinutes()+
+            ':'+(t.getSeconds()<10?'0':'')+t.getSeconds()
+        return <p key={i} style={{fontSize: '14px'}}>
+          {user?.access==2?<Button onClick={handleDelete(message)} style={deleteButtonProps}>Delete</Button>:null}
+          {'< '}{stamp}{' > ['}{message.username}{'] '}{message.message}<br/>
+        </p>
+      })}
+    </div>
+  }
+  return <>
+        <SearchHeader style={{height: '10%', maxHeight: '2em'}}/>
+        <MessageWindow style={{...scroll, height: '90%'}}/>
+      </>
 }
 /**
  * Messages
@@ -108,22 +102,7 @@ function MessageWindow({user, filteredData, handleDelete}){
  * @returns 
  */
 function Messages({update, setUpdate, user, homepage, style}){
-  //const [dataSorted, setDataSorted] = useState(null)
-  const deleteButtonProps = {
-      fontSize: 'inherit',
-      height: 'inherit',
-      margin: '0px',
-      padding: '0px 3px 0px 3px',
-  }
-  const searchInputProps = {
-    minWidth: '100px',
-    width: '50vw',
-    maxWidth: '100%',
-    margin: '0px',
-    padding: '0px',
-    height: '1.5em'
-  }
-  const {data, error, mutate} = useSWR('/api/chat/messages', { refreshInterval: 500 })
+  const {data, error, mutate} = useSWR('/api/chat/messages', { refreshInterval: 500, fetcher: jsonFetch})
   const [filteredData, setFilteredData] = useState(null)
   let refresh = false
   //initialize messages
@@ -176,7 +155,6 @@ function Messages({update, setUpdate, user, homepage, style}){
 function SendForm({ip, user, setUpdate}){
   const [send, setSend] = useState('')
   const [command, setCommand] = useState(null)
-  const h2em = {height: '2em'}
   
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -226,7 +204,7 @@ function SendForm({ip, user, setUpdate}){
       setCommand('')
     }, 100)
   }
-  return <Form onSubmit={handleSubmit} style={{margin: '0px', padding: '0px'}}>
+  return <Form onSubmit={handleSubmit} style={{margin: '0px', padding: '0px', maxHeight: '3em'}}>
       <Form.Control type='text' style={{visibility: 'collapse', border: '0px', margin: '0px', padding: '0px', height: '0px'}} name='username' defaultValue={user?.username}/> 
       <Row style={{margin: '0px', padding: '0px'}}>
           <Col xs={10} style={{margin: '0px', padding: '0px'}}>

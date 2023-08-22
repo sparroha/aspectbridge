@@ -133,3 +133,7 @@
     margin-right: auto;
     margin-left: auto;
 }
+
+.col {
+	max-height: 100%;
+}

@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import UserMenu from '../usermenu';
 import UserProfile from '../../../lib/util/-userprofile-';
 import useUsers from '../../../lib/util/^user';
-import { SWRConfig } from 'swr';
-import jsonFetch from '../../../lib/,base/jsonFetch';
 import Chat from '../../chat/chat';
 import useActiveUsers from '../../../lib/util/^activeusers';
 
@@ -30,10 +28,10 @@ const page: FC<pageProps> = ({params, searchParams})=>{
           router.push(`/bridge/${currentUsername}${aspect.length>1?'/'+aspect[1]:''}${aspect.length>2?'/'+aspect[2]:''}`)
         }
     },[user])
-    return <SWRConfig value={{ fetcher: jsonFetch }}>
+    return <>
         <UserProfile />
         <AspectBridge {...{user, activeUsers, aspect}}/>
-    </SWRConfig>
+    </>
 }
 export default page
 
@@ -45,18 +43,16 @@ export default page
 function AspectBridge(props){
 	const {user, activeUsers, aspect} = props
     return <>
-        {//aspect.map((a,i)=><p key={i} style={{color: 'white', float: 'left', margin: '2px', fontSize: '.8em'}}>{a}</p>)}<hr/>
-        }
-        <Row id={'profile_editor'} className={""}>
+        <Row id={'profile_editor'} className={""} style={{maxHeight: '50vh'}}>
             <Col xs={12}style={{background: 'white'}}>
                 <UserMenu user={user} homepage={'bridge'}/>
             </Col>
         </Row>
-        <Row id={'chat'} className={'justify-content-md-center'}>
-            <Col xs={12}style={{
-                    backgroundImage: 'linear-gradient(to bottom, #777, #fff)'
+        <Row id={'chat'} className={'justify-content-md-center'} style={{maxHeight: '50vh'}}>
+            <Col xs={12} style={{
+                    backgroundImage: 'linear-gradient(to bottom, #777, #fff)' , maxHeight: '40vh'
                 }}>
-                <Chat user={user} homepage={'bridge'} ip={null} maxHeight={'10vh'}/>
+                <Chat user={user} homepage={'bridge'} ip={null}/>
             </Col>
         </Row>
     </>
