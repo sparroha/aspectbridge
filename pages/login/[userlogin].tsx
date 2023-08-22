@@ -22,13 +22,19 @@ export type User = StoredUser & {
   message: string,
   homepage: string,
 }
-export default function LoginApp({params, searchParams}) {
-    const homepage = searchParams?.homepage || 'bridge'
+export default function LoginApp(props) {
+    const {root, logmethod} = props
+    const homepage = root || 'bridge'
     const router = useRouter()
-    const [method, setMethod] = useState(params?.userlogin || 'login')
-    const [hash, setHash] = useHashCookie(searchParams)
+    const [method, setMethod] = useState(logmethod || 'login')
+    const [hash, setHash] = useHashCookie()
     const { data, error} = useSWR('../api/getuser?hash='+hash, {refreshInterval: 2200})
 
+    /*useEffect(()=>{
+      console.log('LoginApp props', props)
+      console.log('LoginApp', method, data, error, homepage)
+      if(method == 'logout') document.cookie = `secret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+    },[])*/
     const loginLayout = {
       backgroundImage: 'linear-gradient(to bottom right, #4b4, #7c7, #ada)',
       //backgroundColor: '#0c0',
@@ -195,41 +201,15 @@ function ForgotForm({homepage}){
         <Button variant="primary" type="submit" formAction={"/login/forgot"}>Forgot</Button>
     </Form>
 }
-
-
-/*export function LoginNav(props) {
-  const { user, homepage, style } = props
-  return <a 
-        style={style}
-        href={
-          '/login/' + (user ? 'logout' : 'login') + 
-          '?homepage=' + homepage + 
-          (user ? '&username=' + user.username : '')
-        }>
-        {user ? 'Logout ' + user.username : 'Login'}
-      </a>
-}*/
-
-/*export async function setUserActive(username: string){
-const [activeUsers,setActiveUsers,loaded] = useRegister(ACTIVEUSERS,[])
-    if(!activeUsers) setActiveUsers([{name: username, time: new Date().getTime()}]) 
-     else setActiveUsers([...JSON.parse(activeUsers).filter( 
-       ({time}) => { 
-         if(!time) return false 
-         if((new Date().getTime()) - time > 1000*60*(60/12)) return false//remove users that havent been active in the last hour 
-         return true 
-       } 
-     ), {name: username, time: new Date().getTime()}])}*/
-
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   const method = query.userlogin?.toString().toLocaleLowerCase()
   const username = query.username?.toString().toLocaleLowerCase() || ''
   const email = query.email?.toString().toLocaleLowerCase() || ''
   const nemail = query.nemail?.toString().toLocaleLowerCase() || ''
   const hash = sha224(query.email?.toString().toLocaleLowerCase()+''+query.password)
-  const homepage = query.homepage!=undefined?query.homepage:'bridge'
+  const homepage = query.homepage || 'bridge'
   const ip = await requestIp.getClientIp(req)
-  console.log('ip: '+ip+' method: '+method+' username: '+username+' email: '+email+' nemail: '+nemail+' hash: '+hash)
+  //console.log('ip: '+ip+' method: '+method+' username: '+username+' email: '+email+' nemail: '+nemail+' hash: '+hash)
   switch(method){
     case  'logout':
       await sql`Update aspect_users_ SET ip = null WHERE username = ${username}`
@@ -246,5 +226,5 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
     default:
       break
   } 
-  return {props: {ip: ip, homepage: homepage}}
+  return {props: {logmethod: method, root: homepage}}
 }

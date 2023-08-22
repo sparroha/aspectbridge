@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, Col, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink, Row} from "react-bootstrap";
 import { getDomain } from "../../components/domain";
+import UserLogin from "../../lib/util/-userlogin-";
 
 export default function NavIndex({ user, root }) {
     const domain = getDomain()
@@ -132,9 +133,7 @@ export default function NavIndex({ user, root }) {
                             <NavPartners />{' '}
                             <NavProjects user={user}/>{' '}
                             <NavResources />{' '}
-                            <Nav.Link href={`/login/${user?'logout':'login'}?homepage=${root}${user?`&username=${user.username}`:''}`}>
-                                {user?('Logout '+user.username):'Login'}
-                            </Nav.Link>{' '}
+                            <UserLogin homepage={root} className={'nav-link'}/>
                             
                         </Nav>{' '}
                     </Navbar.Collapse>
