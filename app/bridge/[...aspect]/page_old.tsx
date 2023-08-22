@@ -64,9 +64,9 @@ interface pageProps{params: {aspect: string[]}, searchParams}
  */
 const page: FC<pageProps> = ({params, searchParams})=>{
     return <></>
-    const router = useRouter()
+    /*const router = useRouter()
     const {aspect} = params
-	const {user, activeUsers} = useUsers(searchParams)
+	const {user, activeUsers} = useUsers()
     const currentUsername = useMemo(()=>user?.username || 'guest',[user])
 
     useEffect(() => { 
@@ -81,7 +81,7 @@ const page: FC<pageProps> = ({params, searchParams})=>{
         }
         <UserProfile />
         <AspectBridge {...{user, activeUsers}}/>
-    </SWRConfig>
+    </SWRConfig>*/
 }
 export default page
 function AspectBridge(props){
