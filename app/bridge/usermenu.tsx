@@ -3,10 +3,9 @@ import { Col, Nav, Row } from "react-bootstrap"
 import EditProfile from "./editprofile"
 import { User } from "../../pages/login/[userlogin]"
 import EditUsers from "./editusers"
-import UserLogin from "../../lib/util/-userlogin-"
 
 export default function UserMenu({user, homepage}: {user: Partial<User>, homepage: string}){
-    if(!user) return <UserLogin user={user} homepage={homepage} />
+    if(!user) return <></>
     const userSettings = useMemo(() => {return {
         user: user
     }},[user])

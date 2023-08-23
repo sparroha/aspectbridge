@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 }
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   return <html lang={'en'} /*style={{maxHeight: '100vh'}}*/>
-    <body /*style={{height: '100vh'}}*/>
+    <body>
       <div className='container-fluid aspect' style={{height: '100vh'}}>
         <div id='header' className='row well-sm tcenter' style={{height: '10%'}}>
           <div className='col-12 tcenter navy_back title logo'>

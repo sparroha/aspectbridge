@@ -1,4 +1,7 @@
+'use client'
 import { Metadata } from 'next'
+import NavLeftDefault from '../navleft'
+import NavRightDefault from '../navright'
 
 export const metadata: Metadata = {
   title: 'Aspect Bridge',
@@ -12,8 +15,12 @@ export const metadata: Metadata = {
   //icons: 'assets/binary2.png',
   //assets: 'https://aspectbridge.com/assets',
 }
-export default async function RootLayout({children}) {
-  return<>
-            {children}
-        </>
+export default async function BridgeLayout({children}) {
+  return <div className='row'>
+      <NavLeftDefault/>
+      <div className='col-xs-12 col-sm-9 col-md-8' style={{height: '100vh'}}>
+        {children}
+      </div>
+      <NavRightDefault/>
+  </div>
 }

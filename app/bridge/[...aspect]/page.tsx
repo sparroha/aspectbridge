@@ -29,7 +29,8 @@ const page: FC<pageProps> = ({params, searchParams})=>{
         }
     },[user])
     return <>
-        <UserProfile />
+        {//<UserProfile />
+        }
         <AspectBridge {...{user, activeUsers, aspect}}/>
     </>
 }
