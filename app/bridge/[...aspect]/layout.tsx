@@ -3,6 +3,8 @@ import React from 'react'
 import NavLeftDefault from '../../navleft'
 import NavRightDefault from '../../navright'
 
+//Why does Metadata not export from dynamic directory?
+
 export default async function BridgeLayout({children}) {
   return <div className='row'>
       <NavLeftDefault/>

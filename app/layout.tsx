@@ -1,13 +1,12 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../public/css/styles_asb.css'
 import '../public/css/style.css'
 import '../public/css/helper.css'
 import { Metadata } from 'next'
 import LayoutHeader from './layout_header'
 
 export const metadata: Metadata = {
-  title: 'Aspect Bridge',
+  title: 'Aspect Bridge Root',
   description: 'Aspect Bridge Test Platform',
   applicationName: 'Aspect Bridge',
   authors: [{url:'https://aspectbridge.com', name:'Keith Dockery'}],
