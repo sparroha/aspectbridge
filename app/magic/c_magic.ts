@@ -32,4 +32,11 @@ export class Magic{
             }
         })
     }
+
+    action(v){
+        
+        return this
+    }
 }
+
+const spell: Magic = new Magic([]).action(1)

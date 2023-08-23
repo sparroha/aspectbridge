@@ -1,17 +1,10 @@
 import { FC } from 'react'
-import { Magic } from '../c_magic'
+import Spell from '../-spell+'
 
 interface pageProps{params: {logos: string[]}, searchParams}
 //INITIAL
 const page: FC<pageProps> = ({params, searchParams})=>{
-    const magic: Magic = new Magic(params.logos)
-    return <Main magic={magic}/>
+    return <Spell logos={params.logos}/>
 }
 export default page
-//JSX
-function Main({magic}: {magic: Magic}){
-    return <div>
-        {JSON.stringify(magic)}
-    </div>
-}
 
