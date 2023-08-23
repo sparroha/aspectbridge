@@ -70,6 +70,7 @@ export default function LayoutHeader({ user, root }: { user?: User, root?: strin
             ['1','talents'],
             ['0','toolbelt'],
             ['0','tutorial'],
+            ['0','magic'],
             ['1','wasd'],
             ['1','xstate'],
         ]

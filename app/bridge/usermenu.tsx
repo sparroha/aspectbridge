@@ -11,8 +11,6 @@ export default function UserMenu({user, homepage}: {user: Partial<User>, homepag
         user: user
     }},[user])
     return <Row>
-        <Col xs={12}>Profile:</Col>
-        <Col xs={12}><UserLogin user={user} homepage={homepage} /></Col>
         <Col xs={12}><UserStats user={user}/></Col>
         <Col xs={12}><UserSettings user={user} /></Col>
     </Row>

@@ -18,9 +18,9 @@ export default function ChatWindow({
 		}
 		return (
 			<div id={'search'} style={style}>
-				Search:&nbsp;
-				<input
-					style={{ ...searchInputProps, ...style }}
+				<label className={'col-sm-2'}>Search:&nbsp;</label>
+				<input className={'col-sm-10'}
+					style={{ ...searchInputProps, ...style}}
 					type='text'
 					defaultValue={''}
 					onChange={(event) => {

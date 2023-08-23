@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, FC } from 'react'
 //import Script from 'next/script';
 import {Col, Row} from "react-bootstrap";
 import { useRouter } from 'next/navigation';
-import NavIndex from '../nav';
+import NavIndex from '../nav_old';
 import navComponentObject from '../navigaton';
 //import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
