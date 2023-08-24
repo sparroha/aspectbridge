@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import DiceWidget, { useDiceRoll } from "../../components/dice";
+import DiceWidget, { useDiceRoll } from "../../components/dice-old";
 import Dialog from "../../components/dialog";
 import requestIp from 'request-ip';
 import { GetServerSideProps } from "next";

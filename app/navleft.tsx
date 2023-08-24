@@ -1,8 +1,9 @@
 'use client'
 import { Col, Row } from "react-bootstrap"
-import DiceWidget, { diceInitProps, useDiceRoll } from "../components/dice"
+import DiceWidget, { diceInitProps, useDiceRoll } from "../components/dice-old"
 import SimpleNav from "../components/simplenav"
 import Clock from "../components/clock"
+import D20 from "../components/dice"
 
 export default function NavLeftDefault(){  
     const dip: diceInitProps = {
@@ -13,7 +14,8 @@ export default function NavLeftDefault(){
                 <Row className={'w100 h100'} style={{position: 'relative'}}>
                     <Col xs={12} sm={12} style={{zIndex: '5'}}><SimpleNav root={"bridge"} page={"aspect"} links={["air", "fire", "water", "earth"]}/></Col>
                     <Col xs={2} sm={6} md={8} lg={6}><Clock /></Col>
-                    <Col xs={12} sm={12} md={12} style={{zIndex: '5'}}><DiceWidget udr={()=> useDiceRoll(dip)}/></Col>
+                    <Col xs={12} sm={12} md={12} style={{zIndex: '5'}}><D20/></Col>
+                    {/*<Col xs={12} sm={12} md={12} style={{zIndex: '5'}}><DiceWidget udr={()=> useDiceRoll(dip)}/></Col>*/}
                     <div className={'grey-back o4 w100 h100'} style={{position: 'absolute'}}></div>{/**translucent backdrop */}
                 </Row>
             </Col>

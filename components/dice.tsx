@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { TLitter, alephbeth } from "./hebrew";
 
 type diceProps = {
     sides?: number,
@@ -17,92 +17,16 @@ export type diceInitProps = {
     speed?: number,
     rand?: Function,
 }
-/**
- * JSX: Dice Widget default
- * @param udr: DATA HOOK: Dice Roll useDiceRoll(props: diceInitProps): diceProps{} 
- * @returns 
- */
-export default function DiceWidget({udr}: {udr: Function}){
-    return <div className={'dice-widget text-white'}>
-      <DiceCompact udr={udr}/>
-    </div>
-}
-
-/**
- * JSX: Dice Widget Compact
- * @param udr: DATA HOOK: Dice Roll useDiceRoll(props: diceInitProps): diceProps{}
- * @returns 
- */
-function DiceCompact({udr}){
-    const {sides, speed, rand, 
-           value, setRoller, 
-           selectSides, setValue, 
-           setSpeed} = udr()
-    const dice = [2,4,6,8,10,12,20,100]
-    useEffect(() => {
-        if(setValue){
-            let r = sides?sides:dice[Math.floor(rand()*8)]
-            selectSides(r)
-            setValue(Math.floor(rand()*r)+1)
-            //console.log(r+' sided dice roll!')
-        }
-    }, [setValue])
-
-    return <div>
-        <button
-            style={{
-                maxHeight: '100%',
-                maxWidth: '100%',
-                height: '210px',
-                width: '210px',
-                color: 'blue',
-                backgroundColor: 'silver',
-                borderRadius: '25px',
-                border: '5px outset lightgray',
-                padding: '0px',
-                margin: '0px',
-            }}
-            onClick={() => setValue(
-            Math.floor(rand()*sides)+1)}
-        ><Row>
-            <Col xs={3}>
-                <input style={{
-                    borderRadius: '50px', textAlign: 'center' 
-                }} type="text" size={2} min={1} max={10} defaultValue={speed} onChange={e => {if(Number(e.target.value))setSpeed(Number(e.target.value))}} />
-            </Col>
-            <Col xs={7}>
-                second reroll
-            </Col>
-            <Col xs={2}>
-                <input type="checkbox" onChange={e => e.target.checked ? setRoller('true') : setRoller('false')} />
-            </Col>
-        </Row>
-        <Row><Col xs={12}><h1>{value}</h1></Col></Row>
-        <Row>
-            <Col xs={4}><select value={sides} onChange={e => selectSides(Number(e.target.value))}>
-                {dice.map((sideCount, index) => <option key={index} value={sideCount}>{sideCount}</option>)}
-            </select> </Col>
-            <Col xs={4}>
-                Sides D{sides}<input style={{
-                    borderRadius: '50px', 
-                }} type="text" size={3} min={2} max={100} defaultValue={sides} onChange={e => selectSides(Number(e.target.value))}/>
-            </Col>
-            <Col xs={4}></Col>
-            <Col xs={4}></Col>
-        </Row>
-        </button>
-    </div>
-}
 
 /**
  * DATA HOOK: Dice Roll useDiceRoll(props: diceInitProps): diceProps{}
  * @param props: diceInitProps
  * @returns 
  */
-export function useDiceRoll(props: diceInitProps): diceProps{
+function useDiceRoll(props: diceInitProps): diceProps{
     const rand: Function = props.rand?props.rand:()=>Math.random()
     const [sides, selectSides] = useState(props.sides || 0)
-    const [value, setValue] = useState(0)
+    const [value, setValue] = useState(1)
     const [roller, setRoller] = useState('false')
     const [speed, setSpeed] = useState(props.speed || 5)
     
@@ -125,4 +49,160 @@ export function useDiceRoll(props: diceInitProps): diceProps{
         setValue: setValue,
         setSpeed: setSpeed
     }
+}
+const albt22: TLitter[] = Object.entries(alephbeth).filter((l)=>l[1].order<=22).map((l)=>l[1])
+export default function D20(){
+    useEffect(()=>{console.log('albt22',albt22)},[])
+    const {sides, speed, rand, 
+        value, setRoller, 
+        selectSides, setValue, 
+        setSpeed}: diceProps = useDiceRoll({sides: 12, speed: 5})
+        const dice = [2,4,6,8,10,12,20,alephbeth['caph'].number+alephbeth['beth'].number,100]
+    const [toggle, setToggle] = useState(false)
+    const click = (e) => {
+        //console.log(e.currentTarget.innerHTML.split('>')[1].split('<')[0])
+        setToggle((t)=>!t)
+        setValue(Math.floor(Math.random()*sides)+1)
+    }
+    return <div style={{position: 'relative', width: '6em', height: '6em', backgroundColor: 'transparent', border: 'none'}}>
+    <button style={{
+        position: 'absolute', 
+        zIndex: 1, border: 'none', 
+        borderRadius: '50%', fontSize: '1em', 
+        width: '2em', height: '2em', 
+        right: '0em', top: '0em', 
+        margin: 'auto', padding: '0'
+    }} onClick={(e)=>{e.preventDefault();selectSides(dice[dice.indexOf(sides)+(sides<100?1:-dice.length+1)])}}>{sides!=22?sides:alephbeth['caph'].uni+alephbeth['beth'].uni}</button>
+    
+    <button style={{
+        position: 'absolute',
+        display : 'flex',
+        alignItems : 'center',
+        color: 'blue',
+        margin : 'auto',
+        left: '1.5em',
+        top: '1.5em',
+        border: '1px outset #888',
+        width: '3em',
+        height: '3em',
+        borderRadius: '.5em',
+        backgroundColor: '#fff',
+        transition: 'linear .2s all', 
+        transform: `rotate(${toggle?360:0}deg)`
+    }} onClick={ click }>
+        <h1 style={{margin: 'auto'}}>{sides==2?(value==1?'I':'O'):sides!=22?value:albt22[value-1].uni}</h1>
+    </button>
+        {/***
+        <hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '3em',
+            top: '2em',
+            transform: 'rotate(30deg)',
+            border: '1px outset #444', 
+            width: '2em',
+        }}/>
+        {/*<hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '1em',
+            top: '1em',
+            transform: 'rotate(60deg)',
+            border: '1px outset #888',
+            width: '2em',
+        }}/>*}
+        <hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '.5em',
+            top: '3em',
+            transform: 'rotate(90deg)',
+            border: '1px outset #ccc',
+            width: '2em',
+        }}/>
+        {/*<hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '1em',
+            top: '4em',
+            transform: 'rotate(120deg)',
+            border: '1px outset #888',
+            width: '2em',
+        }}/>*}
+        <hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '3em',
+            top: '4em',
+            transform: 'rotate(150deg)',
+            border: '1px outset #444',
+            width: '2em',
+        }}/>
+        <hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '2em',
+            top: '1.75em',
+            transform: 'rotate(180deg)',
+            border: '1px outset #888',
+            width: '2em',
+        }}/>
+        <hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '1em',
+            top: '4em',
+            transform: 'rotate(210deg)',
+            border: '1px outset #ccc',
+            width: '2em',
+        }}/>
+        {/*<hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '1em',
+            top: '1em',
+            transform: 'rotate(240deg)',
+            border: '1px outset #888',
+            width: '2em',
+        }}/>*}
+        <hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '3.5em',
+            top: '3em',
+            transform: 'rotate(270deg)',
+            border: '1px outset #444',
+            width: '2em',
+        }}/>
+
+
+        {/*<hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '1em',
+            top: '2em',
+            transform: 'rotate(300deg)',
+            border: '1px outset #888',
+            width: '2em',
+        }}/>*}
+        <hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '1em',
+            top: '2em',
+            transform: 'rotate(330deg)',
+            border: '1px outset #ccc',
+            width: '2em',
+        }}/>
+        <hr style={{
+            position: 'absolute',
+            margin : 'auto',
+            left: '2em',
+            top: '4.25em',
+            transform: 'rotate(360deg)',
+            border: '1px outset #888',
+            width: '2em',
+        }}/>
+        ***/}
+    </div>
 }
