@@ -35,7 +35,7 @@ function save(customData){
  * @param defaultValue 
  * @returns data: string, setter: Function, loaded: boolean
  */
-export default function useRegister(registry: string, defaultValue: any):[string | null, Function, boolean]{
+export default function useRegister(registry: string, defaultValue: any, sync?: boolean):[string | null, Function, boolean]{
     
     const [currentsave, setCurentSave] = useState(registry)//current save
     const [registryExists, setRegistryExists] = useState(false)
@@ -68,9 +68,10 @@ export default function useRegister(registry: string, defaultValue: any):[string
     },[registry])
 
     const saveData = useCallback((data) => {//save data to database{//works and tested
-        setRegister(JSON.stringify(data))
-        //console.log('@useRegister.saveRegister://set register '+JSON.stringify(registry)+': '+JSON.stringify(data))
-        setDB(registry, data)
+        setDB(registry, data).then(()=>{
+            if(sync)getDB(registry).then((d: string)=>setRegister(JSON.stringify(d)))
+        })
+        if(!sync)setRegister(JSON.stringify(data))
     },[registry])
     return [register, saveData, registryExists]
 }
