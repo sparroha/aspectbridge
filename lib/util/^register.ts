@@ -98,7 +98,7 @@ export async function getDB(name: string, signal?: AbortSignal): Promise<string>
  * @param loader 
  * @returns 
  */
-export function useCustomRegistry(uuid: string = 'uuid:name', defaultValue: any = "default", loader?: (data: any)=> any, saver?: (data: any)=> any){
+export function useCustomRegistry(uuid: string = 'uuid:name', defaultValue: any = "default", loader?: (data: any)=> any, saver?: (data: any)=> any):[any,(data: any)=>(data: any | ((data:any)=>any))=>any]{
     const [data, _saveData, dataInitialized] = useRegister(uuid, defaultValue)
     const [_customData, setCustomData] = useState(null)
     //Load from DB
