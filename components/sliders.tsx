@@ -8,6 +8,7 @@ export default function CssSlidersWrapper(props) {
     //{children}
     const [controlerOpen, setControlerOpen] = useState(false)
     const styleRef = useRef({
+        zIndex: '0',
         top: "20vh",
         left: "20vw",
         width: '20vw',
@@ -40,7 +41,7 @@ export default function CssSlidersWrapper(props) {
         console.log('OVER DATA: '+JSON.stringify(styleRef.current))
         if(styletest != JSON.stringify(styleRef.current)){//maybe problem here
             console.log('DATA LOADING: '+styletest)
-            styleRef.current = JSON.parse(styletest)
+            styleRef.current = {...styleRef.current, ...JSON.parse(styletest)}
             console.log('DATA LOADED: '+JSON.stringify(styleRef.current))
         }
     },[styletest])
@@ -55,7 +56,7 @@ export default function CssSlidersWrapper(props) {
     }, [styleRef.current])
     //END SAVE LOAD DATA
 
-    
+    if(!styletest) return <>Loading Css...</>
     return <>
         <div id={"csswrapper_"+props.id} style={{...styleRef.current, position: 'absolute' }}>
             <div id={"csschild_" + props.id} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
@@ -67,7 +68,7 @@ export default function CssSlidersWrapper(props) {
                 {props.children}
             </div>
         </div>
-        <CssControler style={styleRef.current} styleRef={styleRef} setState={setStyletest} open={controlerOpen}/>
+        <CssControler style={styleRef?.current} styleRef={styleRef} setState={setStyletest} open={controlerOpen}/>
     </>
 }
 
@@ -110,9 +111,9 @@ export function CssControler(props){
     return <div id={"csscontroler_" + props.id} style={{position: 'absolute', right: '0%', top: '0%', width: '300px', borderRadius: '25px', fontSize: '10px'}}>
         <div id={"csscontrolerBackground_" + props.id} className={'grey-back o4 w100 h100'} style={{position: 'absolute', borderRadius: '25px'}}></div>{/**translucent backdrop */}
         <div id={"csscontroler_" + props.id} style={{position: 'relative', padding: 10}}>
-            {sliders.map((slider, i) => {
+            {sliders?.map((slider, i) => {
                 return <Row key={i} style={{zIndex: 2}}>
-                    <Col xs={6} style={{margin: 0, padding: 0}}><label>{slider.name + ': '+styleRef.current[slider.name]+'  '}</label>
+                    <Col xs={6} style={{margin: 0, padding: 0}}><label>{slider.name + ': '+styleRef?.current[slider.name] || '0'+'  '}</label>
                     </Col>
                     <Col xs={6} style={{margin: 0, padding: 0}}><input
                         type="range"

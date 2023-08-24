@@ -12,8 +12,8 @@ export default function Registry(props){
         <div id={'test'}>{JSON.parse(test)}</div>
         <button onClick={()=>{setTest(JSON.parse(test)=='off'?'on':'off')}}>Toggle</button>
 
-        <div id={'testobject'}>{JSON.parse(testobject).toggle}</div>
-        <button onClick={()=>{setTestobject({toggle: JSON.parse(testobject).toggle=='off'?'on':'off'})}}>Toggle</button>
+        <div id={'testobject'}>{JSON.parse(testobject)?.toggle}</div>
+        <button onClick={()=>{setTestobject({toggle: JSON.parse(testobject)?.toggle=='off'?'on':'off'})}}>Toggle</button>
         
         <CssSlidersWrapper id={'nostyle'}>
             <div>Wrapper</div>
