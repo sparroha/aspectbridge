@@ -19,6 +19,8 @@ export default function Clock(props){
     },[])
     
     function Hand({time, h, m, s}: Partial<any>){
+        const rotation = Number.parseInt(time)*6-90
+        const hourRotation = Number.parseInt(time)*30-90
         const handlen = [1, 1.5, 2.5]
         const shift = [.5, .25, 0]
         const size = [2, 1.5, 1]
@@ -28,7 +30,7 @@ export default function Clock(props){
             color: 'none',
             background: 'none',
             backgroundColor: 'none',
-            transform: `rotate(${Number.parseInt(time)*6-90}deg)`,
+            transform: `rotate(${h?hourRotation:rotation}deg)`,
             left: '1em',
             width: '4em',
         }}>
@@ -67,6 +69,21 @@ export default function Clock(props){
         width: '6em',
         height: '6em',
     }}>
+        <hr id={'12and6'} style={{
+                position: 'absolute',
+                margin : 'auto',
+                transform: 'rotate(90deg)',
+                border: '.1em outset #ccc',
+                opacity: '.5',
+                width: '6em',
+        }}/>
+        <hr id={'9and3'} style={{
+            position: 'absolute',
+            margin : 'auto',
+            border: '.1em outset #ccc',
+            opacity: '.5',
+            width: '6em',
+        }}/>
         <Hand time={time?.split(':')[0]} h />
         <Hand time={time?.split(':')[1]} m />
         <Hand time={time?.split(':')[2]} s />
