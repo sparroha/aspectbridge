@@ -95,7 +95,7 @@
 }
 :has(.aspect) .logo{
 	background-image: url("../assets/banner_back.jpg");
-    background-size:  100% 100px;/*auto 100%;*/
+    background-size:  100% 100%;/*auto 100%;*/
     background-repeat: no-repeat;
 }
 :has(.aspect) .title{

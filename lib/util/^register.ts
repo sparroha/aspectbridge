@@ -1,6 +1,7 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
+import jsonFetch from "../,base/jsonFetch";
 
 /**
  * Implementation
@@ -35,12 +36,12 @@ function save(customData){
  * @param defaultValue 
  * @returns data: string, setter: Function, loaded: boolean
  */
-export default function useRegister(registry: string, defaultValue: any, sync?: boolean):[string | null, Function, boolean]{
+export default function useRegister(registry: string, defaultValue: any, sync?: boolean/**sync EXPERIMENTAL**/):[string | null, Function, boolean]{
     
     const [currentsave, setCurentSave] = useState(registry)//current save
     const [registryExists, setRegistryExists] = useState(false)
     const [register, setRegister]: [string | null, any] = useState(null)//This nust be null by default: Do not set to default value: that is for initialization only
-    //const {data, error} = useSWR('../api/registry/'+registry, { refreshInterval: 500 })//get data from database
+    const {data, error} = useSWR('../api/registry/'+registry, sync?{ refreshInterval: 500, fetcher: jsonFetch}:{})//get data from database
     
     //INIT
     async function loadDataOnce(registry,  signal?: AbortSignal){
@@ -67,13 +68,13 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
         loadDataOnce(registry)//returns setRegistryExists(true)
     },[registry])
 
-    const saveData = useCallback((data) => {//save data to database{//works and tested
-        setRegister(JSON.stringify(data))
-        setDB(registry, data).then(()=>{
-            /*EXPERIMENTAL*/if(sync)getDB(registry).then((d: string)=>setRegister(d))
+    const saveData = useCallback((dat) => {//save data to database{//works and tested
+        setRegister(JSON.stringify(dat))
+        setDB(registry, dat).then(()=>{
+            /*EXPERIMENTAL*///if(sync)getDB(registry).then((d: string)=>setRegister(d))
         })
     },[registry])
-    return [register, saveData, registryExists]
+    return [sync?data:register, saveData, registryExists]
 }
 
 //updates database with current register ref

@@ -1,6 +1,3 @@
-'use client'
-import { useCustomRegistry } from "../../lib/util/^register";
-import useUser from "../../lib/util/^user";
 import CookingIt from "./cooking_it";
 import Foundations from "./grounding/foundations/page";
 import Heating from "./grounding/heating/page";
@@ -16,45 +13,12 @@ import Soil from "./soils/soil";
 import FFrame from "./string";
 import SystemBaseNotes from "./system_base_notes";
 import VeggieTable from "./veggie table/veggie_plate";
-type TXTPage = {
-    title: string
-    lines: string[] | string,
 
-}
 export default function Cookbook(props){
-    //construct default
-    const defaultState: TXTPage = {
-        title: 'Cookbook',
-        lines: 'default text'
-    }
-    const [save, setSave]:[TXTPage, Function] = useCustomRegistry('cookbook:root', defaultState, false)
-    const user = useUser()
-    function handleChangeCursor(user){}
-    const onChangeCorsor = (e)=>{
-
-    }
-    const saveTitle = (e)=>{
-        let newdata = {...save, title: e.target.value}
-        setSave(newdata)
-    }
-    const saveDoc = (e)=>{
-        let newdata = {...save, lines: e.target.value}
-        setSave(newdata)
-    }
-    if(!save) return <>Cookbook Loading...</>
-    return <div style={{backgroundImage: 'linear-gradient(to bottom right, #797, #fff', width: '100%', height: '100%'}}>
-        <form style={{width: '100%', height: '100%'}}>
-            <input name={'title'} value={save?.title} onChange={saveTitle} style={{margin: '1em 0 0 3%'}}/><br/>
-            <div style={{width: '100%', height: '100%', textAlign: 'center'}}>
-                <textarea id="cookbook-file-textarea" name={'doc'} onChange={saveDoc} value={save.lines}
-                style={{width: '94%', height: '90%'}}/>
-            </div><br/>
-            <button onClick={()=>setSave(defaultState)}>Restor Defaults</button>
-        </form>
-    </div>
+    
     return <div style={{backgroundImage: 'linear-gradient(to bottom, #777, #fff'}}>
             
-        <h1>{save.title}</h1><hr style={{border: '3px solid #777'}}/>
+        <h1>Cookbook</h1><hr style={{border: '3px solid #777'}}/>
         <FFrame/><hr style={{border: '3px solid #777'}}/>
         <SideFactors/><hr style={{border: '3px solid #777'}}/>
         <CookingIt/><hr style={{border: '3px solid #777'}}/>
