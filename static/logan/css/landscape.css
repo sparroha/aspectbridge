@@ -36,59 +36,59 @@
 
 /*IMAGE IMPORTS*/
 :has(.logan){
-	background-image: url("../../josh/assets/sunrise.png");
+	background-image: url("../../logan/assets/sunrise.png");
     background-size: cover;
     background-repeat: no-repeat;
 	background-position: center;
 	background-attachment: fixed;
 }
 .img-sunrise{
-    background-image: url('../../josh/assets/sunrise.png');
+    background-image: url('../../logan/assets/sunrise.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-grass{
-    background-image: url('../../josh/assets/grass.png');
+    background-image: url('../../logan/assets/grass.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-specles{
-    background-image: url('../../josh/assets/logan_specles.png');
+    background-image: url('../../logan/assets/logan_specles.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-blue-collar{
-    background-image: url('../../josh/assets/blue_collar.png');
+    background-image: url('../../logan/assets/blue_collar.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-flower-grass{
-    background-image: url('../../josh/assets/flower_grass.png');
+    background-image: url('../../logan/assets/flower_grass.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-pond{
-    background-image: url('../../josh/assets/pond.png');
+    background-image: url('../../logan/assets/pond.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-farm{
-    background-image: url('../../josh/assets/farm.png');
+    background-image: url('../../logan/assets/farm.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-terrace{
-    background-image: url('../../josh/assets/terrace.png');
+    background-image: url('../../logan/assets/terrace.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-mgrass{
-    background-image: url('../../josh/assets/MGrass.png');
+    background-image: url('../../logan/assets/MGrass.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 .img-mgrass1{
-    background-image: url('../../josh/assets/MGrass1.png');
+    background-image: url('../../logan/assets/MGrass1.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }

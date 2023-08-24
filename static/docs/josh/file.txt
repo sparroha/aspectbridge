@@ -1,0 +1,5 @@
+This paragraph is a document called file.txt that is imported from /static/docs/josh/file.txt
+This can be done for any basic file as long as it is in the static directory
+That way you can edit files freely without code barriers
+but then id really use google docs for that
+im not going to attempt to dublicate google docs

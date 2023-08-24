@@ -17,7 +17,10 @@ import VeggieTable from "./veggie table/veggie_plate";
 export default function Cookbook(props){
     
     return <div style={{backgroundImage: 'linear-gradient(to bottom, #777, #fff'}}>
-            
+        DOC IMPORT<br/>
+        <iframe src="/static/docs/josh/file.txt" width="100%" style={{maxHeight: "500px"}}/>
+
+
         <h1>Cookbook</h1><hr style={{border: '3px solid #777'}}/>
         <FFrame/><hr style={{border: '3px solid #777'}}/>
         <SideFactors/><hr style={{border: '3px solid #777'}}/>
