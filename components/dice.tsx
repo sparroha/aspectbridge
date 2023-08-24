@@ -56,7 +56,7 @@ export default function D20(){
     const {sides, speed, rand, 
         value, setRoller, 
         selectSides, setValue, 
-        setSpeed}: diceProps = useDiceRoll({sides: 12, speed: 5})
+        setSpeed}: diceProps = useDiceRoll({sides: 22, speed: 5})
         const dice = [2,4,6,8,10,12,20,alephbeth['caph'].number+alephbeth['beth'].number,100]
     const [toggle, setToggle] = useState(false)
     const click = (e) => {
