@@ -13,8 +13,6 @@ const border = {
   border: '1px outset black',
   borderRadius: '5px',
   padding: '1px',
-  maxHeight: '100vh',
-  minHeight: '20vh',
 }
 const fill = {
   width: '100%',

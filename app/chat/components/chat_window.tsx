@@ -10,7 +10,6 @@ export default function ChatWindow({
 		const { style } = props
 		const searchInputProps = {
 			minWidth: '100px',
-			width: '50vw',
 			maxWidth: '100%',
 			margin: '0px',
 			padding: '0px',
@@ -18,7 +17,7 @@ export default function ChatWindow({
 		}
 		return (
 			<div id={'search'} style={style}>
-				<label className={'col-sm-2'}>Search:&nbsp;</label>
+				<label className={'col-sm-2'}>Search:</label>
 				<input className={'col-sm-10'}
 					style={{ ...searchInputProps, ...style}}
 					type='text'

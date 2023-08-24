@@ -1,5 +1,5 @@
 import { Card, Nav } from "react-bootstrap";
-import '../static/josh/css/landscape.css'
+import '../static/logan/css/landscape.css'
 /**
  * args will be passed to every link
  * args should be a string with a leading ? or &
