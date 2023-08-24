@@ -27,7 +27,7 @@ export default function Cookbook(props){
         title: 'Cookbook',
         lines: '[]'
     }
-    const [save, setSave]:[TXTPage, Function] = useCustomRegistry('cookbook:root', defaultState)
+    const [save, setSave]:[TXTPage, Function] = useCustomRegistry('cookbook:root', defaultState, true)
     const user = useUser()
     function handleChangeCursor(user){}
     const onChangeCorsor = (e)=>{

@@ -68,10 +68,14 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
     },[registry])
 
     const saveData = useCallback((data) => {//save data to database{//works and tested
-        setDB(registry, data).then(()=>{
-            if(sync)getDB(registry).then((d: string)=>setRegister(JSON.stringify(d)))
-        })
-        if(!sync)setRegister(JSON.stringify(data))
+        if(!sync){
+            setDB(registry, data)
+            setRegister(JSON.stringify(data))
+        }else{
+            setDB(registry, data).then(()=>{
+                getDB(registry).then((d: string)=>setRegister(d))
+            })
+        }
     },[registry])
     return [register, saveData, registryExists]
 }
@@ -99,8 +103,8 @@ export async function getDB(name: string, signal?: AbortSignal): Promise<string>
  * @param loader 
  * @returns 
  */
-export function useCustomRegistry(uuid: string = 'uuid:name', defaultValue: any = "default", loader?: (data: any)=> any, saver?: (data: any)=> any):[any,(data: any)=>(data: any | ((data:any)=>any))=>any]{
-    const [data, _saveData, dataInitialized] = useRegister(uuid, defaultValue)
+export function useCustomRegistry(uuid: string = 'uuid:name', defaultValue: any = "default", sync?: boolean, loader?: (data: any)=> any, saver?: (data: any)=> any):[any,(data: any)=>(data: any | ((data:any)=>any))=>any]{
+    const [data, _saveData, dataInitialized] = useRegister(uuid, defaultValue, sync)
     const [_customData, setCustomData] = useState(null)
     //Load from DB
     useEffect(()=>{

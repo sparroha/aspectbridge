@@ -8,7 +8,7 @@ export default function Spell({logos}: {logos: string[]}){
     const router = useRouter()
     const customloader = (logos: string[])=>new Magic(logos)
     const customSaver = (spell: Magic)=>spell.logos
-    const [spell, save] = useCustomRegistry('logos:'+logos[0], logos, customloader, customSaver )
+    const [spell, save] = useCustomRegistry('logos:'+logos[0], logos, false, customloader, customSaver )
     /*********************************************\
      * const logos: string[]
      * const [spell, save]: [Magic, (Magic)=>void] = convolutedSetState()
