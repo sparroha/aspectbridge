@@ -68,14 +68,10 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
     },[registry])
 
     const saveData = useCallback((data) => {//save data to database{//works and tested
-        if(!sync){
-            setDB(registry, data)
-            setRegister(JSON.stringify(data))
-        }else{
-            setDB(registry, data).then(()=>{
-                getDB(registry).then((d: string)=>setRegister(d))
-            })
-        }
+        setRegister(JSON.stringify(data))
+        setDB(registry, data).then(()=>{
+            /*EXPERIMENTAL*/if(sync)getDB(registry).then((d: string)=>setRegister(d))
+        })
     },[registry])
     return [register, saveData, registryExists]
 }

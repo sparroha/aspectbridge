@@ -25,9 +25,9 @@ export default function Cookbook(props){
     //construct default
     const defaultState: TXTPage = {
         title: 'Cookbook',
-        lines: '[]'
+        lines: 'default text'
     }
-    const [save, setSave]:[TXTPage, Function] = useCustomRegistry('cookbook:root', defaultState, true)
+    const [save, setSave]:[TXTPage, Function] = useCustomRegistry('cookbook:root', defaultState, false)
     const user = useUser()
     function handleChangeCursor(user){}
     const onChangeCorsor = (e)=>{
@@ -48,7 +48,8 @@ export default function Cookbook(props){
             <div style={{width: '100%', height: '100%', textAlign: 'center'}}>
                 <textarea id="cookbook-file-textarea" name={'doc'} onChange={saveDoc} value={save.lines}
                 style={{width: '94%', height: '90%'}}/>
-            </div>
+            </div><br/>
+            <button onClick={()=>setSave(defaultState)}>Restor Defaults</button>
         </form>
     </div>
     return <div style={{backgroundImage: 'linear-gradient(to bottom, #777, #fff'}}>
