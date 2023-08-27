@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { Col, Row } from "react-bootstrap"
 import useUser from "../lib/util/^user"
-import WhiteboardNav from "./whiteboardlink"
+import WhiteboardNav from "./whiteboard/wb_btn"
 import ActiveUsers from "../lib/util/-activeusers-"
 
 export default function NavRightDefault(){  

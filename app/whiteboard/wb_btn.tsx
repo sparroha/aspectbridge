@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react"
-export default function WhiteboardNav(){
+export default function WhiteboardNav({children}: Partial<any>){
     const [focus, setFocus] = useState(false)
     return <div id="nav-whiteboard" className={"row p0"}>
         <div className={"col-12 p0 m0"} 
@@ -14,8 +14,7 @@ export default function WhiteboardNav(){
             onMouseEnter={()=>{setFocus(true)}}
             onMouseLeave={()=>{setFocus(false)}}
         >
-            {//<NavLink href="/whiteboard" className={'white-font'}>Whiteboard</NavLink>
-            }
+            {children}
         </div>
     </div>
 }
