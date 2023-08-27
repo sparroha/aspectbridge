@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import { Elements } from '../bible/bible'
+import { Elements } from '../../app/bible/bible'
+//import { Elements } from '../bible/bible'
 
 interface pageProps{params, searchParams}
 const bible = new Elements()
