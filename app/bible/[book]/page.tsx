@@ -6,9 +6,11 @@ export default function Book(props){
     
     return <>
         {title}
-        <Chapter {...props}/>
+        {//<Chapter {...props}/>
+        }
     </>
 }
+/*
 export function Chapter(props){
     const title = props?.params?.book[1] || ''
     return <>
@@ -21,3 +23,4 @@ export function Verse(props){
     return <>
     </>
 }
+*/
