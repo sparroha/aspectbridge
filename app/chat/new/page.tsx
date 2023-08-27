@@ -35,7 +35,7 @@ const strip = {
  * @param props: ip, user
  * @returns 
  */
-export function Chat(props){
+function Chat(props){
   const user = useUser()
   const [update, setUpdate] = useState(false)
   
