@@ -12,12 +12,12 @@ export default function Main(props){
         setBoard((b)=>b.moveItem(from,to))
     }
     return <>
-        {JSON.stringify('board: '+board)}
-        {JSON.stringify('cubject: '+subject)}
+        {/*JSON.stringify('board: '+board)}
+        {JSON.stringify('cubject: '+subject)*/}
         {board.BOARD.map((row, i)=>{
-            return <Row key={i-8} id={''+(i-8)+'_'+i}>
+            return <Row key={i-8} id={''+(i-8)+'_'+i} style={{width: 64*8+'px', height: 64+'px', border: 0, backgroundColor: 'white', margin: 0, padding: 0}}>
                 {row.map((col, j)=>{
-                    return <Col key={i*j} id={i+':'+j}>
+                    return <Col key={i+1*j+1} id={i+':'+j} style={{width: '64px', height: '64px', border: '2px outset #777', backgroundColor: ((i+1*j+1)%2==0)?'black':'red', margin: 0, padding: 0}}>
                         <button disabled={!(target?.row==i&&target?.col==j||subject)}
                             onMouseOver={()=>setTarget((t)=>{return {row: i, col: j}})}
                             onMouseOut={()=>setTarget((t)=>{
