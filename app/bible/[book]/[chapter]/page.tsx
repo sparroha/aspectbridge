@@ -1,4 +1,4 @@
-export default function Verse({params}){
+export default function Chapter({params}){
     const {book, chapter, verse} = params
     return <>
         {book} {chapter}:{verse}

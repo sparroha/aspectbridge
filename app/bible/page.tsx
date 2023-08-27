@@ -25,4 +25,5 @@ export default function Gen(c,v?){
             "And {this.ELOHIM} did badel 'Ben haAur' and 'Ben haChoshek'"
         </>
     }
+    return <></>
 }
