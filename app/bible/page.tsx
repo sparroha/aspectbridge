@@ -1,3 +1,4 @@
+'use client'
 export default function Gen(c,v?){
     if(c==1&&(!v||v==2))return <>
         In the Beginning there was water and air<br/>

@@ -1,4 +1,4 @@
-import { t } from "xstate"
+'use client'
 import { alephbeth } from "../../components/hebrew"
 
 
@@ -20,6 +20,7 @@ type Liber = {id?: number, name?: string, lib: Book[]}
 //lobos: lip ({lobe: to hang loosely})
 
 export class Elements{
+    ALEPHBETH: {}
 
     YHVH: string
     ELOHIM: string
@@ -55,6 +56,7 @@ export class Elements{
 
     
     constructor(){
+        this.ALEPHBETH = alephbeth
         this.YHVH = alephbeth.yod.uni + alephbeth.he.uni + alephbeth.vav.uni + alephbeth.he.uni
         this.ELOHIM = alephbeth.aleph.uni + alephbeth.lamed.uni + alephbeth.vav.uni + alephbeth.he.uni + alephbeth.yod.uni + alephbeth.mem.uni
         this.THEY = alephbeth.tav.uni + alephbeth.he.uni + alephbeth.yod.uni
