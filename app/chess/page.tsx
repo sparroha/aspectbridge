@@ -43,7 +43,7 @@ export default function Main(props){
 /**
  * CALSS
  */
-export class Board64{
+class Board64{
     BOARD: string[][]
     //canMove: boolean = false
     constructor(){
