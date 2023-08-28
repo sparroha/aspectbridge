@@ -24,15 +24,19 @@ export default function Chess(props){
         setSave(data.BOARD)
     }
     
-    /*useEffect(()=>{
+    useEffect(()=>{
         const interval = setInterval(async ()=>{
+            console.log('board', board)
             if(!board) return
             const data: string = await fetch('/api/registry/chess:master').then(res=>res.json())
-            setBoard(new Board64(JSON.parse(data)))
+            console.log('data', data)
+            let boardData: BoardItem[][] = JSON.parse(data)
+            //if(!data || data=='default') return
+            setBoard(new Board64(boardData))
         }
-        ,5000)
+        ,1000)
         return ()=>clearInterval(interval)
-    },[])*/
+    },[])
     //initialize peices
     function resetBoard(){
         console.log('resetBoard()')
@@ -54,7 +58,43 @@ export default function Chess(props){
         //setBoard(new Board64(JSON.parse(data)))
     },[save, board, /*data*/])
     //define peices
-    function pathToTarget(){
+    function pathToTarget(from, to){
+        let next = from
+        if(from == to) return true
+        if(from.row < to.row){//south
+            if(from.col < to.col){//right
+                while(next!=to){
+                    //if(!!next.row)
+                    next.col++
+                    next.row++
+                }
+            }else if(from.col > to.col){//left
+                
+            }else{//mid
+                
+            }
+        }
+        else if(from.row > to.row){//north
+            if(from.col < to.col){//right
+                
+            }else if(from.col > to.col){//left
+
+            }else{//mid
+
+            }
+        }else{//same row
+            if(from.col < to.col){//right
+                
+            }else if(from.col > to.col){//left
+
+            }else{//mid
+
+            }
+        }
+        if(from.row+1 == to.row && from.col == to.row) return true
+        //rook horizontal
+        //bishop vertical
+        //queen both
         return false
     }
     function validMove(from: {row: number, col: number}, to: {row: number, col: number}){
@@ -65,18 +105,20 @@ export default function Chess(props){
                     if(from.row==1&&to.row==3&&from.col==to.col&&board.BOARD[to.row][to.col].val=='')return true
                     if(from.row+1==to.row&&from.col==to.col&&board.BOARD[to.row][to.col].val=='')return true
                     //to attack
-                    if(from.row+1==to.row&&from.col+1==to.col&&board.BOARD[to.row][to.col].master=='red')return true
-                    if(from.row+1==to.row&&from.col-1==to.col&&board.BOARD[to.row][to.col].master=='red')return true
+                    if(from.row+1==to.row&&from.col+1==to.col)return true
+                    if(from.row+1==to.row&&from.col-1==to.col)return true
                 }
                 if(board.BOARD[from.row][from.col].master=='red'){
                     if(from.row==6&&to.row==4&&from.col==to.col&&board.BOARD[to.row][to.col].val=='')return true
                     if(from.row-1==to.row&&from.col==to.col&&board.BOARD[to.row][to.col].val=='')return true
                     //to attack
-                    if(from.row-1==to.row&&from.col+1==to.col&&board.BOARD[to.row][to.col].master=='white')return true
-                    if(from.row-1==to.row&&from.col-1==to.col&&board.BOARD[to.row][to.col].master=='white')return true
+                    if(from.row-1==to.row&&from.col+1==to.col)return true
+                    if(from.row-1==to.row&&from.col-1==to.col)return true
                 }
                 break
             case 'rook':
+                //valid path
+
                 if(from.row==to.row||from.col==to.col)return true
                 break
             case 'knight':
