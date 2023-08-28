@@ -15,13 +15,12 @@ export default function Chess(props){
     const user = useUser()
     const [save, setSave, exists] = useRegister('chess:master','default')
     //const {data, error} = useSWR('/api/registry/chess:master', {fetcher: jsonFetch})
-    const [actor, setActor] = useState('red')
     //initialize board
     const [board, setBoard]: [Board64, any] = useState(null)
     const saveAll = (data: Board64)=>{
         console.log('saveAll()')
         setBoard(data)
-        setSave(data.BOARD)
+        setSave({actor: data.actor, board: data.BOARD})
     }
     
     useEffect(()=>{
@@ -52,7 +51,10 @@ export default function Chess(props){
             console.log('reset data', save, board)
             //initialize peices
             if(JSON.parse(save)=='default') return resetBoard()
-            return setBoard(new Board64(JSON.parse(save)))
+            else{
+                let parse = JSON.parse(save)
+                return setBoard(new Board64(parse.board).setActor(parse.actor))
+            }
         }
         //if(!data) return
         //setBoard(new Board64(JSON.parse(data)))
@@ -105,15 +107,15 @@ export default function Chess(props){
                     if(from.row==1&&to.row==3&&from.col==to.col&&board.BOARD[to.row][to.col].val=='')return true
                     if(from.row+1==to.row&&from.col==to.col&&board.BOARD[to.row][to.col].val=='')return true
                     //to attack
-                    if(from.row+1==to.row&&from.col+1==to.col)return true
-                    if(from.row+1==to.row&&from.col-1==to.col)return true
+                    if(from.row+1==to.row&&from.col+1==to.col&&board.BOARD[to.row][to.col].val!='')return true
+                    if(from.row+1==to.row&&from.col-1==to.col&&board.BOARD[to.row][to.col].val!='')return true
                 }
                 if(board.BOARD[from.row][from.col].master=='red'){
                     if(from.row==6&&to.row==4&&from.col==to.col&&board.BOARD[to.row][to.col].val=='')return true
                     if(from.row-1==to.row&&from.col==to.col&&board.BOARD[to.row][to.col].val=='')return true
                     //to attack
-                    if(from.row-1==to.row&&from.col+1==to.col)return true
-                    if(from.row-1==to.row&&from.col-1==to.col)return true
+                    if(from.row-1==to.row&&from.col+1==to.col&&board.BOARD[to.row][to.col].val!='')return true
+                    if(from.row-1==to.row&&from.col-1==to.col&&board.BOARD[to.row][to.col].val!='')return true
                 }
                 break
             case 'rook':
@@ -150,7 +152,7 @@ export default function Chess(props){
     }
     function disabledButton(col,i,j){
         //if nothing selected
-        if(!subject && col.master == actor) return false
+        if(!subject && col.master == board.actor) return false
         //if this tile selected
         if(subject && subject.row == i && subject.col == j ) return false
         //if this tile valid target to move
@@ -168,9 +170,9 @@ export default function Chess(props){
                             onClick={(e)=>{
                                 if(!subject) return false
                                 else if(validDestination(subject,{row: i, col: j})){
-                                    saveAll(board.moveItem(subject,{row: i, col: j}))
+                                    saveAll(board.moveItem(subject,{row: i, col: j}).setActor(board.actor=='red'?'white':'red'))
                                     setSubject(null)
-                                    setActor((a)=>{return a=='red'?'white':'red'})
+                                    //setActor((a)=>{return a=='red'?'white':'red'})
                                 }
                             }} style={{display: 'flex', verticalAlign: 'middle', textAlign: 'center', width: '64px', height: '64px', border: '2px outset #777', backgroundColor: ((i+1*j+1)%2==0)?'black':'red', margin: 0, padding: 0, fontSize: '10px'}}>
                         {col.name!='vacant'?
@@ -192,9 +194,9 @@ export default function Chess(props){
                                     if(!subject && board.BOARD[i][j].val != '') setSubject({row: i, col: j})
                                     else if(subject?.row==i&&subject?.col==j) setSubject(null)
                                     else if(validDestination(subject,{row: i, col: j})){
-                                        saveAll(board.moveItem(subject,{row: i, col: j}))
+                                        saveAll(board.moveItem(subject,{row: i, col: j}).setActor(board.actor=='red'?'white':'red'))
                                         setSubject(null)
-                                        setActor((a)=>{return a=='red'?'white':'red'})
+                                        //setActor((a)=>{return a=='red'?'white':'red'})
                                     }
                                 }}
                             >{board.BOARD[i][j].val!=''?<>{board.BOARD[i][j].master}<br/>{board.BOARD[i][j].val}<br/>{board.BOARD[i][j].name}</>:null}</button>
@@ -210,6 +212,7 @@ export default function Chess(props){
  * CALSS
  */
 class Board64{
+    actor: string = 'red'
     vacant: BoardItem = {name: 'vacant', master: 'none', val: ''}
     BOARD: BoardItem[][]
     constructor(board?: BoardItem[][]){
@@ -225,6 +228,10 @@ class Board64{
                 }
             }
         }
+    }
+    setActor(actor: string){
+        this.actor = actor
+        return this
     }
     setVal(row: number, col: number, val: BoardItem){
         this.BOARD[row][col] = val
