@@ -14,7 +14,7 @@ type BoardItem = {
 export default function Chess(props){
     const user = useUser()
     const [save, setSave, exists] = useRegister('chess:master','default')
-    const {data, error} = useSWR('/api/registry/chess:master', {revalidate: 2000, fetcher: jsonFetch})
+    //const {data, error} = useSWR('/api/registry/chess:master', {fetcher: jsonFetch})
     const [actor, setActor] = useState('red')
     //initialize board
     const [board, setBoard]: [Board64, any] = useState(null)
@@ -23,6 +23,16 @@ export default function Chess(props){
         setBoard(data)
         setSave(data.BOARD)
     }
+    
+    /*useEffect(()=>{
+        const interval = setInterval(async ()=>{
+            if(!board) return
+            const data: string = await fetch('/api/registry/chess:master').then(res=>res.json())
+            setBoard(new Board64(JSON.parse(data)))
+        }
+        ,5000)
+        return ()=>clearInterval(interval)
+    },[])*/
     //initialize peices
     function resetBoard(){
         console.log('resetBoard()')
@@ -40,11 +50,15 @@ export default function Chess(props){
             if(JSON.parse(save)=='default') return resetBoard()
             return setBoard(new Board64(JSON.parse(save)))
         }
-        if(!data) return
+        //if(!data) return
         //setBoard(new Board64(JSON.parse(data)))
-    },[save, board, data])
+    },[save, board, /*data*/])
     //define peices
+    function pathToTarget(){
+        return false
+    }
     function validMove(from: {row: number, col: number}, to: {row: number, col: number}){
+        //if(!pathToTarget(from,to))return false
         switch(board.BOARD[from.row][from.col].name){
             case 'pawn':
                 if(board.BOARD[from.row][from.col].master=='white'){
@@ -90,14 +104,15 @@ export default function Chess(props){
     function validDestination(from: {row: number, col: number}, to: {row: number, col: number}){
         if(!subject) return false
         if(board.BOARD[from.row][from.col].master == board.BOARD[to.row][to.col].master) return false
-        if(!validMove(from, to)) return false
-        return true
+        return validMove(from, to)
     }
-    const buttonDisabled = (target, s, row, col)=>{
-        //return !(target?.row==row&&target?.col==col||s || validDestination(s,{row: row, col: col}))
-        if(target?.row==row&&target?.col==col) return false
-        if(subject) return false
-        if(validDestination(subject,{row: row, col: col})) return false
+    function disabledButton(col,i,j){
+        //if nothing selected
+        if(!subject && col.master == actor) return false
+        //if this tile selected
+        if(subject && subject.row == i && subject.col == j ) return false
+        //if this tile valid target to move
+        if(subject && validDestination(subject,{row: i, col: j})) return false
         return true
     }
     if(!board) return <>Loading...</>
@@ -111,7 +126,7 @@ export default function Chess(props){
                             onClick={(e)=>{
                                 if(!subject) return false
                                 else if(validDestination(subject,{row: i, col: j})){
-                                    saveAll(board.moveItem(subject,{row: i, col: j}))//setDestination({row: i, col: j})
+                                    saveAll(board.moveItem(subject,{row: i, col: j}))
                                     setSubject(null)
                                     setActor((a)=>{return a=='red'?'white':'red'})
                                 }
@@ -119,13 +134,12 @@ export default function Chess(props){
                         {col.name!='vacant'?
                             <button style={{backgroundColor: col.master, margin: 'auto', width: '48px', height: '48px'}}
                                 disabled={
-                                    !(
-                                        (!subject && col.master == actor) || 
-                                        //target?.row==i&&target?.col==j ||
-                                        subject || 
-                                        validDestination(subject,{row: i, col: j})
-                                    )
-                                    //buttonDisabled(target, subject, row, col)
+                                    /*!(
+                                        !(!subject && col.master == actor) || 
+                                        !subject || 
+                                        !validDestination(subject,{row: i, col: j})
+                                    )*/
+                                    disabledButton(col,i,j)
                                 }
                                 onMouseOver={()=>setTarget((t)=>{return {row: i, col: j}})}
                                 onMouseOut={()=>setTarget((t)=>{
@@ -136,7 +150,7 @@ export default function Chess(props){
                                     if(!subject && board.BOARD[i][j].val != '') setSubject({row: i, col: j})
                                     else if(subject?.row==i&&subject?.col==j) setSubject(null)
                                     else if(validDestination(subject,{row: i, col: j})){
-                                        saveAll(board.moveItem(subject,{row: i, col: j}))//setDestination({row: i, col: j})
+                                        saveAll(board.moveItem(subject,{row: i, col: j}))
                                         setSubject(null)
                                         setActor((a)=>{return a=='red'?'white':'red'})
                                     }
