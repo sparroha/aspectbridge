@@ -25,17 +25,16 @@ export default function Chess(props){
     
     useEffect(()=>{
         const interval = setInterval(async ()=>{
-            console.log('board', board)
+            //console.log('board', board)
             if(!board) return
-            const data: string = await fetch('/api/registry/chess:master').then(res=>res.json())
-            console.log('data', data)
-            let boardData: BoardItem[][] = JSON.parse(data)
-            //if(!data || data=='default') return
-            setBoard(new Board64(boardData))
+            let data: string = await fetch('/api/registry/chess:master').then(res=>res.json())
+            //console.log('data', data)
+            let parse = JSON.parse(save)
+            return setBoard((b)=>new Board64(parse.board).setActor(parse.actor))
         }
         ,1000)
         return ()=>clearInterval(interval)
-    },[])
+    },[board])
     //initialize peices
     function resetBoard(){
         console.log('resetBoard()')
