@@ -122,12 +122,12 @@ export default function LayoutHeader({ user, root }: { user?: User, root?: strin
         </Form>
     }
     return (
-        <Navbar bg="" variant="dark" expand="lg" id="navaspect">
+        <Navbar bg="" variant="dark" expand="lg" id="navaspect" style={{zIndex: '10'}}>
             <Container fluid>
                 <NavBrand />
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
-                    <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%' }}>
+                    <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%', backgroundColor: '#777' }}>
 
                         <Nav.Link href={"/"+root}>Home</Nav.Link>{' '}
                         <Nav.Link href="/about">About</Nav.Link>{' '}

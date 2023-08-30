@@ -62,29 +62,30 @@ export default function Lexicon(p){
             <Form.Control type="textarea" id="examples" value={examplesInput} onChange={(e)=>{setExamplesInput(e.target.value)}}></Form.Control>
             <Button type="button" id="addButton" onClick={clickSaveButton}>Save Word</Button>
         </Form>
-        <div id="table-outer" style={{width: '100%', height: '300px', overflow: 'auto', tableLayout: 'fixed'}}>
-        <Table id="wordList" style={wordList}>
-            <thead style={{position: 'sticky', top: '0'}}>
-                <tr style={wordList_thtd}>
-                    <th>Word</th>
-                    <th>Definition</th>
-                    <th>Examples</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody id="wordTableBody">  
-            {
-                words.map((w)=>{
-                    return <tr>
-                        <td>{w.word}</td>
-                        <td>{w.definition}</td>
-                        <td>{w.examples}</td>
-                        <td><Button className="editButton" onClick={()=>clickEditButton(w)}>{'Edit '+w.word}</Button></td>
+        <div id="table-outer" style={{width: '100%', maxHeight: '300px', overflow: 'auto', tableLayout: 'fixed'}}>
+            <Table id="wordList" style={wordList}>
+                <thead style={{position: 'sticky', top: '0'}}>
+                    <tr style={wordList_thtd}>
+                        <th>Word</th>
+                        <th>Definition</th>
+                        <th>Examples</th>
+                        <th>Edit</th>
                     </tr>
-                })
-            }
-            </tbody>
-        </Table>
+                </thead>
+                <tbody id="wordTableBody">  
+                {
+                    words.map((w)=>{
+                        return <tr>
+                            <td>{w.word}</td>
+                            <td>{w.definition}</td>
+                            <td>{w.examples}</td>
+                            <td><Button className="editButton" onClick={()=>clickEditButton(w)}>{'Edit '+w.word}</Button></td>
+                        </tr>
+                    })
+                }
+                </tbody>
+            </Table>
         </div>
+        <iframe id="wordFrame" name="wordFrame" width={'100%'} height={'500px'} src={"https://en.m.wiktionary.org/wiki/"+wordInput}/>
     </div>
 }

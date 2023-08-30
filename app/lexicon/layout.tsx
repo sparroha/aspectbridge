@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import "public/assets/320px-Old_Persian_cuneiform.jpg"
 
 export const metadata: Metadata = {
   title: 'Lexical Bridge',
@@ -14,8 +15,13 @@ export const metadata: Metadata = {
 }
 export default async function BridgeLayout({children}) {
   return <div className='row'>
-      <div className='col-xs-12 col-sm-9 col-md-10'>
-        {children}
-      </div>
+    <div className='col-xs-12 col-sm-12 col-md-1 col-lg-2'></div>
+    <div className='col-xs-12 col-sm-8 col-md-8 col-lg-8'>
+      {children}
+    </div>
+    <div className='col-xs-12 col-sm-4 col-md-3 col-lg-2'>
+      <img src='assets/320px-Old_Persian_cuneiform.jpg' style={{width: 204-16+'px'}}/>
+      <img src='assets/Akkadian_syllabary.svg.png' style={{width: 250+'px', backgroundColor: 'tan'}}/>
+    </div>
   </div>
 }
