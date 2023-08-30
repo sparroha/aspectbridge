@@ -75,6 +75,11 @@ export default async function registry(req, res) {
 					res.status(200).json({ alert: STRINGS.ALERTS.REGISTRYDELETED, del: del, sql: `DELETE FROM aspect_registry_ WHERE name = ${registry};`})
 				}
 				break
+			case 'search':
+				const search = await sql`SELECT * FROM aspect_registry_;`
+				let fsearch = search.filter((item)=>item.name.includes(registry))
+				res.status(200).json(fsearch)
+				break
 			default: //aka get registry
 				if (registry == 'all') {
 					const allregistries = await sql`SELECT * FROM aspect_registry_;`
