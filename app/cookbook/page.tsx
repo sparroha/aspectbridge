@@ -1,3 +1,5 @@
+'use client';
+import { useState } from "react";
 import CookingIt from "./cooking_it";
 import Foundations from "./grounding/foundations/page";
 import Heating from "./grounding/heating/page";
@@ -13,19 +15,67 @@ import Soil from "./soils/soil";
 import FFrame from "./string";
 import SystemBaseNotes from "./system_base_notes";
 import VeggieTable from "./veggie table/veggie_plate";
+import Wrapper, { DuoWrap } from "./wrapper";
 
 export default function Cookbook(props){
+    const [page, setPage] = useState('home')
     
-    return <div style={{backgroundImage: 'linear-gradient(to bottom, #777, #fff'}}>
+    return <div style={{padding: '1%', backgroundImage: 'linear-gradient(to bottom, #999, #fff'}}>
         DOC IMPORT<br/>
-        <iframe src="/static/docs/josh/file.txt" width="100%" style={{maxHeight: "500px"}}/>
-
-
-        <h1>Cookbook</h1><hr style={{border: '3px solid #777'}}/>
-        <FFrame/><hr style={{border: '3px solid #777'}}/>
-        <SideFactors/><hr style={{border: '3px solid #777'}}/>
-        <CookingIt/><hr style={{border: '3px solid #777'}}/>
-        <SystemBaseNotes/><hr style={{border: '3px solid #777'}}/>
+        <DuoWrap>
+            <button onClick={()=>setPage('file')}>
+                HTML Doc:<br/>
+                <iframe src="/static/docs/josh/file.txt" width="100%"/>
+            </button>
+            <button onClick={()=>setPage('home')}>
+                Home
+            </button>
+        </DuoWrap>
+        {page=='home' && <>
+        <DuoWrap>
+            <button onClick={()=>setPage('cookbook')}>
+                Cookbook<br/>
+                <FFrame/>
+            </button>
+            <button onClick={()=>setPage('sidefactors')}>
+                SideFactors<br/>
+                <SideFactors/>
+            </button>
+        </DuoWrap>
+        <DuoWrap>
+            <>
+                CookingIt<br/>
+                <CookingIt/>
+            </>
+            <>
+                SystemBaseNotes<br/>
+                <SystemBaseNotes/>
+            </>
+        </DuoWrap>
+        <DuoWrap> 
+            <>
+                Grounding:<br/>
+            </>
+            <>
+                Network:<br/>
+            </>
+        </DuoWrap>
+        <DuoWrap>
+            <>
+                Soils:<br/>
+            </>
+            <>
+                VeggieTable:<br/>
+                <VeggieTable/>
+            </>
+        </DuoWrap>
+        </>}
+        <div id='display'>
+            {page=='file' && <iframe src="/static/docs/josh/file.txt" width="100%"/>}
+            {page=='cookbook' && <FFrame/>}
+            {page=='sidefactors' && <SideFactors/>}
+        </div>
+        
         <hr style={{border: '3px solid #777'}}/>
         <div style={{backgroundImage: 'linear-gradient(to bottom, #777, #fff'}}>
             <h2>Grounding</h2><hr style={{border: '2px solid #999'}}/>

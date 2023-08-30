@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Wrapper from './wrapper'
 export const metadata: Metadata = {
   title: 'Cookbook',
   description: 'Aspect Bridge Test Platform',
@@ -13,6 +14,8 @@ export const metadata: Metadata = {
 }
 export default async function RootLayout({children}) {
   return <div id="cookbook_layout" style={{width: '100%', height: '100%'}}>
-            {children}
+            <Wrapper>
+              {children}
+            </Wrapper>
         </div>
 }
