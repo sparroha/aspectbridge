@@ -1,25 +1,32 @@
-const hydrogen=['H',{protoncount:"1"}]
-const carbon=['C',{protoncount:"6"}]
-const oxegen=['H',{protoncount:"8"}]
-const nitrogen=['N',{protoncount:"7"}]
-const potassium={protoncount:"19"}
-const phosphorus={protoncount:"15"}
-//primary nutrients = nitrogen,phosphorus,potassium
+const elements = {
+    hydrogen: ['H',{protoncount:"1"}],
+    carbon: ['C',{protoncount:"6"}],
+    oxegen: ['H',{protoncount:"8"}],
+    nitrogen: ['N',{protoncount:"7"}],
+    potassium: {protoncount:"19"},
+    phosphorus: {protoncount:"15"},
+//primary nutrients:  nitrogen,phosphorus,potassium
 
-const sulferObj ={protoncount:"16"}
-const magnesiumObj ={protoncount:"12"}
-const calcium=['Ca',{protoncount:"20"}]
+    sulferObj: {protoncount:"16"},
+    magnesiumObj: {protoncount:"12"},
+    calcium: ['Ca',{protoncount:"20"}],
 //secondary
 
-const ironObj ={protoncount:"26"}
-const boronObj ={protoncount:"5"}
-const manganeseObj ={protoncount:"25"}
-const zincObj ={protoncount:"30"}
-const molybdenumObj ={protoncount:"42"}
-const copperObj ={protoncount:"29"}
-const cobaltObj ={protoncount:"27"}
-const chlorineObj ={protoncount:"17"}
-const nickleObj ={protoncount:"28"}
+    ironObj: {protoncount:"26"},
+    boronObj: {protoncount:"5"},
+    manganeseObj: {protoncount:"25"},
+    zincObj: {protoncount:"30"},
+    molybdenumObj: {protoncount:"42"},
+    copperObj: {protoncount:"29"},
+    cobaltObj: {protoncount:"27"},
+    chlorineObj: {protoncount:"17"},
+    nickleObj: {protoncount:"28"},
 //macro
+}
 
-export default function Molecules(){return <>Molecules</>}
+export default function Molecules(){
+    return <>
+        <h1>Molecules</h1><br/>
+        {JSON.stringify(elements)}
+    </>
+}

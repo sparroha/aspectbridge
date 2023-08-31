@@ -42,6 +42,7 @@ kebab-case
 //example initial function. loads when page is accessed.
 export default function Soil (){
     return <>
+        <h1>Soil</h1><br/>
         <JSXfunction />{/**onChange: rerenders only this elememnt */}
         {regularFunction() /**onChange: rerenders entire page */}
     </>

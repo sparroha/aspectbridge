@@ -1,20 +1,21 @@
 
 export default function Nutrients (){
     return <div>
+        <h1>Nutrients</h1><br/>
         {['nitrogen', 'potassium', 'phosphorus'].map((nutrient, i) => {
             return <div key={i}>
                 {nutrient}<hr/>
             </div>
         })}
-        </div>
+            
+        {'function=nutrients [10,10]'}<br/>
+        <br/>
+        {'function=drainage'}<br/>
+        {'function=retention '}<br/>
+        {'nutrients=18'}<br/>
+        <br/>
+        {'primary nutrients > quantities than other nutrients.'}<br/>
+        {'Law of the Minimum = if any nutrient is < nutrual = 0'}<br/>
+        {'any nutrient amounts = limits for yields.'}<br/>
+    </div>
 }
-
-//function=nutrients [10,10]
-
-//function=drainage
-//function=retention 
-//nutrients=18
-
-//primary nutrients > quantities than other nutrients.
-//Law of the Minimum = if any nutrient is < nutrual = 0
-//any nutrient amounts = limits for yields.

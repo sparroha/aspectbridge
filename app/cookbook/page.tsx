@@ -32,10 +32,10 @@ export default function Cookbook(props){
         'VeggieTable'
     ]
     
-    return <div style={{padding: '1%', backgroundImage: 'linear-gradient(to bottom, #999, #fff', borderRadius: '22px'}}>
+    return <div style={{backgroundImage: 'linear-gradient(to bottom, #999, #fff', borderRadius: '22px'}}>
         <div className="row" style={{backgroundColor: 'transparent'}}>
             {pages.map((p, i)=>{
-                if((page == 'Home' && p != 'Home') || p == 'Home')return <div key={i} className="col-4" style={{height: '100px', backgroundImage: 'none'}}>
+                if((page == 'Home' && p != 'Home') || (page != 'Home' && p == 'Home'))return <div key={i} className="col-4" style={{height: '100px', backgroundImage: 'none'}}>
                     <div style={{position: 'relative', width: '100%', height: '100%'}}>
                         <div style={{position: 'absolute', width: '98%', height: '98%', opacity: '.5', margin: '1%', padding: '1%', border: '1% outset #aaa', borderRadius: '22px', backgroundImage: 'linear-gradient(to bottom right, #777, #fff)', zIndex: '0'}}></div>
                         <div style={{position: 'absolute', width: '100%', height: '100%', margin: '0', padding: '0', border: '0', borderRadius: '22px', backgroundImage: ''}}>
@@ -55,6 +55,7 @@ export default function Cookbook(props){
         {page == 'SystemBaseNotes' && <SystemBaseNotes/>}
         {page == 'Grounding' && 
             <>
+                <h1>Grounding</h1><br/>
                 <div className="row">
                     {(['Foundations', 'Heating']).map((page, i)=>{
                         return <div key={i} className="col-4" style={{height: '100px'}}>
@@ -75,6 +76,7 @@ export default function Cookbook(props){
         }
         {page == 'Network' && 
             <>
+                <h1>Network</h1><br/>
                 <div className="row">
                     {(['Hebrew', 'Spider']).map((page, i)=>{
                         return <div key={i} className="col-4" style={{height: '100px'}}>
@@ -95,6 +97,7 @@ export default function Cookbook(props){
         }
         {page == 'Soils' &&  
             <>
+                <h1>Soils</h1><br/>
                 <div className="row">
                     {(['Soil', 'Molecules', 'Nutrients', 'Drainage', 'Composts', 'Mapping']).map((page, i)=>{
                         return <div key={i} className="col-4" style={{height: '100px'}}>
@@ -119,6 +122,7 @@ export default function Cookbook(props){
         }
         {page == 'VeggieTable' && 
             <>
+                <h1>VeggieTable</h1><br/>
                 <div className="row">
                     {(['VeggieTable']).map((page, i)=>{
                         return <div key={i} className="col-4" style={{height: '100px'}}>

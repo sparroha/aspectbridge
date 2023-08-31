@@ -1,6 +1,7 @@
 
 export default function SystemBaseNotes(){
     return <>
+        <h1>System Base Notes</h1><br/>
         what when and not <br/>
         <br/>
         function=Postions order first <br/>

@@ -12,6 +12,7 @@ export default function Composts(){
     soil = compost(eggshell,soil)
     console.log(soil) 
     //soil = "new dirt with Ca and C and O3"
-    //localhost:3000/Cookbook/soils/composts
-    return <></>
+    return <>
+        <h1>Composts</h1><br/>
+    </>
 }

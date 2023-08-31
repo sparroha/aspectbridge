@@ -4,15 +4,18 @@ import { Col, Form, Row } from "react-bootstrap";
 export default function TLiterator(props){
     const [tlword, setTLWord] = useState('')
 
-    return <Form id="tLit" className="vcenter tcenter">
-                <Form.Group>
-                    <Form.Label>Input</Form.Label>
-                    <Form.Control  type="text" id="word" name="word" placeholder="Enter word" onChange={(e)=>setTLWord(translit(e.target.value))} />
-                    <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
-                    <Form.Text className="text-muted"><h1 id="hbru">{tlword}</h1></Form.Text>
-                    {/*<Form.Control  type="submit"/>*/}
-                </Form.Group>
-            </Form>
+    return <>
+        <h1>Transliterator</h1><br/>
+        <Form id="tLit" className="vcenter tcenter">
+            <Form.Group>
+                <Form.Label>Input</Form.Label>
+                <Form.Control  type="text" id="word" name="word" placeholder="Enter word" onChange={(e)=>setTLWord(translit(e.target.value))} />
+                <Form.Text className="text-muted"><h2>transliteration: </h2></Form.Text>
+                <Form.Text className="text-muted"><h1 id="hbru">{tlword}</h1></Form.Text>
+                {/*<Form.Control  type="submit"/>*/}
+            </Form.Group>
+        </Form>
+    </>
 }
 export const alephbeth = {
     aleph: {

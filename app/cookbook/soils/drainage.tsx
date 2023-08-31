@@ -34,6 +34,7 @@ function meets({soil}){//rerender parent on update
 export default function Drainage(){
     const [flow, setFlow] = useState(0)
     return <>
+        <h1>Drainage</h1><br/>
         <Water flow={flow} setFlow={setFlow} />
         <Flow meets={<></>} />
         <Meets soil={{sand: ['beach','shahara'], silt: 'Nile Delta', clay: 'Georgia Red'}} /> 
