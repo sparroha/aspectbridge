@@ -15,7 +15,6 @@ import Soil from "./soils/soil";
 import FFrame from "./string";
 import SystemBaseNotes from "./system_base_notes";
 import VeggieTable from "./veggie table/veggie_plate";
-import Wrapper, { MultiWrap } from "./wrapper";
 
 export default function Cookbook(props){
     const [page, setPage] = useState('Home')
@@ -35,13 +34,13 @@ export default function Cookbook(props){
     
     return <div style={{padding: '1%', backgroundImage: 'linear-gradient(to bottom, #999, #fff', borderRadius: '22px'}}>
         <div className="row" style={{backgroundColor: 'transparent'}}>
-            {pages.map((page, i)=>{
-                return <div key={i} className="col-4" style={{height: '100px', backgroundImage: 'none'}}>
+            {pages.map((p, i)=>{
+                if((page == 'Home' && p != 'Home') || p == 'Home')return <div key={i} className="col-4" style={{height: '100px', backgroundImage: 'none'}}>
                     <div style={{position: 'relative', width: '100%', height: '100%'}}>
                         <div style={{position: 'absolute', width: '98%', height: '98%', opacity: '.5', margin: '1%', padding: '1%', border: '1% outset #aaa', borderRadius: '22px', backgroundImage: 'linear-gradient(to bottom right, #777, #fff)', zIndex: '0'}}></div>
                         <div style={{position: 'absolute', width: '100%', height: '100%', margin: '0', padding: '0', border: '0', borderRadius: '22px', backgroundImage: ''}}>
-                            <button onClick={()=>setPage(page)} style={{width: '100%', height: '100%', padding: '2%', border: '5px outset #ddd', borderRadius: '22px', backgroundImage: 'linear-gradient(to bottom right, #999, #fff)', overflow: 'auto'}}> 
-                                {page}
+                            <button onClick={()=>setPage(p)} style={{width: '100%', height: '100%', padding: '2%', border: '5px outset #ddd', borderRadius: '22px', backgroundImage: 'linear-gradient(to bottom right, #999, #fff)', overflow: 'auto'}}> 
+                                {p}
                             </button>
                         </div>
                     </div>
