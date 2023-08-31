@@ -1,8 +1,6 @@
 'use client'
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import useLog from "../../../components/conlog"
-
-const { useState } = require("react")
 
 const sandObj = ["1Si","2O"]
 const siltObj = ["nutrients"]
@@ -41,12 +39,12 @@ export default function Drainage(){
         <Meets soil={{sand: ['beach','shahara'], silt: 'Nile Delta', clay: 'Georgia Red'}} /> 
     </>
 }
-function Water({flow, setFlow}){
+function Water({flow, setFlow}){//loop crash
     const [humidity, setHumidity] = useState(0)
     useEffect(()=>{console.log(flow);return},[])
     useLog(flow)
     let newFlow = ++flow
-    setFlow(newFlow)
+    //setFlow(newFlow)
 
     return <>{/**H2O */}
         <div><img src="raindrop" /></div>
