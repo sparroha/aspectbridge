@@ -37,7 +37,6 @@ export default function Lexicon(p){
                 console.log('Failed to save lexicon:lexical_bridge:'+wordInput, a)
             }
         }
-        setDB('lexicon:lexical_bridge:'+wordInput, {word: wordInput, definition: definitionInput, examples: examplesInput})
     }
     const populateSearch = (search)=>{
         searchDB('lexicon:').then((data)=>{
