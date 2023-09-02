@@ -103,6 +103,10 @@ export default function Go(p){
                 let loss = 0 + (Math.floor(Math.random()*durability+1)<2?1:0)
                 if(loss>1) {alert('Your '+vessel+' was lost at sea!'); return {...state, [vessel]: state[vessel]-1, fish: state.fish-20}}
                 return {...state, location: locations[destination], fish: state.fish-20}
+            case 'hire'://{type: 'Mine'}
+                if(state.fish<200) {alert('not enough fish'); return state}
+                let type = action.payload.type.toLowerCase()
+                return {...state, fish: state.fish-200, helpers: {...state.helpers, [type]:state.helpers[type]?state.helpers[type]+1:1}}
             default:
                 return state
         }
@@ -161,13 +165,57 @@ export default function Go(p){
         }
     },[user, userLoaded, state, autoSaveInterval])
 
+    //game incriment loop
+    useEffect(()=>{
+        if(!user) return
+        if(!userLoaded) return
+        console.log('gameLoop')
+        if(!state?.helpers) return
+        const gameInterval = setInterval(()=>{
+            Object.entries(state?.helpers).forEach(([key, value])=>{
+                let helperType = key.toLowerCase()
+                let helperCount: number = (typeof value === 'number') ? value : 0
+                //TODO onrand() for helper success
+                let roll = Math.floor(Math.random()*helperCount+1)
+                let success: boolean = roll<=Math.floor(helperCount/10)+1//rouphly 10% chance for income
+                let income = Math.floor(Math.random()*helperCount)
+                if(!success) return
+                switch(helperType){
+                    case 'mine':
+                        dispatch({type: 'add', payload: {type: 'ore', count: income}})
+                        break
+                    case 'quary':
+                        dispatch({type: 'add', payload: {type: 'stone', count: income}})
+                        break
+                    case 'forest':
+                        dispatch({type: 'add', payload: {type: 'wood', count: income}})
+                        break
+                    case 'river':
+                        dispatch({type: 'add', payload: {type: 'fish', count: income}})
+                        break
+                    case 'port':
+                        dispatch({type: 'add', payload: {type: 'fish', count: income}})
+                        break
+                    case 'library':
+                        dispatch({type: 'add', payload: {type: 'clay', count: income}})
+                        break
+                }
+            });
+        }, 2000)
+        return ()=>{
+            console.log('gameLoopUnloaded')
+            clearInterval(gameInterval)
+        }
+    },[user, userLoaded, state])
+
     /**
      * APP RENDER
      */
     if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
     return <div style={{color: '#fff', marginTop: '40px'}}>
-        <Row id="controls">
-            <Col sm={2}>
+        <Row>
+        <InfoHeader id="controls" bgColor={'#ddd'} state={state}>
+            <Col xs={12} sm={6} md={3} lg={2}>
                 <label>Save Interval:</label>
                 <input type="number" value={autoSaveInterval} onChange={(e)=>{setAutoSaveInterval(()=>{
                         let inval = Number.parseInt(e.target.value)
@@ -175,55 +223,59 @@ export default function Go(p){
                         return inval
                     })}}/>
             </Col>
-            <Col sm={2}><Link href={'https://writtenrealms.com/game'}>Written Realms</Link></Col>
-            <Col sm={2}><Link href={'https://www.materiamagica.com'}>Materia Magica</Link></Col>
-            <Col sm={2}></Col>
-            <Col sm={2}></Col>
-            <Col sm={2}></Col>
-        </Row>
-        <Row id="inventory">
-            {['Resources', 'stone', 'wood', 'ore', 'clay', 'fish',
-                    'Materials', 'tile', 'lumber', 'metal', 'brick'].map((item, i)=>{
-                return <Col key={i} xs={1} style={{textAlign: 'center'}}>
+            <Col xs={12} sm={6} md={3} lg={2}><Link href={'https://writtenrealms.com/game'}>Written Realms</Link></Col>
+            <Col xs={12} sm={6} md={3} lg={2}><Link href={'https://www.materiamagica.com'}>Materia Magica</Link></Col>
+        </InfoHeader></Row>
+        <Row><InfoHeader id="inventory_resources" bgColor={'#aaa'} state={state}>
+            {['Resources', 'stone', 'wood', 'ore', 'clay', 'fish'].map((item, i)=>{
+                return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
                     {(item=='Resources' || item=='Materials')?item:
                             <>{item}<br/>{state[item.toLowerCase()]}</>}
                 </Col>
             })}
-        </Row>
+        </InfoHeader></Row>
+        <Row><InfoHeader id="inventory_materials" bgColor={'#777'} state={state}>
+            {['Materials', 'tile', 'lumber', 'metal', 'brick'].map((item, i)=>{
+                return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
+                    {(item=='Resources' || item=='Materials')?item:
+                            <>{item}<br/>{state[item.toLowerCase()]}</>}
+                </Col>
+            })} 
+        </InfoHeader></Row>
         <Row id="activities">
-            <Zone id={"Mine"} bgColor={"#aa7"} state={state}>
+            <Zone id={"Mine"} bgColor={"#aa7"} state={state} dispatch={dispatch}>
                 <MineOre state={state} dispatch={dispatch}/>
                 <SmeltMetal state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Quary"} bgColor={"grey"} state={state}>
+            <Zone id={"Quary"} bgColor={"grey"} state={state} dispatch={dispatch}>
                 <QuaryStone state={state} dispatch={dispatch}/>
                 <ChiselSlabs state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Forest"} bgColor={"green"} state={state}>
+            <Zone id={"Forest"} bgColor={"green"} state={state} dispatch={dispatch}>
                 <ChopWood state={state} dispatch={dispatch}/>
                 <SawLumber state={state} dispatch={dispatch}/>
                 <BuildRaft state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"River"} bgColor={"blue"} state={state}>
+            <Zone id={"River"} bgColor={"blue"} state={state} dispatch={dispatch}>
                 <Sail state={state} dispatch={dispatch}/>
                 <Fish state={state} dispatch={dispatch}/>
                 <DigClay state={state} dispatch={dispatch}/>
                 <FireBricks state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Port"} bgColor={"blue"} state={state}>
+            <Zone id={"Port"} bgColor={"blue"} state={state} dispatch={dispatch}>
                 <Sail state={state} dispatch={dispatch}/>
                 <Fish state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Shipyard"} bgColor={"blue"} state={state}>
+            <Zone id={"Shipyard"} bgColor={"blue"} state={state} dispatch={dispatch}>
                 <BuildShip state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Library"} bgColor={"#79f"} state={state}>
+            <Zone id={"Library"} bgColor={"#79f"} state={state} dispatch={dispatch}>
                 <ScribeTablet state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Scripts"} bgColor={"#79f"} state={state}>
+            <Zone id={"Scripts"} bgColor={"#79f"} state={state} dispatch={dispatch}>
                 <ScriptDirectory state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Tower"} bgColor={"#79f"} state={state}>
+            <Zone id={"Tower"} bgColor={"#79f"} state={state} dispatch={dispatch}>
                 <Portal state={state} dispatch={dispatch}/>
             </Zone>
         </Row>
@@ -234,13 +286,31 @@ export default function Go(p){
  * COMPONENTS
  */
 //zone template
-function Zone({id, bgColor, state, children}:{id: string, bgColor: string, state: any, children: any}){
+function InfoHeader({id, bgColor, state, children}:{id: string, bgColor: string, state: any, children: any}){
+    return <Col id={id} xs={12} style={{position: 'relative'}}>
+        <div style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: bgColor, opacity: '.7'}}></div>
+        <Row style={{position: 'relative', zIndex: 1}}>
+            {children}
+        </Row>
+    </Col>
+}
+function Zone({id, bgColor, state, dispatch, children}:{id: string, bgColor: string, state: any, dispatch: any, children: any}){
     if(!state.location?.zones?.includes(id))return
     return <Col id={id} xs={12} sm={6} md={4} lg={3} style={{position: 'relative'}}>
         <div style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: bgColor, opacity: '.7'}}></div>
         <Row style={{position: 'relative', zIndex: 1}}>
             <Col xs={4}><h4>{id}</h4></Col>
-            <Col xs={8}>Helpers:</Col>
+            <Col xs={8}>
+                <Row>
+                    <Col xs={5}>
+                        <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase()}})}}>Hire:</Button>
+                    </Col>
+                    <Col xs={7}>
+                        Helpers: {state.helpers?.[id.toLowerCase()]}<br/>
+                        -200 Fish
+                    </Col>
+                </Row>
+            </Col>
             {children}
         </Row>
     </Col>
