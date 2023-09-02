@@ -176,8 +176,8 @@ export default function Go(p){
                 let helperType = key.toLowerCase()
                 let helperCount: number = (typeof value === 'number') ? value : 0
                 //TODO onrand() for helper success
-                let roll = Math.floor(Math.random()*helperCount+1)
-                let success: boolean = roll<=Math.floor(helperCount/10)+1//rouphly 10% chance for income
+                let roll = Math.random()*10
+                let success: boolean = roll<=1+helperCount/10//rouphly 10% chance for income +1% per helper
                 let income = Math.floor(Math.random()*helperCount)
                 if(!success) return
                 switch(helperType){
