@@ -164,8 +164,8 @@ export default function Go(p){
     /**
      * APP RENDER
      */
-    if(!userLoaded)return <div style={{marginTop: '20px'}}><Button onClick={loadSave}>Load User Data</Button></div>
-    return <div style={{color: '#fff', marginTop: '20px'}}>
+    if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
+    return <div style={{color: '#fff', marginTop: '40px'}}>
         <Row id="controls">
             <Col sm={2}>
                 <label>Save Interval:</label>
