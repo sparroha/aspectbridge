@@ -3,6 +3,7 @@ import { useReducer, useState, useEffect } from 'react'
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { getDB, searchDB, setDB } from '../../../lib/util/@registry';
 import useUser from '../../../lib/util/^user';
+import Link from 'next/link';
 
 const portals = ['projects', 'bridge', 'cookbook', 'lexicon']
 type Location = 'Mine' | 'Quary' | 'Forest' | 'River' | 'Port' | 'Shipyard' | 'Library' | 'Scripts' | 'Tower'
@@ -163,8 +164,8 @@ export default function Go(p){
     /**
      * APP RENDER
      */
-    if(!userLoaded)return <><Button onClick={loadSave}>Load User Data</Button></>
-    return <div style={{color: '#fff'}}>
+    if(!userLoaded)return <div style={{marginTop: '20px'}}><Button onClick={loadSave}>Load User Data</Button></div>
+    return <div style={{color: '#fff', marginTop: '20px'}}>
         <Row id="controls">
             <Col sm={2}>
                 <label>Save Interval:</label>
@@ -174,8 +175,8 @@ export default function Go(p){
                         return inval
                     })}}/>
             </Col>
-            <Col sm={2}></Col>
-            <Col sm={2}></Col>
+            <Col sm={2}><Link href={'https://writtenrealms.com/game'}>Written Realms</Link></Col>
+            <Col sm={2}><Link href={'https://www.materiamagica.com'}>Materia Magica</Link></Col>
             <Col sm={2}></Col>
             <Col sm={2}></Col>
             <Col sm={2}></Col>
