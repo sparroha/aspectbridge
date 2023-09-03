@@ -40,8 +40,16 @@ export default function Lexicon(p){
     }
     const populateSearch = (search)=>{
         searchDB('lexicon:').then((data)=>{
-            let mlexi = data.map((entry)=>{return JSON.parse(entry.registry_data)})
-            let searchList = mlexi.filter((entry)=>entry.word.includes(search))
+            let mlexi = data.map((entry)=>{
+                try {
+                    return JSON.parse(entry.registry_data)
+                } catch (error) {
+                    alert('Failed to parse '+entry+' \n'+error)
+                    console.log('Failed to parse', entry, error)
+                }
+                return entry.registry_data
+            })
+            let searchList = mlexi.filter((entry)=>entry.word?.includes(search))
             setWords(searchList)
         })
     }
