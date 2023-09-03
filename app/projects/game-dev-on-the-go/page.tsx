@@ -213,7 +213,7 @@ export default function Go(p){
      * APP RENDER
      */
     if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
-    return <div style={{color: '#fff', textShadow: '2px 2px #000', marginTop: '40px'}}>
+    return <div style={{color: '#fff', marginTop: '40px'}}>
         <Row>
         <InfoHeader id="controls" bgColor={'#ddd'} state={state}>
             <Col xs={12} sm={6} md={3} lg={2}>
