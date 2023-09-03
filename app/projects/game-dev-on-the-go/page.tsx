@@ -4,6 +4,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { getDB, searchDB, setDB } from '../../../lib/util/@registry';
 import useUser from '../../../lib/util/^user';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const portals = ['projects', 'bridge', 'cookbook', 'lexicon']
 type Location = 'Mine' | 'Quary' | 'Forest' | 'River' | 'Port' | 'Shipyard' | 'Library' | 'Scripts' | 'Tower'
@@ -130,7 +131,7 @@ export default function Go(p){
         }
     }
     const loadSave = ()=>{
-        if(!user)return
+        if(!user)return alert('loading user or user not logged in')
         try{
             getDB('on_the_go:'+user?.username).then((data)=>{
                 dispatch({type: 'set', payload: JSON.parse(data)})
@@ -248,6 +249,8 @@ export default function Go(p){
                 <SmeltMetal state={state} dispatch={dispatch}/>
             </Zone>
             <Zone id={"Quary"} bgColor={"grey"} state={state} dispatch={dispatch}>
+                <img src={'https://www.colonialmarble.net/wp-content/uploads/2021/08/shutterstock_523267222.jpg'} alt={'Colonial Marble & Granite'} style={{ position: 'absolute', width: '100%', height: '100%', zIndex: -1, opacity: .8}}/>
+            
                 <QuaryStone state={state} dispatch={dispatch}/>
                 <ChiselSlabs state={state} dispatch={dispatch}/>
             </Zone>
@@ -276,6 +279,7 @@ export default function Go(p){
                 <ScriptDirectory state={state} dispatch={dispatch}/>
             </Zone>
             <Zone id={"Tower"} bgColor={"#79f"} state={state} dispatch={dispatch}>
+                <img src={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'} alt={'NGC_1433'} style={{ position: 'absolute', width: '100%', height: '100%', zIndex: -1, opacity: .8}}/>
                 <Portal state={state} dispatch={dispatch}/>
             </Zone>
         </Row>
@@ -298,7 +302,7 @@ function Zone({id, bgColor, state, dispatch, children}:{id: string, bgColor: str
     if(!state.location?.zones?.includes(id))return
     return <Col id={id} xs={12} sm={6} md={4} lg={3} style={{position: 'relative'}}>
         <div style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: bgColor, opacity: '.7'}}></div>
-        <Row style={{position: 'relative', zIndex: 1}}>
+        <Row style={{position: 'relative', zIndex: 1, width: '100%', textAlign: 'center'}}>
             <Col xs={4}><h4>{id}</h4></Col>
             <Col xs={8}>
                 <Row>
