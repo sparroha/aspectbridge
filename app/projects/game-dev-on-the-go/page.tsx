@@ -213,7 +213,7 @@ export default function Go(p){
      * APP RENDER
      */
     if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
-    return <div style={{color: '#fff', marginTop: '40px'}}>
+    return <div style={{color: '#fff', textShadow: '2px 2px #000', marginTop: '40px'}}>
         <Row>
         <InfoHeader id="controls" bgColor={'#ddd'} state={state}>
             <Col xs={12} sm={6} md={3} lg={2}>
@@ -244,42 +244,39 @@ export default function Go(p){
             })} 
         </InfoHeader></Row>
         <Row id="activities">
-            <Zone id={"Mine"} bgColor={"#aa7"} state={state} dispatch={dispatch}>
+            <Zone id={"Mine"} bgColor={"#aa7"} state={state} dispatch={dispatch} bgAlt={'Gold Mine'} bgImage={'https://www.automation.com/getmedia/f4d4cca4-3167-4426-803a-de780ccefab9/Gold-mine-feature-July-29-2021-web.png?width=500&height=313&ext=.png'}>
                 <MineOre state={state} dispatch={dispatch}/>
                 <SmeltMetal state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Quary"} bgColor={"grey"} state={state} dispatch={dispatch}>
-                <img src={'https://www.colonialmarble.net/wp-content/uploads/2021/08/shutterstock_523267222.jpg'} alt={'Colonial Marble & Granite'} style={{ position: 'absolute', width: '100%', height: '100%', zIndex: -1, opacity: .8}}/>
-            
+            <Zone id={"Quary"} bgColor={"grey"} state={state} dispatch={dispatch} bgAlt={'Colonial Marble & Granite'} bgImage={'https://www.colonialmarble.net/wp-content/uploads/2021/08/shutterstock_523267222.jpg'}>
                 <QuaryStone state={state} dispatch={dispatch}/>
                 <ChiselSlabs state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Forest"} bgColor={"green"} state={state} dispatch={dispatch}>
+            <Zone id={"Forest"} bgColor={"green"} state={state} dispatch={dispatch} bgAlt={'Deposit Photos copyright'} bgImage={'https://st4.depositphotos.com/11328482/31492/i/450/depositphotos_314925876-stock-photo-summer-green-fir-forest-landscape.jpg'}>
                 <ChopWood state={state} dispatch={dispatch}/>
                 <SawLumber state={state} dispatch={dispatch}/>
                 <BuildRaft state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"River"} bgColor={"blue"} state={state} dispatch={dispatch}>
+            <Zone id={"River"} bgColor={"blue"} state={state} dispatch={dispatch} bgAlt={'River'} bgImage={'https://static.toiimg.com/photo/msid-101267463,width-96,height-65.cms'}>
                 <Sail state={state} dispatch={dispatch}/>
                 <Fish state={state} dispatch={dispatch}/>
                 <DigClay state={state} dispatch={dispatch}/>
                 <FireBricks state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Port"} bgColor={"blue"} state={state} dispatch={dispatch}>
+            <Zone id={"Port"} bgColor={"blue"} state={state} dispatch={dispatch} bgAlt={'Harbor'} bgImage={'https://i.ytimg.com/vi/ZznX01ViFTc/maxresdefault.jpg'}>
                 <Sail state={state} dispatch={dispatch}/>
                 <Fish state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Shipyard"} bgColor={"blue"} state={state} dispatch={dispatch}>
+            <Zone id={"Shipyard"} bgColor={"blue"} state={state} dispatch={dispatch} bgAlt={'Shipyard'} bgImage={'https://thebridgebk.com/wp-content/uploads/2018/02/20170512-Z74A1290-2-e1519352429367.jpg'}>
                 <BuildShip state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Library"} bgColor={"#79f"} state={state} dispatch={dispatch}>
+            <Zone id={"Library"} bgColor={"#79f"} state={state} dispatch={dispatch} bgAlt={'Library'} bgImage={'https://images.pexels.com/photos/1290141/pexels-photo-1290141.jpeg?auto=compress&cs=tinysrgb&w=700'}>
                 <ScribeTablet state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Scripts"} bgColor={"#79f"} state={state} dispatch={dispatch}>
+            <Zone id={"Scripts"} bgColor={"#79f"} state={state} dispatch={dispatch} bgAlt={'Library'} bgImage={'https://i.insider.com/5720d775dd0895167d8b468b?width=700'}>
                 <ScriptDirectory state={state} dispatch={dispatch}/>
             </Zone>
-            <Zone id={"Tower"} bgColor={"#79f"} state={state} dispatch={dispatch}>
-                <img src={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'} alt={'NGC_1433'} style={{ position: 'absolute', width: '100%', height: '100%', zIndex: -1, opacity: .8}}/>
+            <Zone id={"Tower"} bgColor={"#79f"} state={state} dispatch={dispatch} bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
                 <Portal state={state} dispatch={dispatch}/>
             </Zone>
         </Row>
@@ -298,10 +295,11 @@ function InfoHeader({id, bgColor, state, children}:{id: string, bgColor: string,
         </Row>
     </Col>
 }
-function Zone({id, bgColor, state, dispatch, children}:{id: string, bgColor: string, state: any, dispatch: any, children: any}){
+function Zone({id, bgColor, bgImage, bgAlt, state, dispatch, children}:{id: string, bgColor: string, bgImage?: string, bgAlt?: string, state: any, dispatch: any, children: any}){
     if(!state.location?.zones?.includes(id))return
     return <Col id={id} xs={12} sm={6} md={4} lg={3} style={{position: 'relative'}}>
         <div style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: bgColor, opacity: '.7'}}></div>
+        {bgImage && <img src={bgImage} alt={bgAlt || ''} style={{ position: 'absolute', width: '100%', height: '100%', opacity: '.8'}}/>}
         <Row style={{position: 'relative', zIndex: 1, width: '100%', textAlign: 'center'}}>
             <Col xs={4}><h4>{id}</h4></Col>
             <Col xs={8}>
@@ -310,11 +308,11 @@ function Zone({id, bgColor, state, dispatch, children}:{id: string, bgColor: str
                         <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase()}})}}>Hire:</Button>
                     </Col>
                     <Col xs={7}>
-                        Helpers: {state.helpers?.[id.toLowerCase()]}<br/>
-                        -200 Fish
+                        <div style={{backgroundColor: '#777777aa'}}>Helpers: {state.helpers?.[id.toLowerCase()]}<br/>-200 Fish</div>
                     </Col>
                 </Row>
             </Col>
+            
             {children}
         </Row>
     </Col>
@@ -325,55 +323,55 @@ function Zone({id, bgColor, state, dispatch, children}:{id: string, bgColor: str
 function ChopWood({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'wood', count: 1}})}}>Chop</Button><br/>
-        +Wood: {state.wood}
+        <div style={{backgroundColor: '#777777aa'}}>+Wood: {state.wood}</div>
     </Col>
 }
 function SawLumber({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'lumber'}})}}>Saw</Button><br/>
-        -1 Wood<br/>+Lumber: {state.lumber}
+        <div style={{backgroundColor: '#777777aa'}}>-1 Wood<br/>+Lumber: {state.lumber}</div>
     </Col>
 }
 function BuildRaft({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'raft'}})}}>Raft</Button><br/>
-        -20 Wood<br/>+Raft: {state.raft}
+        <div style={{backgroundColor: '#777777aa'}}>-20 Wood<br/>+Raft: {state.raft}</div>
     </Col>
 }
 function MineOre({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'ore', count: 1}})}}>Mine</Button><br/>
-        +Ore: {state.ore}
+        <div style={{backgroundColor: '#777777aa'}}>+Ore: {state.ore}</div>
     </Col>
 }
 function SmeltMetal({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'metal'}})}}>Smelt</Button><br/>
-        -3 Ore<br/>-3 Wood<br/>+Metal: {state.metal}
+        <div style={{backgroundColor: '#777777aa'}}>-3 Ore<br/>-3 Wood<br/>+Metal: {state.metal}</div>
     </Col>
 }
 function QuaryStone({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'stone', count: 1}})}}>Quary</Button><br/>
-        +Stone: {state.stone}
+        <div style={{backgroundColor: '#777777aa'}}>+Stone: {state.stone}</div>
     </Col>
 }
 function ChiselSlabs({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'tile'}})}}>Chisel</Button><br/>
-        -1 Stone<br/>-4 Lumber<br/>+Tile: {state.tile}
+        <div style={{backgroundColor: '#777777aa'}}>-1 Stone<br/>-4 Lumber<br/>+Tile: {state.tile}</div>
     </Col>
 }
 function DigClay({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'clay', count: 1}})}}>Dig</Button><br/>
-        +Clay: {state.clay}
+        <div style={{backgroundColor: '#777777aa'}}>+Clay: {state.clay}</div>
     </Col>
 }
 function FireBricks({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'brick'}})}}>Kiln</Button><br/>
-        -4 Clay<br/>-3 Wood<br/>+Brick: {state.brick}
+        <div style={{backgroundColor: '#777777aa'}}>-4 Clay<br/>-3 Wood<br/>+Brick: {state.brick}</div>
     </Col>
 }
 function ScribeTablet({state, dispatch}){
@@ -386,11 +384,11 @@ function ScribeTablet({state, dispatch}){
         </Col>
         <Col xs={4}>
             <Button onClick={()=>{dispatch({type: 'write', payload: {message: script}})}}>Scribe</Button><br/>
-            -1 Bricks<br/>-1 Lumber<br/>+Scripts: {state.tablets?.length || 0}
+            <div style={{backgroundColor: '#777777aa'}}>-1 Bricks<br/>-1 Lumber<br/>+Scripts: {state.tablets?.length || 0}</div>
         </Col>
         <Col xs={8}>
-            <label>Last 3 scripts</label>
-            <div style={{maxHeight: '100%', overflow: 'auto', color: 'black'}}>
+            <label style={{backgroundColor: '#777777aa'}}>Last 3 scripts</label>
+            <div style={{maxHeight: '100%', overflow: 'auto', color: 'black', textShadow: '2px 1px #73f', backgroundColor: '#777777aa'}}>
                 {state.tablets?.map((t, i)=>{
                     if(i<state.tablets.length-2) return
                     return <div key={i}>{t}<hr style={{margin: 0, padding: 0}}/></div>
@@ -402,18 +400,17 @@ function ScribeTablet({state, dispatch}){
 }
 function ScriptDirectory({state, dispatch}){
     return <Col xs={12}>
-        <div style={{maxHeight: '100%', overflow: 'auto', color: 'black'}}>
+        <div style={{maxHeight: '100%', overflow: 'auto', color: 'black', textShadow: '2px 1px #73f', backgroundColor: '#777777aa'}}>
             {state.tablets?.map((t, i)=>{
                 return <div key={i}>{t}<hr style={{margin: 0, padding: 0}}/></div>
-            }
-            )}
+            })}
         </div>
     </Col>
 }
 function Fish({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'fish', count: 1}})}}>Fish</Button><br/>
-        +Fish: {state.fish}
+        <div style={{backgroundColor: '#777777aa'}}>+Fish: {state.fish}</div>
     </Col>
 }
 function Sail({state, dispatch}){
@@ -424,15 +421,14 @@ function Sail({state, dispatch}){
             <Row>
                 <Col xs={4}>
                     <Button onClick={()=>{dispatch({type: 'sail', payload: {destination: destination, vessel: vessel}})}}>Sail To</Button><br/>
-                    {vessel}s {state[vessel.toLowerCase()] || 0}<br/>
-                    -20 fish
+                    <div style={{backgroundColor: '#777777aa'}}>{vessel}s {state[vessel.toLowerCase()] || 0}<br/>-20 fish</div>
                 </Col>
                 <Col xs={8}>
                     <select className={'form-control'} value={destination} onChange={(e)=>{setDestination(e.target.value)}}>
                         <option>Island</option>
                         <option>Mainland</option>
                     </select>
-                    By
+                    <div style={{backgroundColor: '#777777aa'}}>By</div>
                     <select className={'form-control'} value={vessel} onChange={(e)=>{setVessel(e.target.value)}}>
                         <option>boat</option>
                         <option>ship</option>
@@ -460,7 +456,7 @@ function BuildShip({state, dispatch}){
                 </select>
             </Col>
         </Row>
-        <Row>
+        <Row style={{backgroundColor: '#777777aa'}}>
             <Col xs={4}>
                 Boats: {state.boat || 0}
             </Col>
@@ -474,7 +470,7 @@ function BuildShip({state, dispatch}){
                 Rafts: {state.raft || 0}
             </Col>
         </Row>
-        <Row>
+        <Row style={{backgroundColor: '#777777aa'}}>
             <Col xs={12}>
                 {vessel=='Raft' && <>Raft: -20 Wood<br/></>}
                 {vessel=='Boat' && <>Boat: -30 Lumber<br/></>}
