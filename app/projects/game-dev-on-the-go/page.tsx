@@ -21,19 +21,6 @@ export default function Go(p){
     
     const initialState = {
         location: locations.mainland,
-        coin: 0,
-        income: 0,
-        prestige: 0,
-        ore: 0,
-        metal: 0,
-        wood: 0,
-        lumber: 0,
-        clay: 0,
-        brick: 0,
-        stone: 0,
-        tile: 0,
-        boat: 0,
-        ship: 0,
         tablets: [],
     }
     const reducer = (state: any, action: {type: string, payload?: any})=>{
@@ -43,6 +30,19 @@ export default function Go(p){
                 return window.location.href = '/'+action.payload.destination
             case 'set':
                 return action.payload != "default" ? action.payload : initialState
+            case 'loop':
+                console.log('loop attempt')
+                let roll = Math.random()*10 //d10
+                let success: boolean = (roll<=2) //20% chance
+                if(!success)return state
+                console.log('loop success')
+                return {...state,
+                    ore: Math.floor(Math.random()*(state.helpers.mine || 0)) + (state.ore?state.ore:0),
+                    stone: Math.floor(Math.random()*(state.helpers.quary || 0)) + (state.stone?state.stone:0),
+                    wood: Math.floor(Math.random()*(state.helpers.forest || 0)) + (state.wood?state.wood:0),
+                    fish: Math.floor(Math.random()*(state.helpers.river || 0)) + Math.floor(Math.random()*state.helpers.port) + (state.fish?state.fish:0),
+                    clay: Math.floor(Math.random()*(state.helpers.library || 0)) + (state.clay?state.clay:0)
+                }
             case 'add'://{type: 'ore', count: 1}
                 return {...state, [action.payload.type]: state[action.payload.type]?state[action.payload.type]+action.payload.count:action.payload.count}
             case 'remove'://{type: 'wood', count: 1}
@@ -104,10 +104,10 @@ export default function Go(p){
                 let loss = 0 + (Math.floor(Math.random()*durability+1)<2?1:0)
                 if(loss>1) {alert('Your '+vessel+' was lost at sea!'); return {...state, [vessel]: state[vessel]-1, fish: state.fish-20}}
                 return {...state, location: locations[destination], fish: state.fish-20}
-            case 'hire'://{type: 'Mine'}
-                if(state.fish<200) {alert('not enough fish'); return state}
+            case 'hire'://{type: 'Mine', fee: 100}
+                if(state.fish<(action.payload.fee || 200)) {alert('not enough fish'); return state}
                 let type = action.payload.type.toLowerCase()
-                return {...state, fish: state.fish-200, helpers: {...state.helpers, [type]:state.helpers[type]?state.helpers[type]+1:1}}
+                return {...state, fish: state.fish-(action.payload.fee || 200), helpers: {...state.helpers, [type]: (state.helpers && state.helpers[type])?state.helpers[type]+1:1}}
             default:
                 return state
         }
@@ -154,8 +154,11 @@ export default function Go(p){
     useEffect(()=>{
         if(!user) return
         if(!userLoaded) return
-        console.log('saveLoop')
+        console.log('saveLoopReloaded')
         const saveInterval = setInterval(()=>{
+            if(!user) return
+            if(!userLoaded) return
+            if(state == initialState) return//untested. looking for save reset error.
             //console.log('saveAttempted')
             console.log('save interval', autoSaveInterval)
             saveLoad()
@@ -170,38 +173,14 @@ export default function Go(p){
     useEffect(()=>{
         if(!user) return
         if(!userLoaded) return
-        console.log('gameLoop')
+        console.log('gameLoopReloaded')
         if(!state?.helpers) return
         const gameInterval = setInterval(()=>{
-            Object.entries(state?.helpers).forEach(([key, value])=>{
-                let helperType = key.toLowerCase()
-                let helperCount: number = (typeof value === 'number') ? value : 0
-                //TODO onrand() for helper success
-                let roll = Math.random()*10
-                let success: boolean = roll<=1+helperCount/10//rouphly 10% chance for income +1% per helper
-                let income = Math.floor(Math.random()*helperCount)
-                if(!success) return
-                switch(helperType){
-                    case 'mine':
-                        dispatch({type: 'add', payload: {type: 'ore', count: income}})
-                        break
-                    case 'quary':
-                        dispatch({type: 'add', payload: {type: 'stone', count: income}})
-                        break
-                    case 'forest':
-                        dispatch({type: 'add', payload: {type: 'wood', count: income}})
-                        break
-                    case 'river':
-                        dispatch({type: 'add', payload: {type: 'fish', count: income}})
-                        break
-                    case 'port':
-                        dispatch({type: 'add', payload: {type: 'fish', count: income}})
-                        break
-                    case 'library':
-                        dispatch({type: 'add', payload: {type: 'clay', count: income}})
-                        break
-                }
-            });
+            if(!user) return
+            if(!userLoaded) return
+            if(state == initialState) return//untested. looking for save reset error.
+            //console.log('gameLoopAttempted')
+            dispatch({type: 'loop'})
         }, 2000)
         return ()=>{
             console.log('gameLoopUnloaded')
@@ -226,6 +205,7 @@ export default function Go(p){
             </Col>
             <Col xs={12} sm={6} md={3} lg={2}><Link href={'https://writtenrealms.com/game'}>Written Realms</Link></Col>
             <Col xs={12} sm={6} md={3} lg={2}><Link href={'https://www.materiamagica.com'}>Materia Magica</Link></Col>
+            <Col xs={12} sm={6} md={3} lg={2}><Link href={'/registry/on_the_go:'+user?.username+'?id=true&name=true&data=true'}>{user?.username}'s raw data'</Link></Col>
         </InfoHeader></Row>
         <Row><InfoHeader id="inventory_resources" bgColor={'#aaa'} state={state}>
             {['Resources', 'stone', 'wood', 'ore', 'clay', 'fish'].map((item, i)=>{
@@ -298,17 +278,17 @@ function InfoHeader({id, bgColor, state, children}:{id: string, bgColor: string,
 function Zone({id, bgColor, bgImage, bgAlt, state, dispatch, children}:{id: string, bgColor: string, bgImage?: string, bgAlt?: string, state: any, dispatch: any, children: any}){
     if(!state.location?.zones?.includes(id))return
     return <Col id={id} xs={12} sm={6} md={4} lg={3} style={{position: 'relative'}}>
-        <div style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: bgColor, opacity: '.7'}}></div>
-        {bgImage && <img src={bgImage} alt={bgAlt || ''} style={{ position: 'absolute', width: '100%', height: '100%', opacity: '.8'}}/>}
+        <div style={{position: 'absolute', width: '100%', height: '100%', borderRadius: '20px', backgroundColor: bgColor, opacity: '.5'}}></div>
+        {bgImage && <img src={bgImage} alt={bgAlt || ''} style={{ position: 'absolute', width: '100%', height: '100%', padding: '5px', borderRadius: '20px', opacity: '.7'}}/>}
         <Row style={{position: 'relative', zIndex: 1, width: '100%', textAlign: 'center'}}>
             <Col xs={4}><h4>{id}</h4></Col>
             <Col xs={8}>
                 <Row>
                     <Col xs={5}>
-                        <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase()}})}}>Hire:</Button>
+                        <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase(), fee: 100}})}}>Hire:</Button>
                     </Col>
                     <Col xs={7}>
-                        <div style={{backgroundColor: '#777777aa'}}>Helpers: {state.helpers?.[id.toLowerCase()]}<br/>-200 Fish</div>
+                        <div style={{backgroundColor: '#777777aa'}}>Helpers: {state.helpers?.[id.toLowerCase()]}<br/>-100 Fish</div>
                     </Col>
                 </Row>
             </Col>
