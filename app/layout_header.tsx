@@ -127,7 +127,7 @@ export default function LayoutHeader({ user, root }: { user?: User, root?: strin
                 <NavBrand />
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
-                    <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '10%', backgroundColor: '#777' }}>
+                    <Nav className="me-auto my-2 my-lg-0 grey-back">
 
                         <Nav.Link href={"/"+root}>Home</Nav.Link>{' '}
                         <Nav.Link href="/about">About</Nav.Link>{' '}
@@ -135,10 +135,10 @@ export default function LayoutHeader({ user, root }: { user?: User, root?: strin
                         <NavProjects user={user}/>{' '}
                         <NavResources />{' '}
                         <UserLogin homepage={root} className={'nav-link'}/>
-                        
-                    </Nav>{' '}
+                        <Search />
+
+                    </Nav>
                 </Navbar.Collapse>
-                <Search />
             </Container>
         </Navbar>
     );
