@@ -1,15 +1,19 @@
-import sql from "../../lib/,base/sql"
+import sql from "../../../lib/,base/sql"
 
-export default async function All({params, searchParams}){
-    const all = await sql`SELECT * FROM aspect_registry_;`
+export default async function Select({params, searchParams}){
+    const {name}:{name: string} = params
+    let name2 = name.replaceAll('%3A',':')
+    console.log('name', name2)
+    const select = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name2};`
+    console.log('select', select)
     return <div style={{backgroundColor: 'white'}}>
-        {all.map((reg, i)=>{
+        {select.map((reg, i)=>{
             let parsed = reg.registry_data
             try{
                 parsed = JSON.parse(reg.registry_data)
             }catch(e){
                 console.log(e+' | '+reg.registry_data)
-            }
+            } 
             return <div key={i}>
                 {reg.id}:&nbsp;<a href={'/registry/'+reg.name}>{reg.name}</a><br/>
                 {(
@@ -20,7 +24,7 @@ export default async function All({params, searchParams}){
                     (parsed instanceof Array) ? <div> 
                         {parsed.map((a,i)=>{return <div key={i}>-&nbsp;&nbsp;&nbsp;{a[0]}: {a[1]}<br/></div>})}
                     </div>:JSON.stringify(parsed)
-                )}<br/>
+                )}
                 <hr/>
             </div>
         })}
