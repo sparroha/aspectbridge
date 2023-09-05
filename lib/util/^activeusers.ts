@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from "react"
 import { User } from "../../pages/login/[userlogin]"
-import { getDB, setDB } from "./^register"
+import { getDB, setDB } from "./@registry"
 export type ActiveUser = {
     name: string,
     access: number,

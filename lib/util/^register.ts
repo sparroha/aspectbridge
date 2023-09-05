@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import jsonFetch from "../,base/jsonFetch";
 import { RegistryFetch } from "../../app/api/registry/route";
+import { getDB, setDB } from "./@registry";
 
 /**
  * Implementation
@@ -77,24 +78,6 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
     },[registry])
     return [sync?data:register, saveData, registryExists]
 }
-
-//updates database with current register ref
-export async function setDB(name: string, data: any){
-    //console.log('@setDB://set '+name+' to '+JSON.stringify(data))
-    let post: Promise<RegistryFetch> = await fetch(`/api/registry`, {
-        method: 'POST',
-        body: JSON.stringify({
-            name: name,
-            data: data
-        })
-    }).then(res => res.json())
-    console.log('@setDB://set '+name+' to '+JSON.stringify(data)+'\n'+JSON.stringify(post))
-}
-
-export async function getDB(name: string, signal?: AbortSignal): Promise<RegistryFetch>{
-    return fetch(`/api/registry/${name}`,{signal: signal}).then(res=>res.json())
-}
-
 
 /**
  * extention of useRegister
