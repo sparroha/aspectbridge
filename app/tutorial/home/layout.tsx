@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import NavRightDefault from '../navright'
+import NavRightDefault from '../../navright'
 
 export const metadata: Metadata = {
   title: 'Aspect Bridge Home2',

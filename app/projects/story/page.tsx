@@ -1,14 +1,14 @@
 'use client'
 import { Dispatch, useCallback, useEffect, useState, FC, SetStateAction} from "react"
-import useRegister from "../../lib/util/^register"
-import StrBldr from "../../components/stringbuilder";
+import useRegister from "../../../lib/util/^register"
+import StrBldr from "../../../components/stringbuilder";
 import { Button } from "react-bootstrap"
-import downloadFile from "../../lib/util/downloadfile"
-import useUser from "../../lib/util/^user";
-import UserProfile from "../../lib/util/-userprofile-";
+import downloadFile from "../../../lib/util/downloadfile"
+import useUser from "../../../lib/util/^user";
+import UserProfile from "../../../lib/util/-userprofile-";
 import { SWRConfig } from "swr";
-import jsonFetch from "../../lib/,base/jsonFetch";
-import UserLogin from "../../lib/util/-userlogin-";
+import jsonFetch from "../../../lib/,base/jsonFetch";
+import UserLogin from "../../../lib/util/-userlogin-";
 
 export type Story = string | {what?: string, why?: string, who?: string}
 export type StoryBoard = Story[]

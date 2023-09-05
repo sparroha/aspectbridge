@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react";
-import Canvas from "../../components/canvas";
+import Canvas from "../../../components/canvas";
 import { Col, Container, Form, Row } from "react-bootstrap";
 
 export default function Home() {

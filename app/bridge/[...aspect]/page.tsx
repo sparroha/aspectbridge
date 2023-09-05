@@ -44,12 +44,12 @@ export default page
 function AspectBridge(props){
 	const {user, activeUsers, aspect} = props
     return <>
-        <Row id={'profile_editor'} className={""} style={{maxHeight: '50vh'}}>
+        <Row id={'profile_editor'} className={""}>
             <Col xs={12}style={{background: 'white'}}>
                 <UserMenu user={user} homepage={'bridge'}/>
             </Col>
         </Row>
-        <Row id={'chat'} className={'justify-content-md-center'} style={{maxHeight: '50vh'}}>
+        <Row id={'chat'} className={'justify-content-md-center'} style={{maxHeight: '50%'}}>
             <Col xs={12} style={{
                     backgroundImage: 'linear-gradient(to bottom, #777, #fff)' , maxHeight: '40vh'
                 }}>
