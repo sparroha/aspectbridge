@@ -1,10 +1,8 @@
 'use client'
 import { useEffect, useState } from "react"
 import { Col, Row } from "react-bootstrap"
-import useRegister from "../../lib/util/^register"
-import useUser from "../../lib/util/^user"
-import useSWR from "swr"
-import jsonFetch from "../../lib/,base/jsonFetch"
+import useUser from "../../../lib/util/^user"
+import useRegister from "../../../lib/util/^register"
 
 type BoardItem = {
     name: string,

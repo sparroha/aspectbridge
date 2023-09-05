@@ -134,13 +134,13 @@ export default function Go(p){
         if(!user)return alert('loading user or user not logged in')
         try{
             getDB('on_the_go:'+user?.username).then((data)=>{
-                dispatch({type: 'set', payload: JSON.parse(data)})
+                dispatch({type: 'set', payload: JSON.parse(data.data)})
             })
             setUserLoaded(true)
         }catch(e){
             try{
                 getDB('on_the_go:'+user?.username).then((data)=>{
-                    dispatch({type: 'set', payload: JSON.parse(data)})
+                    dispatch({type: 'set', payload: JSON.parse(data.data)})
                 })
                 setUserLoaded(true)
                 console.log('New entry for on_the_go:'+user?.username, e)

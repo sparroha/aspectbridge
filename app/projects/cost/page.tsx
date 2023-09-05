@@ -3,9 +3,9 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { magnitude, tenTo, raise, prestigeCost } from "./util/functions";
 import { getState } from "./util/functions";
-import useUser from "../../lib/util/^user";
-import useActiveUsers from "../../lib/util/^activeusers";
-import UserProfile from "../../lib/util/-userprofile-";
+import useUser from "../../../lib/util/^user";
+import useActiveUsers from "../../../lib/util/^activeusers";
+import UserProfile from "../../../lib/util/-userprofile-";
 
 
 export default function Cost() {

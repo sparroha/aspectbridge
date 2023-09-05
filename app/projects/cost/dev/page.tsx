@@ -1,10 +1,10 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import Dialog from "../../../components/dialog";
+import Dialog from "../../../../components/dialog";
 import { magnitude, tenTo, raise } from "../util/functions";
-import UserProfile from "../../../lib/util/-userprofile-";
-import useUser from "../../../lib/util/^user";
+import UserProfile from "../../../../lib/util/-userprofile-";
+import useUser from "../../../../lib/util/^user";
 
 export default function Cost() {
     const user = useUser()
