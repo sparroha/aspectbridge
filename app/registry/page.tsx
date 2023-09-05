@@ -1,10 +1,11 @@
 import sql from "../../lib/,base/sql"
+import { RegistryEntry } from "../../pages/api/registry_old/[registry]"
 
 export default async function All({params, searchParams}){
-    const all = await sql`SELECT * FROM aspect_registry_;`
+    const all: RegistryEntry[] = await sql`SELECT * FROM aspect_registry_;`
     return <div style={{backgroundColor: 'white'}}>
         {all.map((reg, i)=>{
-            let parsed = reg.registry_data
+            let parsed: string | {} | [] = reg.registry_data
             try{
                 parsed = JSON.parse(reg.registry_data)
             }catch(e){

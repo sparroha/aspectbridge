@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import jsonFetch from "../,base/jsonFetch";
+import { RegistryFetch } from "../../app/api/registry/route";
 
 /**
  * Implementation
@@ -48,7 +49,7 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
         if(registryExists) return
         if(!registry) {console.log('@useRegister://REGISTER: '+'no registry: '+registry); return}
         if(registry ==  null) {console.log('@useRegister://REGISTER: '+'null registry: '+registry); return}
-        return getDB(registry, signal).then((data: string)=>{
+        return getDB(registry, signal).then(({data}: {data: string})=>{
             if(data == null || data == undefined || !data || data == "default") {
                 //init registry: only sets default if data not exist
                 setRegistryExists(false)
@@ -80,13 +81,17 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
 //updates database with current register ref
 export async function setDB(name: string, data: any){
     //console.log('@setDB://set '+name+' to '+JSON.stringify(data))
-    await fetch(`/api/registry/${name}`, {
+    let post: Promise<RegistryFetch> = await fetch(`/api/registry`, {
         method: 'POST',
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+            name: name,
+            data: data
+        })
     }).then(res => res.json())
+    console.log('@setDB://set '+name+' to '+JSON.stringify(data)+'\n'+JSON.stringify(post))
 }
 
-export async function getDB(name: string, signal?: AbortSignal): Promise<string>{
+export async function getDB(name: string, signal?: AbortSignal): Promise<RegistryFetch>{
     return fetch(`/api/registry/${name}`,{signal: signal}).then(res=>res.json())
 }
 

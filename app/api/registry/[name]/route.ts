@@ -14,5 +14,5 @@ export async function GET(req: Request, res: Response) {
     let newR = await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${name}, ${"default"}) ON DUPLICATE KEY UPDATE registry_data = ${"default"};`
     const [newregister] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name};`
     if (!newregister) return NextResponse.json({ final: 'no registry found' })
-    return NextResponse.json({ data: newregister.registry_data, db: newR})
+    return NextResponse.json({ data: newregister.registry_data, sqlresponse: newR})
 }

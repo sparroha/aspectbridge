@@ -21,7 +21,7 @@ export default function useActiveUsers(delay: number = 2000): ActiveUser[]{
 export async function activateUser(user: Partial<User>){
     if(!user) return console.log('No user provided')
     return getDB(ACTIVEUSERS)
-      .then((data: string)=>JSON.parse(data) || [])
+      .then((data: {data: string})=>JSON.parse(data.data) || [])
       .then((data: ActiveUser[])=>{
         if(data.length == 0){
           setDB(ACTIVEUSERS, [{name: user.username, access: user.access || 0, time: new Date().getTime()}])

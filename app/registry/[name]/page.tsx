@@ -1,14 +1,15 @@
 import sql from "../../../lib/,base/sql"
+import { RegistryEntry } from "../../../pages/api/registry_old/[registry]"
 
 export default async function Select({params, searchParams}){
     const {name}:{name: string} = params
     let name2 = name.replaceAll('%3A',':')
     console.log('name', name2)
-    const select = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name2};`
+    const select: RegistryEntry[] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name2};`
     console.log('select', select)
     return <div style={{backgroundColor: 'white'}}>
         {select.map((reg, i)=>{
-            let parsed = reg.registry_data
+            let parsed: string | {} | [] = reg.registry_data
             try{
                 parsed = JSON.parse(reg.registry_data)
             }catch(e){

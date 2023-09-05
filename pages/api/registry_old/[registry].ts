@@ -1,5 +1,5 @@
 import sql from "../../../lib/,base/sql"
-export type RegistryCollomn = {
+export type RegistryEntry = {
 	id: number
 	name: string
 	registry_data: string
