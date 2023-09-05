@@ -22,7 +22,7 @@ export default async function getItemInfo(req?, res?) {
 export async function getItems(selector: string = '*'): Promise<ItemData[]> {
     try {
         const items = await sql`select ${selector} from aspect_dragons_items_ WHERE 1;`
-        console.log(items)
+        console.log('/api/dragons/items.getItems()', items)
         const itemInfo: ItemData[] = items.map((item) => {
             return {
                 id: item.id,
@@ -34,7 +34,7 @@ export async function getItems(selector: string = '*'): Promise<ItemData[]> {
         })
         return itemInfo
     } catch (error) {
-        console.log(error)
+        console.log('/api/dragons/items.getItems() ERROR', error)
         return [null]
     }
 }

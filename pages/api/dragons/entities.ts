@@ -23,7 +23,7 @@ export default async function getEntityInfo(req?, res?) {
 export async function getEntities(selector: string = '*'): Promise<Entity[]> {
     try {
         const tiles = await sql`select * from aspect_dragons_entities_;`
-        console.log(tiles)
+        console.log('/api/dragons/entities.getEntities()', tiles)
         const creatureInfo: Entity[] = tiles.map((creature) => {
             return {
                 id: creature.id,
@@ -34,7 +34,7 @@ export async function getEntities(selector: string = '*'): Promise<Entity[]> {
             }
         })
     } catch (error) {
-        console.log(error)
+        console.log('/api/dragons/entities.getEntities() ERROR', error)
         return [null]
     }
 }

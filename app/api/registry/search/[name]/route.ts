@@ -10,6 +10,6 @@ export async function GET(req: Request, res: Response) {
     
     const search = await sql`SELECT * FROM aspect_registry_;`
     let fsearch = search.filter((item)=>item.name.includes(name))
-    console.log(search)
+    console.log('/api/registry/search/['+name+'].POST', search)
     return NextResponse.json(fsearch)
 }

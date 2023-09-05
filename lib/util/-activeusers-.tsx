@@ -1,3 +1,4 @@
+'use client'
 import useActiveUsers from "./^activeusers"
 
 export default function ActiveUsers(props){
@@ -9,7 +10,7 @@ export default function ActiveUsers(props){
         let seconds = Math.floor((now-then)/1000)
         let minutes = Math.floor(seconds/60)
         let minutseconds = (minutes<10?'0':'')+minutes+':'+(seconds%60<10?'0':'')+seconds%60
-        return <div key={i} style={{color: 'white'}}>
+        return <div key={i} style={{color: (user.access<1?'#080':user.access<2?'#008':'#800')}}>
             {user.name}{' (active '}{minutseconds}{' ago)'}
         </div>
     })}</div>

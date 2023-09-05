@@ -102,5 +102,5 @@ async function apiUpdateUsername(req, res) {
             email: user.email,
         })
     }).then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => console.log('/api/user/[hash].apiUpdateUsername()', data))
 }

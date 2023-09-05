@@ -8,10 +8,10 @@ export default function SocketHandler(req, res){
         //socket.emit('message', 'Hello from Socket.IO server')
         socket.on('send-message', (mssg) => {
             io.emit('recieve-message', 'Hello from Socket.IO server', obj)
-            console.log(mssg)
+            console.log('@socket.js', mssg)
         })
     })
-    console.log('Setting Socket')
+    console.log('@socket.js', 'Setting Socket')
     res.end()
 
 }

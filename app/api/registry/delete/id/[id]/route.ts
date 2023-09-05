@@ -8,6 +8,6 @@ export async function GET(req: Request, res: Response) {
     const id = Number.parseInt(params.substring(params.lastIndexOf('/')+1))
     if (!id) return NextResponse.json({ alert: 'no name found', url: url, search: url.searchParams });
     const del = await sql`DELETE FROM aspect_registry_ WHERE id = ${id};`
-    console.log(del)
+    console.log('/api/registry/delete/id/['+id+'].POST', del)
     return NextResponse.json({data: del})
 }

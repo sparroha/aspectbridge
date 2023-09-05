@@ -84,7 +84,7 @@ async function getFirstTileByName(name: string) {
 }
 async function getAllTiles() {
     const tiles = await sql`SELECT * FROM aspect_dragons_tiles_ WHERE 1;`
-    console.log(tiles)
+    console.log('/api/dragons/regions.getAllTiles()', tiles)
     return tiles
 }
 /*export async function getTiles(): Promise<Region[]> {

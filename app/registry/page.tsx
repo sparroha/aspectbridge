@@ -1,8 +1,8 @@
 import sql from "../../lib/,base/sql"
-import { RegistryEntry } from "../../pages/api/registry_old/[registry]"
+//import { RegistryEntry } from "../api/registry/route"
 
 export default async function All({params, searchParams}){
-    const all: RegistryEntry[] = await sql`SELECT * FROM aspect_registry_;`
+    const all/*: RegistryEntry[]*/ = await sql`SELECT * FROM aspect_registry_;`
     return <div style={{backgroundColor: 'white'}}>
         {all.map((reg, i)=>{
             let parsed: string | {} | [] = reg.registry_data
@@ -27,3 +27,19 @@ export default async function All({params, searchParams}){
         })}
     </div>
 }
+
+
+/**- wait compiling...
+- error ./node_modules/mysql2/lib/connection.js:18:0
+Module not found: Can't resolve 'net'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/mysql2/index.js
+./lib/,base/sql.ts
+./app/api/users/active/route.ts
+./lib/util/^activeusers.ts
+./lib/util/^user.ts
+./app/chat/chat.tsx
+./pages/gather/index.tsx */

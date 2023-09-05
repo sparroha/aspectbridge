@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import sql from "../../../lib/,base/sql";
-import { RegistryEntry } from "../../../pages/api/registry_old/[registry]";
-
+export type RegistryEntry = {
+	id: number
+	name: string
+	registry_data: string
+}
 export type RegistryFetch = { data?: string, sqlresponse?: any, alert?: string}
 export async function GET(req: Request, res: Response) {
     const allregistries: RegistryEntry[] = await sql`SELECT * FROM aspect_registry_;`
@@ -16,7 +19,7 @@ export async function POST(req: Request, res: Response) {
     let data = body.data || 'default'
     if (typeof data !== 'string') data = JSON.stringify(data)
     const inject = await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${name}, ${data}) ON DUPLICATE KEY UPDATE registry_data = ${data};`
-    console.log(inject)
+    //console.log('/api/registry.POST:', inject, 'FROM:', body)
     return NextResponse.json({ sqlresponse: inject });
 }
                 

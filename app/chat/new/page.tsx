@@ -40,7 +40,7 @@ function Chat(props){
   const [update, setUpdate] = useState(false)
   
   return <>
-      <Row id={'main_row'} style={{height: '80%'}}>
+      <Row id={'main_row'} style={{height: '80%', color: "black"}}>
         <Col xs={12} sm={9} style={{...strip, height: '100%'}}>
           <Messages update={update} setUpdate={setUpdate} user={user} homepage={props?.homepage} style={{...border, height: '100%'}}/>
         </Col>

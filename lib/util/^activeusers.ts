@@ -2,24 +2,25 @@
 import { useEffect, useState } from "react"
 import { User } from "../../pages/login/[userlogin]"
 import { getDB, setDB } from "./@registry"
-export type ActiveUser = {
+import { ActiveUser } from "../../app/api/users/active/route"
+/*export type ActiveUser = {
     name: string,
     access: number,
     time: number,
-  }
+  }*/
 export const ACTIVEUSERS = 'active_users'
 export default function useActiveUsers(delay: number = 2000): ActiveUser[]{
-    const [activeUsers, setActiveUsers] = useState(null)
+    const [activeUsers, setActiveUsers] = useState([{name: 'Loading...', access: 2, time: Date.now()}])
     useEffect(()=>{
         const f = setInterval(()=>{
-            fetch('/api/getactiveusers').then((res)=>res.json()).then((data)=>setActiveUsers(data))
+            fetch('/api/users/active').then((res)=>res.json()).then((data: {data: ActiveUser[]})=>setActiveUsers(data.data))
         }, delay)
         return ()=>clearInterval(f)
     },[])
     return activeUsers
 }
 export async function activateUser(user: Partial<User>){
-    if(!user) return console.log('No user provided')
+    if(!user) return console.log('/lib/util/^activeusers.activateUser(): No user provided')
     return getDB(ACTIVEUSERS)
       .then((data: {data: string})=>JSON.parse(data.data) || [])
       .then((data: ActiveUser[])=>{
