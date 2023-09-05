@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
-import useRegister, { getDB, setDB } from "../lib/util/^register";
+import { Button, Col, Row } from "react-bootstrap";
+import useRegister from "../lib/util/^register";
 import '../public/css/sliders.css'
 
 // props: style={object.style} setStyle={setStyle} id={'row_'+object.id}}

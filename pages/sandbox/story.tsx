@@ -1,12 +1,13 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import useRegister, { getDB, setDB } from '../../lib/util/^register'
 import { GetServerSideProps } from 'next'
 import requestIp from 'request-ip';
 import UserLogin from '../../lib/util/-userlogin-';
 import UserProfile from '../../lib/util/-userprofile-';
 import useUser from '../../lib/util/^user';
 import useActiveUsers from '../../lib/util/^activeusers';
+import useRegister from '../../lib/util/^register';
+import { getDB } from '../../lib/util/@registry';
 
 export default function Story(props) {
 	const user = useUser()
