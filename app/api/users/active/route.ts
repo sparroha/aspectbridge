@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
 import { RegistryEntry } from "../../../../pages/api/registry_old/[registry]";
 
-export const ACTIVEUSERS = 'active_users'
 export type ActiveUser = {
     name: string,
     access: number,
@@ -10,6 +9,7 @@ export type ActiveUser = {
 }
 
 export async function GET(req, res): Promise<NextResponse<{data: ActiveUser[]}>>{
+    const ACTIVEUSERS = 'active_users'
     //const nonuser: ActiveUser = {name: '420: No Users Active', access: 2, time: Date.now()}
     //let regdata: ActiveUser[] = []
     const [users]: [RegistryEntry] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${ACTIVEUSERS};`
