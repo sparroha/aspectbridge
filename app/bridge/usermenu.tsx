@@ -77,7 +77,7 @@ function UserSettings({user}: {user: Partial<User>}){
                         <input style={{backgroundColor: '#777'}} type='checkbox' onChange={e=>setAdminShowUsers(e.target.checked)} checked={adminShowUsers} />
                     </Col>
                     <Col sm={11}>
-                        <h4>Edit Permissions</h4><br/>{adminShowUsers?<EditUsers adminuser={user}/>:null}
+                        <h4>Edit Permissions</h4><br/>{adminShowUsers?<EditUsers/>:null}
                     </Col>
                 </Row>
             </Col>

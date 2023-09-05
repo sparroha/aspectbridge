@@ -33,7 +33,7 @@ const tdStyle = {
 export default function EditUsers(props){
     const windowWidth = useWindowSize()[0]
     const [selectUser, setSelectUser] = useState<Partial<User>>({})
-    const {data, error} = useSWR('/api/getuserdetails?command=getall', {refreshInterval: 200})
+    const {data, error} = useSWR('/api/getuserdetails?command=getall', {refreshInterval: 200, fetcher: jsonFetch})
     if(!data) return <>Loading Users...</>
     return <Row><Col sm={12}>
         <table>
