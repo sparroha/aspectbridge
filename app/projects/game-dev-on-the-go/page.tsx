@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const portals = ['projects', 'bridge', 'cookbook', 'lexicon']
-type Location = 'Mine' | 'Quary' | 'Forest' | 'River' | 'Port' | 'Shipyard' | 'Library' | 'Scripts' | 'Tower'
+type Location = 'Mine' | 'Quary' | 'Forest' | 'River' | 'Port' | 'Shipyard' | 'Library' | 'Scripts' | 'Tower' | 'Aurical'
 type LocationInfo = {name: string, zones: Location[]}
 export default function Go(p){
     /**
@@ -16,11 +16,12 @@ export default function Go(p){
     /**APP STATE CONSTANTS**/
     const locations: {[key: string]: LocationInfo} = {
         island: {name: 'Island', zones: ['Mine', 'Quary', 'Forest', 'River', 'Library', 'Tower']},
-        mainland: {name: 'Mainland', zones: ['Quary', 'Forest', 'Port', 'Shipyard', 'Library', 'Scripts']}
+        mainland: {name: 'Mainland', zones: ['Quary', 'Forest', 'Port', 'Shipyard', 'Library', 'Scripts']},
+        styx: {name: 'Mainland', zones: ['Forest', 'River', 'Scripts', 'Aurical']}
     }
     
     const initialState = {
-        location: locations.mainland,
+        location: locations.styx,
         tablets: [],
     }
     const reducer = (state: any, action: {type: string, payload?: any})=>{
@@ -98,7 +99,7 @@ export default function Go(p){
                 let destination = action.payload.destination.toLowerCase()
                 if(state.location.name==destination) {alert('this is your current location'); return state}
                 let vessel = action.payload.vessel.toLowerCase()
-
+                if(!state[vessel]) {alert('you seem to have not found one of those '+vessel+'s yet'); return state}
                 if(state[vessel]<1) {alert('no '+vessel+'s available'); return state}
                 let durability = (vessel=='boat'?4:(vessel=='ship'?10:(vessel=='flagship'?20:2)))
                 let loss = 0 + (Math.floor(Math.random()*durability+1)<2?1:0)
@@ -259,6 +260,9 @@ export default function Go(p){
             <Zone id={"Tower"} bgColor={"#79f"} state={state} dispatch={dispatch} bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
                 <Portal state={state} dispatch={dispatch}/>
             </Zone>
+            <Zone id={"Aurical"} bgGradient={'radial-gradient(#fff, #fff 50%, #90a0f088 52%, #90a0f088 60%, #00000000 70%)'} state={state} dispatch={dispatch} bgAlt={'NGC 1433'}>
+                <Portal state={state} dispatch={dispatch}/>
+            </Zone>
         </Row>
     </div>
 }
@@ -275,10 +279,10 @@ function InfoHeader({id, bgColor, state, children}:{id: string, bgColor: string,
         </Row>
     </Col>
 }
-function Zone({id, bgColor, bgImage, bgAlt, state, dispatch, children}:{id: string, bgColor: string, bgImage?: string, bgAlt?: string, state: any, dispatch: any, children: any}){
+function Zone({id, bgColor, bgImage, bgGradient, bgAlt, state, dispatch, children}:{id: string, bgColor?: string, bgImage?: string, bgGradient?: string, bgAlt?: string, state: any, dispatch: any, children: any}){
     if(!state.location?.zones?.includes(id))return
     return <Col id={id} xs={12} sm={6} md={4} lg={3} style={{position: 'relative'}}>
-        <div style={{position: 'absolute', width: '100%', height: '100%', borderRadius: '20px', backgroundColor: bgColor, opacity: '.5'}}></div>
+        <div style={{position: 'absolute', width: '100%', height: '100%', borderRadius: '20px', backgroundColor: bgColor || 'none', backgroundImage: bgImage?`img(${bgImage})`:bgGradient || 'none', opacity: '.7'}}></div>
         {bgImage && <img src={bgImage} alt={bgAlt || ''} style={{ position: 'absolute', width: '100%', height: '100%', padding: '5px', borderRadius: '20px', opacity: '.7'}}/>}
         <Row style={{position: 'relative', zIndex: 1, width: '100%', textAlign: 'center'}}>
             <Col xs={4}><h4>{id}</h4></Col>
@@ -390,7 +394,7 @@ function ScriptDirectory({state, dispatch}){
 function Fish({state, dispatch}){
     return <Col xs={4}>
         <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'fish', count: 1}})}}>Fish</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Fish: {state.fish}</div>
+        <div style={{backgroundColor: '#777777aa'}}>+Fish: {state.fish || 0}</div>
     </Col>
 }
 function Sail({state, dispatch}){
@@ -407,6 +411,7 @@ function Sail({state, dispatch}){
                     <select className={'form-control'} value={destination} onChange={(e)=>{setDestination(e.target.value)}}>
                         <option>Island</option>
                         <option>Mainland</option>
+                        <option>Styx</option>
                     </select>
                     <div style={{backgroundColor: '#777777aa'}}>By</div>
                     <select className={'form-control'} value={vessel} onChange={(e)=>{setVessel(e.target.value)}}>
@@ -484,4 +489,3 @@ function Portal({state, dispatch}){
         </Form>
     </Col>
 }
-
