@@ -20,7 +20,7 @@ export default function useActiveUsers(delay: number = 2000): ActiveUser[]{
     return activeUsers
 }
 export async function activateUser(user: Partial<User>){
-    console.log('activating')
+    //console.log('activating')
     if(!user) return console.log('/lib/util/^activeusers.activateUser(): No user provided')
     return getDB(ACTIVEUSERS)
       .then((data: {data: string})=>JSON.parse(data.data) || [])
@@ -34,7 +34,7 @@ export async function activateUser(user: Partial<User>){
             if((new Date().getTime() - time) > (1000*60*60)/6) return false//remove users that havent been active in the last hour...last 10 min
             return true
           })
-          console.log('activated')
+          //console.log('activated')
           dataArr.push({name: user.username, access: user.access, time: new Date().getTime()})
           setDB(ACTIVEUSERS, dataArr)
         }
