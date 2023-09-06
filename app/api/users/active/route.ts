@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
 import { RegistryEntry } from "../../../../pages/api/registry_old/[registry]";
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
 
 export type ActiveUser = {
     name: string,

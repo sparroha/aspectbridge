@@ -13,7 +13,7 @@ export default function useActiveUsers(delay: number = 2000): ActiveUser[]{
     const [activeUsers, setActiveUsers] = useState([{name: 'Loading...', access: 2, time: Date.now()}])
     useEffect(()=>{
         const f = setInterval(()=>{
-            fetch('/api/users/active').then((res)=>res.json()).then((data: {data: ActiveUser[]})=>setActiveUsers(data.data))
+            fetch('/api/users/active',{ next: { revalidate: 0 } }).then((res)=>res.json()).then((data: {data: ActiveUser[]})=>setActiveUsers(data.data))
         }, delay)
         return ()=>clearInterval(f)
     },[])
