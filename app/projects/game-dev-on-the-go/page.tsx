@@ -17,7 +17,7 @@ export default function Go(p){
     const locations: {[key: string]: LocationInfo} = {
         island: {name: 'Island', zones: ['Mine', 'Quary', 'Forest', 'River', 'Library', 'Tower']},
         mainland: {name: 'Mainland', zones: ['Quary', 'Forest', 'Port', 'Shipyard', 'Library', 'Scripts']},
-        styx: {name: 'Mainland', zones: ['Forest', 'River', 'Scripts', 'Aurical']}
+        styx: {name: 'Styx', zones: ['Forest', 'River', 'Scripts', 'Aurical']}
     }
     
     const initialState = {
