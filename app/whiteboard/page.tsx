@@ -1,5 +1,24 @@
 'use client'
 import Laser, { neonLaser } from "../../lib/util/gfx/laser";
+import { createContext } from "react"
+
+const ZoneReducerContext = createContext(null)
+
+const useZRContext = ()=>{
+    const context = useContext(ZoneReducerContext)
+    if(!context) throw new Error(
+        "ZoneReducerContext not available in scope"
+    )
+    return context
+}
+function ZRCProvider({children}){
+    const { state, dispatch } = useState(null)
+    return <ZoneReducerContext.Provider
+        value={{state, dispatch}}
+    >
+        {children}
+    <ZoneReducerContext.Provider/>
+}
 
 export default function Page({params}){
     const greenLaser = '#00ff0033'
