@@ -1,119 +1,20 @@
 'use client'
-import { useReducer, useState, useEffect } from 'react'
+import { useReducer, useState, useEffect, createContext, useContext } from 'react'
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { getDB, searchDB, setDB } from '../../../lib/util/@registry';
 import useUser from '../../../lib/util/^user';
 import Link from 'next/link';
-import Image from 'next/image';
+import { BuildRaft, BuildShip, ChiselSlabs, Choice, ChopWood, DigClay, FireBricks, Fish, InfoHeader, MineOre, Portal, QuaryStone, Sail, SawLumber, ScribeTablet, ScriptDirectory, SmeltMetal, Zone } from './zones';
+import { initialState, useZRContext } from './provider';
+//----------------------------------------------------------------------------------------------------------------------------------
 
-const portals = ['projects', 'bridge', 'cookbook', 'lexicon']
-type Location = 'Mine' | 'Quary' | 'Forest' | 'River' | 'Port' | 'Shipyard' | 'Library' | 'Scripts' | 'Tower' | 'Aurical'
-type LocationInfo = {name: string, zones: Location[]}
+//----------------------------------------------------------------------------------------------------------------------------------
 export default function Go(p){
-    /**
-     * CONSTANTS
-     */
-    /**APP STATE CONSTANTS**/
-    const locations: {[key: string]: LocationInfo} = {
-        island: {name: 'Island', zones: ['Mine', 'Quary', 'Forest', 'River', 'Library', 'Tower']},
-        mainland: {name: 'Mainland', zones: ['Quary', 'Forest', 'Port', 'Shipyard', 'Library', 'Scripts']},
-        styx: {name: 'Styx', zones: ['Forest', 'River', 'Scripts', 'Aurical']}
-    }
-    
-    const initialState = {
-        location: locations.styx,
-        tablets: [],
-    }
-    const reducer = (state: any, action: {type: string, payload?: any})=>{
-        let actionType = action.type.toLowerCase()
-        switch(actionType){
-            case 'teleport':
-                return window.location.href = '/'+action.payload.destination
-            case 'set':
-                return action.payload != "default" ? action.payload : initialState
-            case 'loop':
-                console.log('loop attempt')
-                let roll = Math.random()*10 //d10
-                let success: boolean = (roll<=2) //20% chance
-                if(!success)return state
-                console.log('loop success')
-                return {...state,
-                    ore: Math.floor(Math.random()*(state.helpers.mine || 0)) + (state.ore?state.ore:0),
-                    stone: Math.floor(Math.random()*(state.helpers.quary || 0)) + (state.stone?state.stone:0),
-                    wood: Math.floor(Math.random()*(state.helpers.forest || 0)) + (state.wood?state.wood:0),
-                    fish: Math.floor(Math.random()*(state.helpers.river || 0)) + Math.floor(Math.random()*state.helpers.port) + (state.fish?state.fish:0),
-                    clay: Math.floor(Math.random()*(state.helpers.library || 0)) + (state.clay?state.clay:0)
-                }
-            case 'add'://{type: 'ore', count: 1}
-                return {...state, [action.payload.type]: state[action.payload.type]?state[action.payload.type]+action.payload.count:action.payload.count}
-            case 'remove'://{type: 'wood', count: 1}
-                if(!state[action.payload.type]) {alert("strange; it seems you haven't discovered that yet"); return state}
-                if(state[action.payload.type]<action.payload.count) {alert('not enough '+action.payload.type); return state}
-                return {...state, [action.payload.type]: state[action.payload.type]-action.payload.count}
-            case 'exchange'://{trade: 'ore', amount: 1, type: 'metal', count: 1}
-                if(!state[action.payload.trade]) {alert("strange; it seems you haven't discovered that yet"); return state}
-                if(!state[action.payload.type]) {alert("strange; it seems you haven't discovered that yet"); return state}
-                if(state[action.payload.trade]<action.payload.amount) {alert('not enough '+action.payload.trade); return state}
-                return {...state, [action.payload.trade]: state[action.payload.trade]-action.payload.amount, [action.payload.type]: state[action.payload.type]?state[action.payload.type]+action.payload.count:action.payload.count}
-            case 'craft':
-                let craftType = action.payload.type.toLowerCase()
-                switch(craftType){
-                    case 'metal':
-                        if(state.ore<3) {alert('not enough ore'); return state}
-                        if(state.wood<3) {alert('not enough wood'); return state}
-                        return {...state, ore: state.ore-3, wood: state.wood-3, metal: state.metal?state.metal+2:2}
-                    case 'brick':
-                        if(state.clay<4) {alert('not enough clay'); return state}
-                        if(state.wood<3) {alert('not enough wood'); return state}
-                        return {...state, clay: state.clay-4, wood: state.wood-3, brick: state.brick?state.brick+2:2}
-                    case 'lumber':
-                        if(state.wood<1) {alert('not enough wood'); return state}
-                        return {...state, wood: state.wood-1, lumber: state.lumber+3}
-                    case 'tile':
-                        if(state.stone<1) {alert('not enough stone'); return state}
-                        if(state.lumber<4) {alert('not enough lumber'); return state}
-                        return {...state, stone: state.stone-1, lumber: state.lumber-4, tile: state.tile?state.tile+4:4}
-                    case 'boat':
-                        if(state.lumber<30) {alert('not enough lumber'); return state}
-                        return {...state, lumber: state.lumber-30, boat: state.boat?state.boat+1:1}
-                    case 'ship':
-                        if(state.lumber<40) {alert('not enough lumber'); return state}
-                        if(state.brick<40) {alert('not enough brick'); return state}
-                        if(state.metal<20) {alert('not enough metal'); return state}
-                        return {...state, lumber: state.lumber-40, brick: state.brick-40, metal: state.metal-20, ship: state.ship?state.ship+1:1}
-                    case 'flagship':
-                        if(state.lumber<80) {alert('not enough lumber'); return state}
-                        if(state.wood<40) {alert('not enough wood'); return state}
-                        if(state.brick<80) {alert('not enough bick'); return state}
-                        if(state.metal<60) {alert('not enough metal'); return state}
-                        return {...state, lumber: state.lumber-80, wood: state.wood-40, brick: state.brick-80, metal: state.metal-60, flagship: state.flagship?state.flagship+1:1}
-                    case 'raft':
-                        if(state.wood<20) {alert('not enough wood'); return state}
-                        return {...state, wood: state.wood-20, raft: state.raft?state.raft+1:1}
-                }
-            case 'write':
-                if(state.brick<1 || state.lumber<1) {alert('not enough bricks or lumber'); return state}
-                return {...state, brick: state.brick-1, lumber: state.lumber-1, tablets: state.tablets?[...state.tablets, action.payload.message]:[action.payload.message]}
-            case 'sail'://{destination: 'Island', vessel: 'boat'}
-                if(state.fish<20) {alert('not enough fish'); return state}
-                let destination = action.payload.destination.toLowerCase()
-                if(state.location.name==destination) {alert('this is your current location'); return state}
-                let vessel = action.payload.vessel.toLowerCase()
-                if(!state[vessel]) {alert('you seem to have not found one of those '+vessel+'s yet'); return state}
-                if(state[vessel]<1) {alert('no '+vessel+'s available'); return state}
-                let durability = (vessel=='boat'?4:(vessel=='ship'?10:(vessel=='flagship'?20:2)))
-                let loss = 0 + (Math.floor(Math.random()*durability+1)<2?1:0)
-                if(loss>1) {alert('Your '+vessel+' was lost at sea!'); return {...state, [vessel]: state[vessel]-1, fish: state.fish-20}}
-                return {...state, location: locations[destination], fish: state.fish-20}
-            case 'hire'://{type: 'Mine', fee: 100}
-                if(state.fish<(action.payload.fee || 200)) {alert('not enough fish'); return state}
-                let type = action.payload.type.toLowerCase()
-                return {...state, fish: state.fish-(action.payload.fee || 200), helpers: {...state.helpers, [type]: (state.helpers && state.helpers[type])?state.helpers[type]+1:1}}
-            default:
-                return state
-        }
-    }
-    const [state, dispatch] = useReducer(reducer, initialState)
+    /**CONSTANTS**/
+    const {state, dispatch} = useZRContext()
+
+    //----------------------------------------------------------------------------------------------------------------------------------
+
     /**USER DATA CONSTANTS**/
     const [userLoaded, setUserLoaded] = useState(false)
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
@@ -150,6 +51,10 @@ export default function Go(p){
             }
         }
     }
+    //----------------------------------------------------------------------------------------------------------------------------------
+
+
+    //----------------------------------------------------------------------------------------------------------------------------------
     /**AUTO SAVE LOOP*/
     //auto save every n seconds
     useEffect(()=>{
@@ -169,7 +74,7 @@ export default function Go(p){
             clearInterval(saveInterval)
         }
     },[user, userLoaded, state, autoSaveInterval])
-
+    //----------------------------------------------------------------------------------------------------------------------------------
     //game incriment loop
     useEffect(()=>{
         if(!user) return
@@ -188,14 +93,17 @@ export default function Go(p){
             clearInterval(gameInterval)
         }
     },[user, userLoaded, state])
+    //----------------------------------------------------------------------------------------------------------------------------------
 
+
+    //----------------------------------------------------------------------------------------------------------------------------------
     /**
      * APP RENDER
      */
     if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
     return <div style={{color: '#fff', marginTop: '40px'}}>
         <Row>
-        <InfoHeader id="controls" bgColor={'#ddd'} state={state}>
+        <InfoHeader id="controls" bgColor={'#ddd'}>
             <Col xs={12} sm={6} md={3} lg={2}>
                 <label>Save Interval:</label>
                 <input type="number" value={autoSaveInterval} onChange={(e)=>{setAutoSaveInterval(()=>{
@@ -208,7 +116,7 @@ export default function Go(p){
             <Col xs={12} sm={6} md={3} lg={2}><Link href={'https://www.materiamagica.com'}>Materia Magica</Link></Col>
             <Col xs={12} sm={6} md={3} lg={2}><Link href={'/registry/on_the_go:'+user?.username+'?id=true&name=true&data=true'}>{user?.username}'s raw data'</Link></Col>
         </InfoHeader></Row>
-        <Row><InfoHeader id="inventory_resources" bgColor={'#aaa'} state={state}>
+        <Row><InfoHeader id="inventory_resources" bgColor={'#aaa'}>
             {['Resources', 'stone', 'wood', 'ore', 'clay', 'fish'].map((item, i)=>{
                 return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
                     {(item=='Resources' || item=='Materials')?item:
@@ -216,7 +124,7 @@ export default function Go(p){
                 </Col>
             })}
         </InfoHeader></Row>
-        <Row><InfoHeader id="inventory_materials" bgColor={'#777'} state={state}>
+        <Row><InfoHeader id="inventory_materials" bgColor={'#777'}>
             {['Materials', 'tile', 'lumber', 'metal', 'brick'].map((item, i)=>{
                 return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
                     {(item=='Resources' || item=='Materials')?item:
@@ -225,267 +133,44 @@ export default function Go(p){
             })} 
         </InfoHeader></Row>
         <Row id="activities">
-            <Zone id={"Mine"} bgColor={"#aa7"} state={state} dispatch={dispatch} bgAlt={'Gold Mine'} bgImage={'https://www.automation.com/getmedia/f4d4cca4-3167-4426-803a-de780ccefab9/Gold-mine-feature-July-29-2021-web.png?width=500&height=313&ext=.png'}>
-                <MineOre state={state} dispatch={dispatch}/>
-                <SmeltMetal state={state} dispatch={dispatch}/>
+            <Zone id={"Mine"} bgColor={"#aa7"} bgAlt={'Gold Mine'} helper bgImage={'https://www.automation.com/getmedia/f4d4cca4-3167-4426-803a-de780ccefab9/Gold-mine-feature-July-29-2021-web.png?width=500&height=313&ext=.png'}>
+                <MineOre/>
+                <SmeltMetal/>
             </Zone>
-            <Zone id={"Quary"} bgColor={"grey"} state={state} dispatch={dispatch} bgAlt={'Colonial Marble & Granite'} bgImage={'https://www.colonialmarble.net/wp-content/uploads/2021/08/shutterstock_523267222.jpg'}>
-                <QuaryStone state={state} dispatch={dispatch}/>
-                <ChiselSlabs state={state} dispatch={dispatch}/>
+            <Zone id={"Quary"} bgColor={"grey"} bgAlt={'Colonial Marble & Granite'} helper bgImage={'https://www.colonialmarble.net/wp-content/uploads/2021/08/shutterstock_523267222.jpg'}>
+                <QuaryStone/>
+                <ChiselSlabs/>
             </Zone>
-            <Zone id={"Forest"} bgColor={"green"} state={state} dispatch={dispatch} bgAlt={'Deposit Photos copyright'} bgImage={'https://st4.depositphotos.com/11328482/31492/i/450/depositphotos_314925876-stock-photo-summer-green-fir-forest-landscape.jpg'}>
-                <ChopWood state={state} dispatch={dispatch}/>
-                <SawLumber state={state} dispatch={dispatch}/>
-                <BuildRaft state={state} dispatch={dispatch}/>
+            <Zone id={"Forest"} bgColor={"green"} bgAlt={'Deposit Photos copyright'} helper bgImage={'https://st4.depositphotos.com/11328482/31492/i/450/depositphotos_314925876-stock-photo-summer-green-fir-forest-landscape.jpg'}>
+                <ChopWood/>
+                <SawLumber/>
+                <BuildRaft/>
             </Zone>
-            <Zone id={"River"} bgColor={"blue"} state={state} dispatch={dispatch} bgAlt={'River'} bgImage={'https://static.toiimg.com/photo/msid-101267463,width-96,height-65.cms'}>
-                <Sail state={state} dispatch={dispatch}/>
-                <Fish state={state} dispatch={dispatch}/>
-                <DigClay state={state} dispatch={dispatch}/>
-                <FireBricks state={state} dispatch={dispatch}/>
+            <Zone id={"River"} bgColor={"blue"} bgAlt={'River'} helper bgImage={'https://static.toiimg.com/photo/msid-101267463,width-96,height-65.cms'}>
+                <Sail/>
+                <Fish/>
+                <DigClay/>
+                <FireBricks/>
             </Zone>
-            <Zone id={"Port"} bgColor={"blue"} state={state} dispatch={dispatch} bgAlt={'Harbor'} bgImage={'https://i.ytimg.com/vi/ZznX01ViFTc/maxresdefault.jpg'}>
-                <Sail state={state} dispatch={dispatch}/>
-                <Fish state={state} dispatch={dispatch}/>
+            <Zone id={"Port"} bgColor={"blue"} bgAlt={'Harbor'} helper bgImage={'https://i.ytimg.com/vi/ZznX01ViFTc/maxresdefault.jpg'}>
+                <Sail/>
+                <Fish/>
             </Zone>
-            <Zone id={"Shipyard"} bgColor={"blue"} state={state} dispatch={dispatch} bgAlt={'Shipyard'} bgImage={'https://thebridgebk.com/wp-content/uploads/2018/02/20170512-Z74A1290-2-e1519352429367.jpg'}>
-                <BuildShip state={state} dispatch={dispatch}/>
+            <Zone id={"Shipyard"} bgColor={"blue"} bgAlt={'Shipyard'} bgImage={'https://thebridgebk.com/wp-content/uploads/2018/02/20170512-Z74A1290-2-e1519352429367.jpg'}>
+                <BuildShip/>
             </Zone>
-            <Zone id={"Library"} bgColor={"#79f"} state={state} dispatch={dispatch} bgAlt={'Library'} bgImage={'https://images.pexels.com/photos/1290141/pexels-photo-1290141.jpeg?auto=compress&cs=tinysrgb&w=700'}>
-                <ScribeTablet state={state} dispatch={dispatch}/>
+            <Zone id={"Library"} bgColor={"#79f"} bgAlt={'Library'} helper bgImage={'https://images.pexels.com/photos/1290141/pexels-photo-1290141.jpeg?auto=compress&cs=tinysrgb&w=700'}>
+                <ScribeTablet/>
             </Zone>
-            <Zone id={"Scripts"} bgColor={"#79f"} state={state} dispatch={dispatch} bgAlt={'Library'} bgImage={'https://i.insider.com/5720d775dd0895167d8b468b?width=700'}>
-                <ScriptDirectory state={state} dispatch={dispatch}/>
+            <Zone id={"Scripts"} bgColor={"#79f"} bgAlt={'Library'} bgImage={'https://i.insider.com/5720d775dd0895167d8b468b?width=700'}>
+                <ScriptDirectory/>
             </Zone>
-            <Zone id={"Tower"} bgColor={"#79f"} state={state} dispatch={dispatch} bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Portal state={state} dispatch={dispatch}/>
+            <Zone id={"Tower"} bgColor={"#79f"} bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
+                <Portal/>
             </Zone>
-            <Zone id={"Aurical"} bgGradient={'radial-gradient(#fff, #fff 50%, #90a0f088 52%, #90a0f088 60%, #00000000 70%)'} state={state} dispatch={dispatch} bgAlt={'NGC 1433'}>
-                <Portal state={state} dispatch={dispatch}/>
+            <Zone id={"Aurical"} bgGradient={'radial-gradient(#fff, #fff 50%, #90a0f088 52%, #90a0f088 60%, #00000000 70%)'} bgAlt={'NGC 1433'}>
+                <Choice/>
             </Zone>
         </Row>
     </div>
-}
-
-/**
- * COMPONENTS
- */
-//zone template
-function InfoHeader({id, bgColor, state, children}:{id: string, bgColor: string, state: any, children: any}){
-    return <Col id={id} xs={12} style={{position: 'relative'}}>
-        <div style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: bgColor, opacity: '.7'}}></div>
-        <Row style={{position: 'relative', zIndex: 1}}>
-            {children}
-        </Row>
-    </Col>
-}
-function Zone({id, bgColor, bgImage, bgGradient, bgAlt, state, dispatch, children}:{id: string, bgColor?: string, bgImage?: string, bgGradient?: string, bgAlt?: string, state: any, dispatch: any, children: any}){
-    if(!state.location?.zones?.includes(id))return
-    return <Col id={id} xs={12} sm={6} md={4} lg={3} style={{position: 'relative'}}>
-        <div style={{position: 'absolute', width: '100%', height: '100%', borderRadius: '20px', backgroundColor: bgColor || 'none', backgroundImage: bgImage?`img(${bgImage})`:bgGradient || 'none', opacity: '.7'}}></div>
-        {bgImage && <img src={bgImage} alt={bgAlt || ''} style={{ position: 'absolute', width: '100%', height: '100%', padding: '5px', borderRadius: '20px', opacity: '.7'}}/>}
-        <Row style={{position: 'relative', zIndex: 1, width: '100%', textAlign: 'center'}}>
-            <Col xs={4}><h4>{id}</h4></Col>
-            <Col xs={8}>
-                <Row>
-                    <Col xs={5}>
-                        <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase(), fee: 100}})}}>Hire:</Button>
-                    </Col>
-                    <Col xs={7}>
-                        <div style={{backgroundColor: '#777777aa'}}>Helpers: {state.helpers?.[id.toLowerCase()]}<br/>-100 Fish</div>
-                    </Col>
-                </Row>
-            </Col>
-            
-            {children}
-        </Row>
-    </Col>
-}
-
-
-//activities
-function ChopWood({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'wood', count: 1}})}}>Chop</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Wood: {state.wood}</div>
-    </Col>
-}
-function SawLumber({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'lumber'}})}}>Saw</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-1 Wood<br/>+Lumber: {state.lumber}</div>
-    </Col>
-}
-function BuildRaft({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'raft'}})}}>Raft</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-20 Wood<br/>+Raft: {state.raft}</div>
-    </Col>
-}
-function MineOre({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'ore', count: 1}})}}>Mine</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Ore: {state.ore}</div>
-    </Col>
-}
-function SmeltMetal({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'metal'}})}}>Smelt</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-3 Ore<br/>-3 Wood<br/>+Metal: {state.metal}</div>
-    </Col>
-}
-function QuaryStone({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'stone', count: 1}})}}>Quary</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Stone: {state.stone}</div>
-    </Col>
-}
-function ChiselSlabs({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'tile'}})}}>Chisel</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-1 Stone<br/>-4 Lumber<br/>+Tile: {state.tile}</div>
-    </Col>
-}
-function DigClay({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'clay', count: 1}})}}>Dig</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Clay: {state.clay}</div>
-    </Col>
-}
-function FireBricks({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'brick'}})}}>Kiln</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-4 Clay<br/>-3 Wood<br/>+Brick: {state.brick}</div>
-    </Col>
-}
-function ScribeTablet({state, dispatch}){
-    const [script, setScript] = useState('')
-    return <>
-        <Col xs={12}>
-            <Form>
-                <Form.Control type="text" maxLength={33} placeholder="Message" value={script} onChange={(e)=>{setScript(e.target.value)}}/>
-            </Form>
-        </Col>
-        <Col xs={4}>
-            <Button onClick={()=>{dispatch({type: 'write', payload: {message: script}})}}>Scribe</Button><br/>
-            <div style={{backgroundColor: '#777777aa'}}>-1 Bricks<br/>-1 Lumber<br/>+Scripts: {state.tablets?.length || 0}</div>
-        </Col>
-        <Col xs={8}>
-            <label style={{backgroundColor: '#777777aa'}}>Last 3 scripts</label>
-            <div style={{maxHeight: '100%', overflow: 'auto', color: 'black', textShadow: '2px 1px #73f', backgroundColor: '#777777aa'}}>
-                {state.tablets?.map((t, i)=>{
-                    if(i<state.tablets.length-2) return
-                    return <div key={i}>{t}<hr style={{margin: 0, padding: 0}}/></div>
-                }
-                )}
-            </div>
-        </Col>
-    </>
-}
-function ScriptDirectory({state, dispatch}){
-    return <Col xs={12}>
-        <div style={{maxHeight: '100%', overflow: 'auto', color: 'black', textShadow: '2px 1px #73f', backgroundColor: '#777777aa'}}>
-            {state.tablets?.map((t, i)=>{
-                return <div key={i}>{t}<hr style={{margin: 0, padding: 0}}/></div>
-            })}
-        </div>
-    </Col>
-}
-function Fish({state, dispatch}){
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'fish', count: 1}})}}>Fish</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Fish: {state.fish || 0}</div>
-    </Col>
-}
-function Sail({state, dispatch}){
-    const [destination, setDestination] = useState(state.location.name)
-    const [vessel, setVessel] = useState('boat')
-    return <Col xs={12}>
-        <Form>
-            <Row>
-                <Col xs={4}>
-                    <Button onClick={()=>{dispatch({type: 'sail', payload: {destination: destination, vessel: vessel}})}}>Sail To</Button><br/>
-                    <div style={{backgroundColor: '#777777aa'}}>{vessel}s {state[vessel.toLowerCase()] || 0}<br/>-20 fish</div>
-                </Col>
-                <Col xs={8}>
-                    <select className={'form-control'} value={destination} onChange={(e)=>{setDestination(e.target.value)}}>
-                        <option>Island</option>
-                        <option>Mainland</option>
-                        <option>Styx</option>
-                    </select>
-                    <div style={{backgroundColor: '#777777aa'}}>By</div>
-                    <select className={'form-control'} value={vessel} onChange={(e)=>{setVessel(e.target.value)}}>
-                        <option>boat</option>
-                        <option>ship</option>
-                        <option>flagship</option>
-                        <option>raft</option>
-                    </select>
-                </Col>
-            </Row>
-        </Form>
-    </Col>
-}
-function BuildShip({state, dispatch}){
-    const [vessel, setVessel] = useState('Boat')
-    return <Col xs={12}>
-        <Row>
-            <Col xs={4}>
-                <Button onClick={()=>{dispatch({type: 'craft', payload: {type: vessel.toLowerCase()}})}}>Build</Button><br/>
-            </Col>
-            <Col xs={8}>
-                <select className={'form-control'} value={vessel} onChange={(e)=>{setVessel(e.target.value)}}>
-                    <option>Raft</option>
-                    <option>Boat</option>
-                    <option>Ship</option>
-                    <option>Flagship</option>
-                </select>
-            </Col>
-        </Row>
-        <Row style={{backgroundColor: '#777777aa'}}>
-            <Col xs={4}>
-                Boats: {state.boat || 0}
-            </Col>
-            <Col xs={4}>
-                Ships: {state.ship || 0}
-            </Col>
-            <Col xs={4}>
-                Flagships: {state.flagship || 0}
-            </Col>
-            <Col xs={4}>
-                Rafts: {state.raft || 0}
-            </Col>
-        </Row>
-        <Row style={{backgroundColor: '#777777aa'}}>
-            <Col xs={12}>
-                {vessel=='Raft' && <>Raft: -20 Wood<br/></>}
-                {vessel=='Boat' && <>Boat: -30 Lumber<br/></>}
-                {vessel=='Ship' && <>Ship: -40 Lumber, -40 Brick, -20 Metal</>}
-                {vessel=='Flagship' && <>Ship: -80 Lumber, -40 Wood, -80 Brick, -60 Metal</>}
-            </Col>
-        </Row>
-    
-    </Col>
-}
-
-function Portal({state, dispatch}){
-    const [destination, setDestination] = useState('projects')
-    return <Col xs={12}>
-        <Form>
-            <Row>
-                <Col xs={12}>Teleport to another realm</Col>
-                <Col xs={4}>
-                    <Button onClick={()=>{dispatch({type: 'teleport', payload: {destination: destination}})}}>bLink</Button><br/>
-                </Col>
-                <Col xs={8}>
-                    <select className={'form-control'} value={destination} onChange={(e)=>{setDestination(e.target.value)}}>
-                        {
-                            portals.map((p, i)=>{
-                                return <option key={i}>{p}</option>
-                            })
-                        }
-                    </select>
-                </Col>
-            </Row>
-        </Form>
-    </Col>
 }
