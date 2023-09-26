@@ -12,15 +12,19 @@ export default function Plants({params, searchParams}){
             </div>
         </div>
         <div id={'carosel'} className={'row'} style={{width: '100%'}}>
-            <div className={'col-12'} style={{display: 'flex', width: '100%', overflowX: 'hidden'}} onWheel={(e)=>{e.currentTarget.scrollLeft+=e.deltaY}}>
+            <div className={'col-12'} style={{display: 'flex', overflowX: 'hidden'}} onWheel={(e)=>{e.currentTarget.scrollLeft+=e.deltaY}}>
                 {[
+                    '/assets/banner.jpg',
                     '/assets/teal_banner.jpg',
-                    '/assets/binary2.png',
+                    '/assets/terraforge_bg.jpg',
+                    '/assets/banner.jpg',
                     '/assets/teal_banner.jpg',
+                    '/assets/terraforge_bg.jpg',
+                    '/assets/banner.jpg',
                     '/assets/teal_banner.jpg',
-                    '/assets/teal_banner.jpg',
+                    '/assets/terraforge_bg.jpg'
                 ].map((img, i) => {
-                    return <img key={i} src={img} style={{maxWidth: '30%', margin: '20px', border: '2px gray solid', borderRadius: '10px'}}/>
+                    return <div style={{margin: '20px'}}><img key={i} src={img} style={{minWidth: '400px', maxWidth: '100%', border: '2px gray solid', borderRadius: '10px'}}/></div>
                 })}
             </div>
         </div>
