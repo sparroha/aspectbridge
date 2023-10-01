@@ -102,8 +102,7 @@ export default function Go(p){
      */
     if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
     return <div style={{color: '#fff', marginTop: '40px'}}>
-        <Row>
-        <InfoHeader id="controls" bgColor={'#ddd'}>
+        <Row><InfoHeader id="controls" bgColor={'#ddd'}>
             <Col xs={12} sm={6} md={3} lg={2}>
                 <label>Save Interval:</label>
                 <input type="number" value={autoSaveInterval} onChange={(e)=>{setAutoSaveInterval(()=>{
@@ -132,7 +131,11 @@ export default function Go(p){
                 </Col>
             })} 
         </InfoHeader></Row>
-        <Row id="activities">
+        {/**
+         * All valid forms must be registered here in order to render to app page
+         * This includes all Zone components and their children
+         */}
+        <Row id="interface-zones">
             <Zone id={"Mine"} bgColor={"#aa7"} bgAlt={'Gold Mine'} helper bgImage={'https://www.automation.com/getmedia/f4d4cca4-3167-4426-803a-de780ccefab9/Gold-mine-feature-July-29-2021-web.png?width=500&height=313&ext=.png'}>
                 <MineOre/>
                 <SmeltMetal/>

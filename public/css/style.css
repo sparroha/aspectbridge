@@ -10,7 +10,7 @@
 	font-family: "Times New Roman", Times, serif;
 }
 :has(.aspect){
-	/*background-image:url("../assets/terraforge_bg.jpg");*/
+	background-image:url("../assets/terraforge_bg.jpg");
 	background-color: #112;
     background-size: cover;
     background-repeat: no-repeat;

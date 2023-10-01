@@ -41,7 +41,7 @@ export function Zone({id, bgColor, bgImage, bgGradient, bgAlt, children, helper}
 }
 
 
-//activities
+//zone activities
 export function ChopWood(){
     const {state, dispatch} = useZRContext()
     return <Col xs={4}>

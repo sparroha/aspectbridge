@@ -4,6 +4,14 @@ import { createContext, useContext, useReducer } from "react"
 type Location = 'Mine' | 'Quary' | 'Forest' | 'River' | 'Port' | 'Shipyard' | 'Library' | 'Scripts' | 'Tower' | 'Aurical'
 type LocationInfo = {name: string, zones: Location[]}
 
+/**
+ * each location represents a page content and each zone represents a form interface on that page
+ * interfaces will not render if not included in this zone list unless they are standalone and do not use the zone constraints
+ * 
+ * const {state, dispatch} = useZRContext()
+ * if(!state.location?.zones?.includes(id))return
+ * 
+ */
 export const locations: {[key: string]: LocationInfo} = {
     island: {name: 'Island', zones: ['Mine', 'Quary', 'Forest', 'River', 'Library', 'Tower']},
     mainland: {name: 'Mainland', zones: ['Quary', 'Forest', 'Port', 'Shipyard', 'Library', 'Scripts']},
@@ -26,7 +34,12 @@ export const useZRContext = ()=>{
 }
 
 export default function ZRCProvider({children}){
-    
+    /**
+     * These are the rules for all manipulations handled by the user intertface
+     * @param state 
+     * @param action 
+     * @returns 
+     */
     const reducer = (state: any, action: {type: string, payload?: any})=>{
         let actionType = action.type.toLowerCase()
         switch(actionType){
