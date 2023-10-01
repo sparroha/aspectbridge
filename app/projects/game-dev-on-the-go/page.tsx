@@ -6,53 +6,18 @@ import useUser from '../../../lib/util/^user';
 import Link from 'next/link';
 import { BuildRaft, BuildShip, ChiselSlabs, Choice, ChopWood, DigClay, FireBricks, Fish, InfoHeader, MineOre, Portal, QuaryStone, Sail, SawLumber, ScribeTablet, ScriptDirectory, SmeltMetal, Zone } from './zones';
 import { initialState, useZRContext } from './provider';
+import { useUserSave } from '../../../lib/util/^userSave';
 //----------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------
 export default function Go(p){
     /**CONSTANTS**/
-    const {state, dispatch} = useZRContext()
-
-    //----------------------------------------------------------------------------------------------------------------------------------
-
-    /**USER DATA CONSTANTS**/
-    const [userLoaded, setUserLoaded] = useState(false)
-    const [autoSaveInterval, setAutoSaveInterval] = useState(10)
+    const {state, dispatch} = useZRContext()//138 lines
     const user = useUser()
-    const saveLoad = ()=>{
-        if(!user)return
-        try{
-            setDB('on_the_go:'+user?.username, state)
-        }catch(e){
-            try{
-                setDB('on_the_go:'+user?.username, state)
-                console.log('New entry for on_the_go:'+user?.username, e)
-            }catch(a){
-                console.log('Failed to save on_the_go:'+user?.username, a)
-            }
-        }
-    }
-    const loadSave = ()=>{
-        if(!user)return alert('loading user or user not logged in')
-        try{
-            getDB('on_the_go:'+user?.username).then((data)=>{
-                dispatch({type: 'set', payload: JSON.parse(data.data)})
-            })
-            setUserLoaded(true)
-        }catch(e){
-            try{
-                getDB('on_the_go:'+user?.username).then((data)=>{
-                    dispatch({type: 'set', payload: JSON.parse(data.data)})
-                })
-                setUserLoaded(true)
-                console.log('New entry for on_the_go:'+user?.username, e)
-            }catch(a){
-                console.log('Failed to save on_the_go:'+user?.username, a)
-            }
-        }
-    }
+    const [saveLoad, loadSave, userLoaded] = useUserSave('on_the_go', user?.username, state, dispatch)
+    
+    const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     //----------------------------------------------------------------------------------------------------------------------------------
-
 
     //----------------------------------------------------------------------------------------------------------------------------------
     /**AUTO SAVE LOOP*/
