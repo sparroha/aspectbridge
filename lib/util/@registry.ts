@@ -1,6 +1,6 @@
 import { RegistryFetch } from "../../app/api/registry/route"
 
-export class Registry{
+export class Registry_experimental{
     uuid: string
     defaultValue: any
     registryLoaded: boolean

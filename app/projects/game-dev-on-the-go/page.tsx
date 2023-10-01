@@ -13,8 +13,8 @@ import { useUserSave } from '../../../lib/util/^userSave';
 export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useZRContext()//138 lines
-    const user = useUser()
-    const [saveLoad, loadSave, userLoaded] = useUserSave('on_the_go', user?.username, state, dispatch)
+    const user = useUser()//22
+    const [saveLoad, loadSave, userLoaded] = useUserSave('on_the_go', user?.username, state, dispatch)//40 lines
     
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     //----------------------------------------------------------------------------------------------------------------------------------

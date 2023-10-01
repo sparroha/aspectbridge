@@ -1,5 +1,3 @@
-
-
 'use client'
 import { useEffect, useState } from "react"
 import { User } from "../../pages/login/[userlogin]"
@@ -22,4 +20,3 @@ export default function useUser(): User {
     },[hash])
     return user
 }
-
