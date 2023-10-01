@@ -7,6 +7,7 @@ export default function ActiveUsers(props){
     return <div style={style}>{activeUsers?.map((user, i)=>{
         let now = Date.now()
         let then = new Date(user.time).getTime()
+        if(now-then>600000) return null
         //console.log('now', now, 'then', then)
         let seconds = Math.floor((now-then)/1000)
         let minutes = Math.floor(seconds/60)
