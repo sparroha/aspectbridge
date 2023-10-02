@@ -49,16 +49,17 @@ export default function ZRCProvider({children}){
                 return action.payload != "default" ? action.payload : initialState
             case 'loop':
                 console.log('loop attempt')
-                let roll = Math.random()*10 //d10
-                let success: boolean = (roll<=2) //20% chance
+                let roll = Math.random()*10+1 //d10
+                let success: boolean = (roll<=3) //30% chance
                 if(!success)return state
                 console.log('loop success')
                 return {...state,
-                    ore: Math.floor(Math.random()*(state.helpers.mine || 0)) + (state.ore?state.ore:0),
-                    stone: Math.floor(Math.random()*(state.helpers.quary || 0)) + (state.stone?state.stone:0),
-                    wood: Math.floor(Math.random()*(state.helpers.forest || 0)) + (state.wood?state.wood:0),
-                    fish: Math.floor(Math.random()*(state.helpers.river || 0)) + Math.floor(Math.random()*state.helpers.port) + (state.fish?state.fish:0),
-                    clay: Math.floor(Math.random()*(state.helpers.library || 0)) + (state.clay?state.clay:0)
+                    //(state.helpers && state.helpers[type])
+                    ore: Math.floor(Math.random()*(state.helpers?.mine?state.helpers.mine+1:1)) + (state.ore?state.ore:0),
+                    stone: Math.floor(Math.random()*(state.helpers?.quary?state.helpers.quary+1:1)) + (state.stone?state.stone:0),
+                    wood: Math.floor(Math.random()*(state.helpers?.forest?state.helpers.forest+1:1)) + (state.wood?state.wood:0),
+                    fish: Math.floor(Math.floor(Math.random()*(state.helpers?.river?state.helpers.river+1:1))/2) + Math.floor(Math.random()*(state.helpers?.port?state.helpers.port+1:1)) + (state.fish?state.fish:0),
+                    clay: Math.floor(Math.floor(Math.random()*(state.helpers?.river?state.helpers.river+1:1))/2) + Math.floor(Math.random()*(state.helpers?.library?state.helpers.library+1:1)) + (state.clay?state.clay:0)
                 }
             case 'add'://{type: 'ore', count: 1}
                 return {...state, [action.payload.type]: state[action.payload.type]?state[action.payload.type]+action.payload.count:action.payload.count}
@@ -118,8 +119,8 @@ export default function ZRCProvider({children}){
                 if(!state[vessel]) {alert('you seem to have not found one of those '+vessel+'s yet'); return state}
                 if(state[vessel]<1) {alert('no '+vessel+'s available'); return state}
                 let durability = (vessel=='boat'?4:(vessel=='ship'?10:(vessel=='flagship'?20:2)))
-                let loss = 0 + (Math.floor(Math.random()*durability+1)<2?1:0)
-                if(loss>1) {alert('Your '+vessel+' was lost at sea!'); return {...state, [vessel]: state[vessel]-1, fish: state.fish-20}}
+                let loss = Math.floor(Math.random()*durability)<1?1:0
+                if(loss>=1) {alert('Your '+vessel+' was lost at sea!'); return {...state, location: locations[destination], [vessel]: state[vessel]-1, fish: state.fish-20}}
                 return {...state, location: locations[destination], fish: state.fish-20}
             case 'hire'://{type: 'Mine', fee: 100}
                 if(state.fish<(action.payload.fee || 200)) {alert('not enough fish'); return state}

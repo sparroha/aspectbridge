@@ -122,7 +122,7 @@ export function ScribeTablet(){
             <label style={{backgroundColor: '#777777aa'}}>Last 3 scripts</label>
             <div style={{maxHeight: '100%', overflow: 'auto', color: 'black', textShadow: '2px 1px #73f', backgroundColor: '#777777aa'}}>
                 {state.tablets?.map((t, i)=>{
-                    if(i<state.tablets.length-2) return
+                    if(i<state.tablets.length-3) return
                     return <div key={i}>{t}<hr style={{margin: 0, padding: 0}}/></div>
                 }
                 )}
