@@ -3,7 +3,7 @@ import { useReducer, useState, useEffect, createContext, useContext } from 'reac
 import { Button, Col, Form, Row } from "react-bootstrap";
 import useUser from '../../lib/util/^user';
 import Link from 'next/link';
-import { BuildRaft, BuildShip, ChiselSlabs, Choice_experimental as Choice, ChopWood, DigClay, FireBricks, Fish, InfoHeader, MineOre, Portal, QuaryStone, Sail, SawLumber, ScribeTablet, ScriptDirectory, SmeltMetal, FormGroup, ContentPanel, InfoPanel, ChatPanel, InterfacePanel, DisplayGroup } from './forms';
+import { BuildRaft, BuildShip, ChiselSlabs, Choice_experimental as Choice, ChopWood, DigClay, FireBricks, Fish, InfoHeader, MineOre, Portal, QuaryStone, Sail, SawLumber, ScribeTablet, ScriptDirectory, SmeltMetal, FormGroup, ContentPanel, InfoPanel, ChatPanel, InterfacePanel, DisplayGroup, Beginning } from './forms';
 import { initialState, useVerseContext } from './provider';
 import { useUserSave } from '../../lib/util/^userSave';
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ export default function Go(p){
         </Row>
         <Row id="form-groups">
             <FormGroup id={"Aurical"} bgGradient={'radial-gradient(#fff, #fff 50%, #90a0f088 52%, #90a0f088 60%, #00000000 70%)'} bgAlt={'NGC 1433'}>
-                <Choice/>
+                <Beginning/>
             </FormGroup>
             <FormGroup id={"Mine"} bgColor={"#aa7"} bgAlt={'Gold Mine'} helper bgImage={'https://www.automation.com/getmedia/f4d4cca4-3167-4426-803a-de780ccefab9/Gold-mine-feature-July-29-2021-web.png?width=500&height=313&ext=.png'}>
                 <MineOre/>

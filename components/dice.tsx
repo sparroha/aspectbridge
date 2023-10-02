@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { TLitter, alephbeth } from "./hebrew";
 
-type diceProps = {
+export type diceProps = {
     sides?: number,
     speed?: number,
     rand?: Function,
@@ -51,8 +51,8 @@ function useDiceRoll(props: diceInitProps): diceProps{
     }
 }
 const albt22: TLitter[] = Object.entries(alephbeth).filter((l)=>l[1].order<=22).map((l)=>l[1])
-export default function D20(){
-    useEffect(()=>{console.log('albt22',albt22)},[])
+export default function D20({setExternalProps, clickD}: {setExternalProps: Function, clickD?: Function}){
+    //useEffect(()=>{console.log('albt22',albt22)},[])
     const {sides, speed, rand, 
         value, setRoller, 
         selectSides, setValue, 
@@ -63,6 +63,13 @@ export default function D20(){
         //console.log(e.currentTarget.innerHTML.split('>')[1].split('<')[0])
         setToggle((t)=>!t)
         setValue(Math.floor(Math.random()*sides)+1)
+        setExternalProps({
+            sides, speed, rand, 
+            value, setRoller, 
+            selectSides, setValue, 
+            setSpeed
+        })
+        clickD()
     }
     return <div style={{position: 'relative', width: '6em', height: '6em', backgroundColor: 'transparent', border: 'none'}}>
     <button style={{
@@ -85,6 +92,7 @@ export default function D20(){
         border: '1px outset #888',
         width: '3em',
         height: '3em',
+        fontSize: '1em', 
         borderRadius: '.5em',
         backgroundColor: '#fff',
         transition: 'linear .2s all', 

@@ -1,6 +1,9 @@
-import { useState } from "react"
+'use client'
+import { Dispatch, useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useVerseContext } from "./provider"
+import DiceWidget, { useDiceRoll } from "../../components/dice-old"
+import D20, { diceInitProps, diceProps } from "../../components/dice"
 
 
 export default function Nowhere(){return <></>}
@@ -33,9 +36,15 @@ export function ControlGroup({id, bgColor, bgImage, bgGradient, bgAlt, children}
     </Col>
 }
 export function ContentPanel(){
+    
+    const [exP, setExP]: [Partial<diceProps>, Dispatch<any>] = useState({sides: 22, speed: 5})
     const {state, dispatch} = useVerseContext()
     return <Col xs={12} sm={6}>
-        This is the where abouts the reset occurs
+        Life brought you here<br/>
+        Curiocity is your fuel<br/>
+        Self discovery is your purpose<br/>
+        <br/>
+        You are a soul in the river of life
     </Col>
 }
 export function InfoPanel(){
@@ -325,5 +334,16 @@ export function Choice_experimental(){
 
             </Row>
         </Form>
+    </Col>
+}
+export function Beginning(){
+    const [exPfro, setExPfro]: [Partial<diceProps>, Dispatch<any>] = useState({sides: 22, speed: 5})
+    const [exPat, setExPat]: [Partial<diceProps>, Dispatch<any>] = useState({sides: 22, speed: 5})
+    const [exPto, setExPto]: [Partial<diceProps>, Dispatch<any>] = useState({sides: 22, speed: 5})
+    const {state, dispatch} = useVerseContext()
+    return <Col xs={12} sm={6}>
+        <Row><Col>Where from?<br/>{exPfro.value}</Col><Col><D20 setExternalProps={setExPfro} clickD={()=>{}}/></Col></Row>
+        <Row><Col>Where are?<br/>{exPat.value}</Col><Col><D20 setExternalProps={setExPat} clickD={()=>{}}/></Col></Row>
+        <Row><Col>Where to?<br/>{exPto.value}</Col><Col><D20 setExternalProps={setExPto} clickD={()=>{}}/></Col></Row>
     </Col>
 }
