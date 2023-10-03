@@ -20,26 +20,11 @@ export function useUserSave(host: string, username: string, state: any, dispatch
     }
     const load = ()=>{//load
         if(!username)return alert('loading user or user not logged in')
-        try{
-            getDB(host+':'+username).then((data)=>{
+        getDB(host+':'+username).then((data)=>{
                 if(!data.data)return
                 dispatch({type: 'set', payload: JSON.parse(data.data)})
-            })
-            //setUserLoaded(loaded)
-        }catch(e){
-            alert('trying again. this happens on first load')
-            try{
-                //second attempt before error
-                getDB(host+':'+username).then((data)=>{
-                    if(!data.data)return
-                    dispatch({type: 'set', payload: JSON.parse(data.data)})
-                })
-                //setUserLoaded(true)
-                console.log('New entry for '+host+':'+username, e)
-            }catch(a){
-                console.log('Failed to load '+host+':'+username, a)
-            }
-        }
+        })
+        setUserLoaded(true)
     }
     return [save, load, userLoaded]
 }
