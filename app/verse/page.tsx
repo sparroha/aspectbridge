@@ -1,5 +1,5 @@
 'use client'
-import { useReducer, useState, useEffect, createContext, useContext } from 'react'
+import { useReducer, useState, useRef, useEffect, createContext, useContext } from 'react'
 import { Button, Col, Form, Row } from "react-bootstrap";
 import useUser from '../../lib/util/^user';
 import Link from 'next/link';
@@ -16,50 +16,44 @@ export default function Go(p){
     const [saveLoad, loadSave,] = useUserSave('verse', user?.username, state, (data)=>dispatch({type: 'set', payload: data}))//40 lines
     
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
+    const loopCounter = useRef(0)
     //----------------------------------------------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------------------------------------------
-    /**AUTO SAVE LOOP*/
-    //auto save every n seconds
     useEffect(()=>{
         if(!user)return
         loadSave()
         setTimeout(()=>{
             dispatch({type: 'user', payload: user.username})
         }, 333)
-        if(state && state == initialState) return
     },[user])
+    //----------------------------------------------------------------------------------------------------------------------------------
+    //game loop
     useEffect(()=>{
         if(!user) return
-        console.log('saveLoopReloaded')
-        const saveInterval = setInterval(()=>{
+        //console.log('gameLoopReloaded')
+        if(!state?.helpers) return
+
+        const gameInterval = setInterval(()=>{
+            
             if(!user) return
             if(state && state == initialState) return
-            console.log('saving with interval in seconds', autoSaveInterval)
-            saveLoad()
-        }, autoSaveInterval*1000)
-        return ()=>{
-            console.log('saveLoopUnloaded')
-            clearInterval(saveInterval)
-        }
-    },[user, state, autoSaveInterval])
-    //----------------------------------------------------------------------------------------------------------------------------------
-    //game incriment loop
-    useEffect(()=>{
-        if(!user) return
-        console.log('gameLoopReloaded')
-        if(!state?.helpers) return
-        const gameInterval = setInterval(()=>{
-            if(!user) return
-            if(state && state == initialState) return//untested. looking for save reset error.
             //console.log('gameLoopAttempted')
-            dispatch({type: 'loop'})
-        }, 2000)
+            //save loop
+            if(loopCounter.current>=autoSaveInterval){
+                saveLoad()
+                loopCounter.current-=autoSaveInterval
+                //console.log('saving with interval in seconds', autoSaveInterval)
+            }
+            if(loopCounter.current%2==0)dispatch({type: 'loop'})
+            loopCounter.current++
+        }, 1000)
+
         return ()=>{
-            console.log('gameLoopUnloaded')
+            //console.log('gameLoopUnloaded')
             clearInterval(gameInterval)
         }
-    },[user, state])
+    },[user, state, autoSaveInterval])
     //----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -67,6 +61,7 @@ export default function Go(p){
     /**
      * APP RENDER
      */
+    if(state && state == initialState) return <></>
     if(!state.user) return <>Initializing User Data...</>
     //if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
     return <div style={{color: '#fff', marginTop: '40px'}}>

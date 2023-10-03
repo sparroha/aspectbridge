@@ -43,7 +43,7 @@ export async function setDB(name: string, data: any){
             data: data
         })
     }).then(res => res.json())
-    console.log('@setDB://set '+name+' to '+JSON.stringify(data)+'\n'+JSON.stringify(post))
+    //console.log('@setDB://set '+name+' to '+JSON.stringify(data)+'\n'+JSON.stringify(post))
 }
 
 export async function getDB(name: string, signal?: AbortSignal): Promise<RegistryFetch>{

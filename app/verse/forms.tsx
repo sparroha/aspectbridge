@@ -3,7 +3,7 @@ import { Dispatch, useState } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useVerseContext } from "./provider"
 import DiceWidget, { useDiceRoll } from "../../components/dice-old"
-import D20, { diceInitProps, diceProps } from "../../components/dice"
+import D20, { albt22, diceInitProps, diceProps } from "../../components/dice"
 
 
 export default function Nowhere(){return <></>}
@@ -94,10 +94,10 @@ export function FormGroup({id, bgColor, bgImage, bgGradient, bgAlt, children, he
             {helper && <Col xs={8}>
                 <Row>
                     <Col xs={5}>
-                        <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase(), fee: 100}})}}>Hire:</Button>
+                        <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase(), fee: 20}})}}>Hire:</Button>
                     </Col>
                     <Col xs={7}>
-                        <div style={{backgroundColor: '#777777aa'}}>Helpers: {state.helpers?.[id.toLowerCase()]}<br/>-100 Fish</div>
+                        <div style={{backgroundColor: '#777777aa'}}>Helpers: {state.helpers?.[id.toLowerCase()]}<br/>-20 Fish</div>
                     </Col>
                 </Row>
             </Col>}
@@ -342,8 +342,8 @@ export function Beginning(){
     const [exPto, setExPto]: [Partial<diceProps>, Dispatch<any>] = useState({sides: 22, speed: 5})
     const {state, dispatch} = useVerseContext()
     return <Col xs={12} sm={6}>
-        <Row><Col>Where from?<br/>{exPfro.value}</Col><Col><D20 setExternalProps={setExPfro} clickD={()=>{}}/></Col></Row>
-        <Row><Col>Where are?<br/>{exPat.value}</Col><Col><D20 setExternalProps={setExPat} clickD={()=>{}}/></Col></Row>
-        <Row><Col>Where to?<br/>{exPto.value}</Col><Col><D20 setExternalProps={setExPto} clickD={()=>{}}/></Col></Row>
+        <Row><Col>Where from?<br/>{albt22[exPfro.value-1]?.uni || ''}</Col><Col><D20 setExternalProps={setExPfro} clickD={()=>{}}/></Col></Row>
+        <Row><Col>Where are?<br/>{albt22[exPat.value-1]?.uni || ''}</Col><Col><D20 setExternalProps={setExPat} clickD={()=>{}}/></Col></Row>
+        <Row><Col>Where to?<br/>{albt22[exPto.value-1]?.uni || ''}</Col><Col><D20 setExternalProps={setExPto} clickD={()=>{}}/></Col></Row>
     </Col>
 }

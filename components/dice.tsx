@@ -50,7 +50,7 @@ function useDiceRoll(props: diceInitProps): diceProps{
         setSpeed: setSpeed
     }
 }
-const albt22: TLitter[] = Object.entries(alephbeth).filter((l)=>l[1].order<=22).map((l)=>l[1])
+export const albt22: TLitter[] = Object.entries(alephbeth).filter((l)=>l[1].order<=22).map((l)=>l[1])
 export default function D20({setExternalProps, clickD}: {setExternalProps: Function, clickD?: Function}){
     //useEffect(()=>{console.log('albt22',albt22)},[])
     const {sides, speed, rand, 
@@ -63,14 +63,16 @@ export default function D20({setExternalProps, clickD}: {setExternalProps: Funct
         //console.log(e.currentTarget.innerHTML.split('>')[1].split('<')[0])
         setToggle((t)=>!t)
         setValue(Math.floor(Math.random()*sides)+1)
+        clickD()
+    }
+    useEffect(()=>{
         setExternalProps({
             sides, speed, rand, 
             value, setRoller, 
             selectSides, setValue, 
             setSpeed
         })
-        clickD()
-    }
+    },[toggle])
     return <div style={{position: 'relative', width: '6em', height: '6em', backgroundColor: 'transparent', border: 'none'}}>
     <button style={{
         position: 'absolute', 
