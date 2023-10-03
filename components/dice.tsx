@@ -51,7 +51,7 @@ function useDiceRoll(props: diceInitProps): diceProps{
     }
 }
 export const albt22: TLitter[] = Object.entries(alephbeth).filter((l)=>l[1].order<=22).map((l)=>l[1])
-export default function D20({setExternalProps, clickD}: {setExternalProps: Function, clickD?: Function}){
+export default function D20({setExternalProps, clickD}: {setExternalProps?: Function, clickD?: Function}){
     //useEffect(()=>{console.log('albt22',albt22)},[])
     const {sides, speed, rand, 
         value, setRoller, 
@@ -66,6 +66,7 @@ export default function D20({setExternalProps, clickD}: {setExternalProps: Funct
         clickD()
     }
     useEffect(()=>{
+        if(!setExternalProps) return
         setExternalProps({
             sides, speed, rand, 
             value, setRoller, 
