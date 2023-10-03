@@ -47,6 +47,8 @@ export default function ZRCProvider({children}){
                 return window.location.href = '/'+action.payload.destination
             case 'set':
                 return action.payload != "default" ? action.payload : initialState
+            case 'user':
+                return {...state, user: action.payload}
             case 'loop':
                 console.log('loop attempt')
                 let roll = Math.random()*10+1 //d10

@@ -13,7 +13,7 @@ export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useVerseContext()//138 lines
     const user = useUser()//22
-    const [saveLoad, loadSave,] = useUserSave('verse', user?.username, state, dispatch)//40 lines
+    const [saveLoad, loadSave,] = useUserSave('verse', user?.username, state, (data)=>dispatch({type: 'set', payload: data}))//40 lines
     
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -34,9 +34,8 @@ export default function Go(p){
         console.log('saveLoopReloaded')
         const saveInterval = setInterval(()=>{
             if(!user) return
-            if(state && state == initialState) return//untested. looking for save reset error.
-            //console.log('saveAttempted')
-            console.log('save interval', autoSaveInterval)
+            if(state && state == initialState) return
+            console.log('saving with interval in seconds', autoSaveInterval)
             saveLoad()
         }, autoSaveInterval*1000)
         return ()=>{

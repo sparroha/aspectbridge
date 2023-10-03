@@ -12,8 +12,8 @@ import { useUserSave } from '../../../lib/util/^userSave';
 export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useZRContext()//138 lines
-    const user = useUser()//22
-    const [saveLoad, loadSave, userLoaded] = useUserSave('on_the_go', user?.username, state, dispatch)//40 lines
+    const user = useUser()//22 lines
+    const [saveLoad, loadSave] = useUserSave('on_the_go', user?.username, state, (data)=>dispatch({type: 'set', payload: data}))//40 lines
     
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -22,12 +22,18 @@ export default function Go(p){
     /**AUTO SAVE LOOP*/
     //auto save every n seconds
     useEffect(()=>{
+        if(!user)return
+        loadSave()
+        setTimeout(()=>{
+            dispatch({type: 'user', payload: user.username})
+        }, 500)
+        if(state && state == initialState) return
+    },[user])
+    useEffect(()=>{
         if(!user) return
-        if(!userLoaded) return
         console.log('saveLoopReloaded')
         const saveInterval = setInterval(()=>{
             if(!user) return
-            if(!userLoaded) return
             if(state == initialState) return//untested. looking for save reset error.
             //console.log('saveAttempted')
             console.log('save interval', autoSaveInterval)
@@ -37,17 +43,15 @@ export default function Go(p){
             console.log('saveLoopUnloaded')
             clearInterval(saveInterval)
         }
-    },[user, userLoaded, state, autoSaveInterval])
+    },[user, state, autoSaveInterval])
     //----------------------------------------------------------------------------------------------------------------------------------
     //game incriment loop
     useEffect(()=>{
         if(!user) return
-        if(!userLoaded) return
         console.log('gameLoopReloaded')
         if(!state?.helpers) return
         const gameInterval = setInterval(()=>{
             if(!user) return
-            if(!userLoaded) return
             if(state == initialState) return//untested. looking for save reset error.
             //console.log('gameLoopAttempted')
             dispatch({type: 'loop'})
@@ -56,7 +60,7 @@ export default function Go(p){
             console.log('gameLoopUnloaded')
             clearInterval(gameInterval)
         }
-    },[user, userLoaded, state])
+    },[user, state])
     //----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -64,7 +68,7 @@ export default function Go(p){
     /**
      * APP RENDER
      */
-    if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
+    if(!state.user) return <>Initializing User Data...</>
     return <div style={{color: '#fff', marginTop: '40px'}}>
         <Row><InfoHeader id="controls" bgColor={'#ddd'}>
             <Col xs={12} sm={6} md={3} lg={2}>
