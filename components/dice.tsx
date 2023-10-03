@@ -63,7 +63,7 @@ export default function D20({setExternalProps, clickD}: {setExternalProps?: Func
         //console.log(e.currentTarget.innerHTML.split('>')[1].split('<')[0])
         setToggle((t)=>!t)
         setValue(Math.floor(Math.random()*sides)+1)
-        clickD()
+        clickD?.()
     }
     useEffect(()=>{
         if(!setExternalProps) return
