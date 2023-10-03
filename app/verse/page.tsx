@@ -13,7 +13,7 @@ export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useVerseContext()//138 lines
     const user = useUser()//22
-    const [saveLoad, loadSave, userLoaded] = useUserSave('verse', user?.username, state, dispatch)//40 lines
+    const [saveLoad, loadSave,] = useUserSave('verse', user?.username, state, dispatch)//40 lines
     
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -22,13 +22,19 @@ export default function Go(p){
     /**AUTO SAVE LOOP*/
     //auto save every n seconds
     useEffect(()=>{
+        if(!user)return
+        loadSave()
+        setTimeout(()=>{
+            dispatch({type: 'user', payload: user.username})
+        }, 333)
+        if(state && state == initialState) return
+    },[user])
+    useEffect(()=>{
         if(!user) return
-        if(!userLoaded) return
         console.log('saveLoopReloaded')
         const saveInterval = setInterval(()=>{
             if(!user) return
-            if(!userLoaded) return
-            if(state == initialState) return//untested. looking for save reset error.
+            if(state && state == initialState) return//untested. looking for save reset error.
             //console.log('saveAttempted')
             console.log('save interval', autoSaveInterval)
             saveLoad()
@@ -37,18 +43,16 @@ export default function Go(p){
             console.log('saveLoopUnloaded')
             clearInterval(saveInterval)
         }
-    },[user, userLoaded, state, autoSaveInterval])
+    },[user, state, autoSaveInterval])
     //----------------------------------------------------------------------------------------------------------------------------------
     //game incriment loop
     useEffect(()=>{
         if(!user) return
-        if(!userLoaded) return
         console.log('gameLoopReloaded')
         if(!state?.helpers) return
         const gameInterval = setInterval(()=>{
             if(!user) return
-            if(!userLoaded) return
-            if(state == initialState) return//untested. looking for save reset error.
+            if(state && state == initialState) return//untested. looking for save reset error.
             //console.log('gameLoopAttempted')
             dispatch({type: 'loop'})
         }, 2000)
@@ -56,7 +60,7 @@ export default function Go(p){
             console.log('gameLoopUnloaded')
             clearInterval(gameInterval)
         }
-    },[user, userLoaded, state])
+    },[user, state])
     //----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -64,7 +68,8 @@ export default function Go(p){
     /**
      * APP RENDER
      */
-    if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
+    if(!state.user) return <>Initializing User Data...</>
+    //if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
     return <div style={{color: '#fff', marginTop: '40px'}}>
         <Row><InfoHeader id="controls" bgColor={'#ddd'}>
             <Col xs={12} sm={6} md={3} lg={2}>
@@ -79,22 +84,6 @@ export default function Go(p){
             <Col xs={12} sm={6} md={3} lg={2}><Link href={'https://www.materiamagica.com'}>Materia Magica</Link></Col>
             <Col xs={12} sm={6} md={3} lg={2}><Link href={'/registry/on_the_go:'+user?.username+'?id=true&name=true&data=true'}>{user?.username}'s raw data'</Link></Col>
         </InfoHeader></Row>
-        {/*<Row><InfoHeader id="inventory_resources" bgColor={'#aaa'}>
-            {['Resources', 'stone', 'wood', 'ore', 'clay', 'fish'].map((item, i)=>{
-                return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
-                    {(item=='Resources' || item=='Materials')?item:
-                            <>{item}<br/>{state[item.toLowerCase()]}</>}
-                </Col>
-            })}
-        </InfoHeader></Row>
-        <Row><InfoHeader id="inventory_materials" bgColor={'#777'}>
-            {['Materials', 'tile', 'lumber', 'metal', 'brick'].map((item, i)=>{
-                return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
-                    {(item=='Resources' || item=='Materials')?item:
-                            <>{item}<br/>{state[item.toLowerCase()]}</>}
-                </Col>
-            })} 
-        </InfoHeader></Row>*/}
         {/**
          * All valid forms must be registered here in order to render to app page
          * This includes all FormGroup components and their children
