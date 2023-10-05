@@ -36,13 +36,14 @@ export class Registry_experimental{
 //updates database with current register ref
 export async function setDB(name: string, data: any){
     //console.log('@setDB://set '+name+' to '+JSON.stringify(data))
-    let post: Promise<RegistryFetch> = await fetch(`/api/registry`, {
+    //let post: Promise<RegistryFetch> = 
+    await fetch(`/api/registry`, {
         method: 'POST',
         body: JSON.stringify({
             name: name,
             data: data
         })
-    }).then(res => res.json())
+    }).then(res => {if(!res)console.error('setDB error',res.json())})
     //console.log('@setDB://set '+name+' to '+JSON.stringify(data)+'\n'+JSON.stringify(post))
 }
 

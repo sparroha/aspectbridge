@@ -3,7 +3,14 @@ import { useReducer, useState, useRef, useEffect, createContext, useContext } fr
 import { Button, Col, Form, Row } from "react-bootstrap";
 import useUser from '../../lib/util/^user';
 import Link from 'next/link';
-import { BuildRaft, BuildShip, ChiselSlabs, Choice_experimental as Choice, ChopWood, DigClay, FireBricks, Fish, InfoHeader, MineOre, Portal, QuaryStone, Sail, SawLumber, ScribeTablet, ScriptDirectory, SmeltMetal, FormGroup, ContentPanel, InfoPanel, ChatPanel, InterfacePanel, DisplayGroup, Beginning } from './forms';
+import { BuildRaft, BuildShip, ChiselSlabs, 
+    Choice_experimental as Choice, ChopWood, 
+    DigClay, FireBricks, Fish, InfoHeader, 
+    MineOre, Portal, QuaryStone, Sail, 
+    SawLumber, ScribeTablet, ScriptDirectory, 
+    SmeltMetal, FormGroup, ContentPanel, 
+    InfoPanel, ChatPanel, InterfacePanel, 
+    DisplayGroup, Beginning, Grid5x5, Grid5x5Info } from './forms';
 import { initialState, useVerseContext } from './provider';
 import { useUserSave } from '../../lib/util/^userSave';
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -96,8 +103,14 @@ export default function Go(p){
             </FormGroup>
         </Row>
         <Row id="form-groups">
-            <FormGroup id={"Aurical"} bgGradient={'radial-gradient(#fff, #fff 50%, #90a0f088 52%, #90a0f088 60%, #00000000 70%)'} bgAlt={'NGC 1433'}>
+            <FormGroup id={"Aurical"} bgGradient={'radial-gradient(#fff, #fff 50%, #90a0f088 52%, #90a0f088 60%, #00000000 70%)'} bgAlt={'Orb'}>
                 <Beginning/>
+            </FormGroup>
+            <FormGroup id={"Grid"} bgGradient={'radial-gradient(#fff, #fff 50%, #f0a09088 52%, #f0a09088 60%, #00000000 70%)'} bgAlt={'Orb'}>
+                <Grid5x5/>
+            </FormGroup>
+            <FormGroup id={"GridInfo"} bgGradient={'radial-gradient(#fff, #fff 50%, #a0f09088 52%, #a0f09088 60%, #00000000 70%)'} bgAlt={'Orb'}>
+                <Grid5x5Info/>
             </FormGroup>
             <FormGroup id={"Mine"} bgColor={"#aa7"} bgAlt={'Gold Mine'} helper bgImage={'https://www.automation.com/getmedia/f4d4cca4-3167-4426-803a-de780ccefab9/Gold-mine-feature-July-29-2021-web.png?width=500&height=313&ext=.png'}>
                 <MineOre/>

@@ -1,5 +1,5 @@
 'use client'
-import { Dispatch, useState } from "react"
+import { Dispatch, useRef, useState, useEffect, Fragment } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import { useVerseContext } from "./provider"
 import DiceWidget, { useDiceRoll } from "../../components/dice-old"
@@ -89,7 +89,7 @@ export function FormGroup({id, bgColor, bgImage, bgGradient, bgAlt, children, he
     return <Col id={id} xs={12} sm={6} md={4} lg={3} style={{position: 'relative'}}>
         <div style={{position: 'absolute', width: '100%', height: '100%', borderRadius: '20px', backgroundColor: bgColor || 'none', backgroundImage: bgImage?`img(${bgImage})`:bgGradient || 'none', opacity: '.7'}}></div>
         {bgImage && <img src={bgImage} alt={bgAlt || ''} style={{ position: 'absolute', width: '100%', height: '100%', padding: '5px', borderRadius: '20px', opacity: '.7'}}/>}
-        <Row style={{position: 'relative', zIndex: 1, width: '100%', textAlign: 'center'}}>
+        <Row style={{position: 'relative', width: '100%', textAlign: 'center'}}>
             <Col xs={4}><h4>{id}</h4></Col>
             {helper && <Col xs={8}>
                 <Row>
@@ -101,7 +101,8 @@ export function FormGroup({id, bgColor, bgImage, bgGradient, bgAlt, children, he
                     </Col>
                 </Row>
             </Col>}
-            
+        </Row>
+        <Row style={{position: 'relative', textAlign: 'center', justifyContent: 'center'}}>
             {children}
         </Row>
     </Col>
@@ -345,5 +346,71 @@ export function Beginning(){
         <Row><Col>Where from?<br/>{albt22[exPfro.value-1]?.uni || ''}</Col><Col><D20 setExternalProps={setExPfro} clickD={()=>{}}/></Col></Row>
         <Row><Col>Where are?<br/>{albt22[exPat.value-1]?.uni || ''}</Col><Col><D20 setExternalProps={setExPat} clickD={()=>{}}/></Col></Row>
         <Row><Col>Where to?<br/>{albt22[exPto.value-1]?.uni || ''}</Col><Col><D20 setExternalProps={setExPto} clickD={()=>{}}/></Col></Row>
+    </Col>
+}
+
+
+export function Grid5x5(){
+    const {state, dispatch} = useVerseContext()
+    const [stateReady, setStateReady] = useState(false)
+    if(!state)return
+    const gridRef: {current: [[any]]} = useRef(state.grid || [
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0]
+    ])
+    useEffect(()=>{
+        if(stateReady)return
+        if(!state)return
+        if(!state.grid)return
+        gridRef.current = state.grid
+        setStateReady(true)
+    },[state])
+
+    return <Col xs={12} sm={6}>
+        {gridRef.current.map((row, i)=>{
+            return <Row key={i}>
+                {row.map((col, j)=>{
+                    return <Col key={j} style={{textAlign: 'center'}}>
+                        <select className={'form-control'} style={{padding: '7px'}} value={gridRef.current[i][j]} onChange={(e)=>{
+                            gridRef.current[i][j] = e.target.value
+                            dispatch({type: 'grid', payload: gridRef.current})
+                        }}>
+                            {albt22.map((k, i)=>{return <option key={i}>{albt22[i].uni}</option>})}
+                        </select>
+                    </Col>
+                })}
+            </Row>
+        })}
+    </Col>
+}
+export function Grid5x5Info(){
+    const {state, dispatch} = useVerseContext()
+    if(!state)return
+    const gridInf: {current: {}} = useRef({})
+    useEffect(()=>{
+        if(!state)return
+        if(!state.grid)return
+        state.grid.map((row, i)=>{
+            row.map((col, j)=>{
+                let top = i-1<0?null:state.grid[i-1][j]
+                if(top) gridInf.current = {...gridInf.current, [col+top]: (gridInf.current[col+top]?gridInf.current[col+top]+1:1)}
+                let bottom = i+1>4?null:state.grid[i+1][j]
+                if(bottom) gridInf.current = {...gridInf.current, [col+bottom]: (gridInf.current[col+bottom]?gridInf.current[col+bottom]+1:1)}
+                let left = j-1<0?null:state.grid[i][j-1]
+                if(left) gridInf.current = {...gridInf.current, [col+left]: (gridInf.current[col+left]?gridInf.current[col+left]+1:1)}
+                let right = j+1>4?null:state.grid[i][j+1]
+                if(right) gridInf.current = {...gridInf.current, [col+right]: (gridInf.current[col+right]?gridInf.current[col+right]+1:1)}
+            })
+        })
+    },[state.grid])
+    function Display({current}: {current: {}}){
+        if(!current)return<></>
+        return <>{Object.entries(current).map((e,i)=>{return <Fragment key={i}>{e[0]}<br/></Fragment>})}</>
+    }
+    return <Col xs={12} sm={6} style={{color: '#33f'}}>
+        <Display {...gridInf}/>
     </Col>
 }

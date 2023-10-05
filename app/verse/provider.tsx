@@ -2,7 +2,7 @@
 import { createContext, useContext, useReducer } from "react"
 
 type Location = 'Mine' | 'Quary' | 'Forest' | 'River' | 'Port' | 'Shipyard' | 'Library' | 'Scripts' | 'Tower' | 'Aurical' |
-    'ContentPanel' | 'InfoPanel' | 'ChatPanel' | 'InterfacePanel'
+    'ContentPanel' | 'InfoPanel' | 'ChatPanel' | 'InterfacePanel' | 'Grid' | 'GridInfo'
 type LocationInfo = {name: string, forms: Location[]}
 
 /**
@@ -16,7 +16,7 @@ type LocationInfo = {name: string, forms: Location[]}
 export const formgroups: {[key: string]: LocationInfo} = {
     island: {name: 'Island', forms: ['Mine', 'Quary', 'Forest', 'River', 'Library', 'Tower']},
     mainland: {name: 'Mainland', forms: ['Quary', 'Forest', 'Port', 'Shipyard', 'Library', 'Scripts']},
-    styx: {name: 'Styx', forms: ['Aurical', 'Forest', 'River'/*, 'Scripts'*/]},
+    styx: {name: 'Styx', forms: ['Aurical', 'Forest', 'River', 'Grid', 'GridInfo']},
     display: {name: 'Display', forms: ['ContentPanel','InfoPanel']},
     control: {name: 'Control', forms: ['ChatPanel','InterfacePanel','InfoPanel']}
 }
@@ -61,13 +61,14 @@ export default function VerseContextProvider({children}){
                 let consumption = -Math.floor(helpercount/10)
                 //console.log('total helpers: '+helpercount)
                 //console.log('loop success')
+                let newState 
                 return {...state,
                     //(state.helpers && state.helpers[type])
-                    ore: rand(10)==1?rand(state.helpers?.mine?state.helpers.mine:0) + (state.ore?state.ore:0):(state.ore?state.ore:0),
-                    stone: rand(10)==1?rand(state.helpers?.quary?state.helpers.quary:0) + (state.stone?state.stone:0):(state.stone?state.stone:0),
-                    wood: rand(10)==1?rand(state.helpers?.forest?state.helpers.forest:0) + (state.wood?state.wood:0):(state.wood?state.wood:0),
-                    fish: rand(3)==1?Math.max(0, consumption + Math.floor(rand(state.helpers?.river?state.helpers.river:0)/2) + rand(state.helpers?.port?state.helpers.port:0) + (state.fish?state.fish:0)):Math.max(0, consumption+(state.fish?state.fish:0)),
-                    clay: rand(10)==1?Math.floor(rand(state.helpers?.river?state.helpers.river:0)/2) + rand(state.helpers?.library?state.helpers.library:0) + (state.clay?state.clay:0):(state.clay?state.clay:0),
+                    ore: Math.ceil((rand(10)==1?rand(state.helpers?.mine?state.helpers.mine:0) + (state.ore?state.ore:0):(state.ore?state.ore:0))*.93),
+                    stone: Math.ceil((rand(10)==1?rand(state.helpers?.quary?state.helpers.quary:0) + (state.stone?state.stone:0):(state.stone?state.stone:0))*.93),
+                    wood: Math.ceil((rand(10)==1?rand(state.helpers?.forest?state.helpers.forest:0) + (state.wood?state.wood:0):(state.wood?state.wood:0))*.93),
+                    fish: Math.ceil((rand(3)==1?Math.max(0, consumption + Math.floor(rand(state.helpers?.river?state.helpers.river:0)/2) + rand(state.helpers?.port?state.helpers.port:0) + (state.fish?state.fish:0)):Math.max(0, consumption+(state.fish?state.fish:0)))*.93),
+                    clay: Math.ceil((rand(10)==1?Math.floor(rand(state.helpers?.river?state.helpers.river:0)/2) + rand(state.helpers?.library?state.helpers.library:0) + (state.clay?state.clay:0):(state.clay?state.clay:0))*.93),
                 }
             case 'add'://{type: 'ore', count: 1}
                 return {...state, [action.payload.type]: state[action.payload.type]?state[action.payload.type]+action.payload.count:action.payload.count}
@@ -134,6 +135,8 @@ export default function VerseContextProvider({children}){
                 if(state.fish<(action.payload.fee || 20)) {alert('not enough fish'); return state}
                 let type = action.payload.type.toLowerCase()
                 return {...state, fish: state.fish-(action.payload.fee || 20), helpers: {...state.helpers, [type]: (state.helpers && state.helpers[type])?state.helpers[type]+1:1}}
+            case 'grid':
+                return {...state, grid: action.payload}
             default:
                 return state
         }

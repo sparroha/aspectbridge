@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useMemo, FC } from 'react'
+import React, { useEffect, useMemo, FC, useState } from 'react'
 import {Col, Row} from "react-bootstrap";
 import { useRouter } from 'next/navigation';
 import UserMenu from '../usermenu';
@@ -43,13 +43,23 @@ export default page
  */
 function AspectBridge(props){
 	const {user, activeUsers, aspect} = props
+    const [p, setP] = useState(false)
+    const [c, setC] = useState(false)
     return <>
-        <Row id={'profile_editor'} className={""}>
+        <Row id={'disclaimer'} className={""}>
+            <Col xs={12}style={{background: 'white'}}>
+                <h4>Disclaimer:</h4>
+                <p>This site is a collection of projects and fragments that are not intrensicly related. The purpose of this site is experimentation with ideas and design principals.</p>
+            </Col>
+        </Row>
+        <button onClick={(e)=>setP((p)=>!p)}>Profile</button>
+        <Row id={'profile_editor'} style={{position: p?'relative':'absolute', visibility: p?'visible':'collapse'}}>
             <Col xs={12}style={{background: 'white'}}>
                 <UserMenu user={user} homepage={'bridge'}/>
             </Col>
         </Row>
-        <Row id={'chat'} className={'justify-content-md-center'} style={{maxHeight: '50%'}}>
+        <button onClick={(e)=>setC((c)=>!c)}>Chat</button>
+        <Row id={'chat'} className={'justify-content-md-center'} style={{maxHeight: '50%', position: p?'relative':'absolute', visibility: c?'visible':'collapse'}}>
             <Col xs={12} style={{
                     backgroundImage: 'linear-gradient(to bottom, #777, #fff)' , maxHeight: '40vh'
                 }}>
