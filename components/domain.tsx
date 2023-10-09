@@ -1,6 +1,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+/**
+ * Determines the root domain and redirects to the appropriate page
+ * @param props 
+ */
 export default function useDomainRoot(props){
     const router = useRouter()
     const [domain, setDomain] = useState('')

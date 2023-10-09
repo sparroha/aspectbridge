@@ -5,7 +5,6 @@ import React, { useEffect, useMemo, FC } from 'react'
 import {Col, Row} from "react-bootstrap";
 import { useRouter } from 'next/navigation';
 import NavIndex from '../nav_old';
-import navComponentObject from '../navigaton';
 //import Calendar from 'react-calendar';
 import 'components/calendar.module.css';
 import 'react-calendar/dist/Calendar.css';
@@ -29,10 +28,6 @@ import Chat from '../../chat/chat';
 //TODO is working
 
 /**Custom Components */
-
-
-/*THERE'S A BETTER WAY THAN THIS*/
-const componentObject = navComponentObject()
 
 interface pageProps{params: {aspect: string[]}, searchParams}
 

@@ -395,12 +395,12 @@ export function Grid5x5Info(){
         if(!state.grid)return
         state.grid.map((row, i)=>{
             row.map((col, j)=>{
-                let top = i-1<0?null:state.grid[i-1][j]
-                if(top) gridInf.current = {...gridInf.current, [col+top]: (gridInf.current[col+top]?gridInf.current[col+top]+1:1)}
+                //let top = i-1<0?null:state.grid[i-1][j]
+                //if(top) gridInf.current = {...gridInf.current, [col+top]: (gridInf.current[col+top]?gridInf.current[col+top]+1:1)}
                 let bottom = i+1>4?null:state.grid[i+1][j]
                 if(bottom) gridInf.current = {...gridInf.current, [col+bottom]: (gridInf.current[col+bottom]?gridInf.current[col+bottom]+1:1)}
-                let left = j-1<0?null:state.grid[i][j-1]
-                if(left) gridInf.current = {...gridInf.current, [col+left]: (gridInf.current[col+left]?gridInf.current[col+left]+1:1)}
+                //let left = j-1<0?null:state.grid[i][j-1]
+                //if(left) gridInf.current = {...gridInf.current, [col+left]: (gridInf.current[col+left]?gridInf.current[col+left]+1:1)}
                 let right = j+1>4?null:state.grid[i][j+1]
                 if(right) gridInf.current = {...gridInf.current, [col+right]: (gridInf.current[col+right]?gridInf.current[col+right]+1:1)}
             })
