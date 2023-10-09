@@ -21,13 +21,13 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   return <html lang={'en'} /*style={{maxHeight: '100vh'}}*/>
     <body>
       <div className='container-fluid aspect' style={{height: '100%'}}>
-        <div id='header' className='row well-sm tcenter' style={{height: '12%'}}>
-          <div className='col-2 tcenter navy_back title' style={{height: '100%', margin: '-20px 0px -20px 0px'}}>
+        <div id='header' className='row well-sm tcenter logo' style={{height: '12%'}}>
+          <div className='col-2 tcenter navy_back title' style={{height: '100%'}}>
             <a href={'/bridge'}>
-              <img src={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'} width={'100%'}/>
+              <img src={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'} width={'100%'} style={{margin: '-20px', borderRadius: '50%'}}/>
             </a>
           </div>
-          <div className='col-10 tcenter navy_back title logo' style={{height: '100%'}}>
+          <div className='col-10 tcenter navy_back title' style={{height: '100%'}}>
             <h2>Aspect Bridge</h2>
             <LayoutHeader root={'bridge'}/>
           </div>
