@@ -24,7 +24,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         <div id='header' className='row well-sm tcenter logo' style={{height: '12%'}}>
           <div className='col-2 tcenter navy_back title' style={{height: '100%'}}>
             <a href={'/bridge'}>
-              <img src={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'} width={'100%'} style={{margin: '-20px', borderRadius: '50%'}}/>
+              <img src={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'} height={'100%'} style={{borderRadius: '50%'}}/>
             </a>
           </div>
           <div className='col-10 tcenter navy_back title' style={{height: '100%'}}>

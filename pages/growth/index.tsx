@@ -95,14 +95,9 @@ export default function Growth(props){
                         if(i==loc[0]&&j==loc[1]&&b.planted==false){
                             switch(action.payload.resource){
                                 case 'aleph':
-                                    if(resource.nun<7){
-                                        alert('You need 7 nun to attract an aleph!')
-                                        return b
-                                    }else{
                                         setResource((f)=>{return {...f, nun: f.nun-7}})
                                         //console.log('planted')
                                         return {...b, ...crop}
-                                    }
                                 case 'beth':
                                     if(resource.aleph<7 || resource.nun<7*7){
                                         alert('You need 7 aleph and 7*7 nun to build a beth!')
@@ -113,7 +108,7 @@ export default function Growth(props){
                                         return {...b, ...crop}
                                     }
                                 case 'nun':
-                                    if(resource.nun<alephbeth['nun'].order){
+                                    if(resource.aleph<alephbeth['nun'].order){
                                         alert('You need '+alephbeth['nun'].order+' nun to plant nun!')
                                         return b
                                     }else{

@@ -20,78 +20,6 @@ export default function LayoutHeader({ user, root }: { user?: User, root?: strin
         <Navbar.Brand as={Nav.Link} href="https://aspectbridge.com/dashboard" id="brandaspect" >Aspect Bridge</Navbar.Brand>
         :<Navbar.Brand as={Nav.Link} href="/dashboard" id="brandaspect" disabled>Aspect Bridge</Navbar.Brand>
     }
-    function NavProjects({user}){
-        const [disabled, setDisabled] = useState(true)
-        const [selected, setSelected] = useState('')
-        useEffect(()=>{
-            if(user&&(user.access=='2'||user.access=='1')){
-                setDisabled(false)
-            }else{
-                setDisabled(true)
-            }
-        },[user])
-        const ifstyle = {
-            width: 250,
-            height: 200,
-            border: '1px solid black',
-            overflow: 'hidden',
-        }
-        const plinks = [
-            ['1','api'],
-            ['0','bridge'],
-            ['0','canvas'],
-            ['0','chat'],
-            ['0','cost'],
-            ['1','cost_dev'],
-            ['0','card'],
-            ['0','home'],
-            ['0','dragons'],
-            ['1','elements'],
-            ['1','fetchexamples'],
-            ['0','gather'],
-            ['0','growth'],
-            ['0','neuralnet'],
-            ['0','registry/all'],
-            ['0','sandbox'],
-            ['1','slidersCss'],
-            ['1','static'],
-            ['0','story'],
-            ['1','talents'],
-            ['0','toolbelt'],
-            ['0','tutorial'],
-            ['0','magic'],
-            ['0','projects'],
-            ['0', 'verse'],
-            ['1','wasd'],
-            ['1','xstate'],
-        ]
-        return <NavDropdown title="Projects" id="navbarProjectsDropdown" onClick={()=>setSelected('')}>
-                {
-                    /*plinks.map((link, i)=>{
-                        return <Nav.Link key={i} href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>{link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"/"+link[1]}></iframe>}</Nav.Link>
-                    })*/
-                    plinks.map((link, i)=>{
-                        if(i%2==1){
-                            return <Row key={i} style={{width: '22vw'}}>
-                                <Col style={{border: '1px solid black'}}>
-                                    <Nav.Link key={i} href={"/"+plinks[i-1][1]} disabled={plinks[i-1][0]=='1'?disabled:false} onMouseOver={()=>setSelected(plinks[i-1][1])}>
-                                        {plinks[i-1][1]}{selected!=plinks[i-1][1]?null:<iframe style={ifstyle} src={"/"+plinks[i-1][1]}></iframe>}
-                                    </Nav.Link>
-                                </Col><Col style={{border: '1px solid black'}}>
-                                    <Nav.Link key={i} href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>
-                                        {link[1]}{selected!=link[1]?null:<iframe style={ifstyle} src={"/"+link[1]}></iframe>}
-                                    </Nav.Link>
-                                </Col>
-                            </Row>
-                        }return null
-                    })
-                }
-                <NavDropdown.Divider />
-                <label>Static Sites</label>
-                <Nav.Link href="/grid/index.html" disabled={disabled}>Grid{/*public static*/}</Nav.Link>
-                <Nav.Link href="/sandbox/wasd/index.html"  disabled={disabled}>Sandbox: wasd{/*public static*/}</Nav.Link>
-            </NavDropdown>
-    }
     function Search(){
         return <Form className="d-flex">
             <Form.Control
@@ -106,27 +34,6 @@ export default function LayoutHeader({ user, root }: { user?: User, root?: strin
     }
     
     return <NavMain/>
-    return (
-        <Navbar bg="" variant="dark" expand="lg" id="navaspect" style={{zIndex: '10'}}>
-            <Container fluid>
-                <NavBrand />
-                <Navbar.Toggle aria-controls="navbarScroll" />
-                <Navbar.Collapse id="navbarScroll">
-                    <Nav className="me-auto my-2 my-lg-0 grey-back">
-
-                        <Nav.Link href={"/"+root}>Home</Nav.Link>{' '}
-                        <Nav.Link href="/about">About</Nav.Link>{' '}
-                        <NavPartners />{' '}
-                        <NavProjects user={user}/>{' '}
-                        <NavResources />{' '}
-                        <UserLogin homepage={root} className={'nav-link'}/>
-                        <Search />
-
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
-    );
 }
 
 function NavPartners(){
@@ -171,33 +78,30 @@ function NavMain(){
         overflow: 'hidden',
     }
     const plinks: [string, string, string][] = [
-        ['1','api','/assets/terraforge_bg.jpg'],
+        //['1','api','/assets/terraforge_bg.jpg'],
         ['0','bridge','/assets/AspectHome.png'],
-        ['0','canvas',''],
-        ['0','chat',''],
-        ['0','cost',''],
-        ['1','cost_dev',''],
-        ['0','card',''],
-        ['0','home',''],
-        ['0','dragons',''],
-        ['1','elements',''],
-        ['1','fetchexamples',''],
-        ['0','gather',''],
+        //['0','projects/canvas',''],
+        //['0','chat',''],
+        ['0','cost','/assets/cost_game.png'],
+        ['0','card','/assets/cards_game.png'],
+        ['0','dragons','/assets/dragons_game.png'],
+        //['1','element',''],
+        //['1','fetchexamples/example',''],
+        //['0','gather',''],
         ['0','growth',''],
         ['0','neuralnet',''],
-        ['0','registry/all',''],
+        //['0','registry/all',''],
         ['0','sandbox',''],
         ['1','slidersCss',''],
         ['1','static',''],
         ['0','story',''],
         ['1','talents',''],
         ['0','toolbelt',''],
-        ['0','tutorial',''],
-        ['0','magic',''],
+        //['0','tutorial',''],
         ['0','projects',''],
-        ['0', 'verse',''],
+        ['0','verse','/assets/verse_game.png'],
         ['1','wasd',''],
-        ['1','xstate',''],
+        //['1','xstate',''],
     ]
     return <NavRow>
             <h4><Nav.Link href={'/bridge'}>Home</Nav.Link></h4>
