@@ -88,19 +88,18 @@ function NavMain(){
         //['1','element',''],
         //['1','fetchexamples/example',''],
         //['0','gather',''],
-        ['0','growth',''],
-        ['0','neuralnet',''],
+        ['0','growth','/assets/growth_game.png'],
+        //['0','neuralnet',''],
         //['0','registry/all',''],
-        ['0','sandbox',''],
-        ['1','slidersCss',''],
-        ['1','static',''],
-        ['0','story',''],
-        ['1','talents',''],
-        ['0','toolbelt',''],
+        ['0','sandbox','/assets/sandbox.png'],
+        ['1','slidersCss','/assets/sliders_css.png'],
+        //['0','projects/story',''],
+        //['1','talents',''],
+        //['0','toolbelt',''],//broken
         //['0','tutorial',''],
-        ['0','projects',''],
+        ['0','projects','/assets/projects.png'],
         ['0','verse','/assets/verse_game.png'],
-        ['1','wasd',''],
+        //['1','wasd',''],
         //['1','xstate',''],
     ]
     return <NavRow>
@@ -133,7 +132,8 @@ function NavMain(){
                 })}
                 </Row>
             </NavDropdown></h4>
-            <h4><NavPartners /></h4>
+            {//<h4><NavPartners /></h4>
+            }
             <h4><NavResources /></h4>
             <h4><UserLogin style={{overflow: 'none'}} /></h4>
         </NavRow>

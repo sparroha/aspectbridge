@@ -46,95 +46,105 @@ export default page
  */
 function AspectBridge(props){
 	const {user, activeUsers, aspect} = props
-    const [p, setP] = useState(false)
-    const [c, setC] = useState(false)
-    const [g, setG] = useState(false)
-    const [f, setF] = useState(false)
-    return <>
-        <Row id={'disclaimer'} className={""}>
-            <Col xs={12}style={{background: 'white'}}>
-                <h4>Disclaimer:</h4>
-                <p>This site is a collection of projects and fragments that are not intrensicly related. The purpose of this site is experimentation with ideas and design principals.</p>
+
+    function Anchors(){
+        return <Row style={{textAlign: 'center'}}>
+            <Col>
+                <Link href={'/bridge/profile'}><button>Profile</button></Link>
+                <Link href={'/bridge/frameworks'}><button>Frameworks</button></Link>
+                <Link href={'/bridge/games'}><button>Games</button></Link>
+                <Link href={'/bridge/chat'}><button>Chat</button></Link>
             </Col>
         </Row>
-        <Row id={'profile_editor'}>
-            <Col xs={2}><button onClick={(e)=>setP((p)=>!p)}>Profile</button></Col>
-            <Col xs={10}></Col>
-            <Col xs={12}style={{background: 'white', position: p?'relative':'absolute', visibility: p?'visible':'collapse'}}>
-                <UserMenu user={user} homepage={'bridge'}/>
-            </Col>
-        </Row>
-        {aspect[0] == 'about' && <Row id={'about'} className={'justify-content-md-center'}>
-            <Col xs={12} style={{background: 'white'}}>
-                <h4>Aspect Bridge</h4>
-                <p>Aspect Bridge is a platform for experimentation with ideas and design principals.</p>
-                <p>Aspect Bridge is a collection of projects and fragments that are not intrensicly related.</p>
-                <p>Aspect Bridge is a place to explore the possibilities of the web.</p>
-            </Col>
-        </Row>}
-        <Row id={'games'}>
-            <Col xs={2}><button onClick={(e)=>setG((g)=>!g)}>Games</button></Col>
-            <Col xs={10}></Col>
-            <Col xs={12}style={{background: 'white', position: g?'relative':'absolute', visibility: g?'visible':'collapse'}}>
-                <Row>
-                    <Col xs={12} sm={12} md={6}>
-                        <h4>Cost: Idle Clicker</h4>
-                        <p>This project represents the backbone of any idle clicker game. It is a functional "incremental gain" simulator with prestige. This game could have essence if given a little art.</p>
-                        <Link href={'/projects/cost'}>Cost</Link><br/>
-                        <img src={'/assets/cost_game.png'} style={{width: '100%'}}/>
-                        <br/><br/>
-                    </Col>
-                    <Col xs={12} sm={12} md={6}>
-                        <h4>Verse: Gamified Forms Project</h4>
-                        <p>This project utilizes form management as a structural analog to game regions. All new form aspects can be integrated seamlessly into the state manager to expend game content.</p>
-                        <p>This project can also be utilized as a web page builder in future implementations.</p>
-                        <Link href={'/verse'}>Verse</Link><br/>
-                        <img src={'/assets/verse_game.png'} style={{width: '100%'}}/>
-                    </Col>
-                    <Col xs={12} sm={12} md={6}>
-                        <h4>Growth: initial farming sim concept</h4>
-                        <p>This project explores progress bars and grid based resource accumulator systems that can be integrated intoohr game platforms.</p>
-                        <p>The purpose of this side project is to explore the possibilities of scaleable process ittertion.</p>
-                        <Link href={'/growth'}>Growth</Link><br/>
-                        <img src={'/assets/growth_game.png'} style={{width: '100%'}}/>
-                    </Col>
-                </Row>
-            </Col>
-        </Row>
-        <Row id={'backend'}>
-            <Col xs={2}><button onClick={(e)=>setF((f)=>!f)}>Frameworks</button></Col>
-            <Col xs={10}></Col>
-            <Col xs={12}style={{background: 'white', position: f?'relative':'absolute', visibility: f?'visible':'collapse'}}>
-                <Row>
-                    <Col xs={12}>
-                        <h4>User Api:</h4>
-                        <p>User login is fully implemented accoss all aspectbridge web pages. Accessing user information from any page only requires a simple hook.</p>
-                        <code>
-                            {"const user = useUser()  //22 code lines incorporated"}<br/>
-                        </code>
-                    </Col>
-                    <Col xs={12}>
-                        <h4>Registry Api:</h4>
-                        <p>Registry is a proprietary data handling tool. It is siply a way to store state information to a database as a hash map.</p>
-                        <p>This is an example implementation. The page name is 'verse'</p>
-                        <code>
-                            {"const {state, dispatch} = useVerseContext()  //138 code lines incorporated"}<br/>
-                            {"const user = useUser()  //22 code lines incorporated"}<br/>
-                            {"const [saveLoad, loadSave,] = useUserSave('verse', user?.username, state, (data)=>dispatch({type: 'set', payload: data}))  //40 code lines incorporated"}<br/>
-                        </code>
-                    </Col>
-                </Row>
-            </Col> 
-        </Row>
-        <Row id={'chat'} className={'justify-content-md-center'} style={{maxHeight: '50%'}}>
-            <Col xs={2}><button onClick={(e)=>setC((c)=>!c)}>Chat</button></Col>
-            <Col xs={10}></Col>
-            <Col xs={12} style={{
-                    backgroundImage: 'linear-gradient(to bottom, #777, #fff)' , maxHeight: '40vh',
-                    position: c?'relative':'absolute', visibility: c?'visible':'collapse'
-                }}>
-                <Chat user={user} homepage={'bridge'} ip={null}/>
-            </Col>
-        </Row>
-    </>
+    }
+    switch(aspect[0]){
+        case 'about':
+            return <Row id={'about'} className={'justify-content-md-center'}>
+                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
+                <Col xs={12} style={{background: 'white'}}>
+                    <h4>Aspect Bridge</h4>
+                    <p>Aspect Bridge is a platform for experimentation with ideas and design principals.</p>
+                    <p>Aspect Bridge is a collection of projects and fragments that are not intrensicly related.</p>
+                    <p>Aspect Bridge is a place to explore the possibilities of the web.</p>
+                </Col>
+            </Row>
+        case 'profile':
+            return <Row id={'profile'}>
+                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
+                <Col xs={12}style={{background: 'white'}}>
+                    <UserMenu user={user} homepage={'bridge'}/>
+                </Col>
+            </Row>
+        case 'frameworks':
+            return <Row id={'backend'}>
+                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
+                <Col xs={12}style={{background: 'white'}}>
+                    <Row>
+                        <Col xs={12}>
+                            <h4>User Api:</h4>
+                            <p>User login is fully implemented accoss all aspectbridge web pages. Accessing user information from any page only requires a simple hook.</p>
+                            <code>
+                                {"const user = useUser()  //22 code lines incorporated"}<br/>
+                            </code>
+                        </Col>
+                        <Col xs={12}>
+                            <h4>Registry Api:</h4>
+                            <p>Registry is a proprietary data handling tool. It is siply a way to store state information to a database as a hash map.</p>
+                            <p>This is an example implementation. The page name is 'verse'</p>
+                            <code>
+                                {"const {state, dispatch} = useVerseContext()  //138 code lines incorporated"}<br/>
+                                {"const user = useUser()  //22 code lines incorporated"}<br/>
+                                {"const [saveLoad, loadSave,] = useUserSave('verse', user?.username, state, (data)=>dispatch({type: 'set', payload: data}))  //40 code lines incorporated"}<br/>
+                            </code>
+                        </Col>
+                    </Row>
+                </Col> 
+            </Row>
+        case 'games':
+            return <Row id={'games'}>
+                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
+                <Col xs={12}style={{background: 'white'}}>
+                    <Row>
+                        <Col xs={12} sm={12} md={6}>
+                            <h4>Cost: Idle Clicker</h4>
+                            <p>This project represents the backbone of any idle clicker game. It is a functional "incremental gain" simulator with prestige. This game could have essence if given a little art.</p>
+                            <Link href={'/projects/cost'}>Cost</Link><br/>
+                            <img src={'/assets/cost_game.png'} style={{width: '100%'}}/>
+                            <br/><br/>
+                        </Col>
+                        <Col xs={12} sm={12} md={6}>
+                            <h4>Verse: Gamified Forms Project</h4>
+                            <p>This project utilizes form management as a structural analog to game regions. All new form aspects can be integrated seamlessly into the state manager to expend game content.</p>
+                            <p>This project can also be utilized as a web page builder in future implementations.</p>
+                            <Link href={'/verse'}>Verse</Link><br/>
+                            <img src={'/assets/verse_game.png'} style={{width: '100%'}}/>
+                        </Col>
+                        <Col xs={12} sm={12} md={6}>
+                            <h4>Growth: initial farming sim concept</h4>
+                            <p>This project explores progress bars and grid based resource accumulator systems that can be integrated intoohr game platforms.</p>
+                            <p>The purpose of this side project is to explore the possibilities of scaleable process ittertion.</p>
+                            <Link href={'/growth'}>Growth</Link><br/>
+                            <img src={'/assets/growth_game.png'} style={{width: '100%'}}/>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+        case 'chat':
+            return <Row id={'chat'} className={'justify-content-md-center'} style={{maxHeight: '50%'}}>
+                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
+                <Col xs={12} style={{
+                        backgroundImage: 'linear-gradient(to bottom, #777, #fff)' , maxHeight: '40vh'
+                    }}>
+                    <Chat user={user} homepage={'bridge'} ip={null}/>
+                </Col>
+            </Row>
+        default:
+            return <Row id={'disclaimer'} className={""}>
+                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
+                <Col xs={12}style={{background: 'white'}}>
+                    <h4>Disclaimer:</h4>
+                    <p>This site is a collection of projects and fragments that are not intrensicly related. The purpose of this site is experimentation with ideas and design principals.</p>
+                </Col>
+            </Row>
+    }
 }
