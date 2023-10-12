@@ -126,6 +126,12 @@ function AspectBridge(props){
                             <Link href={'/growth'}>Growth</Link><br/>
                             <img src={'/assets/growth_game.png'} style={{width: '100%'}}/>
                         </Col>
+                        <Col xs={12} sm={12} md={6}>
+                            <h4>Chess</h4>
+                            <p>This speaks for itself.</p>
+                            <Link href={'/projects/chess'}>Chess</Link><br/>
+                            <img src={'/assets/chess.png'} style={{width: '100%'}}/>
+                        </Col>
                     </Row>
                 </Col>
             </Row>
