@@ -3,7 +3,7 @@ import { RegistryEntry } from "../../../pages/api/registry_old/[registry]"
 
 export default async function Select({params, searchParams}){
     const {name}:{name: string} = params
-    let name2 = name.replaceAll('%3A',':')
+    let name2 = name.replaceAll('%3A',':').replaceAll('%40','@')
     console.log('name', name2)
     const select: RegistryEntry[] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name2};`
     console.log('select', select)
