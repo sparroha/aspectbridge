@@ -135,7 +135,7 @@ function NavMain(){
             {//<h4><NavPartners /></h4>
             }
             <h4><NavResources /></h4>
-            <h4><UserLogin style={{overflow: 'none'}} /></h4>
+            <h4><UserLogin/></h4>
         </NavRow>
 }
 function NavRow({children}){

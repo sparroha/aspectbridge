@@ -54,7 +54,7 @@ export default function LoginApp(props) {
     
     useEffect(() => { 
       if(!data) return
-      router.push(`/${homepage}/${data?.username}`)
+      router.push(`/${homepage?homepage:'bridge'}/${data?.username}`)
     },[data])
 
 
@@ -207,7 +207,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
   const email = query.email?.toString().toLocaleLowerCase() || ''
   const nemail = query.nemail?.toString().toLocaleLowerCase() || ''
   const hash = sha224(query.email?.toString().toLocaleLowerCase()+''+query.password)
-  const homepage = query.homepage || 'bridge'
+  const homepage = query.homepage&&query.homepage!='undefined'?query.homepage:'bridge'
   const ip = await requestIp.getClientIp(req)
   //console.log('ip: '+ip+' method: '+method+' username: '+username+' email: '+email+' nemail: '+nemail+' hash: '+hash)
   switch(method){
