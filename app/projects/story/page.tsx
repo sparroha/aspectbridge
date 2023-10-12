@@ -79,11 +79,11 @@ function Init(props){
             <WhatHappens what={what} setWhat={setWhat} save={save} submitTooltip={submitTooltip} toggleSubmitTooltip={toggleSubmitTooltip}/>
             <WhyItHappens why={why} setWhy={setWhy} save={save} submitTooltip={submitTooltip} toggleSubmitTooltip={toggleSubmitTooltip}/>
             <WhoIsInvolved who={who} setWho={setWho} save={save} submitTooltip={submitTooltip} toggleSubmitTooltip={toggleSubmitTooltip}/>
-            <Button onClick={()=>downloadFile(story)}>SaveFile</Button>
+            <Button onClick={()=>downloadFile(story)}>Download as JSON</Button>
         </div>
-        <div style={{textAlign: 'center', width: '360px', border: '2px outset #bbb', backgroundImage: 'linear-gradient(to bottom right, #aaa, #ccc, #ddd, #fff)', backgroundSize: 'cover', translate: '500px -352px '+pulse+'px', transform: 'rotateY('+trnsfrm+'deg)', boxShadow: (Math.abs(shadow))/2+'px 10px 10px 0 #333', transition: 'translate 1s linear, transform 1s linear, box-shadow 1s linear'}}>
+        {/*<div style={{textAlign: 'center', width: '360px', border: '2px outset #bbb', backgroundImage: 'linear-gradient(to bottom right, #aaa, #ccc, #ddd, #fff)', backgroundSize: 'cover', translate: '500px -352px '+pulse+'px', transform: 'rotateY('+trnsfrm+'deg)', boxShadow: (Math.abs(shadow))/2+'px 10px 10px 0 #333', transition: 'translate 1s linear, transform 1s linear, box-shadow 1s linear'}}>
             <StrBldr/>
-        </div>
+        </div>*/}
     </div>
 }
 function Story({story, saveData, setWhat, setWhy, setWho, user}){

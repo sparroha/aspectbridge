@@ -7,15 +7,15 @@ export type StrBldrProps = {
     }
 }
 export default function StrBldr(props){
-    
     return <>
-        Add 'str1 + 'str2':_ {"new Str('str1').append('str2').current"} = {new Str('str1').append('str2').current}<br/>
-        Add 'str3 + 'str4':_ {"new String('str3').concat('str4')"} = {new String('str3').concat('str4')}<br/><br/>
-        Add 3+4:_ {'new Calc(3,4).add()'} = {new Calc(3,4).add()}<br/>
-        Sub 3-4:_ {'new Calc().sub(3,4)'} = {new Calc().sub(3,4)}<br/>
-        Mul 3*4:_ {'new Calc(3).mul(4)'} = {new Calc(3).mul(4)}<br/>
-        Div 3/4:_ {'new Calc(3,4).div(1,2)'} = {new Calc(3,4).div(1,2)}<br/>
-        Div 0/1:_ {'new Calc().div()'} = {new Calc().div()}<br/>
+    <h4>Code examples</h4>
+        Add 'str1 + 'str2':_ <code>{"new Str('str1').append('str2').current"}</code> = {new Str('str1').append('str2').current}<br/>
+        Add 'str3 + 'str4':_ <code>{"new String('str3').concat('str4')"}</code> = {new String('str3').concat('str4')}<br/><br/>
+        Add 3+4:_ <code>{'new Calc(3,4).add()'}</code> = {new Calc(3,4).add()}<br/>
+        Sub 3-4:_ <code>{'new Calc().sub(3,4)'}</code> = {new Calc().sub(3,4)}<br/>
+        Mul 3*4:_ <code>{'new Calc(3).mul(4)'}</code> = {new Calc(3).mul(4)}<br/>
+        Div 3/4:_ <code>{'new Calc(3,4).div(1,2)'}</code> = {new Calc(3,4).div(1,2)}<br/>
+        Div 0/1:_ <code>{'new Calc().div()'}</code> = {new Calc().div()}<br/>
     </>
 }
 export function concat(str1: StrBldrProps, str2: StrBldrProps){
