@@ -13,22 +13,13 @@ export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useZRContext()//138 lines
     const user = useUser()//22 lines
-    const [saveLoad, loadSave] = useUserSave('on_the_go', user?.username, state, (data)=>dispatch({type: 'set', payload: data}))//40 lines
+    const [save, useLoad] = useUserSave('on_the_go', user?.username, state, (data)=>dispatch({type: 'set', payload: data}), (username)=>dispatch({type: 'user', payload: username}))//40 lines
     
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     //----------------------------------------------------------------------------------------------------------------------------------
-
-    //----------------------------------------------------------------------------------------------------------------------------------
+    useLoad()
     /**AUTO SAVE LOOP*/
     //auto save every n seconds
-    useEffect(()=>{
-        if(!user)return
-        loadSave()
-        setTimeout(()=>{
-            dispatch({type: 'user', payload: user.username})
-        }, 500)
-        if(state && state == initialState) return
-    },[user])
     useEffect(()=>{
         if(!user) return
         console.log('saveLoopReloaded')
@@ -37,7 +28,7 @@ export default function Go(p){
             if(state == initialState) return//untested. looking for save reset error.
             //console.log('saveAttempted')
             console.log('save interval', autoSaveInterval)
-            saveLoad()
+            save()
         }, autoSaveInterval*1000)
         return ()=>{
             console.log('saveLoopUnloaded')

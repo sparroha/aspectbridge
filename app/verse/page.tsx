@@ -20,21 +20,12 @@ export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useVerseContext()//138 lines
     const user = useUser()//22
-    const [saveLoad, loadSave,] = useUserSave('verse', user?.username, state, (data)=>dispatch({type: 'set', payload: data}))//40 lines
+    const [save, useLoad] = useUserSave('verse', user?.username, state, (data)=>dispatch({type: 'set', payload: data}), (username)=>dispatch({type: 'user', payload: username}))//40 lines
     
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     const loopCounter = useRef(0)
     //----------------------------------------------------------------------------------------------------------------------------------
-
-    //----------------------------------------------------------------------------------------------------------------------------------
-    useEffect(()=>{
-        if(!user)return
-        loadSave()
-        setTimeout(()=>{
-            dispatch({type: 'user', payload: user.username})
-        }, 333)
-    },[user])
-    //----------------------------------------------------------------------------------------------------------------------------------
+    useLoad()
     //game loop
     useEffect(()=>{
         if(!user) return
@@ -48,7 +39,7 @@ export default function Go(p){
             //console.log('gameLoopAttempted')
             //save loop
             if(loopCounter.current>=autoSaveInterval){
-                saveLoad()
+                save()
                 loopCounter.current-=autoSaveInterval
                 //console.log('saving with interval in seconds', autoSaveInterval)
             }

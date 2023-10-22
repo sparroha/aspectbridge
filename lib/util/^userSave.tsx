@@ -1,9 +1,9 @@
 'use client'
-import { useState } from "react";
+import { useEffect } from "react";
 import { getDB, setDB } from "./@registry"
 
 //TODO: replace dispatch with callback and handle dspatch in app. use callbeck to fetch response only
-export function useUserSave(host: string, username: string, state: any, callback: (any)=>void): [()=>void, ()=>void]{
+export function useUserSave(host: string, username: string, state: any, callback: (any)=>void, updateUsername: (string)=>void): [()=>void, ()=>void]{
     const save = ()=>{//save
         if(!username)return
         try{
@@ -24,5 +24,14 @@ export function useUserSave(host: string, username: string, state: any, callback
                 callback(JSON.parse(data.data))
         })
     }
-    return [save, load]
+    const useLoad = ()=>{
+        useEffect(()=>{
+            if(!username)return
+            load()
+            setTimeout(()=>{
+                updateUsername(username)
+            }, 333)
+        },[username])
+    }
+    return [save, useLoad]
 }
