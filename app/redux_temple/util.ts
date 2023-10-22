@@ -27,3 +27,17 @@ export function piston(work: number, energy: number): {actions: number, work: nu
         work: xwork
     }
 }
+
+export const responsive = (colx)=>{
+    let size = {}
+    switch(colx){
+        case 1: size = {xs: 12, sm: 12, md: 12, lg: 12}; break;
+        case 2: size = {xs: 12, sm: 12, md: 12, lg: 6}; break;
+        case 3: size = {xs: 12, sm: 12, md: 6, lg: 4}; break;
+        case 4: size = {xs: 12, sm: 6, md: 4, lg: 3}; break;
+        case 6: size = {xs: 6, sm: 4, md: 3, lg: 2}; break;
+        case 12: size = {xs: 4, sm: 3, md: 2, lg: 1}; break;
+        default: size = {xs: 12, sm: 12, md: 12, lg: 12}; console.log('invalid colx size'); break;
+    }
+    return size
+}

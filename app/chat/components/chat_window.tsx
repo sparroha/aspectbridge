@@ -45,6 +45,7 @@ export default function ChatWindow({
 		}
 		return (
 			<div id={'messages'} style={style}>
+				<SearchHeader style={{ height: '2em' }}/*style={{ height: '10%', maxHeight: '2em' }}*/ />
 				{filteredData?.map((message, i) => {
 					let t = new Date(message.timestamp)
 					let stamp = t.getMonth() + '/' + t.getDate() +
@@ -68,10 +69,5 @@ export default function ChatWindow({
 			</div>
 		)
 	}
-	return (
-		<div style={style}>
-			<SearchHeader style={{ height: '2em' }}/*style={{ height: '10%', maxHeight: '2em' }}*/ />
-			<MessageWindow style={{ overflow: 'auto', height: '90%'}} />
-		</div>
-	)
+	return <MessageWindow style={{...style, overflow: 'auto', height: '100%'}} />
 }

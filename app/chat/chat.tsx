@@ -35,16 +35,16 @@ export default function Chat(props){
   
   return <>
       <Row id={'main_row'} style={{height: '80%'}}>
-        <Col xs={12} sm={9} style={{...strip, height: '100%'}}>
+        <Col xs={12} sm={9} style={{...strip, height: '100%', justifyContent: 'left', textAlign: 'left'}}>
           <Messages update={update} setUpdate={setUpdate} user={user} homepage={props?.homepage} style={{...border, height: '100%'}}/>
         </Col>
         <Col xs={12} sm={3} style={{...strip, height: '100%'}}>
-          <ActiveUsers style={{/*...scroll,*/ height: '80vw'}}/>
+          <ActiveUsers style={{/*...scroll,*/ height: '100%'}}/>
         </Col>
       </Row>
-      <Row id={'submit_row'} style={{height: '3em'}}>
-        <Col xs={12}  style={{...strip, height: '100%'}}>
-          <ChatInput ip={null} user={user} setUpdate={setUpdate} style={{height: '2em'}}/>
+      <Row id={'submit_row'} style={{height: '20%'}}>
+        <Col xs={12}  style={{...strip, height: '20%'}}>
+          <ChatInput ip={null} user={user} setUpdate={setUpdate} style={{height: '100%'}}/>
         </Col>
       </Row>
     </>
