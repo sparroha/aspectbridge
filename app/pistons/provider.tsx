@@ -33,6 +33,7 @@ export default function DynamicContextProvider({children}){
                     new: (s: any, a: Action)=>{
                         switch(a.payload){
                             case 'piston':
+                                if(s.piston?.count>=11) {alert('you have unlocked all the pistons'); return s}
                                 if(s.piston?.actions<5) {alert('not enough action points: need 5'); return s}
                                 return {...s, piston: {...s.piston, count: 1+(s.piston?.count?s.piston.count:0), actions: s.piston.actions-5,}}
                             default:

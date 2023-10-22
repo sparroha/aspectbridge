@@ -88,7 +88,7 @@ export function InterfacePanel(){
     const {state, dispatch} = useDynamicContext()
     return <Button onClick={()=>{
             dispatch({type: 'new', payload: 'piston'})
-        }} disabled={state.piston?.actions<5 }>Add Piston</Button>
+        }} disabled={state.piston?.actions<5 }>Add Piston<br/>-5 actions</Button>
 }
 
 /**
@@ -121,7 +121,7 @@ export const ChatForm = ({user})=>{
         </Col>
 }
 
-export const Piston = ()=>{
+export const Piston = ({power}:{power?: number})=>{
     const {state, dispatch} = useDynamicContext()
     const [cd, setCd] = useState(0)
     const time = 7
@@ -131,9 +131,9 @@ export const Piston = ()=>{
                 <Button onClick={()=>{
                         setCd(time)
                         let f = ()=>{
-                            dispatch({type: 'piston', payload: {energy: 2}})
+                            dispatch({type: 'piston', payload: {energy: power || 4}})
                         }
                         setTimeout(f, time*1000)
-                    }} disabled={cd>0}>Piston_2</Button>cd: {cd}
+                    }} disabled={cd>0}>Piston_{power || 4}</Button>cd: {cd}
             </Col>
 }

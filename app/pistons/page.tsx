@@ -75,7 +75,7 @@ export default function Go(p){
             {
                 state.piston?.count && [...Array(state.piston.count)].map((e, i)=>{
                     return <FGx id={'piston-'+i} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                        <Piston/>
+                        <Piston power={(i+2)*2}/>
                     </FGx>
                 }) || null
             }
