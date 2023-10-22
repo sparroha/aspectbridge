@@ -1,14 +1,12 @@
 'use client'
-import { useReducer, useState, useRef, useEffect, createContext, useContext } from 'react'
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { useState, useRef } from 'react'
+import { Col, Row } from "react-bootstrap";
 import useUser from '../../lib/util/^user';
-import { FGVerse, ContentPanel, 
-    InfoPanel, InterfacePanel, 
+import { ContentPanel, InfoPanel, InterfacePanel, 
     DisplayGroup, InfoHeader, Piston, FGx, ChatForm } from './forms';
 import { initialState, useDynamicContext } from './provider';
 import { useUserSave } from '../../lib/util/^userSave';
 import useLoop from '../../lib/util/^loop';
-import Chat from '../chat/chat';
 //----------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------
 export default function Go(p){

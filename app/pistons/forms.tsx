@@ -5,6 +5,7 @@ import { useDynamicContext } from "./provider"
 import D20, { albt22, diceInitProps, diceProps } from "../../components/dice"
 import { responsive } from "./util"
 import Chat from "../chat/chat"
+import useLoop from "../../lib/util/^loop"
 
 
 export default function Nowhere(){return <></>}
@@ -60,6 +61,18 @@ export function ContentPanel(){
 export function InfoPanel(){
     const {state, dispatch} = useDynamicContext()
     return <Col xs={12} sm={6}>
+        <Row>
+            <InfoHeader id="piston-resources" bgColor={'#777'}>
+                <Col xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
+                        PISTONS
+                </Col>
+                {state.piston && Object.entries(state.piston).map((item, i)=>{
+                    return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
+                            {item[0]}<br/>{JSON.stringify(item[1])}
+                    </Col>
+                })}
+            </InfoHeader>
+        </Row>
         <Row><InfoHeader id="inventory_resources" bgColor={'#aaa'}>
             {['Resources', 'stone', 'wood', 'ore', 'clay', 'fish'].map((item, i)=>{
                 return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
@@ -68,17 +81,15 @@ export function InfoPanel(){
                 </Col>
             })}
         </InfoHeader></Row>
-        <Row><InfoHeader id="inventory_materials" bgColor={'#777'}>
-            {['Materials', 'tile', 'lumber', 'metal', 'brick'].map((item, i)=>{
-                return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
-                    {(item=='Resources' || item=='Materials')?item:
-                            <>{item}<br/>{state[item.toLowerCase()]}</>}
-                </Col>
-            })} 
-        </InfoHeader></Row>
+        
     </Col>
 }
-export function InterfacePanel(){return<></>}
+export function InterfacePanel(){
+    const {state, dispatch} = useDynamicContext()
+    return <Button onClick={()=>{
+            dispatch({type: 'new', payload: 'piston'})
+        }} disabled={state.piston?.actions<5 }>Add Piston</Button>
+}
 
 /**
  * LEGACY COMPONENTS
@@ -96,10 +107,10 @@ export function InfoHeader({id, bgColor, children}:{id: string, bgColor: string,
 export function FGx({id, colx, bgColor, bgImage, bgGradient, bgAlt, children, helper, global}: ColProps){
     const {state, dispatch} = useDynamicContext()
     if(!state.location?.forms?.includes(id) && !global)return
-    return <Col id={id} {...responsive(colx)} style={{position: 'relative', padding: '5px'}}>
+    return <Col key={id} id={id} {...responsive(colx)} style={{position: 'relative', padding: '5px'}}>
         <div style={{position: 'absolute', width: '100%', height: '100%', top: '0px', left: '0px', borderRadius: '20px', backgroundColor: bgColor || 'none', backgroundImage: bgImage?`img(${bgImage})`:bgGradient || 'none', opacity: '.7'}}></div>
         {bgImage && <img src={bgImage} alt={bgAlt || ''} style={{ position: 'absolute', width: '100%', height: '100%', top: '0px', left: '0px', padding: '5px', borderRadius: '20px', opacity: '.7'}}/>}
-        <Row style={{position: 'relative', textAlign: 'center', justifyContent: 'center', maxHeight: '30vh'}}>
+        <Row style={{position: 'relative', textAlign: 'center', justifyContent: 'center'/*, maxHeight: '30vh'*/}}>
             {children}
         </Row>
     </Col>
@@ -112,7 +123,17 @@ export const ChatForm = ({user})=>{
 
 export const Piston = ()=>{
     const {state, dispatch} = useDynamicContext()
-    return <>
-            <Col>Actions: {state.piston?.actions}<br/><Button onClick={()=>{dispatch({type: 'piston', payload: {energy: 3}})}}>e3</Button></Col>
-    </>
+    const [cd, setCd] = useState(0)
+    const time = 7
+    useLoop(()=>{if(cd>0)setCd(cd-1)},1000,[cd])
+    return <Col>
+                Actions: {state.piston?.actions}<br/>
+                <Button onClick={()=>{
+                        setCd(time)
+                        let f = ()=>{
+                            dispatch({type: 'piston', payload: {energy: 2}})
+                        }
+                        setTimeout(f, time*1000)
+                    }} disabled={cd>0}>Piston_2</Button>cd: {cd}
+            </Col>
 }
