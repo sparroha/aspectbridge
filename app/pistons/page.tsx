@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, Fragment } from 'react'
 import { Col, Row } from "react-bootstrap";
 import useUser from '../../lib/util/^user';
 import { ContentPanel, InfoPanel, InterfacePanel, 
@@ -74,11 +74,16 @@ export default function Go(p){
             </FGx>
             {
                 state.piston?.count && [...Array(state.piston.count)].map((e, i)=>{
-                    return <FGx id={'piston-'+i} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
+                    return <Fragment key={'piston'+i}><FGx id={'piston-'+i} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
                         <Piston power={(i+2)*2}/>
-                    </FGx>
+                    </FGx></Fragment>
                 }) || null
             }
+        </Row>
+        <Row id="grid-group">
+            {/*<FGx id={'piston'} colx={12} bgColor={'blue'} style={{width: (20*50)+'px'}} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
+                <Grid/>
+        </FGx>*/}
         </Row>
         <br/>
         <Row id="footer-group">

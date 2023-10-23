@@ -13,34 +13,52 @@ export const useDynamicContext = ()=>{
     return context
 }
 
+type Action = {type: string, payload?: any}
+export const reActions = {
+    set: (s: any, a: Action)=>{
+        return a.payload != "default" ? a.payload : initialState
+    },
+    user: (s: any, a: Action)=>{
+        return {...s, user: a.payload}
+    },
+    spawn: (s: any, a: Action)=>{
+        return {...s, spawn: a.payload}
+    },
+    piston: (s: any, a: Action)=>{
+        let {actions, work} = piston((s.piston?.work)?s.piston.work:0, a.payload.energy)
+        return {...s, piston: {...s.piston, actions: actions + ((s.piston?.actions)?s.piston.actions:0), work: work }}
+    },
+    action: (s: any, a: Action)=>{
+        switch(a.payload){
+            case 'piston':
+                if(s.piston?.actions < pActions[a.payload].cost) {alert('not enough action points'); return s}
+                return {...s, piston: {...s.piston, actions: s.piston?.actions?(s.piston.actions - pActions[a.payload].cost):0}}
+            default:
+                return s
+        }
+    },
+    new: (s: any, a: Action)=>{
+        switch(a.payload.type){
+            case 'piston':
+                if(s.piston?.count>=11) {alert('you have unlocked all the pistons'); return s}
+                if(s.piston?.actions<5) {alert('not enough action points: need 5'); return s}
+                return {...s, piston: {...s.piston, count: 1+(s.piston?.count?s.piston.count:0), actions: s.piston.actions-5,}}
+            default:
+                return s
+        }
+    },
+}
+export const pActions = {
+    piston: {
+        cost: 5,
+    }
+}
 //IMPLEMENTATION: return <DynamicContextProvider>{children}</DynamicContextProvider>
 export default function DynamicContextProvider({children}){
-    type Action = {type: string, payload?: any}
     /** PROVIDED CONTENT **/
     /*custom actions*/
         //<
-                const reActions = {
-                    set: (s: any, a: Action)=>{
-                        return a.payload != "default" ? a.payload : initialState
-                    },
-                    user: (s: any, a: Action)=>{
-                        return {...s, user: a.payload}
-                    },
-                    piston: (s: any, a: Action)=>{
-                        let {actions, work} = piston((s.piston?.work)?s.piston.work:0, a.payload.energy)
-                        return {...s, piston: {...s.piston, actions: actions + ((s.piston?.actions)?s.piston.actions:0), work: work }}
-                    },
-                    new: (s: any, a: Action)=>{
-                        switch(a.payload){
-                            case 'piston':
-                                if(s.piston?.count>=11) {alert('you have unlocked all the pistons'); return s}
-                                if(s.piston?.actions<5) {alert('not enough action points: need 5'); return s}
-                                return {...s, piston: {...s.piston, count: 1+(s.piston?.count?s.piston.count:0), actions: s.piston.actions-5,}}
-                            default:
-                                return s
-                        }
-                    },
-                }
+                
         //>
     /*end custom actions*/
     const reducer = (state: any, action: Action)=>{

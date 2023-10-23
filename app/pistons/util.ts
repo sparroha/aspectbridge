@@ -1,3 +1,4 @@
+
 export function rand(n){
     let r = Math.floor(Math.random()*n+(n>0?1:0))
     //console.log('random of '+n, r)
@@ -41,3 +42,5 @@ export const responsive = (colx)=>{
     }
     return size
 }
+
+

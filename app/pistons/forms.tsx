@@ -1,7 +1,7 @@
 'use client'
 import { Dispatch, useRef, useState, useEffect, Fragment } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
-import { useDynamicContext } from "./provider"
+import { reActions, useDynamicContext } from "./provider"
 import D20, { albt22, diceInitProps, diceProps } from "../../components/dice"
 import { responsive } from "./util"
 import Chat from "../chat/chat"
@@ -19,6 +19,7 @@ export type ColProps = {
     children: any,
     helper?: boolean,
     global?: boolean
+    style?: any
 }
 
 /**
@@ -63,22 +64,22 @@ export function InfoPanel(){
     return <Col xs={12} sm={6}>
         <Row>
             <InfoHeader id="piston-resources" bgColor={'#777'}>
-                <Col xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
+                <Col xs={4} sm={4} md={3} lg={2} style={{textAlign: 'center'}}>
                         PISTONS
                 </Col>
                 {state.piston && Object.entries(state.piston).map((item, i)=>{
-                    return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
+                    return <Fragment key={'piston-resources'+i}><Col xs={4} sm={4} md={3} lg={2} style={{textAlign: 'center'}}>
                             {item[0]}<br/>{JSON.stringify(item[1])}
-                    </Col>
+                    </Col></Fragment>
                 })}
             </InfoHeader>
         </Row>
-        <Row><InfoHeader id="inventory_resources" bgColor={'#aaa'}>
+        <Row><InfoHeader id="inventory-resources" bgColor={'#aaa'}>
             {['Resources', 'stone', 'wood', 'ore', 'clay', 'fish'].map((item, i)=>{
-                return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{textAlign: 'center'}}>
+                return <Fragment key={'inventory-resources'+i}><Col xs={4} sm={4} md={3} lg={2} style={{textAlign: 'center'}}>
                     {(item=='Resources' || item=='Materials')?item:
                             <>{item}<br/>{state[item.toLowerCase()]}</>}
-                </Col>
+                </Col></Fragment>
             })}
         </InfoHeader></Row>
         
@@ -104,10 +105,10 @@ export function InfoHeader({id, bgColor, children}:{id: string, bgColor: string,
     </Col>
 }
 
-export function FGx({id, colx, bgColor, bgImage, bgGradient, bgAlt, children, helper, global}: ColProps){
+export function FGx({id, colx, bgColor, bgImage, bgGradient, bgAlt, children, helper, global, style}: ColProps){
     const {state, dispatch} = useDynamicContext()
     if(!state.location?.forms?.includes(id) && !global)return
-    return <Col key={id} id={id} {...responsive(colx)} style={{position: 'relative', padding: '5px'}}>
+    return <Col id={id} {...responsive(colx)} style={{...style, position: 'relative', padding: '5px'}}>
         <div style={{position: 'absolute', width: '100%', height: '100%', top: '0px', left: '0px', borderRadius: '20px', backgroundColor: bgColor || 'none', backgroundImage: bgImage?`img(${bgImage})`:bgGradient || 'none', opacity: '.7'}}></div>
         {bgImage && <img src={bgImage} alt={bgAlt || ''} style={{ position: 'absolute', width: '100%', height: '100%', top: '0px', left: '0px', padding: '5px', borderRadius: '20px', opacity: '.7'}}/>}
         <Row style={{position: 'relative', textAlign: 'center', justifyContent: 'center'/*, maxHeight: '30vh'*/}}>
@@ -135,5 +136,20 @@ export const Piston = ({power}:{power?: number})=>{
                         }
                         setTimeout(f, time*1000)
                     }} disabled={cd>0}>Piston_{power || 4}</Button>cd: {cd}
+            </Col>
+}
+
+export const ActionFactory = ()=>{
+    const {state, dispatch} = useDynamicContext()
+    const [selection, setSelection] = useState('piston')
+    return <Col>
+                <select onChange={(e)=>{ setSelection(e.target.value) }} value={selection}>
+                        {Object.entries(reActions).map((item, i)=>{
+                            return <option key={'actionFactory'+i} value={item[0]}>{item[0]}</option>
+                        })}
+                </select>
+                <Button onClick={()=>{
+                        dispatch({type: 'action', payload: {type: 'piston'}})
+                    }} disabled={state.piston?.actions<5 }>Add Piston<br/>-5 actions</Button>
             </Col>
 }
