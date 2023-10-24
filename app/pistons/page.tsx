@@ -81,7 +81,7 @@ export default function Go(p){
             }
         </Row>
         <Row id={"rescource-gather-group"}>
-            <FGx id={'rescource-gather'} colx={4} bgColor={'#963'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
+            <FGx id={'mine'} colx={4} bgColor={'#963'} global bgAlt={'dirt'} bgImage={'https://media.istockphoto.com/id/1453041823/photo/soil-for-plant-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=xLm8iNZACruvxhOnwvHJkKkBMh9-1sqZuaFb0r1PXiI='}>
                 <IxJ i={3} j={3}>
                     <MineButton />
                 </IxJ>

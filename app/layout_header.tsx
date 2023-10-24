@@ -98,6 +98,7 @@ function NavMain(){
         //['1','talents',''],
         //['0','toolbelt',''],//broken
         //['0','tutorial',''],
+        ['0','pistons','/assets/pistons.png'],
         ['0','projects','/assets/projects.png'],
         ['0','verse','/assets/verse_game.png'],
         //['1','wasd',''],

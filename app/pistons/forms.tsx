@@ -190,15 +190,15 @@ export const MineButton = ()=>{
     useLoop(()=>{if(cd<time){setCd(cd+1)};if(cd==0)setTypeNum(rand(7))},1000,[cd])
     return <div style={{
                 position: 'relative', width: '77px', height: '77px', 
-                borderRadius: '20px', backgroundColor: 'grey', margin: 'auto'
+                borderRadius: '20px', backgroundColor: 'transparent', margin: 'auto'
             }}>
 
                 <div style={{
                     zIndex: 1,position: 'absolute', transition: 'all 1s linear', width: '100%', 
-                    height: '100%', top: '0px', left: '0px', borderRadius: '20px', backgroundColor: '#777', 
-                    backgroundImage: `radial-gradient(#00000033 20%, #${
+                    height: '100%', top: '0px', left: '0px', borderRadius: '20px', backgroundColor: 'transparent', 
+                    backgroundImage: `radial-gradient(#00000000 20%, #${
                         typeNum==1?'00aa88':typeNum==2?'aaaaaa':typeNum==3?'aa8800':typeNum==4?'aaaa00':'777777'
-                    }dd 45%, #00000033 70%)`, 
+                    }dd 45%, #00000000 70%)`, 
                     opacity: cd/20
                 }} onClick={()=>{
                     if(cd<20)return
