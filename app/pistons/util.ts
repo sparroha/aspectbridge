@@ -1,6 +1,6 @@
 
 export function rand(n){
-    let r = Math.floor(Math.random()*n+(n>0?1:0))
+    let r = Math.floor(Math.random()*n)
     //console.log('random of '+n, r)
     return r
 }

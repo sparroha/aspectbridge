@@ -3,7 +3,7 @@ import { useState, useRef } from 'react'
 import { Col, Row } from "react-bootstrap";
 import useUser from '../../lib/util/^user';
 import { ContentPanel, InfoPanel, InterfacePanel, 
-    DisplayGroup, InfoHeader, Piston, FGx, ChatForm } from './forms';
+    DisplayGroup, InfoHeader, FGx, ChatForm } from './forms';
 import { initialState, useDynamicContext } from './provider';
 import { useUserSave } from '../../lib/util/^userSave';
 import useLoop from '../../lib/util/^loop';
@@ -70,94 +70,43 @@ export default function Go(p){
         <br/>
         <Row id="form-group-large" style={{justifyContent: 'center'}}>
             <FGx id={'id'} colx={1} bgColor={'#777'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
             <FGx id={'id'} colx={2} bgColor={'purple'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'id'} colx={2} bgColor={'purple'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
         </Row>
         <Row id="form-group-medium">
             <FGx id={'3'} colx={3} bgColor={'red'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'3'} colx={3} bgColor={'red'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'3'} colx={3} bgColor={'red'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
             <FGx id={'4'} colx={4} bgColor={'green'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'4'} colx={4} bgColor={'green'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'4'} colx={4} bgColor={'green'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'4'} colx={4} bgColor={'green'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
         </Row>
         <Row id="form-group-small">
             <FGx id={'6'} colx={6} bgColor={'orange'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
             <FGx id={'6'} colx={6} bgColor={'orange'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'6'} colx={6} bgColor={'orange'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'6'} colx={6} bgColor={'orange'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'6'} colx={6} bgColor={'orange'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'6'} colx={6} bgColor={'orange'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
         </Row>
         <Row id="form-group-xsmall">
             <FGx id={'121'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
             <FGx id={'122'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
             <FGx id={'123'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
             <FGx id={'124'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
             <FGx id={'125'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'126'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'127'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'128'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'129'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'1210'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'1211'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
-            </FGx>
-            <FGx id={'1212'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                
             </FGx>
         </Row>
         <br/>

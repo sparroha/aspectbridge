@@ -110,9 +110,20 @@ export const ChatForm = ({user})=>{
         </Col>
 }
 
-export const Piston = ()=>{
-    const {state, dispatch} = useDynamicContext()
-    return <>
-            <Col>Actions: {state.piston?.actions}<br/><Button onClick={()=>{dispatch({type: 'piston', payload: {energy: 3}})}}>e3</Button></Col>
-    </>
+export const IxJ = ({i,j, children})=>{
+    let ar = [...Array(i)].map(()=>{return [...Array(j)].map(()=>1)})
+    return <Col style={{position: 'relative', justifyContent: 'center'}}>
+                <Row>
+                    {ar.map((row, i)=>{
+                        console.log(ar)
+                        return <Fragment key={'oreMineR'+i}><Row>
+                            {row.map((item, i)=>{
+                                return <Fragment key={'oreMineR'+i}><Col xs={4}>
+                                    {children}
+                                </Col></Fragment>
+                            })}
+                        </Row></Fragment>
+                    })}
+                </Row>
+            </Col>
 }

@@ -3,7 +3,7 @@ import { useState, useRef, Fragment } from 'react'
 import { Col, Row } from "react-bootstrap";
 import useUser from '../../lib/util/^user';
 import { ContentPanel, InfoPanel, InterfacePanel, 
-    DisplayGroup, InfoHeader, Piston, FGx, ChatForm } from './forms';
+    DisplayGroup, InfoHeader, Piston, FGx, ChatForm, IxJ, MineButton } from './forms';
 import { initialState, useDynamicContext } from './provider';
 import { useUserSave } from '../../lib/util/^userSave';
 import useLoop from '../../lib/util/^loop';
@@ -79,6 +79,13 @@ export default function Go(p){
                     </FGx></Fragment>
                 }) || null
             }
+        </Row>
+        <Row id={"rescource-gather-group"}>
+            <FGx id={'rescource-gather'} colx={4} bgColor={'#963'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
+                <IxJ i={3} j={3}>
+                    <MineButton />
+                </IxJ>
+            </FGx>
         </Row>
         <Row id="grid-group">
             {/*<FGx id={'piston'} colx={12} bgColor={'blue'} style={{width: (20*50)+'px'}} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>

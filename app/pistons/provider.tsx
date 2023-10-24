@@ -1,6 +1,7 @@
 'use client'
 import { createContext, useContext, useReducer } from "react"
-import { piston } from "./util"
+import { piston, rand } from "./util"
+import { randomBytes } from "crypto"
 
 export const initialState = {}
 const DynamicContext = createContext(null)
@@ -13,6 +14,8 @@ export const useDynamicContext = ()=>{
     return context
 }
 
+/*custom actions*/
+//<             
 type Action = {type: string, payload?: any}
 export const reActions = {
     set: (s: any, a: Action)=>{
@@ -29,38 +32,53 @@ export const reActions = {
         return {...s, piston: {...s.piston, actions: actions + ((s.piston?.actions)?s.piston.actions:0), work: work }}
     },
     action: (s: any, a: Action)=>{
-        switch(a.payload){
-            case 'piston':
-                if(s.piston?.actions < pActions[a.payload].cost) {alert('not enough action points'); return s}
-                return {...s, piston: {...s.piston, actions: s.piston?.actions?(s.piston.actions - pActions[a.payload].cost):0}}
-            default:
-                return s
+        let f = (actionId)=>{
+            if(s[actionId]?.count>=pActions[actionId].maxcount) {alert('you have unlocked all the '+actionId); return s}
+            if(s[actionId]?.actions < pActions[actionId].cost) {alert('not enough action points'); return s}
+            return {...s, [actionId]: {...s[actionId], actions: s[actionId]?.actions?(s[actionId].actions - pActions[actionId].cost):0}}
+            //OOP broke something
         }
+        f(a.payload)
     },
     new: (s: any, a: Action)=>{
         switch(a.payload.type){
-            case 'piston':
-                if(s.piston?.count>=11) {alert('you have unlocked all the pistons'); return s}
-                if(s.piston?.actions<5) {alert('not enough action points: need 5'); return s}
-                return {...s, piston: {...s.piston, count: 1+(s.piston?.count?s.piston.count:0), actions: s.piston.actions-5,}}
             default:
                 return s
         }
     },
+    ore: (s: any, a: Action)=>{
+        let actionType = a.type.toLowerCase()
+        let type = a.payload.type
+        
+        if(s.piston?.actions < pActions[actionType].cost) {alert('not enough action points'); return s}
+        return {...s, 
+            [actionType]: {...s[actionType], 
+                [type]: {...s[actionType]?.[type], 
+                    count: rand(3)+((s[actionType]?.[type]?.count)?s[actionType][type].count:0)
+                }
+            },
+            piston: {...s.piston, actions: s.piston?.actions?(s.piston?.actions - pActions[actionType].cost):0}
+        }
+    }
 }
 export const pActions = {
     piston: {
-        cost: 5,
+        cost: 7,
+        maxcount: 11
+    },
+    mine: {
+        cost: 6,
+        maxcount: 8
+    },
+    ore: {
+        cost: 7
     }
 }
+//>
+/*end custom actions*/
 //IMPLEMENTATION: return <DynamicContextProvider>{children}</DynamicContextProvider>
 export default function DynamicContextProvider({children}){
     /** PROVIDED CONTENT **/
-    /*custom actions*/
-        //<
-                
-        //>
-    /*end custom actions*/
     const reducer = (state: any, action: Action)=>{
         let actionType = action.type.toLowerCase()
         return reActions[actionType] ? reActions[actionType](state, action) : state
