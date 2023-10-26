@@ -8,6 +8,7 @@ import useUser from '../../../lib/util/^user';
 import Chat from '../../chat/chat';
 import useActiveUsers from '../../../lib/util/^activeusers';
 import Link from 'next/link';
+import CodeNotes from '../../../lib/util/-codenotes-';
 
 interface pageProps{params: {aspect: string[]}, searchParams}
 
@@ -54,6 +55,7 @@ function AspectBridge(props){
                 <Link href={'/bridge/frameworks'}><button>Frameworks</button></Link>
                 <Link href={'/bridge/games'}><button>Games</button></Link>
                 <Link href={'/bridge/chat'}><button>Chat</button></Link>
+                <Link href={'/bridge/tips'}><button>Tips</button></Link>
             </Col>
         </Row>
     }
@@ -98,6 +100,13 @@ function AspectBridge(props){
                             </code>
                         </Col>
                     </Row>
+                </Col> 
+            </Row>
+        case 'tips':
+            return <Row id={'tips'}>
+                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
+                <Col xs={12}style={{background: 'white'}}>
+                    <CodeNotes/>
                 </Col> 
             </Row>
         case 'games':
