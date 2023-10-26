@@ -10,10 +10,10 @@ export default function UserLogin(props){
         console.log('COOKIE at logout', document.cookie)
     }
     if(!user) return <a className={props.className} style={style} 
-        href={'/login/login?homepage=' + homepage}
+        href={'/login/login?homepage=' + homepage || 'bridge'}
     >Login</a>
     return <a className={props.className} style={style} 
-        href={'/login/logout?homepage=' + homepage}
+        href={'/login/logout?homepage=' + homepage || 'bridge'}
         onClick={handleLogout}
     >{'Logout '+user.username}</a>
 }
