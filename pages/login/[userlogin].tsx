@@ -4,9 +4,9 @@ import { GetServerSideProps } from "next"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
-import sql from "../../lib/,base/sql"
+import * as sql from "../../lib/,base/sql"
 import useSWR from 'swr'
-import requestIp from 'request-ip'
+import * as requestIp from 'request-ip'
 import UserProfile from "../../lib/util/-userprofile-"
 import { useHashCookie } from "../../lib/util/^hashcookie"
 
