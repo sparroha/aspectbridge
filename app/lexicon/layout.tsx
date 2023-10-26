@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   applicationName: 'Aspect Bridge',
   authors: [{url:'https://aspectbridge.com', name:'Keith Dockery'}],
   keywords: 'Aspect Bridge, Aspect, Bridge, AspectBridge, Aspect-Bridge, Aspect_Bridge, AspectBridge.com, Aspect-Bridge.com, Aspect_Bridge.com',
-  viewport: 'width=device-width, initial-scale=1',
+  //viewport: {width: 'device-width', initialScale: 1},
   creator: 'Keith Dockery',
   publisher: 'Aspect Bridge',
   //icons: 'assets/binary2.png',
