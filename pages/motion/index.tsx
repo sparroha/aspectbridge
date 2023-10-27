@@ -20,7 +20,7 @@ export type Player = {
     items: Item[]
 }
 //TODO: const friend = useSWR('/api/gather/friends', fetcher)
-export default function Gather(props: { ip: any; }){
+export default function Motion(props: { ip: any; }){
     const r = useState({})[1]
     const renders = useRef(1)
     const render = ()=>{renders.current++;r({})}
@@ -152,17 +152,11 @@ export default function Gather(props: { ip: any; }){
             <Col xs={6}  style={{backgroundColor: 'darkgrey'}}>
                 <Mine wallet={state?.player?.wallet} dispatch={dispatch} updatePlayer={updatePlayer}/>
             </Col>
-        </Row>
-        <Field dispatch={dispatch}/>
-
-        <Row id={'community'}>
-            <Col xs={12} sm={8} md={9} style={{backgroundColor: 'lightgrey'}}>
-                <Chat homepage={'gather'}/>
-            </Col>
             <Col xs={12} sm={4} md={3} style={{backgroundColor: 'darkgrey'}}>
                 <Users/>
             </Col>
         </Row>
+        <Field dispatch={dispatch}/>
     </Container>
 }
 

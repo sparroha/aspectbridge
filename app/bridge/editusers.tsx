@@ -1,9 +1,10 @@
-import { User } from "../../pages/login/[userlogin]"
+
 import { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { Col, Row } from "react-bootstrap"
 import useSWR from "swr"
 import jsonFetch from "../../lib/,base/jsonFetch"
 import useWindowSize from "../../lib/util/^windowsize"
+import { User } from "../login/[userlogin]/page"
 
 const buttonStyle = {
     backgroundColor: '#777',

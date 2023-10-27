@@ -3,9 +3,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, Col, Collapse, Container, Dropdown, Form, ListGroup, ListGroupItem, Nav, Navbar, NavbarBrand, NavDropdown, NavLink, Row} from "react-bootstrap";
 import { getDomain } from "../components/domain";
-import { User } from "../pages/login/[userlogin]";
 import UserLogin from "../lib/util/-userlogin-";
 import useUser from "../lib/util/^user";
+import { User } from "./login/[userlogin]/page";
 
 export default function LayoutHeader({ user, root }: { user?: User, root?: string }) {
     const domain = getDomain()

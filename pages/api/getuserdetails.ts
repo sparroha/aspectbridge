@@ -2,8 +2,8 @@
 /**
  * DEPRICATED use getuser.ts
  */
+import { User } from "../../app/login/[userlogin]/page";
 import sql from "../../lib/,base/sql";
-import { User } from "../login/[userlogin]";
 //url params use query
 //form submits use query
 //fetch uses body

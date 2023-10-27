@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react"
 import { Col, Nav, Row } from "react-bootstrap"
 import EditProfile from "./editprofile"
-import { User } from "../../pages/login/[userlogin]"
 import EditUsers from "./editusers"
+import { User } from "../login/[userlogin]/page"
 
 export default function UserMenu({user, homepage}: {user: Partial<User>, homepage: string}){
     if(!user) return <></>

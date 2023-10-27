@@ -1,7 +1,7 @@
 import { sha224 } from "js-sha256"
-import { User } from "../../pages/login/[userlogin]"
 import { useState } from "react"
 import { Col, Row } from "react-bootstrap"
+import { User } from "../login/[userlogin]/page"
 
 const buttonStyle = {
     backgroundColor: '#777',
