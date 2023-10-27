@@ -1,8 +1,9 @@
 'use client'
+import { useEffect } from 'react'
 import { useRouter } from "next/navigation"
 
 export default function Login({params}){
     const r = useRouter()
-    r.push('login/login')
+    useEffect(() => {r.push('login/login')},[])
     return <>Login...</>
 }
