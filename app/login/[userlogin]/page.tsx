@@ -2,8 +2,6 @@
 import { sha224 } from "js-sha256"
 import { useRouter } from "next/navigation"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
-import sql from "../../../lib/,base/sql"
-import useSWR from 'swr'
 import UserProfile from "../../../lib/util/-userprofile-"
 import { useHashCookie } from "../../../lib/util/^hashcookie"
 import { useEffect, useState, FC } from "react"
@@ -27,7 +25,7 @@ export default function LoginApp({params, searchParams}) {
     const router = useRouter()
     const user = useUser()
     const [hash, setHash] = useHashCookie()
-    const [method, setMethod] = useState(userlogin || 'login')
+    const [method, setMethod] = useState(userlogin[0] || 'login')
 
 
     const username = searchParams.username?.toString().toLocaleLowerCase() || ''
@@ -69,7 +67,7 @@ export default function LoginApp({params, searchParams}) {
     useEffect(() => { 
       if(!user) return
       router.push(`/${homepage?homepage:'bridge'}/${user?.username}`)
-    },[user])
+    },[user?.username, hash])
 
 
     return <Container style={{textAlign: 'center', maxWidth: '100vw'}}>
@@ -121,12 +119,12 @@ function LoginForm({setHash}){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  return <Form id={'loginForm'} onSubmit={(event) => {event.preventDefault();setHash((h)=>{
-      console.log('Hash Old', h);
+  return <Form id={'loginForm'} onSubmit={(event) => {setHash((h)=>{
+      console.log('Hash Old', h)
       let newHash = sha224(email+''+password)
-      console.log('Hash New', newHash);
+      console.log('Hash New', newHash)
       return newHash
-    });}}>
+    })}}>
     <Form.Group controlId="formEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control required type="email" name="email" placeholder={"email"} onChange={(e)=>setEmail(e.target.value.toLowerCase())}/>

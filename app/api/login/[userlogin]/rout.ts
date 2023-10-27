@@ -1,21 +1,26 @@
 import { NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
 import { sha224 } from "js-sha256";
+import type {NextApiRequest, NextApiResponse} from 'next'
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
+    return NextResponse.json({ alert: 'GET not allowed'});
+}
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
     const url = new URL(req.url);
     const params = url.pathname
     const create: boolean =  url.searchParams.get('create')=='true'? true : false;
     const method = params.substring(params.lastIndexOf('/')+1)
+    const { username, password, hash, email, nemail, cemail} = req.body
     switch (method) {
         case 'logout':
-            return logout(url.searchParams.get('username'))
+            return logout(username)
         case 'register':
-            return register(url.searchParams.get('hash'), url.searchParams.get('username'), url.searchParams.get('email'))
+            return register(hash, username, email)
         case 'update':
-            return update(url.searchParams.get('nemail'), url.searchParams.get('cemail'), url.searchParams.get('password'))
+            return update(nemail, cemail, password)
         default:
-            return NextResponse.json({ alert: 'no method found', url: url, search: url.searchParams });
+            return NextResponse.json({ alert: 'no method found'});
     }
 }
 
