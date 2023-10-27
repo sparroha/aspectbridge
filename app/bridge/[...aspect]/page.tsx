@@ -9,6 +9,8 @@ import Chat from '../../chat/chat';
 import useActiveUsers from '../../../lib/util/^activeusers';
 import Link from 'next/link';
 import CodeNotes from '../../../lib/util/-codenotes-';
+import { Position, useMousePosition } from '../../../components/mouse';
+import Navi, { useProphet } from '../../../components/navi';
 
 interface pageProps{params: {aspect: string[]}, searchParams}
 
@@ -48,6 +50,9 @@ export default page
 function AspectBridge(props){
 	const {user, activeUsers, aspect} = props
 
+    const prophet = useProphet()
+    const mouse = useMousePosition('about', (e: Event, mousepos: Position)=>{prophet.setNavipos({left: mousepos.left-50, top: mousepos.top-50})})
+
     function Anchors(){
         return <Row style={{textAlign: 'center'}}>
             <Col>
@@ -61,7 +66,8 @@ function AspectBridge(props){
     }
     switch(aspect[0]){
         case 'about':
-            return <Row id={'about'} className={'justify-content-md-center'}>
+            return <Row id={'about'} className={'justify-content-md-center'} style={{position: 'relative'}}>
+                <Navi {...{prophet, mouseClickPos: mouse.clickpos, message: 'this is a message'}}/>
                 <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
                 <Col xs={12} style={{background: 'white'}}>
                     <h4>Aspect Bridge</h4>

@@ -1,5 +1,5 @@
 import sql from "../../lib/,base/sql";
-import { StoredUser, User } from "../login/[userlogin]";
+import { StoredUser, User } from "../../app/login/[userlogin]/page";
 //url params use query
 //form submits use query
 //fetch uses body

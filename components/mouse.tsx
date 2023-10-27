@@ -52,7 +52,7 @@ export function useMousePosition(screenid, onClick?: (e: Event, mousepos: Positi
         })
     },[mousepos])
     useEffect(() => {
-        if (!screen) return setScreen(document.querySelector(screenid));
+        if (!screen) return setScreen(document.querySelector('#'+screenid));
 
         window.onmousemove = (event) => {
             event = event || window.event; // IE-ism
@@ -86,7 +86,7 @@ export function useMousePosition(screenid, onClick?: (e: Event, mousepos: Positi
 export function objOffset(obj: HTMLMapElement){
     var left = 0;
     var top = 0;
-    if (obj.offsetParent) {
+    if (obj?.offsetParent) {
         left += obj.getBoundingClientRect().left;
         top  += obj.getBoundingClientRect().top;
         return {
