@@ -7,20 +7,24 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
     return NextResponse.json({ alert: 'GET not allowed'});
 }
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    const url = new URL(req.url);
-    const params = url.pathname
-    const create: boolean =  url.searchParams.get('create')=='true'? true : false;
-    const method = params.substring(params.lastIndexOf('/')+1)
-    const { username, password, hash, email, nemail, cemail} = req.body
-    switch (method) {
-        case 'logout':
-            return logout(username)
-        case 'register':
-            return register(hash, username, email)
-        case 'update':
-            return update(nemail, cemail, password)
-        default:
-            return NextResponse.json({ alert: 'no method found'});
+    try{
+        const url = new URL(req.url);
+        const params = url.pathname
+        const create: boolean =  url.searchParams.get('create')=='true'? true : false;
+        const method = params.substring(params.lastIndexOf('/')+1)
+        const { username, password, hash, email, nemail, cemail} = req.body
+        switch (method) {
+            case 'logout':
+                return logout(username)
+            case 'register':
+                return register(hash, username, email)
+            case 'update':
+                return update(nemail, cemail, password)
+            default:
+                return NextResponse.json({ alert: 'no method found'});
+        }
+    }catch(e){
+        return NextResponse.json({ alert: 'error:'+ e});
     }
 }
 

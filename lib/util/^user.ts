@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { useHashCookie } from "./^hashcookie"
 import { activateUser } from "./^activeusers"
-import { User } from "../../app/login/[userlogin]/page"
+import { User } from "../../app/login/[action]/page"
 
 /**
  * GET User from hash cookie

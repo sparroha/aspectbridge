@@ -1,5 +1,5 @@
 
-import { User } from "../../../app/login/[userlogin]/page"
+import { User } from "../../../app/login/[action]/page"
 import sql from "../../../lib/,base/sql"
 type ProfileProps = Partial<User> & {
     password: string

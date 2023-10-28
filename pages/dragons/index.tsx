@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
-import pkg from 'react';
-const { useEffect, useState } = pkg;
+import React from 'react';
+const { useEffect, useState } = React;
 import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
 import requestIp from 'request-ip';
 import { GameData, Player, Position } from "../../public/dragons/tileTypes";

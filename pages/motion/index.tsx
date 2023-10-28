@@ -1,5 +1,5 @@
-import pkg from 'react';
-const { useEffect, useReducer, useRef, useState } = pkg;
+import React from 'react';
+const { useEffect, useReducer, useRef, useState } = React;
 import { GetServerSideProps } from "next";
 import requestIp from 'request-ip';
 import Dialog from "../../components/dialog";

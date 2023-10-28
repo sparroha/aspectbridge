@@ -8,7 +8,8 @@ import useSWR from 'swr'
 import requestIp from 'request-ip'
 import UserProfile from "../../lib/util/-userprofile-"
 import { useHashCookie } from "../../lib/util/^hashcookie"
-import { useEffect, useState } from "react"
+import React from 'react';
+const { useEffect, useState } = React;
 
 export type StoredUser = {
   id: number,

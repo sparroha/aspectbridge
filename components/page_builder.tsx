@@ -1,6 +1,6 @@
 import { Col, Container, Row } from "react-bootstrap"
 import Head from "next/head"
-import { User } from "../app/login/[userlogin]/page"
+import { User } from "../app/login/[action]/page"
 
 export type ActiveUsers = {
     [key: string]: {

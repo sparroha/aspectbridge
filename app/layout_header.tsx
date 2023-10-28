@@ -5,7 +5,7 @@ import { Button, Col, Collapse, Container, Dropdown, Form, ListGroup, ListGroupI
 import { getDomain } from "../components/domain";
 import UserLogin from "../lib/util/-userlogin-";
 import useUser from "../lib/util/^user";
-import { User } from "./login/[userlogin]/page";
+import { User } from "./login/[action]/page";
 
 export default function LayoutHeader({ user, root }: { user?: User, root?: string }) {
     const domain = getDomain()

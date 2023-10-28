@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { getDB, setDB } from "./@registry"
 import { ActiveUser } from "../../app/api/users/active/route"
-import { User } from "../../app/login/[userlogin]/page"
+import { User } from "../../app/login/[action]/page"
 /*export type ActiveUser = {
     name: string,
     access: number,

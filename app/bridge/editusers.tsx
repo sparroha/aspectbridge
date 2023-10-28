@@ -4,7 +4,7 @@ import { Col, Row } from "react-bootstrap"
 import useSWR from "swr"
 import jsonFetch from "../../lib/,base/jsonFetch"
 import useWindowSize from "../../lib/util/^windowsize"
-import { User } from "../login/[userlogin]/page"
+import { User } from "../login/[action]/page"
 
 const buttonStyle = {
     backgroundColor: '#777',
