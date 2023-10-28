@@ -1,3 +1,4 @@
+'use client'
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 import { Button, Col, Form, InputGroup, Nav, Row } from "react-bootstrap";
