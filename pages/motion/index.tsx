@@ -1,6 +1,6 @@
-'use client'
+import pkg from 'react';
+const { useEffect, useReducer, useRef, useState } = pkg;
 import { GetServerSideProps } from "next";
-import { useEffect, useReducer, useRef, useState } from "react"
 import requestIp from 'request-ip';
 import Dialog from "../../components/dialog";
 import { Button, Col, Container, Row } from "react-bootstrap";
