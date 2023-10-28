@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
 import { sha224 } from "js-sha256";
-import { NextApiRequest, NextApiResponse } from "next";
 
 export async function GET(req: NextRequest, res: NextResponse) {
     return NextResponse.json({ alert: 'GET not allowed'});
 }
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
     try{
         const url = new URL(req.url);
         const params = url.pathname
-        const create: boolean =  url.searchParams.get('create')=='true'? true : false;
         const method = params.substring(params.lastIndexOf('/')+1)
-        const { username, password, hash, email, nemail, cemail} = req.body
+        const { username, password, hash, email, nemail, cemail} = await req.json();
         alert(req.body)
         switch (method) {
             case 'logout':
