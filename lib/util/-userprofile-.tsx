@@ -3,7 +3,7 @@ import useUser from "./^user"
 export default function UserProfile(props){
   const user = useUser()
   const debug = props.debug
-  if (!user?.username) return <div style={props.style}>loading...</div>
+  if (!user?.username) return <></>//<div style={props.style}>loading...</div>
 
   let greeting = 'Welcome back '+user?.username+'{'+(user?.message || '')+'}!'
   return <div style={{...props.style,
