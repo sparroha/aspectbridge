@@ -6,6 +6,7 @@ import { getDB, setDB } from "./@registry"
 export function useUserSave(host: string, username: string, state: any, callback: (any)=>void, updateUsername?: (string)=>void): [()=>void, boolean]{
     const [loading, setLoading] = useState(true)
     const save = ()=>{//save
+        if(loading)return
         if(!username)return
         try{
             setDB(host+':'+username, state)
@@ -22,19 +23,18 @@ export function useUserSave(host: string, username: string, state: any, callback
         if(!username)return alert('loading user or user not logged in')
         getDB(host+':'+username).then((data)=>{
                 if(!data.data)return
+                /*initializer callback*/
                 callback(JSON.parse(data.data))
+                setLoading(false)
         })
     }
-    //const useLoad = ()=>{
-        useEffect(()=>{
-            if(!username)return
-            load()
-            setTimeout(()=>{
-                updateUsername && updateUsername(username)
-                setLoading(false)
-            }, 333)
-        },[username])
-    //}
-    //useLoad()
-    return [save, /*useLoad,*/ loading]
+    useEffect(()=>{
+        if(!username)return
+        load()
+        if(!updateUsername)return
+        setTimeout(()=>{
+            updateUsername(username)
+        }, 333)
+    },[username])
+    return [save,  loading]
 }

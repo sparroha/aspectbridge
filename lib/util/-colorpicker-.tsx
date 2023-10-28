@@ -6,10 +6,7 @@ export default function ColorPicker({id, username, colors, setColors, children}:
         'colorPicker:'+id, 
         username || 'login:admin', 
         colors, 
-        (c: string[])=>{
-            console.log('colors','set', c)
-            setColors((x)=>c)
-        }
+        setColors
     )
     useEffect(()=>{
         console.log('loading', /*loading,*/ colors, username)
