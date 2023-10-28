@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
 import { sha224 } from "js-sha256";
-import type {NextApiRequest, NextApiResponse} from 'next'
+import { NextApiRequest, NextApiResponse } from "next";
 
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    return NextResponse.json({ alert: 'GET not allowed'});
+    return res.json({ alert: 'GET not allowed'});
 }
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
     try{
