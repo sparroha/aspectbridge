@@ -14,17 +14,17 @@ export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useDynamicContext()//40+ lines
     const user = useUser()//22 lines
-    const [save, useLoad] = useUserSave('pistons', user?.username, state, (data)=>dispatch({type: 'set', payload: data}), (username)=>dispatch({type: 'user', payload: username}))//37 lines
+    const [save, loading] = useUserSave('pistons', user?.username, state, (data)=>dispatch({type: 'set', payload: data}), (username)=>dispatch({type: 'user', payload: username}))//37 lines
     
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     const loopCounter = useRef(0)
-    useLoad()
     //game loop
     const loopf = ()=>{
         if(!user) return
         if(state && state == initialState) return
         //save loop
         if(loopCounter.current>=autoSaveInterval){
+            if(loading) return console.log('loading...')
             console.log('autosaving...')
             save()
             loopCounter.current-=autoSaveInterval
