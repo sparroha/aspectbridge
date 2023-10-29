@@ -24,7 +24,6 @@ const Page: FC<pageProps> = ({params, searchParams})=>{
     const router = useRouter()
     const {aspect} = params
 	const user = useUser()
-	const activeUsers = useActiveUsers(10000)
     const currentUsername = useMemo(()=>user?.username || 'guest',[user])
 
     useEffect(() => { //too verbose imo
@@ -39,7 +38,7 @@ const Page: FC<pageProps> = ({params, searchParams})=>{
             router.replace(`/bridge/${as1?as1+'/':''}${as2?as2+'/':''}${as3?as3+'/':''}${currentUsername}`)
         }
     },[user])
-    return <AspectBridge {...{user, activeUsers, aspect}}/>
+    return <AspectBridge {...{user, currentUsername, aspect}}/>
 }
 export default Page
 
@@ -49,7 +48,7 @@ export default Page
  * @returns 
  */
 function AspectBridge(props){
-	const {user, activeUsers, aspect} = props
+	const {user, aspect} = props
     const [colors, setColors] = useColors(1)
     const [colorz, setColorz] = useColors(1)
 
@@ -151,14 +150,14 @@ function AspectBridge(props){
     return <div id={'navi'}>
         <Row id={aspect[0]} className={'justify-content-md-center'} style={{position: 'relative'}}>
             
-            <Col xs={12} style={{backgroundColor: colors[0] || 'grey'}}>
-                <ColorPicker id={'headercolor'} username={user?.username || 'bridge:admin'} colors={colors} setColors={setColors}>
+            <Col xs={12} style={{backgroundColor: colors[0] || 'grey', transition: 'background-color 1s eas-in-out'}}>
+                <ColorPicker id={'headercolor'} username={user?.username || props.currentUsername} colors={colors} setColors={setColors}>
                     <Anchors/>
                 </ColorPicker>
             </Col>
 
-            <Col xs={12} style={{background: colorz[0] || 'white'}}>
-                <ColorPicker id={'headercolorz'} username={user?.username || 'bridge:admin'} colors={colorz} setColors={setColorz}>
+            <Col xs={12} style={{backgroundColor: colorz[0] || 'white', transition: 'background-color 1s linear'}}>
+                <ColorPicker id={'headercolorz'} username={user?.username || props.currentUsername} colors={colorz} setColors={setColorz}>
                     {swtc()}
                 </ColorPicker>
             </Col>

@@ -7,7 +7,7 @@ export function useUserSave(host: string, username: string, state: any, callback
     const [loading, setLoading] = useState(true)
     const [un, setUn] = useState('')
     const save = (force = false)=>{//save
-        if(un!=username)return
+        if(un!=username && !force)return
         if(loading && !force)return
         if(!username)return
         try{
@@ -29,23 +29,17 @@ export function useUserSave(host: string, username: string, state: any, callback
                 /*initializer callback*/
                 callback(JSON.parse(data.data))
                 setLoading(false)
+                setUn(username)
+                if(updateUsername)updateUsername(username)
         })
     }
     useEffect(()=>{
         setLoading(true)
     },[username])
-    useEffect(()=>{
-        setUn(username)
-    },[loading])
     useEffect(()=>{//If user changes after load
         //if(un!=username)return
         if(!loading)return
         load()
-    },[loading])
-    useEffect(()=>{
-        if(loading)return
-        if(!updateUsername)return
-        updateUsername(username)
     },[loading])
     return [save,  loading]
 }
