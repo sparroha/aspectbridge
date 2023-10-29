@@ -5,8 +5,10 @@ import { getDB, setDB } from "./@registry"
 //TODO: replace dispatch with callback and handle dspatch in app. use callbeck to fetch response only
 export function useUserSave(host: string, username: string, state: any, callback: (any)=>void, updateUsername?: (string)=>void): [()=>void, boolean]{
     const [loading, setLoading] = useState(true)
-    const save = ()=>{//save
-        if(loading)return
+    const [un, setUn] = useState('')
+    const save = (force = false)=>{//save
+        if(un!=username)return
+        if(loading && !force)return
         if(!username)return
         try{
             setDB(host+':'+username, state)
@@ -23,18 +25,27 @@ export function useUserSave(host: string, username: string, state: any, callback
         if(!username)return alert('loading user or user not logged in')
         getDB(host+':'+username).then((data)=>{
                 if(!data.data)return
+                if(data.data == 'default'){save(true);/*alert(data.data)*/;return}
                 /*initializer callback*/
                 callback(JSON.parse(data.data))
                 setLoading(false)
         })
     }
     useEffect(()=>{
-        if(!username)return
-        load()
-        if(!updateUsername)return
-        setTimeout(()=>{
-            updateUsername(username)
-        }, 333)
+        setLoading(true)
     },[username])
+    useEffect(()=>{
+        setUn(username)
+    },[loading])
+    useEffect(()=>{//If user changes after load
+        //if(un!=username)return
+        if(!loading)return
+        load()
+    },[loading])
+    useEffect(()=>{
+        if(loading)return
+        if(!updateUsername)return
+        updateUsername(username)
+    },[loading])
     return [save,  loading]
 }

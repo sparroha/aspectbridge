@@ -11,6 +11,7 @@ import Link from 'next/link';
 import CodeNotes from '../../../lib/util/-codenotes-';
 import { Position, useMousePosition } from '../../../components/mouse';
 import Navi, { useProphet } from '../../../components/navi';
+import ColorPicker, { useColors } from '../../../lib/util/-colorpicker-';
 
 interface pageProps{params: {aspect: string[]}, searchParams}
 
@@ -19,7 +20,7 @@ interface pageProps{params: {aspect: string[]}, searchParams}
  * @param param0 
  * @returns 
  */
-const page: FC<pageProps> = ({params, searchParams})=>{
+const Page: FC<pageProps> = ({params, searchParams})=>{
     const router = useRouter()
     const {aspect} = params
 	const user = useUser()
@@ -40,7 +41,7 @@ const page: FC<pageProps> = ({params, searchParams})=>{
     },[user])
     return <AspectBridge {...{user, activeUsers, aspect}}/>
 }
-export default page
+export default Page
 
 /**
  * PAGE CONTENT
@@ -49,45 +50,35 @@ export default page
  */
 function AspectBridge(props){
 	const {user, activeUsers, aspect} = props
+    const [colors, setColors] = useColors(1)
+    const [colorz, setColorz] = useColors(1)
 
     const prophet = useProphet()
-    const mouse = useMousePosition('about', (e: Event, mousepos: Position)=>{prophet.setNavipos({left: mousepos.left-50, top: mousepos.top-50})})
+    //const mouse = useMousePosition('navi', (e: Event, mousepos: Position)=>{prophet.setNavipos({left: mousepos.left-50, top: mousepos.top-50})})
 
     function Anchors(){
         return <Row style={{textAlign: 'center'}}>
-            <Col>
-                <Link href={'/bridge/profile'}><button>Profile</button></Link>
-                <Link href={'/bridge/frameworks'}><button>Frameworks</button></Link>
-                <Link href={'/bridge/games'}><button>Games</button></Link>
-                <Link href={'/bridge/chat'}><button>Chat</button></Link>
-                <Link href={'/bridge/tips'}><button>Tips</button></Link>
-            </Col>
-        </Row>
+                    <Col>
+                        <Link href={'/bridge/profile'}><button>Profile</button></Link>
+                        <Link href={'/bridge/frameworks'}><button>Frameworks</button></Link>
+                        <Link href={'/bridge/games'}><button>Games</button></Link>
+                        <Link href={'/bridge/chat'}><button>Chat</button></Link>
+                        <Link href={'/bridge/tips'}><button>Tips</button></Link>
+                    </Col>
+            </Row>
     }
-    switch(aspect[0]){
+    const swtc = ()=>{switch(aspect[0]){
         case 'about':
-            return <Row id={'about'} className={'justify-content-md-center'} style={{position: 'relative'}}>
-                <Navi {...{prophet, mouseClickPos: mouse.clickpos, message: 'this is a message'}}/>
-                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
-                <Col xs={12} style={{background: 'white'}}>
+            return <>
                     <h4>Aspect Bridge</h4>
                     <p>Aspect Bridge is a platform for experimentation with ideas and design principals.</p>
                     <p>Aspect Bridge is a collection of projects and fragments that are not intrensicly related.</p>
                     <p>Aspect Bridge is a place to explore the possibilities of the web.</p>
-                </Col>
-            </Row>
+                </>
         case 'profile':
-            return <Row id={'profile'}>
-                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
-                <Col xs={12}style={{background: 'white'}}>
-                    <UserMenu user={user} homepage={'bridge'}/>
-                </Col>
-            </Row>
+            return <UserMenu user={user} homepage={'bridge'}/>
         case 'frameworks':
-            return <Row id={'backend'}>
-                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
-                <Col xs={12}style={{background: 'white'}}>
-                    <Row>
+            return <Row>
                         <Col xs={12}>
                             <h4>User Api:</h4>
                             <p>User login is fully implemented accoss all aspectbridge web pages. Accessing user information from any page only requires a simple hook.</p>
@@ -106,20 +97,10 @@ function AspectBridge(props){
                             </code>
                         </Col>
                     </Row>
-                </Col> 
-            </Row>
         case 'tips':
-            return <Row id={'tips'}>
-                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
-                <Col xs={12}style={{background: 'white'}}>
-                    <CodeNotes/>
-                </Col> 
-            </Row>
+            return <CodeNotes/>
         case 'games':
-            return <Row id={'games'}>
-                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
-                <Col xs={12}style={{background: 'white'}}>
-                    <Row>
+            return <Row>
                         <Col xs={12} sm={12} md={6}>
                             <h4>Cost: Idle Clicker</h4>
                             <p>This project represents the backbone of any idle clicker game. It is a functional "incremental gain" simulator with prestige. This game could have essence if given a little art.</p>
@@ -154,24 +135,37 @@ function AspectBridge(props){
                             <img src={'/assets/pistons.png'} style={{width: '100%'}}/>
                         </Col>
                     </Row>
-                </Col>
-            </Row>
         case 'chat':
-            return <Row id={'chat'} className={'justify-content-md-center'} style={{maxHeight: '50%'}}>
-                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
-                <Col xs={12} style={{
+            return <div style={{
                         backgroundImage: 'linear-gradient(to bottom, #777, #fff)' , maxHeight: '40vh'
                     }}>
                     <Chat user={user} homepage={'bridge'} ip={null}/>
-                </Col>
-            </Row>
+                </div>
         default:
-            return <Row id={'disclaimer'} className={""}>
-                <Col xs={12} style={{background: '#777'}}><Anchors/></Col>
-                <Col xs={12}style={{background: 'white'}}>
+            return <>
                     <h4>Disclaimer:</h4>
                     <p>This site is a collection of projects and fragments that are not intrensicly related. The purpose of this site is experimentation with ideas and design principals.</p>
-                </Col>
-            </Row>
-    }
+                </>
+    }}
+
+    return <div id={'navi'}>
+        <Row id={aspect[0]} className={'justify-content-md-center'} style={{position: 'relative'}}>
+            
+            <Col xs={12} style={{backgroundColor: colors[0] || 'grey'}}>
+                <ColorPicker id={'headercolor'} username={user?.username || 'bridge:admin'} colors={colors} setColors={setColors}>
+                    <Anchors/>
+                </ColorPicker>
+            </Col>
+
+            <Col xs={12} style={{background: colorz[0] || 'white'}}>
+                <ColorPicker id={'headercolorz'} username={user?.username || 'bridge:admin'} colors={colorz} setColors={setColorz}>
+                    {swtc()}
+                </ColorPicker>
+            </Col>
+
+        </Row>
+        
+        {//<Navi {...{prophet, mouseClickPos: mouse.clickpos, message: 'this is a message'}}/>
+}
+        </div>
 }

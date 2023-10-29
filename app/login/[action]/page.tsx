@@ -38,11 +38,11 @@ export default function LoginApp({params, searchParams}) {
     const [colors1, setColors1] = useColors(3)
     const [colors2, setColors2] = useColors(3)
     const loginLayout = {
-        backgroundImage: `linear-gradient(to bottom right, #${colors1?.[0] || '7777ff'}, #${colors1?.[1] || '77ff77'}, #${colors1?.[2] || 'ff7777'})`,
+        backgroundImage: `linear-gradient(to bottom right, ${colors1?.[0] || '#7777ff'}, ${colors1?.[1] || '#77ff77'}, ${colors1?.[2] || '#ff7777'})`,
         padding: '10px', paddingLeft: '20px', paddingRight: '20px', borderRadius: '5px'
       }
       const registerLayout = {
-        backgroundImage: `linear-gradient(to bottom right, #${colors2?.[0] || '7777aa'}, #${colors2?.[1] || '77aa77'}, #${colors2?.[2] || 'aa7777'})`,
+        backgroundImage: `linear-gradient(to bottom right, ${colors2?.[0] || '#7777aa'}, ${colors2?.[1] || '#77aa77'}, ${colors2?.[2] || '#aa7777'})`,
         padding: '10px', paddingLeft: '20px', paddingRight: '20px', borderRadius: '5px'
       }
 
@@ -108,9 +108,18 @@ export default function LoginApp({params, searchParams}) {
             </Row>
             <Row>
               <Col sm={4} lg={5}></Col>
-              <Col xs={12} sm={4} lg={2} style={registerLayout}>{
+              <Col xs={12} sm={4} lg={2} style={registerLayout}>{/* TODO: password reset email */
                 action === 'forgot'?
                 <ForgotForm homepage={homepage}/>
+                :<Button variant="primary" type="submit" onClick={() => {/*setMethod('forgot')*/}}>{/*'Forgot User Password'*/}</Button>
+              }</Col>
+              <Col sm={4} lg={5}></Col>
+            </Row>
+            <Row>
+              <Col sm={4} lg={5}></Col>
+              <Col xs={12} sm={4} lg={2} style={registerLayout}>{/* TODO: reset password by email */
+                action === 'reset'?
+                <PassResetForm homepage={homepage}/>
                 :<Button variant="primary" type="submit" onClick={() => {/*setMethod('forgot')*/}}>{/*'Forgot User Email'*/}</Button>
               }</Col>
               <Col sm={4} lg={5}></Col>
@@ -186,6 +195,27 @@ function UpdateEmailForm({homepage}){
  * @returns 
  */
 function ForgotForm({homepage}){
+  return <Form id={'forgotForm'}>
+        <Form.Group controlId="formEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control required type="email" name="email" placeholder={"email"}/>
+        </Form.Group>
+        <Form.Group controlId="formPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control required type="password" name="password" autoComplete={"on"} placeholder="password"/>
+        </Form.Group>
+        <Form.Group controlId="formHidden">
+            <Form.Control required type="hidden" name="homepage" value={homepage} placeholder={homepage}/>
+        </Form.Group>
+        <Button variant="primary" type="submit" formAction={"/login/forgot"}>Forgot</Button>
+    </Form>
+}
+/**
+ * TODO
+ * @param param0 
+ * @returns 
+ */
+function PassResetForm({homepage}){
   return <Form id={'forgotForm'}>
         <Form.Group controlId="formEmail">
             <Form.Label>Email address</Form.Label>
