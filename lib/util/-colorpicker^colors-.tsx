@@ -21,7 +21,7 @@ export default function ColorPicker({id, username, colors, setColors, children}:
     </div>
 }
 
-export function useColors(colorCount: number, colorDefault?: string[]): [string[], Dispatch<SetStateAction<string[]>>]{
-    const [colors, setColors] = useState(colorDefault || [...Array(colorCount).map((c,i)=>{return '#777777'})])
+export function useColors(colorCount: number, defaultColors?: string[]): [string[], Dispatch<SetStateAction<string[]>>]{
+    const [colors, setColors] = useState(defaultColors || [...Array(colorCount).map((c,i)=>{return '#777777'})])
     return [colors, setColors]
 }

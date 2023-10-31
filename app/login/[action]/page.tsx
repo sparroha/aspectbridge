@@ -6,7 +6,7 @@ import UserProfile from "../../../lib/util/-userprofile-"
 import { useHashCookie } from "../../../lib/util/^hashcookie"
 import { useEffect, useState, FC } from "react"
 import useUser from "../../../lib/util/^user"
-import ColorPicker, { useColors } from "../../../lib/util/-colorpicker-"
+import ColorPicker, { useColors } from "../../../lib/util/-colorpicker^colors-"
 
 export type StoredUser = {
   id: number,

@@ -11,7 +11,7 @@ import Link from 'next/link';
 import CodeNotes from '../../../lib/util/-codenotes-';
 import { Position, useMousePosition } from '../../../components/mouse';
 import Navi, { useProphet } from '../../../components/navi';
-import ColorPicker, { useColors } from '../../../lib/util/-colorpicker-';
+import ColorPicker, { useColors } from '../../../lib/util/-colorpicker^colors-';
 
 interface pageProps{params: {aspect: string[]}, searchParams}
 
