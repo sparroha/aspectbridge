@@ -172,7 +172,7 @@ export default function Beginning({params, searchParams}){
     //Now John also was baptizing at Aenon near Salim, because there was plenty of water, and people were coming and being baptized.
     return <Row style={{backgroundColor: 'white'}}>
         <Col xs={12}><h4>State: in the beginning:</h4></Col>
-        {Object.entries(bereshith).map(([name, value], i)=>{return <Col xs={3} key={i+'i'}>
+        {Object.entries(bereshith).map(([name, value], i)=>{return <Col xs={6} sm={4} md={3} lg={2} key={i+'i'}>
             <h5>{name}</h5>
             {
                 (value instanceof Object)?
