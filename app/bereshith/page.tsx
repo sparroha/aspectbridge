@@ -77,6 +77,9 @@ export default function Beginning({params, searchParams}){
             mah: 'what?',
             mi: 'who',
         },
+        wet: {
+
+        },
         eretz: {
             titles: ['earth'/* what exists in earth with Him */],
             a: 'one',
