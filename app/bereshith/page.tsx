@@ -44,6 +44,26 @@ export default function Beginning({params, searchParams}){
             raah: 'to see',
             a: 'one'
         },
+        elohim: {
+            titles: ['God'],
+            e: 'one',
+            el: 'god',
+            eleh: 'these',
+            alah: 'to swear',
+            eloah: 'god',
+            l: 'to',
+            lo: 'not',
+            laah: 'to tire',
+            o: 'hook',
+            h: 'window',
+            hey: 'look',
+            i: 'hand',
+            yam: 'sea',
+            m: 'deep'
+        },
+        et: {
+
+        },
         shemaim: {
             titles: ['sea of ashes'/* what exists in heaven with Him */],
             sh: 'teeth',
