@@ -1,8 +1,9 @@
 'use client'
-import { useMemo, useReducer } from "react"
+import { useMemo, useReducer, useState } from "react"
 import { Col, Row } from "react-bootstrap"
 
 export default function Beginning({params, searchParams}){
+    const [nextId, setNextId] = useState(0)
     const HSM = 1
     //1
     //In the beginning God created the heavens and the earth
@@ -33,7 +34,8 @@ export default function Beginning({params, searchParams}){
             resh: 'head',
             reshith: 'beginning',
             shith: 'garment',
-            ath: 'mark'
+            ath: 'mark',
+            th: 'cross'
         },
         bara: {
             titles: ['made, makde, do'],
@@ -62,10 +64,16 @@ export default function Beginning({params, searchParams}){
             m: 'deep'
         },
         et: {
-
+            titles: ['against'],
+            a: 'one',
+            t: 'cross'
         },
-        shemaim: {
-            titles: ['sea of ashes'/* what exists in heaven with Him */],
+        hashemaim: {
+            titles: ['the heavens, sea of ashes'/* what exists in heaven with Him */],
+            h: 'window',
+            ha: 'the',
+            hash: 'the fire',
+            ash: 'fire',
             sh: 'teeth',
             sheh: 'sheep',
             shem: 'name',
@@ -77,11 +85,17 @@ export default function Beginning({params, searchParams}){
             mah: 'what?',
             mi: 'who',
         },
-        wet: {
-
+        weet: {
+            titles: ['and against'],
+            w: 'hook',
+            we: 'and',
+            a: 'one',
+            t: 'cross'
         },
-        eretz: {
-            titles: ['earth'/* what exists in earth with Him */],
+        haeretz: {
+            titles: ['the earth'/* what exists in earth with Him */],
+            h: 'window',
+            ha: 'the',
             a: 'one',
             ar: 'to light',
             aur: 'do light',
@@ -193,15 +207,35 @@ export default function Beginning({params, searchParams}){
     //23
     //And there was evening, and there was morning—the fifth day.
     //Now John also was baptizing at Aenon near Salim, because there was plenty of water, and people were coming and being baptized.
+    function DisplayStateNode({entry}: {entry: any[]}){
+        return <>&nbsp;&nbsp;&nbsp;&nbsp;<b>{entry[0]}</b>:&nbsp;{entry[1]}</>
+    }
+    function DisplayStateMap({entry}: {entry: any[]}){
+        return <>{Object.entries(entry).map(([name, value], i)=>{
+            if(value instanceof Object) return <Col xs={6} sm={4} md={3} lg={2} key={i+name}>
+                <DisplayStateMap entry={value}/>
+            </Col>
+            return <Col xs={6} sm={4} md={3} lg={2} key={i+name}>
+                    <DisplayStateNode entry={[name,value]}/>
+                </Col>
+        })}</>
+    }
+    
     return <Row style={{backgroundColor: 'white'}}>
         <Col xs={12}><h4>State: in the beginning:</h4></Col>
+        {/*<DisplayStateMap entry={bereshith}/><hr/>*/}
         {Object.entries(bereshith).map(([name, value], i)=>{return <Col xs={6} sm={4} md={3} lg={2} key={i+'i'}>
             <h5>{name}</h5>
             {
-                (value instanceof Object)?
-                Object.entries(value).map(([nameb, valueb], ib)=>{return <div key={ib+'ib'}>
-                &nbsp;&nbsp;&nbsp;&nbsp;<b>{nameb}</b>:&nbsp;{valueb}
-                </div>}):<>&nbsp;&nbsp;&nbsp;&nbsp;<b>{name}</b>:&nbsp;{value}</>
+                (value instanceof Object)
+                ?
+                Object.entries(value).map(([nameb, valueb], ib)=>{
+                    return <div key={ib+'ib'}>
+                    <DisplayStateNode entry={[nameb,valueb]}/>
+                    </div>
+                })
+                :
+                <DisplayStateNode entry={[name,value]}/>
             }
         </Col>})}
     </Row>
