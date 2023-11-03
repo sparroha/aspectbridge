@@ -4,6 +4,7 @@ import CssSlidersWrapper from "../../components/sliders";
 import UserLogin from "../../lib/util/-userlogin-";
 import UserProfile from "../../lib/util/-userprofile-";
 
+//export function 
 type RowObj = {id: string, obj: string, style?: React.CSSProperties}
 export default function CSliders(props){
     const [state, setState] = useState({})

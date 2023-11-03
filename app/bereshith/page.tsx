@@ -4,7 +4,7 @@ import { Col, Row } from "react-bootstrap"
 
 export default function Beginning({params, searchParams}){
     const [nextId, setNextId] = useState(0)
-    const HSM = 1
+    type Hashem = {[key: string]: any}
     //1
     //In the beginning God created the heavens and the earth
     //In the beginning was the word and the word was with God and the word was God.
@@ -66,7 +66,7 @@ export default function Beginning({params, searchParams}){
         et: {
             titles: ['against'],
             a: 'one',
-            t: 'cross'
+            t: 'cross' 
         },
         hashemaim: {
             titles: ['the heavens, sea of ashes'/* what exists in heaven with Him */],
@@ -107,7 +107,7 @@ export default function Beginning({params, searchParams}){
             tz: 'side',
         }
     })
-    const bereshith = useMemo(()=>{return reshith[0]},[reshith[0]])
+    const bereshith: Hashem = useMemo(()=>{return reshith[0]},[reshith[0]])
     const bara = (barSelect: string, reahSee: [])=>{
         //bar = in head => choose = select
         //raah = see 
@@ -207,23 +207,26 @@ export default function Beginning({params, searchParams}){
     //23
     //And there was evening, and there was morning—the fifth day.
     //Now John also was baptizing at Aenon near Salim, because there was plenty of water, and people were coming and being baptized.
-    function DisplayStateNode({entry}: {entry: any[]}){
-        return <>&nbsp;&nbsp;&nbsp;&nbsp;<b>{entry[0]}</b>:&nbsp;{entry[1]}</>
+    function DisplayStateNode({entry, n}: {entry: [string, any], n: number}){
+        let [name, value] = entry
+        return <>{[...Array(n)].map(()=>{
+            return [...Array(4)].map((_, i)=>{ return <>&nbsp;</>})
+        })}<b>{name}</b>:&nbsp;{value}</>
     }
-    function DisplayStateMap({entry}: {entry: any[]}){
-        return <>{Object.entries(entry).map(([name, value], i)=>{
-            if(value instanceof Object) return <Col xs={6} sm={4} md={3} lg={2} key={i+name}>
-                <DisplayStateMap entry={value}/>
-            </Col>
-            return <Col xs={6} sm={4} md={3} lg={2} key={i+name}>
-                    <DisplayStateNode entry={[name,value]}/>
+    function DisplayStateMap({entries, n}: {entries: {[key: string]: any}, n: number}){
+            return <>{Object.entries(entries).map((entry, i)=>{
+                if(entry instanceof Object) return <Col xs={6} sm={4} md={3} lg={2} key={i+entry[0]}>
+                    <DisplayStateMap entries={entry} n={++n}/>
+                </Col>
+                return <Col xs={6} sm={4} md={3} lg={2} key={i+entry[0]}>
+                    <DisplayStateNode entry={entry} n={++n}/>
                 </Col>
         })}</>
     }
     
     return <Row style={{backgroundColor: 'white'}}>
         <Col xs={12}><h4>State: in the beginning:</h4></Col>
-        {/*<DisplayStateMap entry={bereshith}/><hr/>*/}
+        {/*<DisplayStateMap entries={bereshith} n={0}/><hr/>*/}
         {Object.entries(bereshith).map(([name, value], i)=>{return <Col xs={6} sm={4} md={3} lg={2} key={i+'i'}>
             <h5>{name}</h5>
             {
@@ -231,11 +234,11 @@ export default function Beginning({params, searchParams}){
                 ?
                 Object.entries(value).map(([nameb, valueb], ib)=>{
                     return <div key={ib+'ib'}>
-                    <DisplayStateNode entry={[nameb,valueb]}/>
+                    <DisplayStateNode entry={[nameb,valueb]} n={1}/>
                     </div>
                 })
                 :
-                <DisplayStateNode entry={[name,value]}/>
+                <DisplayStateNode entry={[name,value]} n={0}/>
             }
         </Col>})}
     </Row>

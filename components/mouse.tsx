@@ -70,7 +70,7 @@ export function useMousePosition(screenid, onClick?: (e: Event, mousepos: Positi
                     setLastClickpos(clickpos)
                     return mousepos
                 });
-                onClick(event, mousepos)//not calling?
+                if(onClick)onClick(event, mousepos)//not calling?
                 return mousepos
             });
 
