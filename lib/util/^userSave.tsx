@@ -22,7 +22,7 @@ export function useUserSave(host: string, username: string, state: any, callback
         }
     }
     const load = ()=>{//load
-        if(!username)return alert('loading user or user not logged in')
+        if(!username)return// console.log('loading user or user not logged in')
         getDB(host+':'+username).then((data)=>{
                 if(!data.data)return
                 if(data.data == 'default'){save(true);/*alert(data.data)*/;return}

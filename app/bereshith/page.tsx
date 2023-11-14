@@ -1,5 +1,5 @@
 'use client'
-import { useMemo, useReducer, useState } from "react"
+import React, { useMemo, useReducer, useState } from "react"
 import { Col, Row } from "react-bootstrap"
 
 export default function Beginning({params, searchParams}){
