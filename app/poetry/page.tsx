@@ -30,9 +30,9 @@ export default function Page({params, searchParams}){
     </div>
 }
 
-export const SelectableItem = ({params, searchParams})=>{
+/*export const SelectableItem = ({params, searchParams})=>{
     const children = params.children
     return <div>
         {children}
     </div>
-}
+}*/
