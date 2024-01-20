@@ -1,7 +1,7 @@
 import { neonLaser } from "../../lib/util/gfx/laser";
 import stylex from "@stylexjs/stylex"
 
-/*export const styles = stylex.create({
+const styles = stylex.create({
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -25,7 +25,7 @@ import stylex from "@stylexjs/stylex"
             backgroundColor: '#ddd',
         },
     },
-})*/
+})
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
     return <div id="content" className='row' style={{height: '100%'}}>

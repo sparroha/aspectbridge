@@ -33,7 +33,7 @@ export default function Page({params, searchParams}){
     </div>
 }
 
-export function SelectableItem({id, state, dispatch, style, children}: {id: string, state: any, dispatch: ({type, payload}:{type: string, payload: any})=>void, style: any, children: JSX.Element}){
+function SelectableItem({id, state, dispatch, style, children}: {id: string, state: any, dispatch: ({type, payload}:{type: string, payload: any})=>void, style: any, children: JSX.Element}){
     let w = style ? Number.parseFloat(style.width.replace('px','')) : 0
     let h = style ? Number.parseFloat(style.height.replace('px','')) : 0
     return <div onClick={()=>dispatch({type: 'select', payload: id})} style={{
