@@ -1,6 +1,10 @@
 'use client'
 import { useEffect, useRef, useState } from 'react';
-//import { createCanvas } from 'canvas';
+
+type Formula = (x: number, y: number, width: number, height: number) => {
+  valid: boolean;
+  color: string;
+}
 
 const Canvas = (props) => {
   const {formula, cw, ch} = props
@@ -8,8 +12,8 @@ const Canvas = (props) => {
   //const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    const context = canvas?.getContext('2d');
+    const canvas: HTMLCanvasElement = canvasRef.current
+    const context: CanvasRenderingContext2D = canvas?.getContext('2d');
     const width = canvas.width;
     const height = canvas.height;
 
@@ -27,3 +31,13 @@ const Canvas = (props) => {
 };
 
 export default Canvas;
+
+export function Shape(){
+  const f: Formula = (x: number, y: number, width: number, height: number) => {
+    const center = {x: width/2, y: height/2};
+    //distance from center = square root of (x-center.x)^2 + (y-center.y)^2
+    const centerDistance = Math.sqrt((x - center.x) ** 2 + (y - center.y) ** 2);
+    return {valid: Math.sin(centerDistance / 1) > 0, color: '#000000'}
+};
+  return <Canvas formula={f} cw={70} ch={60}/>
+}

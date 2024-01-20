@@ -1,8 +1,9 @@
 /*Recently Added*/
 :root, html, body, #__next{
 	height: 100%;
-	/*color: #9af;
-	background-color: #000;*/
+	color: #ccc;
+	font-size: 1.05rem;
+	/*background-color: #000;*/
 }
 
 /*Aspect Bridge CSS*/
