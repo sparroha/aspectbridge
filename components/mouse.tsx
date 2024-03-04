@@ -9,9 +9,9 @@ export type MouseProps = {mousepos: Position, clickpos: Position, lastClickpos: 
  */
 export default function Mouse(props) {
     const {id, setMouse, children} = props
-    const {mousepos, clickpos, lastClickpos, trate} = useMousePosition('#mousepos-'+id, (e, mousepos) => {}, () => {}, id);
+    const {mousepos, clickpos, lastClickpos, trate} = useMousePosition('mousepos-'+id, (e, mousepos) => {}, () => {}, id);
     useEffect(() => {
-        setMouse(()=> {return {mousepos, clickpos, lastClickpos, trate}})
+        if(setMouse) setMouse(()=> {return {mousepos, clickpos, lastClickpos, trate}})
         //console.log('setMouse', mousepos, clickpos)
     }, [mousepos, clickpos]);
     const [marketToggle, setMarkerToggle] = useState(false)
@@ -52,7 +52,9 @@ export function useMousePosition(screenid, onClick?: (e: Event, mousepos: Positi
         })
     },[mousepos])
     useEffect(() => {
-        if (!screen) return setScreen(document.querySelector('#'+screenid));
+        let scr = document.querySelector('#'+screenid)
+        console.log('scr', scr)
+        if (!screen) return setScreen(scr);
 
         window.onmousemove = (event) => {
             event = event || window.event; // IE-ism
