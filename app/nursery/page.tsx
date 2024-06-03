@@ -24,7 +24,7 @@ export default function Plants({params, searchParams}){
                     '/assets/teal_banner.jpg',
                     '/assets/terraforge_bg.jpg'
                 ].map((img, i) => {
-                    return <div style={{margin: '20px'}}><img key={i} src={img} style={{minWidth: '400px', maxWidth: '100%', border: '2px gray solid', borderRadius: '10px'}}/></div>
+                    return <div key={i} style={{margin: '20px'}}><a href={img}><img src={img} style={{minWidth: '400px', maxWidth: '100%', border: '2px gray solid', borderRadius: '10px'}}/></a></div>
                 })}
             </div>
         </div>
