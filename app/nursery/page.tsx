@@ -52,9 +52,9 @@ export default function Plants({params, searchParams}){
             {garden.map((item, i) => {
                 return <div key={i} style={{
                         margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**/+')',
-                        backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '10px', width: '400px', height: '200px'
+                        backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '10px', width: '300px', height: '150px'
                     }}>
-                        <div style={{width: '400px', font: 'grey'}}>
+                        <div style={{width: '300px', font: 'grey'}}>
                             <a href={item.href/**/} style={{backgroundColor: '#753'}} >{item.name/**/}</a>
                         </div>
                     </div>
