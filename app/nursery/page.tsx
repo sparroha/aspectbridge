@@ -34,20 +34,20 @@ export default function Plants({params, searchParams}){
                 <p style={{backgroundColor: '#753'}}>permaculture catalog{/*Aspect Gardens is a small, family run business based in Pensacola/Chattanooga. We raise a variaty of interesting crops. Out primary focus is food crops. We nurse various plants with other uses besides consumprion, such as firbre rich or medicinal plants.*/}</p>
             </div>
         </div>
-        {/*<div id={'carosel'} className={'row'} style={{width: '100%', backgroundColor: 'transparent', backgroundImage: grd}}>
-            <div className={'col-12'} style={{display: 'flex', overflowX: 'hidden'}} onWheel={(e)=>{e.currentTarget.scrollLeft+=e.deltaY}}>
+        {<div id={'carosel'} className={'row'} style={{width: '100%', backgroundColor: 'transparent', backgroundImage: grd}}>
+            <div className={'col-12'} style={{display: 'flex', overflowX: 'hidden'}} onTouchMove={(e)=>{e.currentTarget.scrollLeft+=(e.touches[0].pageY+e.touches[e.touches.length-1].pageY)}} onWheel={(e)=>{e.currentTarget.scrollLeft+=e.deltaY}}>
                 {garden.map((item, i) => {
                     return <div key={i} style={{
-                            margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**+')',
+                            margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**/+')',
                             backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '10px', width: '400px', height: '200px'
                         }}>
                             <div style={{width: '400px', font: 'grey'}}>
-                                <a href={item.href/**} style={{backgroundColor: '#753'}} >{item.name/**}</a>
+                                <a href={item.href/**/} style={{backgroundColor: '#753'}} >{item.name/**/}</a>
                             </div>
                         </div>
                 })}
             </div>
-        </div>*/}
+        </div>}
         <div>
             {garden.map((item, i) => {
                 return <div key={i} style={{
