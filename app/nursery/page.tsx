@@ -39,7 +39,7 @@ export default function Plants({params, searchParams}){
         </div>
         {<div id={'carosel'} className={'row'} style={{width: '100%', backgroundColor: 'transparent', backgroundImage: grd}}>
             <div className={'col-1'} style={{textAlign: 'center', margin: 'auto'}}>
-                <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=-imgWidthVal}} style={{backgroundColor: '#753', height: imgHeight}}>{'<'}</button>
+                <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=-(imgWidthVal+40)}} style={{backgroundColor: '#753', height: imgHeight}}>{'<'}</button>
             </div>
             <div id={'carosel-scroll'} className={'col-10'} style={{display: 'flex', overflowX: 'hidden'}}>
                 {garden.map((item, i) => {
@@ -54,7 +54,7 @@ export default function Plants({params, searchParams}){
                 })}
             </div>
             <div className={'col-1'} style={{textAlign: 'center', margin: 'auto'}}>
-                <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=imgWidthVal}} style={{backgroundColor: '#753', height: imgHeight}}>{'>'}</button>
+                <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=(imgWidthVal+40)}} style={{backgroundColor: '#753', height: imgHeight}}>{'>'}</button>
             </div>
         </div>}
         <div>
