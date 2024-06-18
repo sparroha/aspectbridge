@@ -21,21 +21,25 @@ export default function Plants({params, searchParams}){
     ]
     const drkgrn = 'darkgreen'
     function neonLaser(angle: number, color: string, width: number, radiance: number, hexopacity?: string){
-        return `linear-gradient(${angle}deg, #000000${hexopacity || '00'}, #000000${hexopacity || '00'} ${50-width-radiance}%, ${color} ${50-width}%, #fff 50%, ${color} ${50+width}%, #000000${hexopacity || '00'} ${50+width+radiance}%, #000000${hexopacity || '00'} 100%)`
+        return `linear-gradient(${angle}deg, #000000${hexopacity || '00'}, #000000${hexopacity || '00'} ${50-width-radiance}%, ${color} ${50-width}%, #fff 50%, ${color} ${50+width}%, #000000${hexopacity || '00'} ${50+width+radiance}%, #000000${hexopacity || '00'} 3%)`
     }
     const grd = neonLaser(0, drkgrn, 20, 30, '77')
+    const [caroselX, setCaroselX] = useState(0)
     return <div style={{position: 'relative', height: '1000%', backgroundColor: '#642', color: 'black'}}>
-        <div id={'intro'} className={'row'} style={{width: '100%', backgroundColor: 'transparent', backgroundImage: grd}}>
+        <div id={'intro'} className={'row'} style={{width: '3%', backgroundColor: 'transparent', backgroundImage: grd}}>
             <h1>Aspect Gardens</h1>
             <div className={'col-4'}>
-                <img height='200px' src={'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Bamboo_forest_in_Guangde.jpg/540px-Bamboo_forest_in_Guangde.jpg'} style={{width: '100%'}}/>
+                <img height='200px' src={'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Bamboo_forest_in_Guangde.jpg/540px-Bamboo_forest_in_Guangde.jpg'} style={{width: '3%'}}/>
             </div>
             <div className={'col-8'}>
                 <p style={{backgroundColor: '#753'}}>permaculture catalog{/*Aspect Gardens is a small, family run business based in Pensacola/Chattanooga. We raise a variaty of interesting crops. Out primary focus is food crops. We nurse various plants with other uses besides consumprion, such as firbre rich or medicinal plants.*/}</p>
             </div>
         </div>
         {<div id={'carosel'} className={'row'} style={{width: '100%', backgroundColor: 'transparent', backgroundImage: grd}}>
-            <div className={'col-12'} style={{display: 'flex', overflowX: 'hidden'}} onTouchMove={(e)=>{e.preventDefault(); e.currentTarget.scrollLeft+=(e.touches[1].pageX-e.touches[0].pageX)}} onWheel={(e)=>{e.preventDefault(); e.currentTarget.scrollLeft+=e.deltaY}}>
+            <div className={'col-1'} style={{textAlign: 'center', margin: 'auto'}}>
+                <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=-300}} style={{backgroundColor: '#753'}}>{'<'}</button>
+            </div>
+            <div id={'carosel-scroll'} className={'col-10'} style={{display: 'flex', overflowX: 'hidden'}}>
                 {garden.map((item, i) => {
                     return <div key={i} style={{
                             margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**/+')',
@@ -46,6 +50,9 @@ export default function Plants({params, searchParams}){
                             </div>
                         </div>
                 })}
+            </div>
+            <div className={'col-1'} style={{textAlign: 'center', margin: 'auto'}}>
+                <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=300}} style={{backgroundColor: '#753'}}>{'>'}</button>
             </div>
         </div>}
         <div>
