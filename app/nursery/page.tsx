@@ -35,7 +35,7 @@ export default function Plants({params, searchParams}){
             </div>
         </div>
         {<div id={'carosel'} className={'row'} style={{width: '100%', backgroundColor: 'transparent', backgroundImage: grd}}>
-            <div className={'col-12'} style={{display: 'flex', overflowX: 'hidden'}} onTouchMove={(e)=>{e.currentTarget.scrollLeft+=(e.touches[e.touches.length-1].pageY-e.touches[0].pageY)}} onWheel={(e)=>{e.currentTarget.scrollLeft+=e.deltaY}}>
+            <div className={'col-12'} style={{display: 'flex', overflowX: 'hidden'}} onTouchMove={(e)=>{e.currentTarget.scrollLeft+=(e.touches[1].pageY-e.touches[0].pageY)}} onWheel={(e)=>{e.currentTarget.scrollLeft+=e.deltaY}}>
                 {garden.map((item, i) => {
                     return <div key={i} style={{
                             margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**/+')',
