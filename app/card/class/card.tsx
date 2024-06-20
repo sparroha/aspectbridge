@@ -121,7 +121,7 @@ export default function Card(props: FTCardPropsPartial ) {
                 height: '14px',
                 borderRadius: '3px',
                 textAlign: 'center',
-            }}>{logo || '#'}</div>
+            }}>{logo.includes('http')?<img src={logo} width={'15px'} height={'15px'}/>:(logo || '#')}</div>
         </div>
         <div id={'card-function-block'} style={{
             marginTop: '3px',
@@ -133,7 +133,7 @@ export default function Card(props: FTCardPropsPartial ) {
             textAlign: 'left',
             border: '2px outset '+colorPalette.red,
             borderRadius: '5px',
-            backgroundImage: image?'src('+image+')':`linear-gradient(45deg, ${colorPalette.yellow}, ${colorPalette.red})`
+            //backgroundImage: image?'url('+image+')':`linear-gradient(45deg, ${colorPalette.yellow}, ${colorPalette.red})`
         }}>
             {children || <p>Add one step to your journey</p>}
         </div>

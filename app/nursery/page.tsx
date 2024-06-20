@@ -5,6 +5,14 @@ import Card from "../card/class/card"
 
 export default function Plants({params, searchParams}){
 
+    const manaSym = {
+        plain: 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/8/8e/W.svg/revision/latest/scale-to-width-down/15?cb=20160125094923',
+        island: 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/4/4e/U.svg/revision/latest/scale-to-width-down/15?cb=20160125094923',
+        swamp: 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/3/3b/B.svg/revision/latest/scale-to-width-down/15?cb=20160125094923',
+        mountain: 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/0/0d/R.svg/revision/latest/scale-to-width-down/15?cb=20160125094923',
+        forest: 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/8/88/G.svg/revision/latest/scale-to-width-down/15?cb=20160125094907',
+        colorless: 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/0/0f/C.svg/revision/latest/scale-to-width-down/15?cb=20160125094923'
+    }
     const garden = [
         {name: 'Bamboo', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Canebrake_in_Kentucky.jpg/270px-Canebrake_in_Kentucky.jpg', href: 'https://en.wikipedia.org/wiki/Bamboo'},
         {name: 'Vetch', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Vicia_orobus1_eF.jpg/330px-Vicia_orobus1_eF.jpg', href: 'https://en.wikipedia.org/wiki/Vicia'},
@@ -59,7 +67,7 @@ export default function Plants({params, searchParams}){
         </div>}
         <div>
             {garden.map((item, i) => {
-                return <Card key={i} name={item.name} image={item.img} color={'darkgreen'} logo={'P'} click={()=>{window.open(item.href, '_blank')}} type={'Plant'}/>
+                return <Card key={i} name={item.name} image={item.img} color={'darkgreen'} logo={'🍃'} click={()=>{window.open(item.href, '_blank')}} type={'Plant'}/>
                 return <div key={i} style={{
                         margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**/+')',
                         backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '10px', width: imgWidthVal, height: imgHeight
