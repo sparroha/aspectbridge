@@ -9,9 +9,28 @@ export default function Card(props: FTCardPropsPartial ) {
         yellow: '#f3ec78',
         blue: '#4a69bd',
         green: '#6a994e',
+        darkgreen: 'darkgreen',
         purple: '#6a4e99',
         lightpurple: '#9c5fad',
         orange: '#af6a42',
+        brown: '#6a4e42',
+        black: '#000000',
+        white: '#ffffff',
+        grey: '#6a6a6a',
+        gray: '#6a6a6a',
+        lightgray: '#d3d3d3',
+        lightgrey: '#d3d3d3',
+    }
+    const gradientPalette = {
+        red: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.red}, ${colorPalette.lightgray}, ${colorPalette.red}, ${colorPalette.lightgray})`,
+        lightred: '#df4261',
+        yellow: '#f3ec78',
+        blue: '#4a69bd',
+        green: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.green}, ${colorPalette.lightgray}, ${colorPalette.green}, ${colorPalette.lightgray})`,
+        darkgreen: `linear-gradient(45deg, ${colorPalette.green}, ${colorPalette.darkgreen}, ${colorPalette.green}, ${colorPalette.darkgreen}, ${colorPalette.green})`,
+        purple: '#6a4e99',
+        lightpurple: '#9c5fad',
+        orange: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.orange}, ${colorPalette.lightgray}, ${colorPalette.orange}, ${colorPalette.lightgray})`,
         brown: '#6a4e42',
         black: '#000000',
         white: '#ffffff',
@@ -33,7 +52,7 @@ export default function Card(props: FTCardPropsPartial ) {
             alignItems: 'center',
             padding: '10px',
             margin: '10px',
-            backgroundImage: `linear-gradient(45deg, ${colorPalette.red}, ${colorPalette.orange}, ${colorPalette.yellow}, ${colorPalette.orange})`
+            backgroundImage: gradientPalette[color] || `linear-gradient(45deg, ${colorPalette.red}, ${colorPalette.orange}, ${colorPalette.yellow}, ${colorPalette.orange})`
     }}>
         <div id={'card-name-container'} style={{
             marginTop: '0px',
@@ -53,7 +72,7 @@ export default function Card(props: FTCardPropsPartial ) {
             <div style={{
                 float: 'right',
                 margin: '1px',
-                backgroundColor: colorPalette['purple'],
+                backgroundColor: colorPalette['gray'],
                 color: 'white',
                 fontWeight: 'normal',
                 fontSize: '11px',
@@ -69,7 +88,8 @@ export default function Card(props: FTCardPropsPartial ) {
             height: '40%',
             border: '2px outset '+colorPalette.red,
             borderRadius: '5px',
-            backgroundImage: image?'src('+image+')':`linear-gradient(45deg, ${colorPalette.yellow}, ${colorPalette.red})`
+            backgroundImage: image?'url('+image+')':`linear-gradient(45deg, ${colorPalette.yellow}, ${colorPalette.red})`,
+            backgroundSize: 'cover',
         }}>
             {image?null:<h1 style={{
                 textAlign: 'center',
