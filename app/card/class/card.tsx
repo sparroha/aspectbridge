@@ -2,7 +2,7 @@ import { alephbeth } from "../../../components/hebrew"
 import { FTCardPropsPartial } from "./ftcard"
 
 export default function Card(props: FTCardPropsPartial ) {
-    const { name, order, image, strimage, type, click, color, logo, children }: FTCardPropsPartial = props
+    const { name, order, image, strimage, type, subtype, click, color, logo, children }: FTCardPropsPartial = props
     const colorPalette = {
         red: '#af4261',
         lightred: '#df4261',
@@ -111,7 +111,7 @@ export default function Card(props: FTCardPropsPartial ) {
             borderRadius: '5px',
             backgroundColor: colorPalette[color] || colorPalette.orange
         }}>
-            {type || 'Character -- Logo'}
+            {type || 'Typeholder'}{!subtype || ' -- '+subtype}
             <div style={{
                 float: 'right',
                 margin: '1px',

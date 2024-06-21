@@ -6,6 +6,7 @@ export type TCardProps = {
     image: string
     strimage: string
     type: string
+    subtype: string
     children: any
 }
 export type TCardPropsPartial = Partial<TCardProps>
@@ -18,6 +19,7 @@ export class TCard{
     image: string
     strimage: string
     type: string
+    subtype: string
     children: any
     constructor(props: TCardPropsPartial){
         this.key = props.key || 0
@@ -26,6 +28,7 @@ export class TCard{
         this.image = props.image || ''
         this.strimage = props.strimage || ''
         this.type = props.type || ''
+        this.subtype = props.subtype || ''
         this.children = props.children || null
     }
     getProps(): TCardPropsPartial{
@@ -36,6 +39,7 @@ export class TCard{
             image: this.image,
             strimage: this.strimage,
             type: this.type,
+            subtype: this.subtype,
             children: this.children
         }
     }

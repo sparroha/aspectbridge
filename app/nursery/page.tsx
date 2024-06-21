@@ -14,17 +14,17 @@ export default function Plants({params, searchParams}){
         colorless: 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/0/0f/C.svg/revision/latest/scale-to-width-down/15?cb=20160125094923'
     }
     const garden = [
-        {name: 'Bamboo', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Canebrake_in_Kentucky.jpg/270px-Canebrake_in_Kentucky.jpg', href: 'https://en.wikipedia.org/wiki/Bamboo'},
-        {name: 'Vetch', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Vicia_orobus1_eF.jpg/330px-Vicia_orobus1_eF.jpg', href: 'https://en.wikipedia.org/wiki/Vicia'},
-        {name: 'Dandilion', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/HAWKBEARD.jpg/330px-HAWKBEARD.jpg', href: 'https://en.wikipedia.org/wiki/Taraxacum'},
-        {name: 'Prickly Letuce', img: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Lactuca_serriola.jpg', href: 'https://en.wikipedia.org/wiki/Lactuca_serriola'},
-        {name: 'Wood Sorel', img: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Oxalis_arborea1.jpg', href: 'https://en.wikipedia.org/wiki/Oxalis'},
-        {name: 'Purple Archangel / Deadnettle', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Lamium_purpureum_in_the_spring2.jpg/587px-Lamium_purpureum_in_the_spring2.jpg', href: 'https://en.wikipedia.org/wiki/Lamium_purpureum'},
-        {name: 'Stinging Nettle', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Urtica_incisa1.JPG/1280px-Urtica_incisa1.JPG', href: 'https://en.wikipedia.org/wiki/Urtica_incisa'},
-        {name: 'Horse Nettle (Nightshade)', img: 'https://upload.wikimedia.org/wikipedia/commons/1/1f/Solanum_carolinense_in_flower.jpg', href: 'https://en.wikipedia.org/wiki/Solanum_carolinense'},
-        {name: 'Iris', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Iris_germanica_%28Purple_bearded_Iris%29%2C_Wakehurst_Place%2C_UK_-_Diliff.jpg/470px-Iris_germanica_%28Purple_bearded_Iris%29%2C_Wakehurst_Place%2C_UK_-_Diliff.jpg', href: 'https://en.wikipedia.org/wiki/Iris_(plant)'},
-        {name: 'Mimosa / Persian silk', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/2018-07-08_11_10_27_Rosea_Mimosa_blossoms_along_the_ramp_from_southbound_Interstate_95_%28New_Jersey_Turnpike_Eastern_Spur%29_to_westbound_Interstate_280_%28Essex_Freeway%29_in_the_New_Jersey_Meadowlands%2C_within_Kearny%2C_Hudson_County%2C_New_Jersey.jpg/1280px-thumbnail.jpg', href: 'https://en.wikipedia.org/wiki/Albizia_julibrissin'},
-        {name: 'Sassafras', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg/1280px-Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg', href: 'https://en.wikipedia.org/wiki/Sassafras'},
+        {name: 'Bamboo', type: 'Plant', subtype: 'Grass', children: <i>"Taste like broccoli if you add cheese"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Canebrake_in_Kentucky.jpg/270px-Canebrake_in_Kentucky.jpg', href: 'https://en.wikipedia.org/wiki/Bamboo'},
+        {name: 'Vetch', type: 'Plant', subtype: 'Tare', children: <i>"Hay"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Vicia_orobus1_eF.jpg/330px-Vicia_orobus1_eF.jpg', href: 'https://en.wikipedia.org/wiki/Vicia'},
+        {name: 'Dandilion', type: 'Plant', subtype: '', children: <></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/HAWKBEARD.jpg/330px-HAWKBEARD.jpg', href: 'https://en.wikipedia.org/wiki/Taraxacum'},
+        {name: 'Prickly Letuce', type: 'Plant', subtype: '', children: <>Latex</>, img: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Lactuca_serriola.jpg', href: 'https://en.wikipedia.org/wiki/Lactuca_serriola'},
+        {name: 'Wood Sorel', type: 'Plant', subtype: '', children: <i>"Not a clover"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Oxalis_arborea1.jpg', href: 'https://en.wikipedia.org/wiki/Oxalis'},
+        {name: 'Purple Archangel', type: 'Plant', subtype: 'Nettle', children: <i>"Deadnettle"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Lamium_purpureum_in_the_spring2.jpg/587px-Lamium_purpureum_in_the_spring2.jpg', href: 'https://en.wikipedia.org/wiki/Lamium_purpureum'},
+        {name: 'Stinging Nettle', type: 'Plant', subtype: 'Nettle', children: <></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Urtica_incisa1.JPG/1280px-Urtica_incisa1.JPG', href: 'https://en.wikipedia.org/wiki/Urtica_incisa'},
+        {name: 'Horse Nettle', type: 'Plant', subtype: 'Nightshade', children: <i>"Not a nettle"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/1/1f/Solanum_carolinense_in_flower.jpg', href: 'https://en.wikipedia.org/wiki/Solanum_carolinense'},
+        {name: 'Iris', type: 'Plant', subtype: 'Flower', children: <></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Iris_germanica_%28Purple_bearded_Iris%29%2C_Wakehurst_Place%2C_UK_-_Diliff.jpg/470px-Iris_germanica_%28Purple_bearded_Iris%29%2C_Wakehurst_Place%2C_UK_-_Diliff.jpg', href: 'https://en.wikipedia.org/wiki/Iris_(plant)'},
+        {name: 'Mimosa / Persian silk', type: 'Plant', subtype: 'Tree', children: <>Tranquil<br/><br/><i>"Use bark and flower for tea"</i></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/2018-07-08_11_10_27_Rosea_Mimosa_blossoms_along_the_ramp_from_southbound_Interstate_95_%28New_Jersey_Turnpike_Eastern_Spur%29_to_westbound_Interstate_280_%28Essex_Freeway%29_in_the_New_Jersey_Meadowlands%2C_within_Kearny%2C_Hudson_County%2C_New_Jersey.jpg/1280px-thumbnail.jpg', href: 'https://en.wikipedia.org/wiki/Albizia_julibrissin'},
+        {name: 'Sassafras', type: 'Plant', subtype: 'Tree', children: <i>"Boil the roots for tea"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg/1280px-Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg', href: 'https://en.wikipedia.org/wiki/Sassafras'},
         //{name: '', img: '', href: ''},
     ]
     const drkgrn = 'darkgreen'
@@ -67,7 +67,7 @@ export default function Plants({params, searchParams}){
         </div>}
         <div>
             {garden.map((item, i) => {
-                return <Card key={i} name={item.name} image={item.img} color={'darkgreen'} logo={'🍃'} click={()=>{window.open(item.href, '_blank')}} type={'Plant'}/>
+                return <Card key={i} name={item.name} image={item.img} color={'darkgreen'} logo={'🍃'} click={()=>{window.open(item.href, '_blank')}} type={item.type} subtype={item.subtype} children={item.children}/>
                 return <div key={i} style={{
                         margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**/+')',
                         backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '10px', width: imgWidthVal, height: imgHeight

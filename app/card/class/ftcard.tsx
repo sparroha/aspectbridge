@@ -26,6 +26,7 @@ export class FTCard extends TCard{
             image: this.image,
             strimage: this.strimage,
             type: this.type,
+            subtype: this.subtype,
             click: this.click,
             children: this.children,
             color: this.color,
