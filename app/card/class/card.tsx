@@ -73,7 +73,6 @@ export default function Card(props: FTCardPropsPartial ) {
             {name ? name.slice(0,1).toUpperCase()+name.slice(1) : 'Character Name'}
             <div style={{
                 float: 'right',
-                margin: '1px',
                 backgroundColor: colorPalette['gray'],
                 color: 'white',
                 fontWeight: 'normal',
@@ -118,7 +117,6 @@ export default function Card(props: FTCardPropsPartial ) {
             {type || 'Typeholder'}{!subtype || ' -- '+subtype}
             <div style={{
                 float: 'right',
-                margin: '1px',
                 backgroundColor: 'black',
                 color: 'white',
                 width: '14px',
