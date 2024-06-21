@@ -129,7 +129,7 @@ export default function Card(props: FTCardPropsPartial ) {
             paddingRight: '5px',
             width: '95%',
             height: '40%',
-            fontSize: '12px',
+            fontSize: '10px',
             textAlign: 'left',
             border: '2px outset '+colorPalette.red,
             borderRadius: '5px',
