@@ -56,12 +56,14 @@ export default function Card(props: FTCardPropsPartial ) {
     }}>
         <div id={'card-name-container'} style={{
             marginTop: '0px',
+            paddingTop: '2px',
             paddingLeft: '5px',
             paddingRight: '5px',
             width: '95%',
             height: '22px',
+            color: '#ddd',
             fontSize: '11px',
-            fontWeight: 'normal',
+            fontWeight: 'bold',
             textAlign: 'left',
             verticalAlign: 'middle',
             border: '2px outset '+colorPalette.red,
@@ -99,10 +101,12 @@ export default function Card(props: FTCardPropsPartial ) {
         </div>
         <div id={'card-info-container'} style={{
             marginTop: '3px',
+            paddingTop: '2px',
             paddingLeft: '5px',
             paddingRight: '5px',
             width: '95%',
             height: '20px',
+            color: '#ddd',
             fontSize: '10px',
             fontWeight: 'bold',
             textAlign: 'left',
