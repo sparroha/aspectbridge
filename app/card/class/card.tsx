@@ -106,6 +106,7 @@ export default function Card(props: FTCardPropsPartial ) {
             border: '2px outset '+colorPalette[color],
             borderRadius: '5px',
             backgroundImage: image?'url('+image+')':`linear-gradient(45deg, ${colorPalette.yellow}, ${colorPalette.red})`,
+            backgroundPosition: 'center',
             backgroundSize: 'cover',
         }}>
             {image?null:<h1 style={{
