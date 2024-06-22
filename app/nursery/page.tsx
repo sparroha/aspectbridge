@@ -24,7 +24,11 @@ export default function Plants({params, searchParams}){
         {name: 'Iris', type: 'Plant', subtype: 'Flower', children: <></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Iris_germanica_%28Purple_bearded_Iris%29%2C_Wakehurst_Place%2C_UK_-_Diliff.jpg/470px-Iris_germanica_%28Purple_bearded_Iris%29%2C_Wakehurst_Place%2C_UK_-_Diliff.jpg', href: 'https://en.wikipedia.org/wiki/Iris_(plant)'},
         {name: 'Mimosa', type: 'Plant', subtype: 'Tree', children: <><b>Tranquil:</b> Boil 1 tbsp bark in 1 cup water. You may include flowers.<br/><br/><i>"Persian silk"</i></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/2018-07-08_11_10_27_Rosea_Mimosa_blossoms_along_the_ramp_from_southbound_Interstate_95_%28New_Jersey_Turnpike_Eastern_Spur%29_to_westbound_Interstate_280_%28Essex_Freeway%29_in_the_New_Jersey_Meadowlands%2C_within_Kearny%2C_Hudson_County%2C_New_Jersey.jpg/1280px-thumbnail.jpg', href: 'https://en.wikipedia.org/wiki/Albizia_julibrissin'},
         {name: 'Sassafras', type: 'Plant', subtype: 'Tree', children: <i>"Boil the roots for tea"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg/1280px-Sassafras_Leaves_June_Nbg_%28261691941%29.jpeg', href: 'https://en.wikipedia.org/wiki/Sassafras'},
-        //{name: '', img: '', href: ''},
+        {name: 'Mantis', type:'Bug', subtype:'Insect', children:<><i>"Holier than thow."</i></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/European_praying_mantis_%28Mantis_religiosa%29_green_female_Dobruja.jpg/800px-European_praying_mantis_%28Mantis_religiosa%29_green_female_Dobruja.jpg', href: 'https://en.wikipedia.org/wiki/Mantis'},
+        {name: 'Turkey', type:'Animal', subtype:'Bird Poltry', children:<><i>"Gobble!"</i></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Male_wild_turkey_%28Meleagris_gallopavo%29_strutting.jpg/600px-Male_wild_turkey_%28Meleagris_gallopavo%29_strutting.jpg', href: 'https://en.wikipedia.org/wiki/Turkey_(bird)'},
+        {name: 'Japanese Beetle', type:'Bug', subtype:'Beetle', children:<><i>"Plague!"</i></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Popillia_japonica.jpg/1024px-Popillia_japonica.jpg', href: 'https://en.wikipedia.org/wiki/Japanese_beetle'},
+        {name: 'White-Tailed Deer', type:'Animal', subtype:'Deer', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/White-tailed_deer.jpg/789px-White-tailed_deer.jpg', href: 'https://en.wikipedia.org/wiki/White-tailed_deer'},
+        //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
     ]
     const drkgrn = 'darkgreen'
     function neonLaser(angle: number, color: string, width: number, radiance: number, hexopacity?: string){
@@ -34,6 +38,7 @@ export default function Plants({params, searchParams}){
     const imgHeight = '125px'
     const imgWidthVal = 250
     const imgWidth = imgWidthVal+'px'
+
     return <div style={{position: 'relative', height: '1000%', backgroundColor: '#642', color: 'black'}}>
         <div id={'intro'} className={'row'} style={{backgroundColor: 'transparent', backgroundImage: grd}}>
             <h1>Aspect Gardens</h1>
@@ -64,18 +69,40 @@ export default function Plants({params, searchParams}){
                 <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=(imgWidthVal+40)}} style={{backgroundColor: '#753', height: imgHeight}}>{'>'}</button>
             </div>
         </div>}
-        <div>
+        <div className={'row'}>
             {garden.map((item, i) => {
-                return <Card key={i} name={item.name} image={item.img} color={'darkgreen'} logo={'🍃'} click={()=>{window.open(item.href, '_blank')}} type={item.type} subtype={item.subtype} children={item.children}/>
-                return <div key={i} style={{
-                        margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**/+')',
-                        backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '10px', width: imgWidthVal, height: imgHeight
-                    }}>
-                        <div style={{width: '300px', font: 'grey'}}>
-                            <a href={item.href/**/} style={{backgroundColor: '#753'}} >{item.name/**/}</a>
-                        </div>
+                return <div className={'col-xs-12 col-sm-6 col-md-4 col-lg-3'} key={i}>
+                    <RenderCard {...item}/>
                     </div>
             })}
         </div>
     </div>
+}
+
+/**
+ * Special/Custom implementation of Card call. 
+ * @param item 
+ * @returns 
+ */
+function RenderCard(item){
+    return <Card
+        name={item.name} 
+        image={item.img} 
+        color={
+            item.type=='Plant'?'green':(
+                item.type=='Bug'?'red':(
+                    item.type=='Animal'?'brown':(
+                        'grey'
+                    )))} 
+        logo={
+            item.type=='Plant'?'🍃':(
+                item.type=='Bug'?'🐞':(
+                    item.type=='Animal'?'🐮':(
+                        '🌀'
+                    )))} 
+        click={()=>{window.open(item.href, '_blank')}} 
+        type={item.type} 
+        subtype={item.subtype} 
+        children={item.children}
+    />
 }
