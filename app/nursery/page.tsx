@@ -41,26 +41,28 @@ export default function Plants({params, searchParams}){
 
     return <div style={{position: 'relative', height: '1000%', backgroundColor: '#642', color: 'black'}}>
         <div id={'intro'} className={'row'} style={{backgroundColor: 'transparent', backgroundImage: grd}}>
-            <h1>Aspect Gardens</h1>
+            
             <div className={'col-3'}>
-                <img height={imgHeight} src={'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Bamboo_forest_in_Guangde.jpg/540px-Bamboo_forest_in_Guangde.jpg'}/>
+                <h1>Aspect Gardens</h1>
+                {//<img height={imgHeight} src={'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Bamboo_forest_in_Guangde.jpg/540px-Bamboo_forest_in_Guangde.jpg'}/>
+                }
             </div>
             <div className={'col-9'}>
-                <p style={{backgroundColor: '#753'}}>permaculture catalog{/*Aspect Gardens is a small, family run business based in Pensacola/Chattanooga. We raise a variaty of interesting crops. Out primary focus is food crops. We nurse various plants with other uses besides consumprion, such as firbre rich or medicinal plants.*/}</p>
+                {/*<p style={{backgroundColor: '#753'}}>permaculture catalog{/*Aspect Gardens is a small, family run business based in Pensacola/Chattanooga. We raise a variaty of interesting crops. Out primary focus is food crops. We nurse various plants with other uses besides consumprion, such as firbre rich or medicinal plants.*}</p>*/}
             </div>
         </div>
-        {<div id={'carosel'} className={'row'} style={{width: '100%', backgroundColor: 'transparent', backgroundImage: grd}}>
+        {/*<div id={'carosel'} className={'row'} style={{width: '100%', backgroundColor: 'transparent', backgroundImage: grd}}>
             <div className={'col-1'} style={{textAlign: 'center', margin: 'auto'}}>
                 <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=-(imgWidthVal+40)}} style={{backgroundColor: '#753', height: imgHeight}}>{'<'}</button>
             </div>
             <div id={'carosel-scroll'} className={'col-10'} style={{display: 'flex', overflowX: 'hidden', scrollBehavior: 'smooth'}}>
                 {garden.map((item, i) => {
                     return <div key={i} style={{
-                            margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**/+')',
+                            margin: '20px', backgroundColor: 'transparent', backgroundImage: 'url('+item.img/**+')',
                             backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '10px', height: imgHeight
                         }}>
                             <div style={{width: imgWidth, font: 'grey'}}>
-                                <a href={item.href/**/} style={{backgroundColor: '#753'}} >{item.name/**/}</a>
+                                <a href={item.href/**} style={{backgroundColor: '#753'}} >{item.name/**}</a>
                             </div>
                         </div>
                 })}
@@ -68,7 +70,7 @@ export default function Plants({params, searchParams}){
             <div className={'col-1'} style={{textAlign: 'center', margin: 'auto'}}>
                 <button onClick={()=>{document.querySelector('#carosel-scroll').scrollLeft+=(imgWidthVal+40)}} style={{backgroundColor: '#753', height: imgHeight}}>{'>'}</button>
             </div>
-        </div>}
+        </div>*/}
         <div className={'row'}>
             {garden.map((item, i) => {
                 return <div className={'col-xs-12 col-sm-6 col-md-4 col-lg-3'} key={i}>
