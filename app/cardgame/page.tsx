@@ -15,28 +15,18 @@ export default function CardIndexPage({params}) {
      */
     const render = useState({})[1]
     const defaultState = {
-        residents: 0, inns: 0,
-        stables: 0, archives: 0,
-        temples: 0, mills: 0,
-        farms: 0, walls: 0,
-        shops: 0, markets: 0,
-        forests: 0, schools: 0,
-        wells: 0, aquaducts: 0, 
-        beams: 0, tower: 0,
-        theater: 0, roads: 0,
-        posts: 0, company: 0,
+        residents: 0, inns: 0, stables: 0, archives: 0,
+        temples: 0, mills: 0, farms: 0, walls: 0,
+        shops: 0, markets: 0, forests: 0, schools: 0,
+        wells: 0, aquaducts: 0,  beams: 0, tower: 0,
+        theater: 0, roads: 0, posts: 0, company: 0,
         memorials: 0, hubs: 0,
 
-        energy: 0, rest: 0,
-        momentum: 0, memory: 0,
-        breath: 0, strength: 0,
-        nutrients: 0, health: 0,
-        utility: 0, wealth: 0,
-        lumber: 0, talents: 0,
-        water: 0, firtility: 0,
-        support: 0, awareness: 0,
-        inforation: 0, access: 0,
-        navigation: 0, business: 0,
+        energy: 0, rest: 0, momentum: 0, memory: 0,
+        breath: 0, strength: 0, nutrients: 0, health: 0,
+        utility: 0, wealth: 0, lumber: 0, talents: 0,
+        water: 0, firtility: 0, support: 0, awareness: 0,
+        inforation: 0, access: 0, navigation: 0, business: 0,
         morale: 0, crosses: 0,
     }
     const stateRefMain = useRef(defaultState)
