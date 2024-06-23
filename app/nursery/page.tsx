@@ -1,6 +1,7 @@
 'use client'
 
 import Card from "../../components/gamecard/card"
+import { alephbeth } from "../../components/hebrew"
 
 export default function Plants({params, searchParams}){
 
@@ -101,7 +102,7 @@ export default function Plants({params, searchParams}){
  */
 function RenderCard(item){
     return <Card
-        name={item.name} 
+        name={item.name+' ---- '+alephbeth.mem.uni+alephbeth.resh.uni+alephbeth.aleph.uni+alephbeth.hey.uni} 
         image={item.img} 
         color={
             item.type=='Plant'?'green':(
