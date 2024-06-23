@@ -1,9 +1,9 @@
 'use client'
 import { Dispatch, MouseEventHandler, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { TLitter, alephbeth } from "../../components/hebrew"
-import { FTCard } from "./class/ftcard"
-import { TCard } from "./class/tcard"
-import Card from "./class/card"
+import { FTCard } from "../../components/gamecard/ftcard"
+import { TCard } from "../../components/gamecard/tcard"
+import Card from "../../components/gamecard/card"
 import { Col, Container, Row } from "react-bootstrap"
 import useRegister from "../../lib/util/^register"
 

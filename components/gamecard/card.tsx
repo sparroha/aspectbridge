@@ -1,4 +1,4 @@
-import { alephbeth } from "../../../components/hebrew"
+import { alephbeth } from "../hebrew"
 import { FTCardPropsPartial } from "./ftcard"
 
 export default function Card(props: FTCardPropsPartial ) {
@@ -22,22 +22,22 @@ export default function Card(props: FTCardPropsPartial ) {
         lightgrey: '#d3d3d3',
     }
     const gradientPalette = {
-        red: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.red}, ${colorPalette.lightgray}, ${colorPalette.red}, ${colorPalette.lightgray})`,
-        lightred: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.lightred}, ${colorPalette.lightgray}, ${colorPalette.lightred}, ${colorPalette.lightgray})`,
-        yellow: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.yellow}, ${colorPalette.lightgray}, ${colorPalette.yellow}, ${colorPalette.lightgray})`,
-        blue: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.blue}, ${colorPalette.lightgray}, ${colorPalette.blue}, ${colorPalette.lightgray})`,
-        green: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.green}, ${colorPalette.lightgray}, ${colorPalette.green}, ${colorPalette.lightgray})`,
-        darkgreen: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.darkgreen}, ${colorPalette.lightgray}, ${colorPalette.darkgreen}, ${colorPalette.lightgray})`,
-        purple: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.purple}, ${colorPalette.lightgray}, ${colorPalette.purple}, ${colorPalette.lightgray})`,
-        lightpurple: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.lightpurple}, ${colorPalette.lightgray}, ${colorPalette.lightpurple}, ${colorPalette.lightgray})`,
-        orange: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.orange}, ${colorPalette.lightgray}, ${colorPalette.orange}, ${colorPalette.lightgray})`,
-        brown: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.brown}, ${colorPalette.lightgray}, ${colorPalette.brown}, ${colorPalette.lightgray})`,
-        black: `linear-gradient(45deg, ${colorPalette.gray}, ${colorPalette.black}, ${colorPalette.gray}, ${colorPalette.black}, ${colorPalette.gray})`,
-        white: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.white}, ${colorPalette.lightgray}, ${colorPalette.white}, ${colorPalette.lightgray})`,
-        grey: `linear-gradient(45deg, ${colorPalette.lightgrey}, ${colorPalette.grey}, ${colorPalette.lightgrey}, ${colorPalette.grey}, ${colorPalette.lightgrey})`,
-        gray: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.gray}, ${colorPalette.lightgray}, ${colorPalette.gray}, ${colorPalette.lightgray})`,
-        lightgray: `linear-gradient(45deg, ${colorPalette.white}, ${colorPalette.lightgrey}, ${colorPalette.white}, ${colorPalette.lightgrey}, ${colorPalette.white})`,
-        lightgrey: `linear-gradient(45deg, ${colorPalette.white}, ${colorPalette.lightgray}, ${colorPalette.white}, ${colorPalette.lightgray}, ${colorPalette.white})`,
+        red: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.red}, ${colorPalette.lightgray}, ${colorPalette.red}, ${colorPalette.lightgray}, ${colorPalette.red}, ${colorPalette.lightgray})`,
+        lightred: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.lightred}, ${colorPalette.lightgray}, ${colorPalette.lightred}, ${colorPalette.lightgray}, ${colorPalette.lightred}, ${colorPalette.lightgray})`,
+        yellow: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.yellow}, ${colorPalette.lightgray}, ${colorPalette.yellow}, ${colorPalette.lightgray}, ${colorPalette.yellow}, ${colorPalette.lightgray})`,
+        blue: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.blue}, ${colorPalette.lightgray}, ${colorPalette.blue}, ${colorPalette.lightgray}, ${colorPalette.blue}, ${colorPalette.lightgray})`,
+        green: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.green}, ${colorPalette.lightgray}, ${colorPalette.green}, ${colorPalette.lightgray}, ${colorPalette.green}, ${colorPalette.lightgray})`,
+        darkgreen: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.darkgreen}, ${colorPalette.lightgray}, ${colorPalette.darkgreen}, ${colorPalette.lightgray}, ${colorPalette.darkgreen}, ${colorPalette.lightgray})`,
+        purple: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.purple}, ${colorPalette.lightgray}, ${colorPalette.purple}, ${colorPalette.lightgray}, ${colorPalette.purple}, ${colorPalette.lightgray})`,
+        lightpurple: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.lightpurple}, ${colorPalette.lightgray}, ${colorPalette.lightpurple}, ${colorPalette.lightgray}, ${colorPalette.lightpurple}, ${colorPalette.lightgray})`,
+        orange: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.orange}, ${colorPalette.lightgray}, ${colorPalette.orange}, ${colorPalette.lightgray}, ${colorPalette.orange}, ${colorPalette.lightgray})`,
+        brown: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.brown}, ${colorPalette.lightgray}, ${colorPalette.brown}, ${colorPalette.lightgray}, ${colorPalette.brown}, ${colorPalette.lightgray})`,
+        black: `linear-gradient(45deg, ${colorPalette.gray}, ${colorPalette.black}, ${colorPalette.gray}, ${colorPalette.black}, ${colorPalette.gray}, ${colorPalette.black}, ${colorPalette.gray})`,
+        white: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.white}, ${colorPalette.lightgray}, ${colorPalette.white}, ${colorPalette.lightgray}, ${colorPalette.white}, ${colorPalette.lightgray})`,
+        grey: `linear-gradient(45deg, ${colorPalette.lightgrey}, ${colorPalette.grey}, ${colorPalette.lightgrey}, ${colorPalette.grey}, ${colorPalette.lightgrey}, ${colorPalette.grey}, ${colorPalette.lightgrey})`,
+        gray: `linear-gradient(45deg, ${colorPalette.lightgray}, ${colorPalette.gray}, ${colorPalette.lightgray}, ${colorPalette.gray}, ${colorPalette.lightgray}, ${colorPalette.gray}, ${colorPalette.lightgray})`,
+        lightgray: `linear-gradient(45deg, ${colorPalette.white}, ${colorPalette.lightgrey}, ${colorPalette.white}, ${colorPalette.lightgrey}, ${colorPalette.white}, ${colorPalette.lightgrey}, ${colorPalette.white})`,
+        lightgrey: `linear-gradient(45deg, ${colorPalette.white}, ${colorPalette.lightgray}, ${colorPalette.white}, ${colorPalette.lightgray}, ${colorPalette.white}, ${colorPalette.lightgray}, ${colorPalette.white})`,
     }
     return <Base>
         <Name/>
@@ -53,7 +53,7 @@ export default function Card(props: FTCardPropsPartial ) {
             height: '275px',
             border: '2px outset '+colorPalette[color],
             borderRadius: '5px',
-            boxShadow: '0 0 5px 0 rgba(0,0,0,0.5)',
+            boxShadow: '0 0 25px 0 rgba(0,0,0,0.5)',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
@@ -105,7 +105,7 @@ export default function Card(props: FTCardPropsPartial ) {
             height: '40%',
             border: '2px outset '+colorPalette[color],
             borderRadius: '5px',
-            backgroundImage: image?'url('+image+')':`linear-gradient(45deg, ${colorPalette.yellow}, ${colorPalette.red})`,
+            backgroundImage: image?'url('+image+')':`linear-gradient(45deg, ${colorPalette.grey}, ${colorPalette.white})`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
         }}>

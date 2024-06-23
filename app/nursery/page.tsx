@@ -1,6 +1,6 @@
 'use client'
 
-import Card from "../card/class/card"
+import Card from "../../components/gamecard/card"
 
 export default function Plants({params, searchParams}){
 
@@ -28,6 +28,19 @@ export default function Plants({params, searchParams}){
         {name: 'Turkey', type:'Animal', subtype:'Bird Poltry', children:<><i>"Gobble!"</i></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Male_wild_turkey_%28Meleagris_gallopavo%29_strutting.jpg/600px-Male_wild_turkey_%28Meleagris_gallopavo%29_strutting.jpg', href: 'https://en.wikipedia.org/wiki/Turkey_(bird)'},
         {name: 'Japanese Beetle', type:'Bug', subtype:'Beetle', children:<><i>"Plague!"</i></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Popillia_japonica.jpg/1024px-Popillia_japonica.jpg', href: 'https://en.wikipedia.org/wiki/Japanese_beetle'},
         {name: 'White-Tailed Deer', type:'Animal', subtype:'Deer', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/White-tailed_deer.jpg/789px-White-tailed_deer.jpg', href: 'https://en.wikipedia.org/wiki/White-tailed_deer'},
+        {name: 'Box Turtle', type:'Animal', subtype:'Turtle', children:<></>, img: '', href: ''},
+        {name: 'Snapping Turtle', type:'Animal', subtype:'Turtle', children:<></>, img: '', href: ''},
+        {name: 'Armadillo', type:'Animal', subtype:'Rodent?', children:<></>, img: '', href: ''},
+        {name: 'Posum', type:'Animal', subtype:'Rodent', children:<></>, img: '', href: ''},
+        {name: 'Rat', type:'Animal', subtype:'Rodent', children:<></>, img: '', href: ''},
+        {name: 'Woodpecker', type:'Animal', subtype:'Bird Picus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/PileatedWoodpeckerFeedingonTree%2C_crop.jpg/541px-PileatedWoodpeckerFeedingonTree%2C_crop.jpg', href: 'https://en.wikipedia.org/wiki/Woodpecker'},
+        {name: 'Morning Dove', type:'Animal', subtype:'Bird Dove', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mourning_Dove_2006.jpg/400px-Mourning_Dove_2006.jpg', href: 'https://en.wikipedia.org/wiki/Mourning_dove'},
+        {name: 'Cardinal', type:'Animal', subtype:'Bird', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Male_northern_cardinal_in_Central_Park_%2852612%29.jpg/456px-Male_northern_cardinal_in_Central_Park_%2852612%29.jpg', href: 'https://en.wikipedia.org/wiki/Northern_cardinal'},
+        {name: 'Blue Jay', type:'Animal', subtype:'Bird Corvus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Blue_jay_in_PP_%2830960%29.jpg/220px-Blue_jay_in_PP_%2830960%29.jpg', href: 'https://en.wikipedia.org/wiki/Blue_jay'},
+        {name: 'Crow', type:'Animal', subtype:'Bird Corvus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Corvus_corone_-near_Canford_Cliffs%2C_Poole%2C_England-8.jpg/800px-Corvus_corone_-near_Canford_Cliffs%2C_Poole%2C_England-8.jpg', href: 'https://en.wikipedia.org/wiki/Corvus'},
+        //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
+        //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
+        //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
         //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
     ]
     const drkgrn = 'darkgreen'
