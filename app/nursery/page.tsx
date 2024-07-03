@@ -83,7 +83,7 @@ export default function Plants({params, searchParams}){
  */
 function RenderCard(item){
     return <Card
-        name={item.name+' ---- '+alephbeth.mem.uni+alephbeth.resh.uni+alephbeth.aleph.uni+alephbeth.hey.uni} 
+        name={item.name+' ---- '+alephbeth.gimel.uni+alephbeth.shin.uni+alephbeth.resh.uni+' '+alephbeth.keth.uni+alephbeth.zain.uni+alephbeth.vav.uni+alephbeth.tav.uni} 
         image={item.img} 
         color={
             item.type=='Plant'?'green':(
