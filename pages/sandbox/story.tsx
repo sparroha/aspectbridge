@@ -8,6 +8,7 @@ import useUser from '../../lib/util/^user';
 import useActiveUsers from '../../lib/util/^activeusers';
 import useRegister from '../../lib/util/^register';
 import { getDB } from '../../lib/util/@registry';
+import useLog from '../../components/conlog';
 
 export default function Story(props) {
 	const user = useUser()
@@ -498,14 +499,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export function ActiveUsers({activeUsers, setSelectedUser}){
 	if(!activeUsers) return <>Loading Active Users...</>
-	let users = JSON.parse(activeUsers)
+	let users = null
+	try{
+		users = JSON.parse(activeUsers)
+	}catch{
+		console.log(activeUsers)
+	}
 	//useLog(activeUsers+'::'+JSON.stringify(activeUsers)+'::'+JSON.parse(activeUsers))
+	if(!users)  return <>Error...{JSON.stringify(activeUsers)}</>
 	return <>{users.length?users.map((user, i) => {
 		let lastActive = new Date().getTime() - user.time
 		lastActive = Math.floor(lastActive / 1000 / 60 )
 		let lastActiveS = lastActive.toString().concat(' minutes')
 		//if(lastActive > 5*60) return null
-		return <div key={i}>
+		return <div key={i} suppressHydrationWarning>
 				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
 			</div>
 	}):'No Active Users'}</>
