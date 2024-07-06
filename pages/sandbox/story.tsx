@@ -500,22 +500,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export function ActiveUsers({activeUsers, setSelectedUser}){
 	if(!activeUsers) return <>Loading Active Users...</>
 	let users = null
+	let time = new Date().getTime()
 	try{
 		users = JSON.parse(activeUsers)
 	}catch{
 		console.log(activeUsers)
 	}
-	//useLog(activeUsers+'::'+JSON.stringify(activeUsers)+'::'+JSON.parse(activeUsers))
 	if(!users)  return <>Error...{JSON.stringify(activeUsers)}</>
-	return <>{users.length?users.map((user, i) => {
-		let lastActive = new Date().getTime() - user.time
+	if(users && users.length==0) return <>No Active Users</>
+
+	//useLog(activeUsers+'::'+JSON.stringify(activeUsers)+'::'+JSON.parse(activeUsers))
+	return <>{users.map((user, i) => {
+		let lastActive = time - user.time
 		lastActive = Math.floor(lastActive / 1000 / 60 )
 		let lastActiveS = lastActive.toString().concat(' minutes')
 		//if(lastActive > 5*60) return null
 		return <div key={i} suppressHydrationWarning>
-				<a href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
+				<a suppressHydrationWarning href={'#'+JSON.stringify(user.name)} onClick={()=>setSelectedUser(user.name)}>{JSON.stringify(user.name)+': Last Active < '+lastActiveS}</a>
 			</div>
-	}):'No Active Users'}</>
+	})}</>
 }
 //VISION
 // 1. The user can see potential
