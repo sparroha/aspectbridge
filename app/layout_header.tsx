@@ -108,21 +108,6 @@ function NavMain(){
             <h4><Nav.Link href={'/bridge'}>Home</Nav.Link></h4>
             <h4><Nav.Link href={'/bridge/about'}>About</Nav.Link></h4>
             <h4><NavDropdown title={'Projects'}>
-                {/*plinks.map((link, i)=>{
-                    if(i%2==1){
-                        return <Row key={i} style={{width: '22vw'}}>
-                            <Col style={{border: '1px solid black'}}>
-                                <Nav.Link key={i} href={"/"+plinks[i-1][1]} disabled={plinks[i-1][0]=='1'?disabled:false} onMouseOver={()=>setSelected(plinks[i-1][1])}>
-                                    {plinks[i-1][1]}<br/>{selected!=plinks[i-1][1]?null:(plinks[i-1][2]!=''?<img  width={225} height={150} src={plinks[i-1][2]}/>:<iframe style={ifstyle} src={"/"+plinks[i-1][1]}></iframe>)}
-                                </Nav.Link>
-                            </Col><Col style={{border: '1px solid black'}}>
-                                <Nav.Link key={i} href={"/"+link[1]} disabled={link[0]=='1'?disabled:false} onMouseOver={()=>setSelected(link[1])}>
-                                    {link[1]}<br/>{selected!=link[1]?null:(link[2]!=''?<img  width={225} height={150} src={link[2]}/>:<iframe style={ifstyle} src={"/"+link[1]}></iframe>)}
-                                </Nav.Link>
-                            </Col>
-                        </Row>
-                    }return null
-                })*/}
                 <Row style={{width: '33vw'}}>
                 {plinks.map((link, i)=>{
                     return <Col key={i} xs={12} sm={6}>
@@ -134,14 +119,13 @@ function NavMain(){
                 })}
                 </Row>
             </NavDropdown></h4>
-            {//<h4><NavPartners /></h4>
-            }
+            {/*<h4><NavPartners /></h4>*/}
             <h4><NavResources /></h4>
             <h4><UserLogin/></h4>
         </NavRow>
 }
 function NavRow({children}){
     return <Row bg="" variant="dark" id="navaspect" style={{width: '100%', zIndex: '10'}}>
-        {children.map((child, i)=>{return <Col key={i} xs={4} sm={3} md={2} lg={1} style={{zIndex: '10'}}>{child}</Col>})}
+        {children.map((child, i)=>{return <Col key={i} xs={i==children.length-1?12:6} sm={i==children.length-1?8:4} md={i==children.length-1?6:3} lg={i==children.length-1?4:2} style={{zIndex: '10'}}>{child}</Col>})}
     </Row>
 }
