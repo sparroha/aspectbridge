@@ -67,9 +67,9 @@ export default function Go(p){
      * APP RENDER
      */
     //if(state && state == initialState) return <>{JSON.stringify({...user, ...state})}</>
-    if(!state.user) return <>Initializing User Data...<br/>{JSON.stringify(state)}<br/>loading={loading?'true':'false'}</>
+    if(!state.user) return <>Initializing User Data...</>/*<br/>{JSON.stringify(state)}<br/>loading={loading?'true':'false'}*/
     //if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
-    return <div style={{color: '#fff', marginTop: '40px'}}>loading={loading?'true':'false'}<br/>
+    return <div style={{color: '#fff', marginTop: '40px'}}>
         <Row><InfoHeader id="controls" bgColor={'#ddd'}>
             <Col xs={12} sm={6} md={3} lg={2}>
                 <label>Save Interval:</label>
