@@ -33,7 +33,7 @@ export const reActions = {
     new: (s: any, a: Action)=>{
         if(a.payload == 'selectable'){
             let id = 'test'+Object.keys(s.mobileEntity).length
-            return {...s, mobileEntity: {...s.mobileEntity, [id]: {id: id, left: 0, top: 0}}}
+            return {...s, selectedEntity: id,  mobileEntity: {...s.mobileEntity, [id]: {id: id, left: 0, top: 0}}}
         }
     }
 }

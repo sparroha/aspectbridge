@@ -18,18 +18,6 @@ export default function Page({params, searchParams}){
                 <div style={{width: '100%', height: '100%'}}>{id}</div>
             </SelectableItem></Fragment>
         })}
-        {/*<SelectableItem id={'test'} state={state} dispatch={dispatch} style={{width: '40px', height: '40px'}}>
-            <div style={{width: '100%', height: '100%'}}>Test</div>
-        </SelectableItem>
-        <SelectableItem id={'test1'} state={state} dispatch={dispatch} style={{width: '40px', height: '40px'}}>
-            <div style={{width: '100%', height: '100%'}}>Test1</div>
-        </SelectableItem>
-        <SelectableItem id={'test2'} state={state} dispatch={dispatch} style={{width: '40px', height: '40px'}}>
-            <div style={{width: '100%', height: '100%'}}>Test2</div>
-        </SelectableItem>
-        <SelectableItem id={'test3'} state={state} dispatch={dispatch} style={{width: '40px', height: '40px'}}>
-            <div style={{width: '100%', height: '100%'}}>Test3</div>
-        </SelectableItem>*/}
     </div>
 }
 
