@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getDB, setDB } from "./@registry"
 
 //TODO: replace dispatch with callback and handle dspatch in app. use callbeck to fetch response only
-export function useUserSave(host: string, username: string, state: any, callback: (any)=>void, updateUsername?: (string)=>void): [()=>void, boolean]{
+export function useUserSave(host: string, username: string, state: any, callback: (any)=>void, updateUsername?: (string)=>void): [()=>void, boolean, ()=>void]{
     const [loading, setLoading] = useState(true)
     const [un, setUn] = useState('')
     const save = (force = false)=>{//save
@@ -41,5 +41,5 @@ export function useUserSave(host: string, username: string, state: any, callback
         if(!loading)return
         load()
     },[loading])
-    return [save,  loading]
+    return [save, loading, load]
 }

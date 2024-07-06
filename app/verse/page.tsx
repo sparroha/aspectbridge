@@ -20,8 +20,14 @@ export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useVerseContext()//138 lines
     const user = useUser()//22
-    const [save, loading] = useUserSave('verse', user?.username, state, (data)=>dispatch({type: 'set', payload: data}), (username)=>dispatch({type: 'user', payload: username}))//40 lines
     
+    const dataFun = (data)=>dispatch({type: 'set', payload: data})
+    const userFun = (username)=>dispatch({type: 'user', payload: username})
+    const [save, loading, load] = useUserSave('verse', user?.username, state, dataFun, userFun)//40 lines
+    useEffect(()=>{//If user changes after load
+        if(!user)return
+        load()
+    },[user])
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     const loopCounter = useRef(0)
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -35,7 +41,7 @@ export default function Go(p){
         const gameInterval = setInterval(()=>{
             
             if(!user) return
-            if(state && state == initialState) return
+            if(state == initialState) return
             //console.log('gameLoopAttempted')
             //save loop
             if(loopCounter.current>=autoSaveInterval){
@@ -60,10 +66,10 @@ export default function Go(p){
     /**
      * APP RENDER
      */
-    if(state && state == initialState) return <></>
-    if(!state.user) return <>Initializing User Data...</>
+    //if(state && state == initialState) return <>{JSON.stringify({...user, ...state})}</>
+    if(!state.user) return <>Initializing User Data...<br/>{JSON.stringify(state)}<br/>loading={loading?'true':'false'}</>
     //if(!userLoaded)return <div style={{marginTop: '40px'}}><Button onClick={loadSave}>Load User Data</Button></div>
-    return <div style={{color: '#fff', marginTop: '40px'}}>
+    return <div style={{color: '#fff', marginTop: '40px'}}>loading={loading?'true':'false'}<br/>
         <Row><InfoHeader id="controls" bgColor={'#ddd'}>
             <Col xs={12} sm={6} md={3} lg={2}>
                 <label>Save Interval:</label>
