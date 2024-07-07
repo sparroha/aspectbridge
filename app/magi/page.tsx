@@ -13,9 +13,9 @@ interface pageProps{params: {aspect: string[]}, searchParams}
 
 const pageMode = 'default';
 const magiData = [
-    {name: 'Time Mage', color: 'purple', type: 'Temporal', subtype: 'light', children: <i>"All is now"</i>, img: '', strimage: alephbeth.tav.uni, href: ''},
-    {name: 'Portal Mage', color: 'black', type: 'Spacial', subtype: 'dark', children: <i>"All is here"</i>, img: '', strimage: alephbeth.qoph.uni, href: ''},
-    {name: 'Seed Mage', color: 'green', type: 'Organic', subtype: 'nature', children: <i>"Growth"</i>, img: '', strimage: alephbeth.nun.uni, href: ''},
+    {name: 'Time Mage', color: 'purple', type: 'Temporal', subtype: 'light', children: <i>"Behold; the Ancient of Days is seated!"</i>, img: '', strimage: alephbeth.tav.uni, href: ''},
+    {name: 'Portal Mage', color: 'black', type: 'Spacial', subtype: 'dark', children: <i>"In the beginning, Amen."</i>, img: '', strimage: alephbeth.qoph.uni, href: ''},
+    {name: 'Seed Mage', color: 'green', type: 'Organic', subtype: 'nature', children: <><b>Peru:</b> be fruitful<br/><b>Rebu:</b> multiply<br/><i>"Peru urebu!"</i></>, img: '', strimage: alephbeth.nun.uni, href: ''},
     {name: 'Fire Mage', color: 'red', type: 'Ionic', subtype: 'hot', children: <i>"An offering made by fire"</i>, img: '', strimage: alephbeth.shin.uni, href: ''},
     {name: 'Wind Mage', color: 'grey', type: 'Spiritual', subtype: 'warm', children: <i>"No one knows where it comes from or where it goes."</i>, img: '', strimage: alephbeth.lamed.uni, href: ''},
     {name: 'Earth Mage', color: 'brown', type: 'Matterial', subtype: 'cool', children: <i>"Upon a subling block..."<br/>"for I stumbled before the Lord<br/>at the alter of His foundation."</i>, img: '', strimage: alephbeth.pe.uni, href: ''},
@@ -37,8 +37,26 @@ const Page: FC<pageProps> = ({params, searchParams})=>{
     </>
 }
 
-function MageCard(){
-    return <div>Card</div>
+function TimeMage(){
+    return <RenderCard item={magiData.filter((item)=>item.name=='Time Mage')[0]} alephbeth={alephbeth}/>
+}
+function SpaceMage(){
+    return <RenderCard item={magiData.filter((item)=>item.name=='Portal Mage')[0]} alephbeth={alephbeth}/>
+}
+function SeedMage(){
+    return <RenderCard item={magiData.filter((item)=>item.name=='Seed Mage')[0]} alephbeth={alephbeth}/>
+}
+function FireMage(){
+    return <RenderCard item={magiData.filter((item)=>item.name=='Fire Mage')[0]} alephbeth={alephbeth}/>
+}
+function WindMage(){
+    return <RenderCard item={magiData.filter((item)=>item.name=='Wind Mage')[0]} alephbeth={alephbeth}/>
+}
+function EarthMage(){
+    return <RenderCard item={magiData.filter((item)=>item.name=='Earth Mage')[0]} alephbeth={alephbeth}/>
+}
+function WaterMage(){
+    return <RenderCard item={magiData.filter((item)=>item.name=='Water Mage')[0]} alephbeth={alephbeth}/>
 }
 
 function RenderCard({item, alephbeth}){
