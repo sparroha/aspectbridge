@@ -1,7 +1,6 @@
 'use client'
 import { createContext, useContext, useReducer } from "react"
 import { piston, rand } from "./util"
-import { randomBytes } from "crypto"
 
 export const initialState = {}
 const DynamicContext = createContext(null)
@@ -24,12 +23,18 @@ export const reActions = {
     user: (s: any, a: Action)=>{
         return {...s, user: a.payload}
     },
+    switch: (s: any, a: Action)=>{ 
+        return {...s, switch: {...s.switch, [a.payload.id]: a.payload.value}}
+    },
+    cooldown: (s: any, a: Action)=>{
+        return {...s, cooldown: {...s.cooldown, [a.payload.id]: a.payload.value}}
+    },
     spawn: (s: any, a: Action)=>{
         return {...s, spawn: a.payload}
     },
     piston: (s: any, a: Action)=>{
-        let {actions, work} = piston((s.piston?.work)?s.piston.work:0, a.payload.energy)
-        return {...s, piston: {...s.piston, actions: actions + ((s.piston?.actions)?s.piston.actions:0), work: work }}
+        let {actions, work} = piston((s?.piston?.work)?s.piston.work:0, a.payload.energy)
+        return {...s, piston: {...s?.piston, actions: actions + ((s?.piston?.actions)?s.piston.actions:0), work: work }}
     },
     action: (s: any, a: Action)=>{
         let f = (actionId)=>{

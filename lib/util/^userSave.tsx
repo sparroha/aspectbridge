@@ -7,8 +7,10 @@ export function useUserSave(host: string, username: string, state: any, callback
     const [loading, setLoading] = useState(true)
     const [un, setUn] = useState('')
     const save = (force = false)=>{//save
-        if(un!=username && !force)return
-        if(loading && !force)return
+        if(!force){
+            if(un!=username)return
+            if(loading)return
+        }
         if(!username)return
         try{
             setDB(host+':'+username, state)

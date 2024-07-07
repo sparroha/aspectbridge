@@ -1,9 +1,11 @@
 'use client'
-import { useState, useRef, Fragment } from 'react'
+import { useState, useRef, Fragment, useEffect } from 'react'
 import { Col, Row } from "react-bootstrap";
 import useUser from '../../lib/util/^user';
-import { ContentPanel, InfoPanel, InterfacePanel, 
-    DisplayGroup, InfoHeader, Piston, FGx, ChatForm, IxJ, MineButton } from './forms';
+import { ContentPanel, InfoPanel, DisplayGroup, 
+    InfoHeader, Piston, FGx, ChatForm, IxJ, MineButton, 
+    ActionFactory,
+    Mine} from './forms';
 import { initialState, useDynamicContext } from './provider';
 import { useUserSave } from '../../lib/util/^userSave';
 import useLoop from '../../lib/util/^loop';
@@ -14,8 +16,12 @@ export default function Go(p){
     /**CONSTANTS**/
     const {state, dispatch} = useDynamicContext()//40+ lines
     const user = useUser()//22 lines
-    const [save, loading] = useUserSave('pistons', user?.username, state, (data)=>dispatch({type: 'set', payload: data}), (username)=>dispatch({type: 'user', payload: username}))//37 lines
-    
+    const [save, loading, load] = useUserSave('pistons', user?.username, state, (data)=>dispatch({type: 'set', payload: data}), (username)=>dispatch({type: 'user', payload: username}))//37 lines
+    useEffect(()=>{//If user changes after load
+        if(!user)return
+        if(!loading)return
+        load()
+    },[user])
     const [autoSaveInterval, setAutoSaveInterval] = useState(10)
     const loopCounter = useRef(0)
     //game loop
@@ -38,8 +44,8 @@ export default function Go(p){
     /**
      * APP RENDER
      */
-    if(!state) return <>Loading...</>
-    if(state == initialState) return <>{'{}'}</>
+    if(!state) return <>Loading state...</>
+    if(state == initialState) return <>{loading?'Loading save data...':'Save data loaded in error'}</>
     if(!state.user) return <>Initializing User Data...</>
     return <div style={{color: '#fff', marginTop: '40px'}}>
         <Row><InfoHeader id="controls" bgColor={'#ddd'}>
@@ -64,27 +70,25 @@ export default function Go(p){
         </Row>
         <Row id="control-group" style={{justifyContent: 'center'}}>
             <FGx id={"Control"} colx={12} bgColor={"#aa7"} bgAlt={''} bgImage={''} global>
-                <InterfacePanel/>
+                <ActionFactory/>
             </FGx>
         </Row>
         <br/>
         <Row id="piston-group">
             <FGx id={'piston'} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                <Piston/>
+                <Piston id={'piston0'}/>
             </FGx>
             {
                 state.piston?.count && [...Array(state.piston.count)].map((e, i)=>{
                     return <Fragment key={'piston'+i}><FGx id={'piston-'+i} colx={12} bgColor={'blue'} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                        <Piston power={(i+2)*2}/>
+                        <Piston id={'piston'+(i+1)} power={(i+2)*2}/>
                     </FGx></Fragment>
                 }) || null
             }
         </Row>
         <Row id={"rescource-gather-group"}>
             <FGx id={'mine'} colx={4} bgColor={'#963'} global bgAlt={'dirt'} bgImage={'https://media.istockphoto.com/id/1453041823/photo/soil-for-plant-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=xLm8iNZACruvxhOnwvHJkKkBMh9-1sqZuaFb0r1PXiI='}>
-                <IxJ i={3} j={3}>
-                    <MineButton />
-                </IxJ>
+                <Mine id={'mine0'} i={3} j={3}  />
             </FGx>
         </Row>
         <Row id="grid-group">
@@ -97,8 +101,8 @@ export default function Go(p){
             <FGx id={"Control"} colx={2} bgColor={"blue"} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
                 <ChatForm user={user}/>
             </FGx>
-            <FGx id={"Control"} colx={2} bgColor={"red"} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
-                
+            <FGx id={"Control2"} colx={2} bgColor={"red"} global bgAlt={'NGC 1433'} bgImage={'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'}>
+                <></>
             </FGx>
         </Row>
     </div>

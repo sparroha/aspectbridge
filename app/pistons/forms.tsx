@@ -1,7 +1,7 @@
 'use client'
-import { Dispatch, useRef, useState, useEffect, Fragment } from "react"
+import { Dispatch, useRef, useEffect, Fragment, useMemo } from "react"
 import { Button, Col, Form, Row } from "react-bootstrap"
-import { reActions, useDynamicContext } from "./provider"
+import { pActions, reActions, useDynamicContext } from "./provider"
 import D20, { albt22, diceInitProps, diceProps } from "../../components/dice"
 import { rand, responsive } from "./util"
 import Chat from "../chat/chat"
@@ -49,7 +49,6 @@ export function ControlGroup({id, bgColor, bgImage, bgGradient, bgAlt, children}
 }
 export function ContentPanel(){
     
-    const [exP, setExP]: [Partial<diceProps>, Dispatch<any>] = useState({sides: 22, speed: 5})
     const {state, dispatch} = useDynamicContext()
     return <Col xs={12} sm={6}>
         Life brought you here<br/>
@@ -97,12 +96,6 @@ export function InfoPanel(){
         
     </Col>
 }
-export function InterfacePanel(){
-    const {state, dispatch} = useDynamicContext()
-    return <Button onClick={()=>{
-            dispatch({type: 'action', payload: 'piston'})
-        }}>Add Piston<br/>-5 actions</Button>
-}
 
 /**
  * LEGACY COMPONENTS
@@ -134,9 +127,11 @@ export const ChatForm = ({user})=>{
         </Col>
 }
 
-export const Piston = ({power}:{power?: number})=>{
+export const Piston = ({id, power}:{id: string, power?: number})=>{
     const {state, dispatch} = useDynamicContext()
-    const [cd, setCd] = useState(0)
+    const cd = useMemo(()=>state.cooldown?.[id] || 0, [state.cooldown?.[id]])
+    const setCd = (newCd)=>dispatch({type: 'cooldown', payload: {id: id, value: newCd}})
+    const cyclePiston = ()=>{dispatch({type: 'piston', payload: {energy: power || 4}})}
     const time = /**/7/*config*/
     useLoop(()=>{if(cd>0)setCd(cd-1)},1000,[cd])
     return <Col style={{position: 'relative'}}>
@@ -147,10 +142,7 @@ export const Piston = ({power}:{power?: number})=>{
                 }}></div>
                 <Button onClick={()=>{
                         setCd(time)
-                        let f = ()=>{
-                            dispatch({type: 'piston', payload: {energy: power || 4}})
-                        }
-                        setTimeout(f, time*1000)
+                        setTimeout(cyclePiston, time*1000)
                     }} disabled={cd>0}>Piston_{power || 4}</Button>cd: {cd}
             </Col>
 }
@@ -158,11 +150,11 @@ export const IxJ = ({i,j, children})=>{
     let ar = [...Array(i)].map(()=>{return [...Array(j)].map(()=>1)})
     return <Col style={{position: 'relative', justifyContent: 'center'}}>
                 <Row>
-                    {ar.map((row, i)=>{
-                        console.log(ar)
-                        return <Fragment key={'oreMineR'+i}><Row>
+                    {ar.map((row, j)=>{
+                        //console.log('ar row ', i, row)
+                        return <Fragment key={'oreMineR'+j}><Row>
                             {row.map((item, i)=>{
-                                return <Fragment key={'oreMineR'+i}><Col style={{justifyContent: 'center'}}>
+                                return <Fragment key={'oreMineR'+j+'x'+i}><Col style={{justifyContent: 'center'}}>
                                     {children}
                                 </Col></Fragment>
                             })}
@@ -171,12 +163,27 @@ export const IxJ = ({i,j, children})=>{
                 </Row>
             </Col>
 }
-export const MineButton = ()=>{
+export const Mine = ({id, i,j})=>{
+    let ar = [...Array(i)].map(()=>{return [...Array(j)].map(()=>1)})
+    return <Col style={{position: 'relative', justifyContent: 'center'}}>
+                <Row>
+                    {ar.map((row, j)=>{
+                        //console.log('ar row ', i, row)
+                        return <Fragment key={'oreMineR'+j}><Row>
+                            {row.map((item, i)=>{
+                                return <Fragment key={'oreMineR'+j+'x'+i}><Col style={{justifyContent: 'center'}}>
+                                    <MineButton id={'ore'+j+'x'+i} mineId={id}/>
+                                </Col></Fragment>
+                            })}
+                        </Row></Fragment>
+                    })}
+                </Row>
+            </Col>
+}
+export const MineButton = ({id, mineId}: {id: string, mineId: string})=>{
     
     const {state, dispatch} = useDynamicContext()
     const time = /**/20/*config*/
-    const [cd, setCd] = useState(0)
-    const [typeNum, setTypeNum] = useState(0)
     
     const oreType = (oreQ): string=>{
         switch(oreQ){
@@ -187,6 +194,11 @@ export const MineButton = ()=>{
             default: return 'stone'
         }
     }
+    const cd = useMemo(()=>state.cooldown?.[id] || 0, [state.cooldown?.[id]])
+    const setCd = (newCd)=>dispatch({type: 'cooldown', payload: {id: id, value: newCd}})
+    const typeNum = useMemo(()=>state.switch?.['oreTypeId'+id] || 0, [state.switch?.['oreTypeId'+id]])
+    const setTypeNum = (newTypeNum)=>dispatch({type: 'switch', payload: {id: 'oreTypeId'+id, value: newTypeNum}})
+    const pickOre = ()=>{dispatch({type: 'ore', payload: {type: oreType(typeNum)}})}
     useLoop(()=>{if(cd<time){setCd(cd+1)};if(cd==0)setTypeNum(rand(7))},1000,[cd])
     return <div style={{
                 position: 'relative', width: '77px', height: '77px', 
@@ -203,10 +215,7 @@ export const MineButton = ()=>{
                 }} onClick={()=>{
                     if(cd<20)return
                     setCd(0)
-                    let f = ()=>{
-                        dispatch({type: 'ore', payload: {type: oreType(typeNum)}})
-                    }
-                    f()
+                    pickOre()
                     //setTimeout(f, time*1000)
                 }}></div>
 
@@ -215,15 +224,26 @@ export const MineButton = ()=>{
 
 export const ActionFactory = ()=>{
     const {state, dispatch} = useDynamicContext()
-    const [selection, setSelection] = useState('piston')
-    return <Col>
-                <select onChange={(e)=>{ setSelection(e.target.value) }} value={selection}>
-                        {Object.entries(reActions).map((item, i)=>{
-                            return <option key={'actionFactory'+i} value={item[0]}>{item[0]}</option>
-                        })}
-                </select>
-                <Button onClick={()=>{
-                        dispatch({type: 'action', payload: {type: 'piston'}})
-                    }} disabled={state.piston?.actions<5 }>Add Piston<br/>-5 actions</Button>
-            </Col>
+
+    function Selector({children}){
+        return <Col>
+            <select onChange={(e)=>{ dispatch({type:'switch',payload: {id: 'actfact', value: e.target.value}}) }} value={state.switch?.actfact || 'piston'}>
+                {Object.entries(reActions).map((item, i)=>{
+                    return <option key={'actionFactory'+i} value={item[0]}>{item[0]}</option>
+                })}
+            </select>
+            {children}
+        </Col>
+    }
+    function AddPiston(){//broken button. causes data wipe
+        return <Button onClick={()=>{
+                dispatch({type: 'action', payload: 'piston'})
+            }} disabled={state.piston?.actions<pActions.piston.cost}>Add Piston<br/>-{pActions.piston.cost} actions</Button>
+    }
+    
+    switch(state.switch?.actfact){
+        case 'piston': return <Selector><AddPiston/></Selector>
+        default: return <Selector>WIP</Selector>
+    }
+
 }
