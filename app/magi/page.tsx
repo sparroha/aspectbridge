@@ -18,7 +18,7 @@ const magiData = [
     {name: 'Seed Mage', color: 'green', type: 'Organic', subtype: 'nature', children: <><b>Peru:</b> be fruitful<br/><b>Rebu:</b> multiply<br/><i>"Peru urebu!"</i></>, img: '', strimage: alephbeth.nun.uni, href: ''},
     {name: 'Fire Mage', color: 'red', type: 'Ionic', subtype: 'hot', children: <i>"An offering made by fire"</i>, img: '', strimage: alephbeth.shin.uni, href: ''},
     {name: 'Wind Mage', color: 'grey', type: 'Spiritual', subtype: 'warm', children: <i>"No one knows where it comes from or where it goes."</i>, img: '', strimage: alephbeth.lamed.uni, href: ''},
-    {name: 'Earth Mage', color: 'brown', type: 'Matterial', subtype: 'cool', children: <i>"Upon a subling block..."<br/>"for I stumbled before the Lord<br/>at the alter of His foundation."</i>, img: '', strimage: alephbeth.pe.uni, href: ''},
+    {name: 'Earth Mage', color: 'brown', type: 'Matterial', subtype: 'cool', children: <i>"Upon a stumbling block..."<br/>"for I stumbled before the Lord<br/>at the alter of His foundation."</i>, img: '', strimage: alephbeth.pe.uni, href: ''},
     {name: 'Water Mage', color: 'blue', type: 'Fluid', subtype: 'cold', children: <i>"Life is sacred"</i>, img: '', strimage: alephbeth.mem.uni, href: ''},
 ]
 
@@ -72,7 +72,7 @@ function RenderCard({item, alephbeth}){
                         item.type=='Ionic'?'🔥':(
                             item.type=='Spiritual'?'🌪️':(
                                 item.type=='Matterial'?'💎':(
-                                    item.type=='Fluid'?' 🌊':
+                                    item.type=='Fluid'?'🌊':
                                             '⛔'
                                 ))))))} 
         click={()=>{window.open(item.href, '_blank')}} 
