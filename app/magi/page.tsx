@@ -1,5 +1,5 @@
 'use client';
-import { FC } from "react";
+import { FC, useReducer, useState } from "react";
 import Card from "../../components/gamecard/card";
 import { alephbeth } from "../../components/hebrew";
 
@@ -11,7 +11,6 @@ interface pageProps{params: {aspect: string[]}, searchParams}
  * @returns 
  */
 
-const pageMode = 'default';
 const magiData = [
     {name: 'Time Mage', color: 'purple', type: 'Temporal', subtype: 'light', children: <i>"Behold; the Ancient of Days is seated!"</i>, img: '', strimage: alephbeth.tav.uni, href: ''},
     {name: 'Portal Mage', color: 'black', type: 'Spacial', subtype: 'dark', children: <i>"In the beginning, Amen."</i>, img: '', strimage: alephbeth.qoph.uni, href: ''},
@@ -23,13 +22,37 @@ const magiData = [
 ]
 
 const Page: FC<pageProps> = ({params, searchParams})=>{
-    
-    //if(pageMode == 'default') return <DefaultPage params={params} searchParams={searchParams}/>
- 
+
+    const eventStack = []//mutable contents. dies on page refresh
+    //const [events, setEvents] = useState(eventStack)//persists on page refresh
+    //reducer
+    function eventStackReducer(events, event){
+        let e = event.type
+        let payload = event.payload
+        switch(e){
+            case 'test': {
+                return [...events, {event: e, payload: payload, undo: ()=>{dispatch({type: 'remove', payload: payload})}}]
+            }
+            case 'remove': return events.filter((v)=>v!=payload)
+            default: return events
+        }
+    }
+    //reducer dispatch
+    const [events, dispatch] = useReducer(eventStackReducer, eventStack)
+
+
     return <>
         <div className={'row'}>
+            {JSON.stringify(events)}<br/>
+            {events.map((event, i)=>{
+                return <div key={'event_'+i}>
+                    {JSON.stringify(event)}<br/>
+                    {(i==events.length-1)?<button onClick={()=>{dispatch({type: event.type, payload: event.payload})}}>Undo</button>:null}
+                </div>
+            })}<br/>
+            <button onClick={()=>{dispatch({type: 'test', payload: 'event'})}}>Add Event</button>
             {magiData.map((item, i) => {
-                return <div className={'col-xs-12 col-sm-6 col-md-4 col-lg-3'} key={i}>
+                return <div className={'col-xs-12 col-sm-6 col-md-4 col-lg-3'} key={'mage_'+i}>
                     <RenderCard item={item} alephbeth={alephbeth}/>
                     </div>
             })}
