@@ -40,7 +40,7 @@ export default function Plants({params, searchParams}){
         {name: 'Blue Jay', type:'Animal', subtype:'Bird Corvus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Blue_jay_in_PP_%2830960%29.jpg/220px-Blue_jay_in_PP_%2830960%29.jpg', href: 'https://en.wikipedia.org/wiki/Blue_jay'},
         {name: 'Crow', type:'Animal', subtype:'Bird Corvus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Corvus_corone_-near_Canford_Cliffs%2C_Poole%2C_England-8.jpg/800px-Corvus_corone_-near_Canford_Cliffs%2C_Poole%2C_England-8.jpg', href: 'https://en.wikipedia.org/wiki/Corvus'},
         {name: 'Giant Stag Beetle', type:'Animal', subtype:'Insect Beetle', children:<i>"elephant stag beetle"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Lucanus_elaphus_142395158.jpg/750px-Lucanus_elaphus_142395158.jpg', href: 'https://en.wikipedia.org/wiki/Lucanus_elaphus'},
-        {name: 'Widow Skimmer', type:'Animal', subtype:'Insect Dragonfly', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Widow_Skimmer%2C_male.jpg/568px-Widow_Skimmer%2C_male.jpg', href: 'https://en.wikipedia.org/wiki/Widow_skimmer'},
+        {name: 'Widow Skimmer', type:'Bug', subtype:'Insect Dragonfly', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Widow_Skimmer%2C_male.jpg/568px-Widow_Skimmer%2C_male.jpg', href: 'https://en.wikipedia.org/wiki/Widow_skimmer'},
         //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
         //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
     ]
