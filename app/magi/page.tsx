@@ -21,6 +21,16 @@ const magiData = [
     {name: 'Water Mage', color: 'blue', type: 'Fluid', subtype: 'cold', children: <i>"Life is sacred"</i>, img: '', strimage: alephbeth.mem.uni, href: ''},
 ]
 
+const primatives = {
+    words: [
+        'word',//instant/sorcery
+        'being',//creature
+    ],
+    creations: [
+        
+    ]
+}
+
 const Page: FC<pageProps> = ({params, searchParams})=>{
 
     const eventStack = []//mutable contents. dies on page refresh
@@ -31,9 +41,15 @@ const Page: FC<pageProps> = ({params, searchParams})=>{
         let payload = event.payload
         switch(e){
             case 'test': {
+                console.log('reducing',e,payload)
                 return [...events, {event: e, payload: payload, undo: ()=>{dispatch({type: 'remove', payload: payload})}}]
-            }
-            case 'remove': return events.filter((v)=>v!=payload)
+            }break
+            case 'remove': {
+                console.log('removing', payload)
+                let ne = [...events]
+                let p = ne.pop()
+                return [...ne]
+            }break
             default: return events
         }
     }
@@ -47,7 +63,7 @@ const Page: FC<pageProps> = ({params, searchParams})=>{
             {events.map((event, i)=>{
                 return <div key={'event_'+i}>
                     {JSON.stringify(event)}<br/>
-                    {(i==events.length-1)?<button onClick={()=>{dispatch({type: event.type, payload: event.payload})}}>Undo</button>:null}
+                    {(i==events.length-1)?<button onClick={event.undo}>Undo</button>:null}
                 </div>
             })}<br/>
             <button onClick={()=>{dispatch({type: 'test', payload: 'event'})}}>Add Event</button>
