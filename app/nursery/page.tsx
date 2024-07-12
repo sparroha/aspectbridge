@@ -18,7 +18,7 @@ export default function Plants({params, searchParams}){
         {name: 'Vetch', type: 'Plant', subtype: 'Tare', children: <i>"Hay"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Vicia_orobus1_eF.jpg/330px-Vicia_orobus1_eF.jpg', href: 'https://en.wikipedia.org/wiki/Vicia'},
         {name: 'Dandilion', type: 'Plant', subtype: '', children: <></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/HAWKBEARD.jpg/330px-HAWKBEARD.jpg', href: 'https://en.wikipedia.org/wiki/Taraxacum'},
         {name: 'Prickly Letuce', type: 'Plant', subtype: '', children: <b>Latex</b>, img: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Lactuca_serriola.jpg', href: 'https://en.wikipedia.org/wiki/Lactuca_serriola'},
-        {name: 'Wood Sorel', type: 'Plant', subtype: '', children: <i>"Not a clover"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Oxalis_arborea1.jpg', href: 'https://en.wikipedia.org/wiki/Oxalis'},
+        {name: 'Wood Sorel', type: 'Plant', subtype: '', children: <i>"Not a clover"<br/>"Sour Grass"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Oxalis_arborea1.jpg', href: 'https://en.wikipedia.org/wiki/Oxalis'},
         {name: 'Purple Archangel', type: 'Plant', subtype: 'Nettle', children: <i>"Deadnettle"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Lamium_purpureum_in_the_spring2.jpg/587px-Lamium_purpureum_in_the_spring2.jpg', href: 'https://en.wikipedia.org/wiki/Lamium_purpureum'},
         {name: 'Stinging Nettle', type: 'Plant', subtype: 'Nettle', children: <></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Urtica_incisa1.JPG/1280px-Urtica_incisa1.JPG', href: 'https://en.wikipedia.org/wiki/Urtica_incisa'},
         {name: 'Horse Nettle', type: 'Plant', subtype: 'Nightshade', children: <i>"Not a nettle"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/1/1f/Solanum_carolinense_in_flower.jpg', href: 'https://en.wikipedia.org/wiki/Solanum_carolinense'},
@@ -34,16 +34,18 @@ export default function Plants({params, searchParams}){
         {name: 'Armadillo', type:'Animal', subtype:'Nine-banded', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Dasypus_novemcinctus.jpg/800px-Dasypus_novemcinctus.jpg', href: 'https://en.wikipedia.org/wiki/Nine-banded_armadillo'},
         {name: 'Opossum', type:'Animal', subtype:'Marsupial', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/2/25/Rabipelao2.jpg', href: 'https://en.wikipedia.org/wiki/Common_opossum'},
         {name: 'Brown Rat', type:'Animal', subtype:'Rodent Rat', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Rattus_norvegicus_-_Brown_rat_02.jpg/800px-Rattus_norvegicus_-_Brown_rat_02.jpg', href: 'https://en.wikipedia.org/wiki/Brown_rat'},
-        {name: 'Woodpecker', type:'Animal', subtype:'Bird Picus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/PileatedWoodpeckerFeedingonTree%2C_crop.jpg/541px-PileatedWoodpeckerFeedingonTree%2C_crop.jpg', href: 'https://en.wikipedia.org/wiki/Woodpecker'},
-        {name: 'Morning Dove', type:'Animal', subtype:'Bird Dove', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mourning_Dove_2006.jpg/400px-Mourning_Dove_2006.jpg', href: 'https://en.wikipedia.org/wiki/Mourning_dove'},
-        {name: 'Cardinal', type:'Animal', subtype:'Bird', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Male_northern_cardinal_in_Central_Park_%2852612%29.jpg/456px-Male_northern_cardinal_in_Central_Park_%2852612%29.jpg', href: 'https://en.wikipedia.org/wiki/Northern_cardinal'},
-        {name: 'Blue Jay', type:'Animal', subtype:'Bird Corvus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Blue_jay_in_PP_%2830960%29.jpg/220px-Blue_jay_in_PP_%2830960%29.jpg', href: 'https://en.wikipedia.org/wiki/Blue_jay'},
-        {name: 'Crow', type:'Animal', subtype:'Bird Corvus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Corvus_corone_-near_Canford_Cliffs%2C_Poole%2C_England-8.jpg/800px-Corvus_corone_-near_Canford_Cliffs%2C_Poole%2C_England-8.jpg', href: 'https://en.wikipedia.org/wiki/Corvus'},
-        {name: 'Giant Stag Beetle', type:'Animal', subtype:'Insect Beetle', children:<i>"elephant stag beetle"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Lucanus_elaphus_142395158.jpg/750px-Lucanus_elaphus_142395158.jpg', href: 'https://en.wikipedia.org/wiki/Lucanus_elaphus'},
+        {name: 'Woodpecker', type:'Bird', subtype:'Picus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/PileatedWoodpeckerFeedingonTree%2C_crop.jpg/541px-PileatedWoodpeckerFeedingonTree%2C_crop.jpg', href: 'https://en.wikipedia.org/wiki/Woodpecker'},
+        {name: 'Morning Dove', type:'Bird', subtype:'Dove', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mourning_Dove_2006.jpg/400px-Mourning_Dove_2006.jpg', href: 'https://en.wikipedia.org/wiki/Mourning_dove'},
+        {name: 'Cardinal', type:'Bird', subtype:'', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Male_northern_cardinal_in_Central_Park_%2852612%29.jpg/456px-Male_northern_cardinal_in_Central_Park_%2852612%29.jpg', href: 'https://en.wikipedia.org/wiki/Northern_cardinal'},
+        {name: 'Blue Jay', type:'Bird', subtype:'Corvus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Blue_jay_in_PP_%2830960%29.jpg/220px-Blue_jay_in_PP_%2830960%29.jpg', href: 'https://en.wikipedia.org/wiki/Blue_jay'},
+        {name: 'Crow', type:'Bird', subtype:'Corvus', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Corvus_corone_-near_Canford_Cliffs%2C_Poole%2C_England-8.jpg/800px-Corvus_corone_-near_Canford_Cliffs%2C_Poole%2C_England-8.jpg', href: 'https://en.wikipedia.org/wiki/Corvus'},
+        {name: 'Giant Stag Beetle', type:'Bug', subtype:'Insect Beetle', children:<i>"elephant stag beetle"</i>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Lucanus_elaphus_142395158.jpg/750px-Lucanus_elaphus_142395158.jpg', href: 'https://en.wikipedia.org/wiki/Lucanus_elaphus'},
         {name: 'Widow Skimmer', type:'Bug', subtype:'Insect Dragonfly', children:<></>, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Widow_Skimmer%2C_male.jpg/568px-Widow_Skimmer%2C_male.jpg', href: 'https://en.wikipedia.org/wiki/Widow_skimmer'},
         //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
         //{name: '', type:'', subtype:'', children:<></>, img: '', href: ''},
     ]
+    data.sort((a, b) => a.type.localeCompare(b.type))
+    
     const drkgrn = 'darkgreen'
     function neonLaser(angle: number, color: string, width: number, radiance: number, hexopacity?: string){
         return `linear-gradient(${angle}deg, #000000${hexopacity || '00'}, #000000${hexopacity || '00'} ${50-width-radiance}%, ${color} ${50-width}%, #fff 50%, ${color} ${50+width}%, #000000${hexopacity || '00'} ${50+width+radiance}%, #000000${hexopacity || '00'} 3%)`
@@ -89,14 +91,16 @@ function RenderCard(item){
             item.type=='Plant'?'green':(
                 item.type=='Bug'?'red':(
                     item.type=='Animal'?'brown':(
+                        item.type=='Bird'?'blue':(
                         'grey'
-                    )))} 
+                    ))))} 
         logo={
             item.type=='Plant'?'🍃':(
                 item.type=='Bug'?'🐞':(
-                    item.type=='Animal'?'🐮':(
+                    item.type=='Beast'?'🐮':(
+                        item.type=='Bird'?'🐦':(
                         '🌀'
-                    )))} 
+                    ))))} 
         click={()=>{window.open(item.href, '_blank')}} 
         type={item.type} 
         subtype={item.subtype} 
