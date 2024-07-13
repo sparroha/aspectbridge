@@ -98,7 +98,7 @@ function RenderCard(item){
         color={
             item.type=='Plant'?'green':(
                 item.type=='Bug'?'red':(
-                    item.type=='Animal'?'brown':(
+                    item.type=='Beast'?'brown':(
                         item.type=='Bird'?'blue':(
                         'grey'
                     ))))} 
