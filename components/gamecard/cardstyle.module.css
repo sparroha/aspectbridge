@@ -1,0 +1,90 @@
+
+.cardContainer{
+    position: relative;
+    width: 200px;
+    height: 275px;
+    border-radius: 5px;
+    box-shadow: 0 0 25px 0 rgba(0,0,0,0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cardNameContainer{
+    margin-top: 0px;
+    padding-top: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 95%;
+    height: 22px;
+    color: #ddd;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: middle;
+    border-radius: 5px;
+}
+.cardNameContainer > div{
+    float: right;
+    color: white;
+    font-weight: normal;
+    font-size: 11px;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.cardImageContainer{
+    margin-top: 3px;
+    width: 95%;
+    height: 40%;
+    border-radius: 5px;
+    background-position: center;
+    background-size: cover;
+}
+.cardImageContainer h1{
+    text-align: center;
+    vertical-align: middle;
+    font: bold 77px "Times New Roman", Times, serif;
+}
+
+.cardInfoContainer{
+    margin-top: 3px;
+    padding-top: 1px;
+    padding-Left: 5px;
+    padding-right: 5px;
+    width: 95%;
+    height: 20px;
+    color: #ddd;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: middle;
+    border-radius: 5px;
+}
+.cardImageContainer > div{
+    float: right;
+    background-color: transparent;
+    color: white;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.cardFunctionContainer{
+    margin-top: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 95%;
+    height: 40%;
+    font-size: 10px;
+    text-align: left;
+    border-radius: 5px;
+}
