@@ -142,8 +142,8 @@
 	height: 100%;
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    padding-right: calc(var(--bs-gutter-x) * .5);
-    padding-left: calc(var(--bs-gutter-x) * .5);
+    padding-right: calc(var(--bs-gutter-x) * .25);
+    padding-left: calc(var(--bs-gutter-x) * .25);
     margin-right: auto;
     margin-left: auto;
 }
