@@ -22,6 +22,9 @@
 .yellow-back{
 	background:yellow;
 }
+.orange-back{
+	background:orange;
+}
 .white-back{
 	background:white;
 }
@@ -58,11 +61,17 @@
 .yellow-font{
 	color:yellow;
 }
+.orange-font{
+	color:orange;
+}
 .white-font{
 	color:white;
 }
 .gray-font{
 	color:#888888;
+}
+.dkgrey-font{
+	color:#444444;
 }
 .black-font{
 	color:black;
@@ -84,6 +93,75 @@
 }
 .m20{
 	margin:20;
+}
+.mauto{
+	margin:auto;
+}
+.bc-red{
+	border-color:red;
+}
+.bc-maroon{
+	border-color:maroon;
+}
+.bc-green{
+	border-color:green;
+}
+.bc-forest{
+	border-color:#005000;
+}
+.bc-blue{
+	border-color:blue;
+}
+.bc-navy{
+	border-color:navy;
+}
+.bc-purple{
+	border-color:purple;
+}
+.bc-yellow{
+	border-color:yellow;
+}
+.bc-orange{
+	border-color:orange;
+}
+.bc-white{
+	border-color:white;
+}
+.bc-grey{
+	border-color:#888888;
+}
+.bc-dkgrey{
+	border-color:#444444;
+}
+.bc-black{
+	border-color:black;
+}
+.bs-bold{
+	border-style:bold;
+}
+.bs-dotted{
+	border-style:dotted;
+}
+.bs-dashed{
+	border-style:dashed;
+}
+.bs-solid{
+	border-style:solid;
+}
+.bs-double{
+	border-style:double;
+}
+.bs-groove{
+	border-style:groove;
+}
+.bs-ridge{
+	border-style:ridge;
+}
+.bs-inset{
+	border-style:inset;
+}
+.bs-outset{
+	border-style:outset;
 }
 .b0{
 	border:0;
@@ -166,6 +244,9 @@
 .p10{
 	padding:10px;
 }
+.pauto{
+	padding:auto;
+}
 .o0{
 	opacity:0.0;
 }
@@ -199,35 +280,89 @@
 .o10{
 	opacity:1.0;
 }
+.h5{
+	height:5%;
+}
 .h10{
 	height:10%;
+}
+.h15{
+	height:15%;
 }
 .h20{
 	height:20%;
 }
+.h25{
+	height:25%;
+}
 .h30{
 	height:30%;
+}
+.h35{
+	height:35%;
 }
 .h40{
 	height:40%;
 }
+.h45{
+	height:45%;
+}
 .h50{
 	height:50%;
+}
+.h55{
+	height:55%;
 }
 .h60{
 	height:60%;
 }
+.h65{
+	height:65%;
+}
 .h70{
 	height:70%;
+}
+.h75{
+	height:75%;
 }
 .h80{
 	height:80%;
 }
+.h85{
+	height:85%;
+}
 .h90{
 	height:90%;
 }
+.h95{
+	height:95%;
+}
 .h100{
 	height:100%;
+}
+.vh70{
+	height:70vh;
+}
+.vh75{
+	height:75vh;
+}
+.vh80{
+	height:80vh;
+}
+.vh85{
+	height:85vh;
+}
+.vh90{
+	height:90vh;
+}
+.vh95{
+	height:95vh;
+}
+.vh100{
+	height:100vh;
+}
+.hauto{
+	height:auto;
 }
 .h150{
 	height:150%;
@@ -274,6 +409,9 @@
 .w100{
 	width:100%;
 }
+.wauto{
+	width:auto;
+}
 .drop1{
 	margin-top:1%;
 }
@@ -313,6 +451,7 @@
 }
 .tcenter{
 	text-align:center;
+	vertical-align: middle;
 }
 .apaudio{
 	position:absolute;

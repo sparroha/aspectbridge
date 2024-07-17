@@ -1,8 +1,8 @@
 /*Recently Added*/
 :root, html, body, #__next{
 	height: 100%;
-	color: #ccc;
-	font-size: 1.05rem;
+	/*color: #888888;*/
+	font-size: 1rem;
 	/*background-color: #000;*/
 }
 
@@ -103,29 +103,39 @@
 :has(.aspect) .title{
 	color:#fff;
 }
+
+
 /*CHANGES TO REACT BOOTSTRAP*/
-#navaspect > .container-fluid > .navbar-collapse > .navbar-nav > .dropdown > .dropdown-menu{
+/*#navaspect > .container-fluid > .navbar-collapse > .navbar-nav > .dropdown > .dropdown-menu{
 	background-color: gray;
 	z-index: 1;
-}
+}*/
 
-/*Bootstrap Overrides*/
+
+/*Bootstrap Overrides*
 @media (min-width: 992px){
-	.container, .container-lg, .container-md, .container-sm {
+	.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xs {
 		max-width: 85% !important;
 	}
 }
 @media (min-width: 768px){
-	.container, .container-md, .container-sm {
+	.container, .container-fluid, .container-md, .container-sm, .container-xs {
 		max-width: 90% !important;
 	}
 }
 @media (min-width: 576px){
-	.container, .container-sm {
+	.container, .container-fluid, .container-sm, .container-xs {
 		max-width: 95% !important;
 	}
 }
-.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+@media (min-width: 0px){
+	.container, .container-fluid, .container-xs {
+		max-width: 100% !important;
+	}
+}*/
+
+/*Bootstrap Overrides*/
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xs {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
     width: 100%;
