@@ -59,6 +59,13 @@ function NavResources(){
         <NavDropdown.Item href="https://www.freesqldatabase.com/account/" disabled>DB Account</NavDropdown.Item>
     </NavDropdown>
 }
+function NavTutorials(){
+    return <NavDropdown title="Tutorials" id="navbarTutorialsDropdown">
+        <NavDropdown.Item href="https://youtu.be/l8knG0BPr-o?si=nebdxCeE6bRXHb-N">Debugging via React Debug tool with Kyle</NavDropdown.Item>
+        <NavDropdown.Item href="https://youtu.be/J6yiNbiiCzA?si=L3MHeVzmJ73P01o6">Cursed Javascript behaviorswith Kyle</NavDropdown.Item>
+        
+    </NavDropdown>
+}
 
 function NavMain(){
     const user = useUser()
@@ -121,6 +128,7 @@ function NavMain(){
             </NavDropdown></h4>
             {/*<h4><NavPartners /></h4>*/}
             <h4><NavResources /></h4>
+            <h4><NavTutorials /></h4>
             <h4><UserLogin/></h4>
         </NavRow>
 }

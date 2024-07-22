@@ -3,6 +3,7 @@
 import { Dispatch, Fragment, useEffect, useReducer, useState } from "react"
 import useUser from "../../lib/util/^user"
 import { useUserSave } from "../../lib/util/^userSave"
+import { useLog } from "../../components/conlog"
 
 const classNames = {
     phase_bar: 'b3 r15 bc-black bs-solid tcenter mauto orange-back'
@@ -45,9 +46,9 @@ export default function Game(){
             <div className={'col'}>
                 <div className={'row tcenter'}><h2>Game Phase</h2></div>
                 <div className={'row'}>
-                    {turn.phases.map((phase)=>{
-                        if(gameState.phase!=phase) return <div className={`col ${classNames.phase_bar}`}>{phase}</div>
-                        return <div className={`col blue-font ${classNames.phase_bar}`}><h3>{phase}</h3></div>
+                    {turn.phases.map((phase, i)=>{
+                        if(gameState.phase!=phase) return <div key={'phase'+i} className={`col ${classNames.phase_bar}`}>{phase}</div>
+                        return <div key={'phase'+i} className={`col blue-font ${classNames.phase_bar}`}><h3>{phase}</h3></div>
                     })}
                 </div>
             </div>
@@ -93,4 +94,34 @@ function Fight(){
         defense: 5
     }
     return <div>Fight</div>
+}
+
+
+//
+//Grid Behavior idea
+//
+type Grid = {
+    tile?: number,
+    entity?: string
+}[][]
+const grid: Grid = [
+    [
+        {
+            entity: ''
+        }
+    ],
+    [
+        {
+            tile: 0,
+        }
+    ]
+]
+function behavior(grid: Grid, x: number, y: number){
+    grid.forEach(
+        (row, j)=>{
+            row.forEach((col, i)=>{
+                //do something at x = i and y = j
+            })
+        }
+    )
 }

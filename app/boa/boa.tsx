@@ -2,6 +2,7 @@
 
 import { Dispatch, Fragment, useEffect, useReducer, useState } from "react"
 import { rules } from "./rules"
+import { D2, D3, Map, Tile } from "./types"
 
 //const day = movement + activity
 //const night = activity * 2
@@ -9,42 +10,53 @@ import { rules } from "./rules"
 //const turn = day
 
 //turn = movement + activities * 3
-type D1 = any//1d
-type D2 = D1[]//2d
-type D3 = D2[]//3d
 const gridsize = 22
 export default function BridgeOfAspects(){
     const [showRules, toggleRules] = useState(false)
     const RuleSwitch = ()=> {return <button onClick={()=>toggleRules((r)=>!r)}>{showRules?'Close':'Rules'}</button>}
     const Rlz = rules.split('/n')
-    const gridgen = ()=>{
-        let empgrid: D3 = []
+
+    const map = []//expWIP
+
+    //initial filler function for grid
+    const gridgen = (): Map=>{
+        let empgrid: Map = []
         for(let y = 0;y<gridsize;y++){
             let emprow: D2 = []
             for(let x = 0;x<gridsize;x++){
-                emprow.push({x: x, y: y})
+                let tile: Tile = {x: x, y: y}
+                emprow.push(tile)
+                map.push(tile)//expWIP
             }
             empgrid.push(emprow)
         }
         return empgrid
     }
+    //grid state
     const [grid, setGrid] = useState(null)
-    if(showRules)return <div style={{fontSize: '1.5rem'}}>
-        <RuleSwitch/><br/>
-        {Rlz.map((l,i)=>{return <>{l}<br/></>})}
-    </div>
+
+    //populate grid with initial state
     function populateGrid(){
-        let newGrid = gridgen()
+        let newGrid: Map = gridgen()
         /** */
         newGrid[7][12] = {
             ...newGrid[7][12],
             image: 'assets/binary2.png',
             f: ()=>{
-                setGrid((g)=>{
-                    let ng = g
-                    ng[Math.floor(Math.random())*g.length][Math.floor(Math.random())*g[0].length] = ng[7][12]
-                    ng[7][12] = {x: 7, y:12}
+                let xrand = Math.floor(Math.random()*(grid?.length|1))
+                let yrand = Math.floor(Math.random()*(grid?.[0]?.length|1))
+                setGrid((g)=>{console.log('attempt action')
+                    let ng = [...g]
+                    ng[xrand][yrand] = {...ng[7][12]}
+                    //ng[7][12] = {x: 7, y: 12}
                     return ng
+                })
+                map.forEach((t)=>{
+                    if(t.x === 7 && t.y === 12)console.log(t)
+                    if(t.x === xrand && t.y === yrand){
+                        t = grid?.[7]?.[12] || {x: 7, y: 12}
+                        console.log(t)
+                    }
                 })
             }
         }
@@ -54,8 +66,14 @@ export default function BridgeOfAspects(){
     useEffect(()=>{//call once
         populateGrid()
     },[])
+
+
+    
+    
     return <>
-        <RuleSwitch/><br/>{/**Hook render error */}
+        <RuleSwitch/><br/>{
+            showRules?<div style={{fontSize: '1.5rem'}}>{Rlz.map((l,i)=>{return <p key={'rules_'+i}>{l}<br/></p>})}</div>:null
+        }
         <div>AB BoA</div>
         <Temple grid={grid}/>
     </>
