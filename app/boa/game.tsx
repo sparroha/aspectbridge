@@ -4,6 +4,7 @@ import { Dispatch, Fragment, useEffect, useReducer, useState } from "react"
 import useUser from "../../lib/util/^user"
 import { useUserSave } from "../../lib/util/^userSave"
 import { useLog } from "../../components/conlog"
+import { TileClass } from "./types"
 
 const classNames = {
     phase_bar: 'b3 r15 bc-black bs-solid tcenter mauto orange-back'
@@ -124,4 +125,19 @@ function behavior(grid: Grid, x: number, y: number){
             })
         }
     )
+}
+
+function TileButton(tile: TileClass){
+    return <div style={{width: '100px', height: '100px', backgroundImage: `url(${tile.image})`}} onClick={tile.f}></div>
+}
+function TileMap(map: TileClass[][]){
+    return <div>
+        {map.map((row, j)=>{
+            return <div key={'row'+j}>
+                {row.map((tile, i)=>{
+                    return <TileButton key={'tile'+i} {...tile}/>
+                })}
+            </div>
+        })}
+    </div>
 }

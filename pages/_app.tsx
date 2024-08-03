@@ -5,6 +5,11 @@ import 'nprogress/nprogress.css' // styles of nprogress
 import React, { useEffect } from 'react'
 import { SWRConfig } from 'swr'
 import jsonFetch from '../lib/,base/jsonFetch'
+/**Socket */
+import express from 'express'
+import {createServer} from 'http'
+/**Socket */
+/**CSS */
 //import '../public/css/nav.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../public/css/style.css'
@@ -13,6 +18,17 @@ import '../static/logan/css/landscape.css'
 import '../public/css/sliders.css'
 import '../public/css/cardgame.css'
 import '../public/css/sandbox.css'
+/**CSS */
+/**Socket *//*
+export const app = express()
+export const server = createServer(app)
+app.get('/api/socket',(req,res)=>{
+    res.send('socket')
+})
+server.listen(3000,()=>{
+    console.log('listening on port 3000')
+})*/
+/**Socket */
 
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())

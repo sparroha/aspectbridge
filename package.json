@@ -1,4 +1,13 @@
 {
+  "name": "socket-bridge",
+  "version": "0.0.1",
+  "description": "Aspect Bridge IO",
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
+
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,6 +18,7 @@
     "@legendapp/state": "^2.1.1",
     "@stylexjs/stylex": "^0.3.0",
     "bootstrap": "^5.3.1",
+    "express": "^4.19.2",
     "jquery": "^3.7.0",
     "js-sha256": "^0.10.1",
     "mysql2": "^3.6.0",

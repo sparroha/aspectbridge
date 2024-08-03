@@ -1,10 +1,15 @@
 'use client'
+/**
+ * 
+ * Standalone example with thrown errot 'cannot fine net'
+ * 
+ */
 import React, { useEffect, useState } from "react";
 import useUser from "../../lib/util/^user";
 const io = require('socket.io')();
 
 let socket;
-export default function Page(props) {
+export default function Socket(props) {
     const user = useUser()
     const [message, setMessage] = useState('')
     const [allMessages, setAllMessages] = useState([])

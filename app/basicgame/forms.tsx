@@ -15,7 +15,7 @@ export type ColProps = {
     bgImage?: string,
     bgGradient?: string,
     bgAlt?: string,
-    children: any,
+    children?: any,
     helper?: boolean,
     global?: boolean
 }
