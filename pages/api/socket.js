@@ -1,4 +1,4 @@
-import { Server } from "socket.io"
+/*import { Server } from "socket.io"
 
 export default function SocketHandler(req, res){
     const io = new Server(res.socket.server)
@@ -14,4 +14,4 @@ export default function SocketHandler(req, res){
     console.log('@socket.js', 'Setting Socket')
     res.end()
 
-}
+}*/
