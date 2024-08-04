@@ -3,7 +3,7 @@
  * 
  * Standalone example with thrown errot 'cannot fine net'
  * 
- */
+ *//*
 import React, { useEffect, useState } from "react";
 import useUser from "../../lib/util/^user";
 const io = require('socket.io')();
@@ -48,4 +48,8 @@ export default function Socket(props) {
         </form>
         
     </div>
+}*/
+export default function Page(props){
+    return <>
+    </>
 }
