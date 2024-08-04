@@ -1,5 +1,5 @@
 import sql from "../../../lib/,base/sql"
-import { Entity } from "../../dragons/components/entity"
+import { Entity } from "../../dragons_old/components/entity"
 
 
 //Table

@@ -1,5 +1,5 @@
 import sql from "../../../lib/,base/sql"
-import { ItemData } from "../../dragons/components/item"
+import { ItemData } from "../../dragons_old/components/item"
 //TODO indev: follow events.ts
 
 export default async function getItemInfo(req?, res?) {

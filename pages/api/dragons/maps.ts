@@ -1,6 +1,6 @@
 import sql from "../../../lib/,base/sql"
-import { RegionData } from "../../dragons/components/region";
-import { treeOfLife } from "../../dragons/components/worldmap";
+import { RegionData } from "../../dragons_old/components/region";
+import { treeOfLife } from "../../dragons_old/components/worldmap";
 
 export type a_d_maps_ = {
     name: string,
