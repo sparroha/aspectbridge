@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import "public/assets/320px-Old_Persian_cuneiform.jpg"
 
 export const metadata: Metadata = {
   title: 'Lexical Bridge',
