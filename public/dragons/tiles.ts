@@ -1,5 +1,5 @@
-import { EventData } from "../../pages/dragons/components/event"
-import { RegionData } from "../../pages/dragons/components/region"
+import { EventData } from "../../pages/dragons_old/components/event"
+import { RegionData } from "../../pages/dragons_old/components/region"
 
 const treeOfLifeEntrance: RegionData  = {
     name: 'Tree of Life',

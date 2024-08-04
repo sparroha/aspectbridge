@@ -1,5 +1,5 @@
-import { EventData } from "../../pages/dragons/components/event"
-import { MapData } from "../../pages/dragons/components/worldmap"
+import { EventData } from "../../pages/dragons_old/components/event"
+import { MapData } from "../../pages/dragons_old/components/worldmap"
 
 export type Position ={
     x: number,
