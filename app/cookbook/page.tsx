@@ -16,7 +16,7 @@ import FFrame from "./string";
 import SystemBaseNotes from "./system_base_notes";
 import VeggieTable from "./veggie table/veggie_plate";
 
-export default function Cookbook(props){
+export default function Cookbook({params}){
     const [page, setPage] = useState('Home')
     const [subPage, setSubPage] = useState('')
     const pages = [

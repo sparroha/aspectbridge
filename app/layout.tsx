@@ -1,9 +1,10 @@
 import React from 'react'
+//import Router from 'next/navigation'
+import { Metadata, Viewport } from 'next'
+import LayoutHeader from './layout_header'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../public/css/style.css'
 import '../public/css/helper.css'
-import { Metadata, Viewport } from 'next'
-import LayoutHeader from './layout_header'
 
 export const galaxyImg = 'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'
 export const metadata: Metadata = {
