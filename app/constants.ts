@@ -1,0 +1,1 @@
+export const galaxyImg: string = 'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'

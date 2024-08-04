@@ -5,8 +5,8 @@ import LayoutHeader from './layout_header'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../public/css/style.css'
 import '../public/css/helper.css'
+import { galaxyImg } from './constants'
 
-export const galaxyImg = 'https://stsci-opo.org/STScI-01GS6A1YR1W0CXGTPG0VX1FTZA.png'
 export const metadata: Metadata = {
   title: 'Aspect Bridge Root',
   description: 'Aspect Bridge Test Platform',
