@@ -31,6 +31,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
             <LayoutHeader root={'bridge'}/>
           </div>
         </div>
+        <WhiteHR/>
         <div id="content" className='row hauto'>
           <div className='col-12 h100 p0'>
             {children}
@@ -39,4 +40,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
       </div>
     </body>
   </html>
+}
+function WhiteHR(){
+  return <hr className={'row'} style={{borderTop: '1px solid white'}}/>
 }
