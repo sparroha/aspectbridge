@@ -2,7 +2,7 @@ import React from "react"
 import { StateContext } from "../provider"
 
 export default function CaseListForm(){
-    const {state, dispatch} = React.useContext(StateContext)
+    const [state, dispatch] = React.useContext(StateContext)
     function removeCase(name: string) {
         dispatch({type: 'REMOVE_CASE', payload: name})
     }

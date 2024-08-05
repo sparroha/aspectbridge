@@ -4,7 +4,7 @@ import React from "react";
 import { StateContext } from "../provider";
 
 export default function AddCaseForm(){
-    const {state, dispatch} = React.useContext(StateContext)
+    const [state, dispatch] = React.useContext(StateContext)
     function addCase(name: string, value: any) {
         dispatch({type: 'ADD_CASE', payload: {name: name, value: value}})
     }

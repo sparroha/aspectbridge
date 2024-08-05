@@ -6,10 +6,12 @@ import CaseListForm from "./components/form_caselist";
 //boiler plate page export
 export default function Page() {
     return <>
+        <hr/>
         <h1>Page</h1>
         <AddCaseForm/>
-        <hr/>
+        <br/>
         <h2>Cases</h2>
         <CaseListForm/>
+        <hr/>
     </>
 }

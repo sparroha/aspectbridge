@@ -15,5 +15,6 @@ export default function Main(props) {
         <Col sm={12}><Link href="/chat" legacyBehavior><a>Chat</a></Link></Col>
         <Col sm={12}><Link href="/dragons" legacyBehavior><a>Dragons</a></Link></Col>
         <Col sm={12}><Link href="/wasd" legacyBehavior><a>wasd</a></Link></Col>
+        <Col sm={12}><Link href="/reducer_page_template" legacyBehavior><a>Reducer Template</a></Link></Col>
     </Row>
 }

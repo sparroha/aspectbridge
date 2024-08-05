@@ -2,7 +2,7 @@
 import React from "react"
 
 //boiler plate reducer
-export function reducer(state: any, action: any) {
+function reducer(state: any, action: any) {
     switch(action.type) {
         case 'ADD_CASE':
             return {...state, cases: [...state.cases, action.payload]}
@@ -12,10 +12,11 @@ export function reducer(state: any, action: any) {
             return state
     }
 }
+const initialState = {cases: []}
 
 //boiler plate provider
 export const StateContext = React.createContext(null)
-export default function StateProvider({children}: any) {
-    const [state, dispatch] = React.useReducer(reducer, {cases: []})
-    return <StateContext.Provider value={{state, dispatch}}>{children}</StateContext.Provider>
+export default function StateProvider({children}: {children: any}) {
+    const R = React.useReducer(reducer, initialState)
+    return <StateContext.Provider value={R}>{children}</StateContext.Provider>
 }

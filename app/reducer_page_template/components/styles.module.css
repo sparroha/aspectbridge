@@ -1,0 +1,30 @@
+.template{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    background-color: darkgray;
+}
+.template h1{
+    color: white;
+}
+.template button{
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px outset gray;
+}
+.template button:hover{
+    background-color: silver;
+    color: white;
+}
+.template button:active{
+    background-color: gray;
+    border: 2px inset black;
+}
