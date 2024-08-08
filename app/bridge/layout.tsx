@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import NavLeftDefault from '../navleft'
 import NavRightDefault from '../navright'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   title: 'Aspect Bridge',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 }
 export default async function BridgeLayout({children}) {
   return <div className='row'>
+      <SpeedInsights/>
       <NavLeftDefault/>
       <div className='col-xs-12 col-sm-9 col-md-8'>
         {children}
