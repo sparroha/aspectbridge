@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
-import { RegistryEntry } from "../../../../pages/api/registry_old/[registry]";
+import { RegistryEntry } from "../../registry/route";
 export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
 
