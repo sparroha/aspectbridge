@@ -10,6 +10,7 @@ import '../static/logan/css/landscape.css'
 import '../public/css/sliders.css'
 import '../public/css/cardgame.css'
 import '../public/css/sandbox.css'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export default function App(props: AppProps) {
     const { pageProps, Component } = props
@@ -18,6 +19,7 @@ export default function App(props: AppProps) {
         return null
 
     return <SWRConfig value={{ fetcher: jsonFetch }}>
+        <SpeedInsights/>
         <Component {...pageProps} />
     </SWRConfig>
 }
