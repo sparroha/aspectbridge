@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 }
 export default async function BridgeLayout({children}) {
   return <div className='row'>
-      <SpeedInsights/>
       <NavLeftDefault/>
       <div className='col-xs-12 col-sm-9 col-md-8'>
         {children}
