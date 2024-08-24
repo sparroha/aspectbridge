@@ -108,70 +108,51 @@ export function FormGroup({id, bgColor, bgImage, bgGradient, bgAlt, children, he
     </Col>
 }
 
+function Action({name, actionType, payload, bgColor, disabled, children}:{name: string, actionType: string, payload: any, bgColor?: string, disabled?: boolean, children?: any}){
+    const {state, dispatch} = useVerseContext()
+    return <Col xs={4}>
+        <Button onClick={()=>{dispatch({type: actionType, payload: payload})}} disabled={disabled}>{name}</Button><br/>
+        <div style={{backgroundColor: bgColor || '#777777aa'}}>{children}</div>
+    </Col>
+}
 
 //zone activities
 export function ChopWood(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'wood', count: 1}})}}>Chop</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Wood: {state.wood}</div>
-    </Col>
+    return <Action name={'Chop'} actionType={'add'} payload={{type: 'wood', count: 1}}>+Wood: {state.wood}</Action>
 }
 export function SawLumber(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'lumber'}})}} disabled={state.wood<1}>Saw</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-1 Wood<br/>+Lumber: {state.lumber}</div>
-    </Col>
+    return <Action name={'Saw'} actionType={'craft'} payload={{type: 'lumber'}} disabled={state.wood<1}>-1 Wood<br/>+Lumber: {state.lumber}</Action>
+
 }
 export function BuildRaft(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'raft'}})}} disabled={state.wood<20}>Raft</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-20 Wood<br/>+Raft: {state.raft}</div>
-    </Col>
+    return <Action name={'Raft'} actionType={'craft'} payload={{type: 'raft'}} disabled={state.wood<20}>-20 Wood<br/>+Raft: {state.raft}</Action>
 }
 export function MineOre(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'ore', count: 1}})}}>Mine</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Ore: {state.ore}</div>
-    </Col>
+    return <Action name={'Mine'} actionType={'add'} payload={{type: 'ore', count: 1}}>+Ore: {state.ore}</Action>
 }
 export function SmeltMetal(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'metal'}})}} disabled={state.wood<3 || state.ore<3}>Smelt</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-3 Ore<br/>-3 Wood<br/>+Metal: {state.metal}</div>
-    </Col>
+    return <Action name={'Smelt'} actionType={'craft'} payload={{type: 'metal'}} disabled={state.wood<3 || state.ore<3}>-3 Ore<br/>-3 Wood<br/>+Metal: {state.metal}</Action>
 }
 export function QuaryStone(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'stone', count: 1}})}}>Quary</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Stone: {state.stone}</div>
-    </Col>
+    return <Action name={'Quary'} actionType={'add'} payload={{type: 'stone', count: 1}}>+Stone: {state.stone}</Action>
 }
 export function ChiselSlabs(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'tile'}})}} disabled={state.stone<1 || state.lumber<4}>Chisel</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-1 Stone<br/>-4 Lumber<br/>+Tile: {state.tile}</div>
-    </Col>
+    return <Action name={'Chisel'} actionType={'craft'} payload={{type: 'tile'}} disabled={state.stone<1 || state.lumber<4}>-1 Stone<br/>-4 Lumber<br/>+Tile: {state.tile}</Action>
 }
 export function DigClay(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'clay', count: 1}})}}>Dig</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Clay: {state.clay}</div>
-    </Col>
+    return <Action name={'Dig'} actionType={'add'} payload={{type: 'clay', count: 1}}>+Clay: {state.clay}</Action>
 }
 export function FireBricks(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'brick'}})}}disabled={state.wood<3 || state.clay<4}>Kiln</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>-4 Clay<br/>-3 Wood<br/>+Brick: {state.brick}</div>
-    </Col>
+    return <Action name={'Fire'} actionType={'craft'} payload={{type: 'brick'}} disabled={state.wood<3 || state.clay<4}>-4 Clay<br/>-3 Wood<br/>+Brick: {state.brick}</Action>
 }
 export function ScribeTablet(){
     const {state, dispatch} = useVerseContext()
@@ -182,10 +163,7 @@ export function ScribeTablet(){
                 <Form.Control type="text" maxLength={33} placeholder="Message" value={script} onChange={(e)=>{setScript(e.target.value)}}/>
             </Form>
         </Col>
-        <Col xs={4}>
-            <Button onClick={()=>{dispatch({type: 'write', payload: {message: script}})}} disabled={state.brick<1 || state.lumber<1}>Scribe</Button><br/>
-            <div style={{backgroundColor: '#777777aa'}}>-1 Bricks<br/>-1 Lumber<br/>+Scripts: {state.tablets?.length || 0}</div>
-        </Col>
+        <Action name={'Scribe'} actionType={'write'} payload={{message: script}} disabled={state.brick<1 || state.lumber<1}>-1 Bricks<br/>-1 Lumber<br/>+Scripts: {state.tablets?.length || 0}</Action>
         <Col xs={8}>
             <label style={{backgroundColor: '#777777aa'}}>Last 3 scripts</label>
             <div style={{maxHeight: '100%', overflow: 'auto', color: 'black', textShadow: '2px 1px #73f', backgroundColor: '#777777aa'}}>
@@ -210,10 +188,7 @@ export function ScriptDirectory(){
 }
 export function Fish(){
     const {state, dispatch} = useVerseContext()
-    return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'add', payload: {type: 'fish', count: 1}})}}>Fish</Button><br/>
-        <div style={{backgroundColor: '#777777aa'}}>+Fish: {state.fish || 0}</div>
-    </Col>
+    return <Action name={'Fish'} actionType={'add'} payload={{type: 'fish', count: 1}}>+Fish: {state.fish}</Action>
 }
 export function Sail(){
     const {state, dispatch} = useVerseContext()
@@ -222,10 +197,7 @@ export function Sail(){
     return <Col xs={12}>
         <Form>
             <Row>
-                <Col xs={4}>
-                    <Button onClick={()=>{dispatch({type: 'sail', payload: {destination: destination, vessel: vessel}})}} disabled={state.fish<20}>Sail To</Button><br/>
-                    <div style={{backgroundColor: '#777777aa'}}>{vessel}s {state[vessel.toLowerCase()] || 0}<br/>-20 fish</div>
-                </Col>
+                <Action name={'Sail'} actionType={'sail'} payload={{destination: destination, vessel: vessel}} disabled={state.fish<20}>-20 fish</Action>
                 <Col xs={8}>
                     <select className={'form-control'} value={destination} onChange={(e)=>{setDestination(e.target.value)}}>
                         <option>Island</option>
@@ -255,9 +227,7 @@ export function BuildShip(){
     }
     return <Col xs={12}>
         <Row>
-            <Col xs={4}>
-                <Button onClick={()=>{dispatch({type: 'craft', payload: {type: vessel.toLowerCase()}})}} disabled={dis[vessel]}>Build</Button><br/>
-            </Col>
+            <Action name={'Build'} actionType={'craft'} payload={{type: vessel.toLowerCase()}} disabled={dis[vessel]}/>
             <Col xs={8}>
                 <select className={'form-control'} value={vessel} onChange={(e)=>{setVessel(e.target.value)}}>
                     <option>Raft</option>
@@ -300,9 +270,7 @@ export function Portal(){
         <Form>
             <Row>
                 <Col xs={12}>Teleport to another realm</Col>
-                <Col xs={4}>
-                    <Button onClick={()=>{dispatch({type: 'teleport', payload: {destination: destination}})}}>bLink</Button><br/>
-                </Col>
+                <Action name={'bLink'} actionType={'teleport'} payload={{destination: destination}}/>
                 <Col xs={8}>
                     <select className={'form-control'} value={destination} onChange={(e)=>{setDestination(e.target.value)}}>
                         {
@@ -335,9 +303,7 @@ export function Choice_experimental(){
                         })}
                     </select>
                 </Col>
-                <Col xs={4}>
-                    <Button onClick={()=>{dispatch({type: 'choose', payload: {choice: choice}})}}>Choose</Button><br/>
-                </Col>
+                <Action name={'Choose'} actionType={'choose'} payload={{choice: choice}}/>
 
             </Row>
         </Form>
