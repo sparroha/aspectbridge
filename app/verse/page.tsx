@@ -114,7 +114,7 @@ export default function Go(p){
                 <MineOre/>
                 <SmeltMetal/>
             </FormGroup>
-            <FormGroup id={"Quary"} bgColor={"grey"} bgAlt={'Colonial Marble & Granite'} helper bgImage={'https://www.colonialmarble.net/wp-content/uploads/2021/08/shutterstock_523267222.jpg'}>
+            <FormGroup id={"Quary"} bgColor={"grey"} bgAlt={'Colonial Marble & Granite'} helper bgImage={'https://static.ffx.io/images/$zoom_1%2C$multiply_0.373%2C$ratio_1.777778%2C$width_1984%2C$x_16%2C$y_120/t_crop_custom/q_86%2Cf_auto/4f601bf0c6c5d979b084fa373012c26777db276f'}>
                 <QuaryStone/>
                 <ChiselSlabs/>
             </FormGroup>
