@@ -273,8 +273,8 @@ export default function Toolbelt(props) {
     const ToolSlots = () => {
         return <Row>
             {state.toolBelt.map((tool, i) => {
-                const {xs, sm, md, lg, xl} = tool.props.size || {xs: 12, sm: 6, md: 6}
-                let name = tool.name.split('_')[0].toUpperCase()
+                const {xs, sm, md, lg, xl} = tool?.props?.size || {xs: 12, sm: 6, md: 6}
+                let name = tool?.name?.split('_')[0].toUpperCase() || 'Tool'
                 let letters = []
                 for(let i=0; i<name.length; i++) {
                     letters.push(name.charAt(i))
@@ -284,7 +284,7 @@ export default function Toolbelt(props) {
                         {letters.map((l,i)=><div key={i}>{l}<br/></div>)}<br/>
                         <Button style={{...styleFlat, border: '1px outset darkgrey', borderRadius: '2px', marginRight: '2px'}} onClick={()=>{dispatch({type: ACTIONS.REMOVETOOL, payload: {index: i}})}}>X</Button>
                     </Col>
-                    <Col xs={11} style={styleFlat}>{tool.element}</Col>
+                    <Col xs={11} style={styleFlat}>{tool?.element || null}</Col>
                 </Row></Col>
             })}
         </Row>

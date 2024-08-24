@@ -1,4 +1,6 @@
-
+/**
+ * TCard: FunctionalTradingCard
+ */
 export type TCardProps = {
     key: number
     name: string

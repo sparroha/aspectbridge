@@ -1,13 +1,25 @@
 import { MouseEventHandler, useRef } from "react"
 import { TCard, TCardProps } from "./tcard"
+import Card from "./card"
 
+/**
+ * FTCard: FunctionalTradingCard
+ */
 export type FTCardProps = TCardProps & {
+    /*onDraw: MouseEventHandler<HTMLButtonElement>
+    onPlay: MouseEventHandler<HTMLButtonElement>
+    onCast: MouseEventHandler<HTMLButtonElement>
+    onResolve: MouseEventHandler<HTMLButtonElement>
+    onAttack: MouseEventHandler<HTMLButtonElement>
+    onBlock: MouseEventHandler<HTMLButtonElement>
+    onDamage: MouseEventHandler<HTMLButtonElement>
+    onHeal: MouseEventHandler<HTMLButtonElement>*/
     click: MouseEventHandler<HTMLButtonElement>
     color: string
     logo: string
 }
 export type FTCardPropsPartial = Partial<FTCardProps>
-export default function D(){return null}
+export default function FunctionalTradingCard(cardprops: FTCardPropsPartial){return <Card {...new FTCard({})} />}
 export class FTCard extends TCard{
     click: any
     color: string

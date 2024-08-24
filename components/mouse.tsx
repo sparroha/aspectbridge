@@ -1,7 +1,15 @@
+'use client'
 import { useEffect, useState } from "react";
 
 export type Position = {left: number, top: number}
-export type MouseProps = {mousepos: Position, clickpos: Position, lastClickpos: Position, trate: number}
+export type MouseProps = {mousepos: Position, clickpos: Position, lastClickpos: Position, trate: number | string}
+export type MouseHookProps = {
+    screenid: string,
+    mDown?: (e: Event, mousepos: Position)=>void,
+    click?: (e: Event, mousepos: Position)=>void,
+    mUp?: (e: Event, mousepos: Position)=>void,
+    context?: (e: Event, mousepos: Position)=>void,
+}
 /**
  * 
  * @param props id, setMouse
@@ -9,7 +17,7 @@ export type MouseProps = {mousepos: Position, clickpos: Position, lastClickpos: 
  */
 export default function Mouse(props) {
     const {id, setMouse, children} = props
-    const {mousepos, clickpos, lastClickpos, trate} = useMousePosition('mousepos-'+id, (e, mousepos) => {}, () => {}, id);
+    const {mousepos, clickpos, lastClickpos, trate} = useMousePosition({screenid:'mousepos-'+id});
     useEffect(() => {
         if(setMouse) setMouse(()=> {return {mousepos, clickpos, lastClickpos, trate}})
         //console.log('setMouse', mousepos, clickpos)
@@ -29,11 +37,14 @@ export default function Mouse(props) {
 /**
  * 
  * @param screenid selector
- * @param onClick 
- * @param onContext 
- * @returns 
+ * @param mDown
+ * @param click
+ * @param mUp 
+ * @param context
+ * @returns MouseProps
  */
-export function useMousePosition(screenid, onClick?: (e: Event, mousepos: Position)=>void, onContext?: Function, id?: string) {
+export function useMousePosition(mouseHook: MouseHookProps): MouseProps {   
+    const {screenid, mDown, click, mUp, context} = useState(mouseHook)[0]
     const [screen, setScreen] = useState(null)
     const [mousepos, setMousepos] = useState({left: 0, top: 0});
     const [clickpos, setClickpos] = useState({left: 0, top: 0});
@@ -44,7 +55,7 @@ export function useMousePosition(screenid, onClick?: (e: Event, mousepos: Positi
         if(!screen)return
         setTrate((lt)=>{
             let pos = (mousepos.left == 0 && mousepos.top == 0)?lastClickpos:mousepos
-            let marker = objOffset(document.querySelector('#clickpos-'+id+'-marker'));
+            let marker = objOffset(document.querySelector('#clickpos-'+screenid+'-marker'));
             let vctr = {left: pos.left - marker.left, top: pos.top - marker.top}
             let vctrlen = Math.sqrt(vctr.left*vctr.left+vctr.top*vctr.top)
             let t = vctrlen/stepDistance
@@ -53,9 +64,18 @@ export function useMousePosition(screenid, onClick?: (e: Event, mousepos: Positi
     },[mousepos])
     useEffect(() => {
         let scr = document.querySelector('#'+screenid)
-        console.log('scr', scr)
+        //console.log('scr', scr)
         if (!screen) return setScreen(scr);
 
+        window.ondrag = (event) => {
+            event = event || window.event; // IE-ism
+            event.preventDefault();
+            let offset = objOffset(screen);
+            setMousepos({
+                left: event.clientX-offset.left,
+                top: event.clientY-offset.top
+            });
+        }
         window.onmousemove = (event) => {
             event = event || window.event; // IE-ism
             let offset = objOffset(screen);
@@ -64,25 +84,56 @@ export function useMousePosition(screenid, onClick?: (e: Event, mousepos: Positi
                 top: event.clientY-offset.top
             });
         }
+        window.onmousedown = (event) => {
+            event = event || window.event; // IE-ism
+            setMousepos((mousepos) => {//used as mousepos getter
+                console.log('down', mousepos)
+                if(mDown)mDown(event, mousepos)
+                return mousepos
+            });
+        }
         window.onclick = (event) => {
             event = event || window.event; // IE-ism
-            let offset = objOffset(screen);
+            setMousepos((mousepos) => {//used as mousepos getter
+                console.log('click', mousepos)
+                setClickpos((clickpos)=>{//used as clickpos getter
+                    setLastClickpos(clickpos)
+                    return mousepos
+                });
+                if(click != null)click(event, mousepos)//not calling?
+                return mousepos
+            });
+        }
+        window.onmouseup = (event) => {
+            event = event || window.event; // IE-ism
+            setMousepos((mousepos) => {//used as mousepos getter
+                console.log('up', mousepos)
+                if(mUp)mUp(event, mousepos)
+                return mousepos
+            });
+        } 
+        window.oncontextmenu = function handleContextMenue(event) {
+            event = event || window.event; // IE-ism
+            //let offset = objOffset(screen);
             setMousepos((mousepos) => {
+                console.log('context', mousepos)
                 setClickpos((clickpos)=>{
                     setLastClickpos(clickpos)
                     return mousepos
                 });
-                if(onClick)onClick(event, mousepos)//not calling?
+                if(context)context(event, mousepos)
                 return mousepos
             });
-
-        } 
-        window.oncontextmenu = function handleContextMenue(event) {
-            //() => window.onclick(event);
-            onContext();
-            return true;
         };
-    }, [screen, onClick, onContext]);
+
+        return () => {
+            window.onmousemove = null;
+            window.onmousedown = null;
+            window.onclick = null;
+            window.onmouseup = null;
+            window.oncontextmenu = null;
+        }
+    }, [screen]);
     return {mousepos, clickpos, lastClickpos, trate: (trate*1000).toFixed(2)};
 }
 export function objOffset(obj: HTMLMapElement){

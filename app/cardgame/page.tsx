@@ -1,7 +1,7 @@
 'use client'
 import { Dispatch, MouseEventHandler, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { TLitter, alephbeth } from "../../components/hebrew"
-import { FTCard } from "../../components/gamecard/ftcard"
+import FunctionalTradingCard, { FTCard } from "../../components/gamecard/ftcard"
 import { TCard } from "../../components/gamecard/tcard"
 import Card from "../../components/gamecard/card"
 import { Col, Container, Row } from "react-bootstrap"
@@ -160,6 +160,10 @@ export default function CardIndexPage({params}) {
         }
         {//<DisplayCards cards={cards}/>
         }
+        <Row><Col md={'12'} className={'h100'}><div><FunctionalTradingCard click={(e)=>{console.log('clicked')}} color='lightgray' logo='🃏' key={0}>
+            <h4>Deck: {cards.length}</h4>
+        </FunctionalTradingCard></div></Col></Row>
+
         {//<DisplayFillerCards/>
         }
         {<CardApp cards={cards}/>
@@ -258,13 +262,13 @@ function CardApp({cards}:{cards: FTCard[]}){
     },[])//WARN: only gets values once with first render. cant rerender this
     
     if(!deckLoaded) return <>Loading...</>
-    return <>
+    return <Row>
         {//<DisplayAppCards cards={cards}/>
         }
-        <Deck deck={deck} setDeck={setDeck} setField={setField}/>
-        <Grave grave={grave} setDeck={setDeck} setGrave={setGrave}/>
-        <Field field={field} setField={setField} setGrave={setGrave}/>
-    </>
+        <Col><Deck deck={deck} setDeck={setDeck} setField={setField}/></Col>
+        <Col><Grave grave={grave} setDeck={setDeck} setGrave={setGrave}/></Col>
+        <Col><Field field={field} setField={setField} setGrave={setGrave}/></Col>
+    </Row>
 }
 function DisplayAppCards({cards}: {cards: TCard[]}){
     

@@ -18,8 +18,8 @@ export default function Dialog(props){
         const modalInfo: HTMLDialogElement = document.querySelector('#modal_info'+id)
         const openF = ()=>{modal.showModal()}
         const closeF = ()=>{modal.close()}
-        const openInfo = ()=>{modalInfo.show()}
-        const closeInfo = ()=>{modalInfo.close()}
+        const openInfo = ()=>{modalInfo?.show()}
+        const closeInfo = ()=>{modalInfo?.close()}
         openModal.addEventListener('click', openF)
         closeModal.addEventListener('click', closeF)
         openModal.addEventListener('mouseover', openInfo)

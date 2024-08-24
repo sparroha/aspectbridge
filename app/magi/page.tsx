@@ -1,24 +1,70 @@
 'use client';
-import { FC, useReducer, useState } from "react";
+import { FC, useMemo, useReducer, useState } from "react";
 import Card from "../../components/gamecard/card";
 import { alephbeth } from "../../components/hebrew";
 
 interface pageProps{params: {aspect: string[]}, searchParams}
 
+type MageData = {
+    name: string,
+    color: string,
+    type: string,
+    subtype: string,
+    children: any,
+    img: string,
+    strimage: string,
+    href: string,
+    onDraw?: ()=>void,
+    onPlay?: ()=>void,
+    onCast?: ()=>void,
+    onResolve?: ()=>void,
+    onAttack?: ()=>void,
+    onBlock?: ()=>void,
+    onDamage?: ()=>void,
+    onHeal?: ()=>void,
+}
 /**
  * ENTRY POINT
  * @param param0 
  * @returns 
  */
 
-const magiData = [
-    {name: 'Time Mage', color: 'purple', type: 'Temporal', subtype: 'light', children: <i>"Behold; the Ancient of Days is seated!"</i>, img: '', strimage: alephbeth.tav.uni, href: ''},
-    {name: 'Portal Mage', color: 'black', type: 'Spacial', subtype: 'dark', children: <i>"In the beginning, Amen."</i>, img: '', strimage: alephbeth.qoph.uni, href: ''},
-    {name: 'Seed Mage', color: 'green', type: 'Organic', subtype: 'nature', children: <><b>Peru:</b> be fruitful<br/><b>Rebu:</b> multiply<br/><i>"Peru urebu!"</i></>, img: '', strimage: alephbeth.nun.uni, href: ''},
-    {name: 'Fire Mage', color: 'red', type: 'Ionic', subtype: 'hot', children: <i>"An offering made by fire"</i>, img: '', strimage: alephbeth.shin.uni, href: ''},
-    {name: 'Wind Mage', color: 'grey', type: 'Spiritual', subtype: 'warm', children: <i>"No one knows where it comes from or where it goes."</i>, img: '', strimage: alephbeth.lamed.uni, href: ''},
-    {name: 'Earth Mage', color: 'brown', type: 'Matterial', subtype: 'cool', children: <i>"Upon a stumbling block..."<br/>"for I stumbled before the Lord<br/>at the alter of His foundation."</i>, img: '', strimage: alephbeth.pe.uni, href: ''},
-    {name: 'Water Mage', color: 'blue', type: 'Fluid', subtype: 'cold', children: <i>"Life is sacred"</i>, img: '', strimage: alephbeth.mem.uni, href: ''},
+const magiData: MageData[] = [
+    {
+        name: 'Time Mage', color: 'purple', type: 'Temporal', subtype: 'light',
+        children: <i>"Behold; the Ancient of Days is seated!"</i>,
+        img: '', strimage: alephbeth.tav.uni, href: ''
+    },
+    {
+        name: 'Portal Mage', color: 'black', type: 'Spacial', subtype: 'dark',
+        children: <i>"In the beginning, Amen."</i>,
+        img: '', strimage: alephbeth.qoph.uni, href: ''
+    },
+    {
+        name: 'Seed Mage', color: 'green', type: 'Organic', subtype: 'nature',
+        children: <><b>Peru:</b> be fruitful<br/><b>Rebu:</b> multiply<br/><i>"Peru urebu!"</i></>,
+        img: '', strimage: alephbeth.nun.uni, href: ''
+    },
+    {
+        name: 'Fire Mage', color: 'red', type: 'Ionic', subtype: 'hot',
+        children: <i>"An offering made by fire"</i>,
+        img: '', strimage: alephbeth.shin.uni, href: ''
+    },
+    {
+        name: 'Wind Mage', color: 'grey', type: 'Spiritual', subtype: 'warm',
+        children: <i>"No one knows where it comes from or where it goes."</i>,
+        img: '', strimage: alephbeth.lamed.uni, href: ''
+    },
+    {
+        name: 'Earth Mage', color: 'brown', type: 'Matterial', subtype: 'cool',
+        children: <i>"Upon a stumbling block..."<br/>"for I stumbled before the Lord<br/>at the alter of His foundation."</i>,
+        img: '', strimage: alephbeth.pe.uni, href: ''
+    },
+    {
+        name: 'Water Mage', color: 'blue', type: 'Fluid', subtype: 'cold',
+        children: <i>"Life is sacred"</i>,
+        img: '', strimage: alephbeth.mem.uni, href: ''
+    },
 ]
 
 const primatives = {
@@ -36,7 +82,7 @@ const Page: FC<pageProps> = ({params, searchParams})=>{
     const eventStack = []//mutable contents. dies on page refresh
     //const [events, setEvents] = useState(eventStack)//persists on page refresh
     //reducer
-    function eventStackReducer(events, event){
+    function eventStackReducer(events, event){//events = state
         let e = event.type
         let payload = event.payload
         switch(e){
@@ -50,11 +96,95 @@ const Page: FC<pageProps> = ({params, searchParams})=>{
                 let p = ne.pop()
                 return [...ne]
             }break
+            case 'onDraw': {
+                console.log('drawing', payload.name)
+                return [...events, {event: 'onDraw', payload: payload, undo: ()=>{dispatch({type: 'remove', payload: payload})}}]
+            }break
             default: return events
         }
     }
     //reducer dispatch
     const [events, dispatch] = useReducer(eventStackReducer, eventStack)
+
+    const magi:MageData[] = useMemo(()=>{
+        let mageCompile:MageData[] = [...magiData]
+        mageCompile.forEach((mage)=>{
+            switch(mage.name){
+                case 'Time Mage':{
+                    mage.onDraw = ()=>{dispatch({type:'onDraw', payload: mage});console.log('draw', mage.name)}
+                    mage.onPlay = ()=>{console.log('play', mage.name)}
+                    mage.onCast = ()=>{console.log('cast', mage.name)}
+                    mage.onResolve = ()=>{console.log('resolve', mage.name)}
+                    mage.onAttack = ()=>{console.log('attack', mage.name)}
+                    mage.onBlock = ()=>{console.log('block', mage.name)}
+                    mage.onDamage = ()=>{console.log('damage', mage.name)}
+                    mage.onHeal = ()=>{console.log('heal', mage.name)}
+                }break
+                case 'Portal Mage':{
+                    mage.onDraw = ()=>{console.log('draw', mage.name)}
+                    mage.onPlay = ()=>{console.log('play', mage.name)}
+                    mage.onCast = ()=>{console.log('cast', mage.name)}
+                    mage.onResolve = ()=>{console.log('resolve', mage.name)}
+                    mage.onAttack = ()=>{console.log('attack', mage.name)}
+                    mage.onBlock = ()=>{console.log('block', mage.name)}
+                    mage.onDamage = ()=>{console.log('damage', mage.name)}
+                    mage.onHeal = ()=>{console.log('heal', mage.name)}
+                }break
+                case 'Seed Mage':{
+                    mage.onDraw = ()=>{console.log('draw', mage.name)}
+                    mage.onPlay = ()=>{console.log('play', mage.name)}
+                    mage.onCast = ()=>{console.log('cast', mage.name)}
+                    mage.onResolve = ()=>{console.log('resolve', mage.name)}
+                    mage.onAttack = ()=>{console.log('attack', mage.name)}
+                    mage.onBlock = ()=>{console.log('block', mage.name)}
+                    mage.onDamage = ()=>{console.log('damage', mage.name)}
+                    mage.onHeal = ()=>{console.log('heal', mage.name)}
+                }break
+                case 'Fire Mage':{
+                    mage.onDraw = ()=>{console.log('draw', mage.name)}
+                    mage.onPlay = ()=>{console.log('play', mage.name)}
+                    mage.onCast = ()=>{console.log('cast', mage.name)}
+                    mage.onResolve = ()=>{console.log('resolve', mage.name)}
+                    mage.onAttack = ()=>{console.log('attack', mage.name)}
+                    mage.onBlock = ()=>{console.log('block', mage.name)}
+                    mage.onDamage = ()=>{console.log('damage', mage.name)}
+                    mage.onHeal = ()=>{console.log('heal', mage.name)}
+                }break
+                case 'Wind Mage':{
+                    mage.onDraw = ()=>{console.log('draw', mage.name)}
+                    mage.onPlay = ()=>{console.log('play', mage.name)}
+                    mage.onCast = ()=>{console.log('cast', mage.name)}
+                    mage.onResolve = ()=>{console.log('resolve', mage.name)}
+                    mage.onAttack = ()=>{console.log('attack', mage.name)}
+                    mage.onBlock = ()=>{console.log('block', mage.name)}
+                    mage.onDamage = ()=>{console.log('damage', mage.name)}
+                    mage.onHeal = ()=>{console.log('heal', mage.name)}
+                }break
+                case 'Earth Mage':{
+                    mage.onDraw = ()=>{console.log('draw', mage.name)}
+                    mage.onPlay = ()=>{console.log('play', mage.name)}
+                    mage.onCast = ()=>{console.log('cast', mage.name)}
+                    mage.onResolve = ()=>{console.log('resolve', mage.name)}
+                    mage.onAttack = ()=>{console.log('attack', mage.name)}
+                    mage.onBlock = ()=>{console.log('block', mage.name)}
+                    mage.onDamage = ()=>{console.log('damage', mage.name)}
+                    mage.onHeal = ()=>{console.log('heal', mage.name)}
+                }break
+                case 'Water Mage':{
+                    mage.onDraw = ()=>{console.log('draw', mage.name)}
+                    mage.onPlay = ()=>{console.log('play', mage.name)}
+                    mage.onCast = ()=>{console.log('cast', mage.name)}
+                    mage.onResolve = ()=>{console.log('resolve', mage.name)}
+                    mage.onAttack = ()=>{console.log('attack', mage.name)}
+                    mage.onBlock = ()=>{console.log('block', mage.name)}
+                    mage.onDamage = ()=>{console.log('damage', mage.name)}
+                    mage.onHeal = ()=>{console.log('heal', mage.name)}
+                }break
+                default: break
+            }
+        })
+        return magiData
+    }, [params])
 
 
     return <>

@@ -4,6 +4,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Metadata, Viewport } from 'next'
 import LayoutHeader from './layout_header'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-mosaic-component/react-mosaic-component.css' //also try swappy
+import '@blueprintjs/core/lib/css/blueprint.css';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '../public/css/style.css'
 import '../public/css/helper.css'
 import { CONSTANTS } from './constants'
