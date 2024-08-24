@@ -94,7 +94,7 @@ export function FormGroup({id, bgColor, bgImage, bgGradient, bgAlt, children, he
             {helper && <Col xs={8}>
                 <Row>
                     <Col xs={5}>
-                        <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase(), fee: 20}})}}>Hire:</Button>
+                        <Button onClick={()=>{dispatch({type: 'hire', payload: {type: id.toLowerCase(), fee: 20}})}} disabled={state.fish<20}>Hire:</Button>
                     </Col>
                     <Col xs={7}>
                         <div style={{backgroundColor: '#777777aa'}}>Helpers: {state.helpers?.[id.toLowerCase()]}<br/>-20 Fish</div>
@@ -120,14 +120,14 @@ export function ChopWood(){
 export function SawLumber(){
     const {state, dispatch} = useVerseContext()
     return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'lumber'}})}}>Saw</Button><br/>
+        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'lumber'}})}} disabled={state.wood<1}>Saw</Button><br/>
         <div style={{backgroundColor: '#777777aa'}}>-1 Wood<br/>+Lumber: {state.lumber}</div>
     </Col>
 }
 export function BuildRaft(){
     const {state, dispatch} = useVerseContext()
     return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'raft'}})}}>Raft</Button><br/>
+        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'raft'}})}} disabled={state.wood<20}>Raft</Button><br/>
         <div style={{backgroundColor: '#777777aa'}}>-20 Wood<br/>+Raft: {state.raft}</div>
     </Col>
 }
@@ -141,7 +141,7 @@ export function MineOre(){
 export function SmeltMetal(){
     const {state, dispatch} = useVerseContext()
     return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'metal'}})}}>Smelt</Button><br/>
+        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'metal'}})}} disabled={state.wood<3 || state.ore<3}>Smelt</Button><br/>
         <div style={{backgroundColor: '#777777aa'}}>-3 Ore<br/>-3 Wood<br/>+Metal: {state.metal}</div>
     </Col>
 }
@@ -155,7 +155,7 @@ export function QuaryStone(){
 export function ChiselSlabs(){
     const {state, dispatch} = useVerseContext()
     return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'tile'}})}}>Chisel</Button><br/>
+        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'tile'}})}} disabled={state.stone<1 || state.lumber<4}>Chisel</Button><br/>
         <div style={{backgroundColor: '#777777aa'}}>-1 Stone<br/>-4 Lumber<br/>+Tile: {state.tile}</div>
     </Col>
 }
@@ -169,7 +169,7 @@ export function DigClay(){
 export function FireBricks(){
     const {state, dispatch} = useVerseContext()
     return <Col xs={4}>
-        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'brick'}})}}>Kiln</Button><br/>
+        <Button onClick={()=>{dispatch({type: 'craft', payload: {type: 'brick'}})}}disabled={state.wood<3 || state.clay<4}>Kiln</Button><br/>
         <div style={{backgroundColor: '#777777aa'}}>-4 Clay<br/>-3 Wood<br/>+Brick: {state.brick}</div>
     </Col>
 }
@@ -183,7 +183,7 @@ export function ScribeTablet(){
             </Form>
         </Col>
         <Col xs={4}>
-            <Button onClick={()=>{dispatch({type: 'write', payload: {message: script}})}}>Scribe</Button><br/>
+            <Button onClick={()=>{dispatch({type: 'write', payload: {message: script}})}} disabled={state.brick<1 || state.lumber<1}>Scribe</Button><br/>
             <div style={{backgroundColor: '#777777aa'}}>-1 Bricks<br/>-1 Lumber<br/>+Scripts: {state.tablets?.length || 0}</div>
         </Col>
         <Col xs={8}>
@@ -223,7 +223,7 @@ export function Sail(){
         <Form>
             <Row>
                 <Col xs={4}>
-                    <Button onClick={()=>{dispatch({type: 'sail', payload: {destination: destination, vessel: vessel}})}}>Sail To</Button><br/>
+                    <Button onClick={()=>{dispatch({type: 'sail', payload: {destination: destination, vessel: vessel}})}} disabled={state.fish<20}>Sail To</Button><br/>
                     <div style={{backgroundColor: '#777777aa'}}>{vessel}s {state[vessel.toLowerCase()] || 0}<br/>-20 fish</div>
                 </Col>
                 <Col xs={8}>
@@ -247,10 +247,16 @@ export function Sail(){
 export function BuildShip(){
     const {state, dispatch} = useVerseContext()
     const [vessel, setVessel] = useState('Boat')
+    const dis = {
+        Raft: state.wood<20,
+        Boat: state.lumber<30,
+        Ship: state.lumber<40 || state.brick<40 || state.metal<20,
+        Flagship: state.lumber<80 || state.wood<40 || state.brick<80 || state.metal<60
+    }
     return <Col xs={12}>
         <Row>
             <Col xs={4}>
-                <Button onClick={()=>{dispatch({type: 'craft', payload: {type: vessel.toLowerCase()}})}}>Build</Button><br/>
+                <Button onClick={()=>{dispatch({type: 'craft', payload: {type: vessel.toLowerCase()}})}} disabled={dis[vessel]}>Build</Button><br/>
             </Col>
             <Col xs={8}>
                 <select className={'form-control'} value={vessel} onChange={(e)=>{setVessel(e.target.value)}}>
