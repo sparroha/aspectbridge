@@ -120,7 +120,7 @@ export default function WASD() {
         }
     }, [localPlayer]);
     //MOUSE MOVE AND CLICK
-    const {mousepos, clickpos} = useMousePosition("battlefield", OnClick, NI)
+    const {mousepos, clickpos} = useMousePosition({screenid: "battlefield", click: OnClick, context: NI})
     /*useEffect(() => {
         if(enginescreen&&localPlayer){
             window.onmousemove = (event) => {
