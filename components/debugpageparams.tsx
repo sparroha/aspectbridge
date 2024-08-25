@@ -7,7 +7,7 @@ export default function DebugParams({params, searchParams}){
 
     const [debug, setDebug] = useState(false)
     const toggleDebug = ()=>setDebug(!debug)
-    const ToggleDebug = ()=> <button style={{width: 'auto'}} onClick={toggleDebug}>Toggle Debug</button>
+    const ToggleDebug = ()=> <button style={{width: 'auto'}} onClick={toggleDebug} onDragStart={(e)=>{e.preventDefault()}} onTouchStart={(e)=>{e.preventDefault()}} onDragEnd={(e)=>{e.preventDefault()}} onTouchEnd={(e)=>{e.preventDefault()}}>Toggle Debug</button>
 
     const [state, setState] = useState({1:{left: 200, top: 200},2:{left: 100, top: 100}})
     
