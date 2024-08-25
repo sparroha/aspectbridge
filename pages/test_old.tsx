@@ -42,10 +42,10 @@ export default function Auto(props){
         <input type={'range'} min={0} max={100} value={hp.current} readOnly/>
         <h1>{hp.current==0?'RAWR':''}</h1>
         <Mouse id={'nest'} setMouse={setMouse}>
-            <div id={'mouse'} style={{position: 'absolute', ...mouse?.clickpos, transition: 'left '+(mouse?.trate*speedModifyer || 0)+'ms linear, top '+(mouse?.trate*speedModifyer || 0)+'ms linear', width: 22, height: 22, borderRadius: '50px', backgroundColor: 'red'}}></div>
+            <div id={'mouse'} style={{position: 'absolute', ...mouse?.clickpos, transition: 'left '+(+mouse?.trate*speedModifyer || 0)+'ms linear, top '+(+mouse?.trate*speedModifyer || 0)+'ms linear', width: 22, height: 22, borderRadius: '50px', backgroundColor: 'red'}}></div>
         </Mouse>
         <div id={'vectorB'} style={{position: 'absolute', ...vectorB.nextPosition, transition: 'left linear 1s, top linear 1s', border: '1px solid black'}}>Wanderer</div>
-        <VO target={targetM} rate={mouse?.trate || 0}/>{/**Not Working??? */}
+        <VO target={targetM} rate={+mouse?.trate || 0}/>{/**Not Working??? */}
         <div id={'shop'} className={'shelter'} style={{position: 'absolute', width: '100px', height: '100px', border: '1px solid black', borderRadius: '25px', background: 'radial-gradient(#00f, #fff)', left: docBounds?.current?.w/2-200 || 0, top: docBounds?.current?.h/2-200 || 0}}></div>
     </>
 }

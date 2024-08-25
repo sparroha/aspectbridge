@@ -6,7 +6,7 @@ import { useDynamicContext } from "./provider"
 export default function Page({params, searchParams}){
     const {state, dispatch} = useDynamicContext()
     
-    const mouse = useMousePosition('field')
+    const mouse = useMousePosition({screenid: 'field'})
     useEffect(()=>{if(state.selectedEntity == '') return; dispatch({type: 'move', payload: mouse.clickpos})},[mouse.clickpos])
 
     return <div id={'field'} style={{position: 'relative', background: 'white', height: '100%'}}>

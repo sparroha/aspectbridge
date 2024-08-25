@@ -9,7 +9,6 @@ import Chat from '../../chat/chat';
 import useActiveUsers from '../../../lib/util/^activeusers';
 import Link from 'next/link';
 import CodeNotes from '../../../lib/util/-codenotes-';
-import { Position, useMousePosition } from '../../../components/mouse';
 import Navi, { useProphet } from '../../../components/navi';
 import ColorPicker, { useColors } from '../../../lib/util/-colorpicker^colors-';
 
@@ -53,8 +52,7 @@ function AspectBridge(props){
     const [colorz, setColorz] = useColors(1)
 
     const prophet = useProphet()
-    //const mouse = useMousePosition('navi', (e: Event, mousepos: Position)=>{prophet.setNavipos({left: mousepos.left-50, top: mousepos.top-50})})
-
+    
     function Anchors(){
         return <Row style={{textAlign: 'center'}}>
                     <Col>

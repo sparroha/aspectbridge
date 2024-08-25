@@ -1,10 +1,10 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export type Position = {left: number, top: number}
 export type MouseProps = {mousepos: Position, clickpos: Position, lastClickpos: Position, trate: number | string}
 export type MouseHookProps = {
-    screenid: string,
+    screenid?: string,
     mDown?: (e: Event, mousepos: Position)=>void,
     click?: (e: Event, mousepos: Position)=>void,
     mUp?: (e: Event, mousepos: Position)=>void,
@@ -16,10 +16,10 @@ export type MouseHookProps = {
  * @returns 
  */
 export default function Mouse(props) {
-    const {id, setMouse, children} = props
-    const {mousepos, clickpos, lastClickpos, trate} = useMousePosition({screenid:'mousepos-'+id});
-    useEffect(() => {
-        if(setMouse) setMouse(()=> {return {mousepos, clickpos, lastClickpos, trate}})
+    const {id, mouseProps, children} = props
+    const {mousepos, clickpos, lastClickpos, trate} = mouseProps || useMousePosition({});
+    useEffect(() => {//DEPRICATED
+        //if(setMouse) setMouse({mousepos, clickpos, lastClickpos, trate})//infinite loop
         //console.log('setMouse', mousepos, clickpos)
     }, [mousepos, clickpos]);
     const [marketToggle, setMarkerToggle] = useState(false)
@@ -43,17 +43,18 @@ export default function Mouse(props) {
  * @param context
  * @returns MouseProps
  */
-export function useMousePosition(mouseHook: MouseHookProps): MouseProps {   
-    const {screenid, mDown, click, mUp, context} = useState(mouseHook)[0]
-    const [screen, setScreen] = useState(null)
+export function useMousePosition(mouseHook: MouseHookProps): MouseProps {
+    const [hook,] = useState(mouseHook)   
+    const {screenid, mDown, click, mUp, context} = useMemo(()=>{console.log('hook changed to:',hook);return hook}, [hook])
+    const [screen, setScreen]: [HTMLMapElement, any] = useState(null)
     const [mousepos, setMousepos] = useState({left: 0, top: 0});
     const [clickpos, setClickpos] = useState({left: 0, top: 0});
     const [lastClickpos, setLastClickpos] = useState({left: 0, top: 0});
     const stepDistance = 500
     const [trate, setTrate] = useState(1)
-    useEffect(()=>{
+    useEffect(()=>{//set Transition Rate based on distance from last clickpos
         if(!screen)return
-        setTrate((lt)=>{
+        setTrate((lt)=>{//completely not what is intended. Error in logic
             let pos = (mousepos.left == 0 && mousepos.top == 0)?lastClickpos:mousepos
             let marker = objOffset(document.querySelector('#clickpos-'+screenid+'-marker'));
             let vctr = {left: pos.left - marker.left, top: pos.top - marker.top}
@@ -62,38 +63,24 @@ export function useMousePosition(mouseHook: MouseHookProps): MouseProps {
             return t!=0?t:lt
         })
     },[mousepos])
-    useEffect(() => {
-        let scr = document.querySelector('#'+screenid)
-        //console.log('scr', scr)
-        if (!screen) return setScreen(scr);
+    useEffect(() => {//Event Listeners
+        console.log('screen', screen?.id,'screenid', screenid)
+        if(screen && screen.id!= screenid){//if screenid changes after screen is initialized
+            //let scr: Element = document.querySelector(screenid?'#'+screenid:'html>body')
+            console.log('screenid', screenid)
+            let scr: HTMLMapElement = document.querySelector('#'+screenid)
+            console.log('scr.id', scr.id)
+            setScreen(scr);
+        }
 
-        window.ondrag = (event) => {
-            event = event || window.event; // IE-ism
-            event.preventDefault();
-            let offset = objOffset(screen);
-            setMousepos({
-                left: event.clientX-offset.left,
-                top: event.clientY-offset.top
-            });
-        }
         window.onmousemove = (event) => {
-            event = event || window.event; // IE-ism
             let offset = objOffset(screen);
             setMousepos({
                 left: event.clientX-offset.left,
                 top: event.clientY-offset.top
-            });
-        }
-        window.onmousedown = (event) => {
-            event = event || window.event; // IE-ism
-            setMousepos((mousepos) => {//used as mousepos getter
-                console.log('down', mousepos)
-                if(mDown)mDown(event, mousepos)
-                return mousepos
             });
         }
         window.onclick = (event) => {
-            event = event || window.event; // IE-ism
             setMousepos((mousepos) => {//used as mousepos getter
                 console.log('click', mousepos)
                 setClickpos((clickpos)=>{//used as clickpos getter
@@ -104,17 +91,7 @@ export function useMousePosition(mouseHook: MouseHookProps): MouseProps {
                 return mousepos
             });
         }
-        window.onmouseup = (event) => {
-            event = event || window.event; // IE-ism
-            setMousepos((mousepos) => {//used as mousepos getter
-                console.log('up', mousepos)
-                if(mUp)mUp(event, mousepos)
-                return mousepos
-            });
-        } 
         window.oncontextmenu = function handleContextMenue(event) {
-            event = event || window.event; // IE-ism
-            //let offset = objOffset(screen);
             setMousepos((mousepos) => {
                 console.log('context', mousepos)
                 setClickpos((clickpos)=>{
@@ -128,12 +105,10 @@ export function useMousePosition(mouseHook: MouseHookProps): MouseProps {
 
         return () => {
             window.onmousemove = null;
-            window.onmousedown = null;
             window.onclick = null;
-            window.onmouseup = null;
             window.oncontextmenu = null;
         }
-    }, [screen]);
+    }, [screenid]);
     return {mousepos, clickpos, lastClickpos, trate: (trate*1000).toFixed(2)};
 }
 export function objOffset(obj: HTMLMapElement){
