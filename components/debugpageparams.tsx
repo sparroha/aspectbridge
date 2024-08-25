@@ -13,7 +13,9 @@ export default function DebugParams({params, searchParams}){
     const [state, setState] = useState({left: 200, top: 200})
     function Dragable({state, setState, children}){
         return <div style={{position: 'absolute', left: state.left, top: state.top, width: 'auto', height: 'auto', backgroundColor: 'blue'}}
-                    onDragEnd={(e)=>{console.log('drag',e);setState((s)=>{return {left: e.pageX, top:e.pageY}})}}>
+                    onDragEnd={(e)=>{console.log('drag',e);setState((s)=>{return {left: e.pageX, top:e.pageY}})}}
+                    onTouchEnd={(e)=>{console.log('drag',e);setState((s)=>{return {left: e.targetTouches[length-1].pageX, top: e.targetTouches[length-1].pageY}})}}
+                    >
             <p>Drag me</p>
             {children}
         </div>
