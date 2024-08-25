@@ -11,17 +11,23 @@ export default function DebugParams({params, searchParams}){
     const ToggleDebug = ()=> <button style={{width: 'auto'}} onClick={toggleDebug}>Toggle Debug</button>
 
     const [state, setState] = useState({left: 200, top: 200})
-    function Dragable({state, setState, children}){
-        return <div style={{position: 'absolute', left: state.left, top: state.top, width: 'auto', height: 'auto', backgroundColor: 'blue'}}
+    function Dragable({id, state, setState, children}){
+        return <div id={'dragObj_'+id} style={{position: 'absolute', left: state.left, top: state.top, width: 'auto', height: 'auto', backgroundColor: 'blue'}}
                     onDragEnd={(e)=>{console.log('drag',e);setState((s)=>{return {left: e.pageX, top:e.pageY}})}}
-                    onTouchEnd={(e)=>{console.log('touch',e);e.preventDefault();setState((s)=>{return {left: e.targetTouches[length-1].pageX, top: e.targetTouches[length-1].pageY}})}}
-                    >
+                    onTouchEnd={
+                        (e)=>{
+                            console.log('touch',e.changedTouches, e.changedTouches.item(0).pageX);
+                            setState((s)=>{
+                            return {
+                                left: e.changedTouches.item(0).pageX,
+                                top: e.changedTouches.item(0).pageY
+                            }})}}>
             <p>Drag me</p>
             {children}
         </div>
     }
 
-    return <Dragable state={state} setState={setState}><ToggleDebug/>
+    return <Dragable id={'1'} state={state} setState={setState}><ToggleDebug/>
         <div style={{height: 'auto', width: 'auto', visibility: (debug?'visible':'collapse')}}>
             <p>params: {JSON.stringify(params)}</p>
             <p>searchParams: {JSON.stringify(searchParams)}</p>
