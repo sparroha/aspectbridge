@@ -133,7 +133,7 @@ function NavMain(){
         </NavRow>
 }
 function NavRow({children}){
-    return <Row bg="" variant="dark" id="navaspect" style={{width: '100%', zIndex: '10'}}>
+    return <Row bg="" variant="dark" id="navaspect">
         {children.map((child, i)=>{return <Col key={i} xs={i==children.length-1?12:6} sm={i==children.length-1?8:4} md={i==children.length-1?6:3} lg={i==children.length-1?4:2} style={{zIndex: '10'}}>{child}</Col>})}
     </Row>
 }
