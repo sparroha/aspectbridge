@@ -1,7 +1,5 @@
 import requestIp from 'request-ip';
-/**
- * DEPRICATED delete this file when safe. probably safe now
- */
+//TODO migrate to app router api
 export default async function getIp(req, res){
     try{
         let ip = await requestIp.getClientIp(req)
