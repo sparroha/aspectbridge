@@ -6,8 +6,8 @@ import { getQueryArray, getSearchParams } from "../util/params";
 export type RegistryFetch = { data?: string, sqlresponse?: any, alert?: string}
 
 export async function GET(req: Request, res: Response) {
-	const searchParams: URLSearchParams = getSearchParams(req);
-	const search: [string, string][] = getQueryArray(req);
+	const searchParams: URLSearchParams = getSearchParams(req);//Class form
+	const search: [string, string][] = getQueryArray(req);//Array form
 	if(searchParams.size == 0) {
 		const allusers: StoredUser[] = await sql`SELECT * FROM aspect_users_;`
 		if (!allusers) return NextResponse.json({ alert: 'no registries found' });

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import sql from "../../../../../../lib/,base/sql";
-import { getParams } from "../../../../util/params";
+import { getSlug } from "../../../../util/params";
 
 export async function GET(req: Request, context: any, res: Response) {
-    const id = getParams(context)['id'];
+    const id = getSlug(context, 'id');
 
     if (!id) return NextResponse.json({ alert: 'no id found' });
     const del = await sql`DELETE FROM aspect_registry_ WHERE id = ${id};`

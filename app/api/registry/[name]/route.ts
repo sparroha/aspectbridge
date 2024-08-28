@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
-import { getParams, getSearchParams } from "../../util/params";
+import { getSearchParams, getSlug } from "../../util/params";
 
 export async function GET(req: Request, context: any, res: Response) {
     const create: boolean =  getSearchParams(req).get('create')=='true'? true : false;
-    const name = getParams(context)['name'];
+    const name = getSlug(context, 'name');
     if (!name) return NextResponse.json({ alert: 'no name found'});
     const [register] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name};`
     if (register) {return NextResponse.json({data: register.registry_data})}
