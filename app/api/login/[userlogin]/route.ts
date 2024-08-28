@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
 import { sha224 } from "js-sha256";
-import { getParams } from "../../util/params";
+import { getParams, getSearchParams, getSlug } from "../../util/params";
 
 export async function GET(req: NextRequest, res: NextResponse) {
     return NextResponse.json({ alert: 'GET not allowed'});
 }
 export async function POST(req: NextRequest, context: any, res: NextResponse) {
     try{
-        //const url = new URL(req.url);
-        //const params = url.pathname
-        const action = getParams(context)['userlogin'];
+        const action = getSlug(context,'userlogin');
         const { username, password, hash, email, nemail, cemail} = await req.json();
         alert(req.body)
         switch (action) {

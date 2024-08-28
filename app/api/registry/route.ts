@@ -19,7 +19,7 @@ export async function POST(req: Request, res: Response) {
     let data = body.data || 'default'
     if (typeof data !== 'string') data = JSON.stringify(data)
     const inject = await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${name}, ${data}) ON DUPLICATE KEY UPDATE registry_data = ${data};`
-    //console.log('/api/registry.POST:', inject, 'FROM:', body)
+    console.log('/api/registry.POST:', inject, 'FROM:', body)
     return NextResponse.json({ sqlresponse: inject });
 }
                 

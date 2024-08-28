@@ -1,17 +1,27 @@
+export function getURL(req: Request): URL {
+    return new URL(req.url);
+}
 export function getSearchParams(req: Request): URLSearchParams {
-    return (new URL(req.url)).searchParams;
+    return getURL(req).searchParams;
 }
 export function getQueryArray(req: Request): [string, string][] {
-    const sP = getSearchParams(req)
-	const query: [string, string][] = Array.from(sP)
-    return query
+	return Array.from(getSearchParams(req))
 }
-export function getParams(context: any): string | string[] | {[key: string]: string[]} {
+export function getQuery(req: Request): {[key: string]: string} {
+    return Object.fromEntries(getQueryArray(req));
+}
+export function getParams(context: any): {[key: string]: string} {//unsure of types
     return context.params;
 }
-export function getSlug(req: Request, context: any): string {
-    const url = new URL(req.url);
-    const path = url.pathname
-    const slug = path.substring(path.lastIndexOf('/')+1)//slug
-    return slug
+//context: {"params":{"id":"1"}}
+export function getSlug(context: any, slug: string): string {
+    return getParams(context)[slug];
+}
+//context: {"params":{"id":"1","name":"2"}}
+export function getSlugs(context: any): {[key: string]: string} {
+    return getParams(context)
+}
+//context: {"params":{"slugs":["1","2","3"]}}
+export function getSpreadSlugs(context: any, slugs: string): string[] {
+    return getParams(context)[slugs].toString().split(',');//hack the array into an array. original array was acting strange so I asserted it to array
 }
