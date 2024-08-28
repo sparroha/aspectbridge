@@ -1,3 +1,6 @@
+/**
+ * SEARCH
+ */
 export function getURL(req: Request): URL {
     return new URL(req.url);
 }
@@ -10,6 +13,9 @@ export function getQueryArray(req: Request): [string, string][] {
 export function getQuery(req: Request): {[key: string]: string} {
     return Object.fromEntries(getQueryArray(req));
 }
+/**
+ * SLUGS
+ */
 export function getParams(context: any): {[key: string]: string} {//unsure of types
     return context.params;
 }
