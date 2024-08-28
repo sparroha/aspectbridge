@@ -1,5 +1,5 @@
 import sql from "../../../lib/,base/sql"
-import { RegistryEntry } from "../../../pages/api/registry_old/[registry]"
+import { RegistryEntry } from "../../api/registry/route"
 
 export default async function Select({params, searchParams}){
     const {name}:{name: string} = params
