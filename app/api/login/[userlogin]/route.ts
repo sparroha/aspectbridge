@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import sql from "../../../../lib/,base/sql";
 import { sha224 } from "js-sha256";
+import { getParams } from "../../util/params";
 
 export async function GET(req: NextRequest, res: NextResponse) {
     return NextResponse.json({ alert: 'GET not allowed'});
 }
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, context: any, res: NextResponse) {
     try{
-        const url = new URL(req.url);
-        const params = url.pathname
-        const method = params.substring(params.lastIndexOf('/')+1)
+        //const url = new URL(req.url);
+        //const params = url.pathname
+        const action = getParams(context)['userlogin'];
         const { username, password, hash, email, nemail, cemail} = await req.json();
         alert(req.body)
-        switch (method) {
+        switch (action) {
             case 'logout':
                 return logout(username)
             case 'register':
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             case 'update':
                 return update(nemail, cemail, password)
             default:
-                return NextResponse.json({ alert: 'no method found'});
+                return NextResponse.json({ alert: 'action not found'});
         }
     }catch(e){
         return NextResponse.json({ alert: 'error:'+ e});

@@ -1,13 +1,45 @@
 import { NextResponse } from "next/server";
 import sql from "../../../lib/,base/sql";
-import { RegistryEntry } from "../registry/route";
+import { StoredUser } from "../../login/[action]/page";
+import { getQueryArray, getSearchParams } from "../util/params";
 
 export type RegistryFetch = { data?: string, sqlresponse?: any, alert?: string}
 
 export async function GET(req: Request, res: Response) {
-    const allusers: RegistryEntry[] = await sql`SELECT username FROM aspect_users_;`
-    if (!allusers) return NextResponse.json({ alert: 'no registries found' });
-    return NextResponse.json(allusers)
+	const searchParams: URLSearchParams = getSearchParams(req);
+	const search: [string, string][] = getQueryArray(req);
+	if(searchParams.size == 0) {
+		const allusers: StoredUser[] = await sql`SELECT * FROM aspect_users_;`
+		if (!allusers) return NextResponse.json({ alert: 'no registries found' });
+		return NextResponse.json(allusers)
+	}
+	if(searchParams.has('id')){
+		const [user] = await sql`SELECT * FROM aspect_users_ WHERE id = ${searchParams.get('id')}`
+		if (!user) return NextResponse.json({ alert: 'no registry found' });
+		return NextResponse.json(user)
+	}
+	if(searchParams.has('username')){
+		const [user] = await sql`SELECT * FROM aspect_users_ WHERE username = ${searchParams.get('username')}`
+		if (!user) return NextResponse.json({ alert: 'no registry found' });
+		return NextResponse.json(user)
+	}
+	if(searchParams.has('email')){
+		const [user] = await sql`SELECT * FROM aspect_users_ WHERE email = ${searchParams.get('email')}`
+		if (!user) return NextResponse.json({ alert: 'no registry found' });
+		return NextResponse.json(user)
+	}
+	if(searchParams.has('hash')){
+		const [user] = await sql`SELECT * FROM aspect_users_ WHERE hash = ${searchParams.get('hash')}`
+		if (!user) return NextResponse.json({ alert: 'no registry found' });
+		return NextResponse.json(user)
+	}
+	if(searchParams.has('ip')){
+		const [user] = await sql`SELECT * FROM aspect_users_ WHERE ip = ${searchParams.get('ip')}`
+		if (!user) return NextResponse.json({ alert: 'no registry found' });
+		return NextResponse.json(user)
+	}
+	
+	return NextResponse.json({query: search, alert: 'not a valid imput: GET not gotten'});
 }
 //UNTESTED
 export async function POST(req: Request, res: Response) {

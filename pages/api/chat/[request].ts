@@ -1,5 +1,7 @@
 import sql from "../../../lib/,base/sql"
-
+/**
+ * TODO Migrate to App api
+ */
 export default async function chat(req, res) {
   const { request } = req.query
   const { username, send, time, message, access, messageid } = req.body

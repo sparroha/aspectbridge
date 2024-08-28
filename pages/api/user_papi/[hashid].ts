@@ -1,6 +1,9 @@
 
 import { User } from "../../../app/login/[action]/page"
 import sql from "../../../lib/,base/sql"
+/**
+ * DEPRICATED delete this file when safe. probably safe now
+ */
 type ProfileProps = Partial<User> & {
     password: string
     collumn: string

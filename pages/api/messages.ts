@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import sql from '../../lib/,base/sql';
-
+//TODO migrate to app api
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { message, username } = req.body;

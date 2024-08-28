@@ -13,10 +13,10 @@ export default function useUser(): User {
     const [hash, ] = useHashCookie()
     const [user, setUser] = useState(null)
     useEffect(()=>{
-        if(hash)fetch('/api/getuser?hash='+hash)
+        if(hash)fetch('/api/users?hash='+hash)
         .then((res)=>res.json())
         .then((data)=>{setUser(data);if(data.username)activateUser(data)})
-        .catch((err)=>console.log('/api/getuser?hash='+hash,err))
+        .catch((err)=>console.log('/api/users?hash='+hash,err))
     },[hash])
     return user
 }
