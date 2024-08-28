@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getQuery, getSlugs } from "../../../util/params";
+import { getQuery, getSearchParams, getSlugs } from "../../../util/params";
+import { get } from "jquery";
 
 export function GET(req: Request, context: any, res: Response){
     const slugs: {[key: string]: string} = getSlugs(context);
