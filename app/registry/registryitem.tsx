@@ -1,7 +1,7 @@
 'use client'
 import { useMemo } from "react";
 import { RegistryEntry } from "../api/registry/route";
-import { parsedRegistryData } from "./parsedregistry";
+import { parsedRegistryData } from "../api/util/parsedregistry";
 
 export default function RegistryItem({registry}: {registry: RegistryEntry}){
     const data = useMemo(()=>{if(!registry) return null; return parsedRegistryData(registry.registry_data)}, [registry])

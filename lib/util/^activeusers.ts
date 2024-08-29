@@ -4,7 +4,7 @@ import { getDB, setDB } from "./@registry"
 import { ActiveUser } from "../../app/api/users/active/route"
 import { User } from "../../app/login/[action]/page"
 import { RegistryEntry } from "../../app/api/registry/route"
-import { parsedRegistryData } from "../../app/registry/parsedregistry"
+import { parsedRegistryData } from "../../app/api/util/parsedregistry"
 /*export type ActiveUser = {
     name: string,
     access: number,

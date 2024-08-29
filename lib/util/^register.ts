@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import jsonFetch from "../,base/jsonFetch";
-import { RegistryFetch } from "../../app/api/registry/route";
+import { RegistryEntry, RegistryFetch } from "../../app/api/registry/route";
 import { getDB, setDB } from "./@registry";
 
 /**
@@ -42,7 +42,7 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
     
     const [currentsave, setCurentSave] = useState(registry)//current save
     const [registryExists, setRegistryExists] = useState(false)
-    const [register, setRegister]: [string | null, any] = useState(null)//This nust be null by default: Do not set to default value: that is for initialization only
+    const [registryData, setRegistryData]: [string | null, any] = useState(null)//This nust be null by default: Do not set to default value: that is for initialization only
     const {data, error} = useSWR('../api/registry/'+registry, sync?{ refreshInterval: 500, fetcher: jsonFetch}:{})//get data from database
     
     //INIT
@@ -50,14 +50,15 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
         if(registryExists) return
         if(!registry) {console.log('@useRegister://REGISTER: '+'no registry: '+registry); return}
         if(registry ==  null) {console.log('@useRegister://REGISTER: '+'null registry: '+registry); return}
-        return getDB(registry, signal).then(({data}: {data: string})=>{
-            if(data == null || data == undefined || !data || data == "default") {
+        return getDB(registry, signal)
+        .then((data: RegistryEntry)=>{
+            if(data == null || data == undefined || !data) {
                 //init registry: only sets default if data not exist
                 setRegistryExists(false)
-                return setDB(registry, defaultValue)
+                return setDB(data.registry_data, defaultValue)
             }
             setRegistryExists(true)
-            setRegister(data)
+            setRegistryData(data)
         }).catch(err=>console.log('@useRegister.loadDataOnce://fetch error: '+err))
     }
 
@@ -71,12 +72,12 @@ export default function useRegister(registry: string, defaultValue: any, sync?: 
     },[registry])
 
     const saveData = useCallback((dat) => {//save data to database{//works and tested
-        setRegister(JSON.stringify(dat))
+        setRegistryData(JSON.stringify(dat))
         setDB(registry, dat).then(()=>{
             /*EXPERIMENTAL*///if(sync)getDB(registry).then((d: string)=>setRegister(d))
         })
     },[registry])
-    return [sync?data:register, saveData, registryExists]
+    return [sync?data:registryData, saveData, registryExists]
 }
 
 /**

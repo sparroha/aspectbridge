@@ -1,3 +1,5 @@
+import { RegistryEntry } from "../registry/route"
+
 export function parsedRegistryData(data: any): any{
     let parsedOutput: string | {} | [] | null = data
     try{
