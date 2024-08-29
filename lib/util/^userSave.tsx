@@ -26,10 +26,10 @@ export function useUserSave(host: string, username: string, state: any, callback
     const load = ()=>{//load
         if(!username)return// console.log('loading user or user not logged in')
         getDB(host+':'+username).then((data)=>{
-                if(!data.data)return
-                if(data.data == 'default'){save(true);/*alert(data.data)*/;return}
+                if(data == undefined)return
+                if(!data) return save(true)//DOTEST
                 /*initializer callback*/
-                callback(JSON.parse(data.data))
+                callback(JSON.parse(data))
                 setLoading(false)
                 setUn(username)
                 if(updateUsername)updateUsername(username)
