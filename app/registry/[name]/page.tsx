@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { RegistryEntry } from "../../api/registry/route"
 import { getESlug } from "../../api/util/params"
-import { RegistryItem } from "../page"
+import RegistryItem from "../registryitem"
 
 export default function Select({params, searchParams}){
     const [registry, setRegistry]: [RegistryEntry, any] = useState(null)

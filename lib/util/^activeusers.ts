@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import { getDB, setDB } from "./@registry"
 import { ActiveUser } from "../../app/api/users/active/route"
 import { User } from "../../app/login/[action]/page"
+import { RegistryEntry } from "../../app/api/registry/route"
+import { parsedRegistryData } from "../../app/registry/parsedregistry"
 /*export type ActiveUser = {
     name: string,
     access: number,
@@ -23,7 +25,7 @@ export async function activateUser(user: Partial<User>){
     //console.log('activating')
     if(!user) return console.log('/lib/util/^activeusers.activateUser(): No user provided')
     return getDB(ACTIVEUSERS)
-      .then((data: {data: string})=>JSON.parse(data.data) || [])
+      .then((data: RegistryEntry)=>parsedRegistryData(data.registry_data))
       .then((data: ActiveUser[])=>{
         if(data.length == 0){
           setDB(ACTIVEUSERS, [{name: user.username, access: user.access || 0, time: new Date().getTime()}])

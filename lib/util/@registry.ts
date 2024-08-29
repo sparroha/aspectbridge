@@ -1,4 +1,4 @@
-import { RegistryFetch } from "../../app/api/registry/route"
+import { RegistryEntry, RegistryFetch } from "../../app/api/registry/route"
 
 export class Registry_experimental{
     uuid: string
@@ -24,10 +24,10 @@ export class Registry_experimental{
     put = async (data, uuid?: string)=>{
         setDB(uuid || this.uuid, data)
     }
-    get = async (uuid?: string)=>{
+    /*get = async (uuid?: string)=>{
         this.getData = (await getDB(uuid || this.uuid)).data
         return this.getData
-    }
+    }*/
 
 }
 
@@ -47,10 +47,6 @@ export async function setDB(name: string, data: any){
     //console.log('@setDB://set '+name+' to '+JSON.stringify(data)+'\n'+JSON.stringify(post))
 }
 
-export async function getDB(name: string, signal?: AbortSignal): Promise<RegistryFetch>{
+export async function getDB(name: string, signal?: AbortSignal): Promise<RegistryEntry>{
     return fetch(`/api/registry/${name}?create=true`,{signal: signal}).then(res=>res.json())
-}
-
-export async function searchDB(name: string, signal?: AbortSignal): Promise<{name: string, registry_data: string}[]>{
-    return fetch(`/api/registry/${name}?command=search`,{signal: signal}).then(res=>res.json())
 }
