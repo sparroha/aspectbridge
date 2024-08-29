@@ -6,11 +6,12 @@ import { RegistryEntry } from "../api/registry/route"
 
 export default function AllRegistries({params, searchParams}){
     
+    const app = searchParams.app
     const [registries, setRegistries]: [RegistryEntry[], any] = useState(null)
     useEffect(()=>{
         fetch('/api/registry')
         .then(res=>res.json())
-        .then((data: RegistryEntry[])=>setRegistries(data))
+        .then((data: RegistryEntry[])=>setRegistries(data.filter(a=>app ? a.name.includes(app) : true)))
     }, [])
     useEffect(()=>{
         if(registries) console.log('Registries:', registries)
