@@ -1,3 +1,4 @@
+'use client'
 import { alephbeth } from "../hebrew"
 import { FTCardPropsPartial } from "./ftcard"
 import style from './cardstyle.module.css'

@@ -1,33 +1,21 @@
-import sql from "../../../lib/,base/sql"
+'use client'
+import { useEffect, useState } from "react"
 import { RegistryEntry } from "../../api/registry/route"
+import { getESlug } from "../../api/util/params"
+import { RegistryItem } from "../page"
 
-export default async function Select({params, searchParams}){
-    const {name}:{name: string} = params
-    let name2 = name.replaceAll('%3A',':').replaceAll('%40','@')
-    console.log('name', name2)
-    const select: RegistryEntry[] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name2};`
-    console.log('select', select)
-    return <div style={{backgroundColor: 'white'}}>
-        {select.map((reg, i)=>{
-            let parsed: string | {} | [] = reg.registry_data
-            try{
-                parsed = JSON.parse(reg.registry_data)
-            }catch(e){
-                console.log(e+' | '+reg.registry_data)
-            } 
-            return <div key={i}>
-                {reg.id}:&nbsp;<a href={'/registry/'+reg.name}>{reg.name}</a><br/>
-                {(
-                    (typeof parsed === 'string') ? <div>{parsed}</div> :
-                    (typeof parsed === 'object') ? <div> 
-                        {Object.entries(parsed).map((a,i)=>{return <div key={i}>-&nbsp;&nbsp;&nbsp;{a[0]}{': '}{JSON.stringify(a[1])}<br/></div>})}
-                    </div>:
-                    (parsed instanceof Array) ? <div> 
-                        {parsed.map((a,i)=>{return <div key={i}>-&nbsp;&nbsp;&nbsp;{a[0]}: {a[1]}<br/></div>})}
-                    </div>:JSON.stringify(parsed)
-                )}
-                <hr/>
-            </div>
-        })}
-    </div>
+export default function Select({params, searchParams}){
+    const [registry, setRegistry]: [RegistryEntry, any] = useState(null)
+    
+    const name = getESlug(params, 'name')
+    useEffect(()=>{
+        fetch('/api/registry/'+name)
+        .then(res=>res.json())
+        .then((data: RegistryEntry)=>setRegistry(data))
+    }, [])
+    useEffect(()=>{
+        if(registry) console.log('Registry:', registry)
+    }, [registry])
+
+    return <div style={{backgroundColor: 'white'}}><RegistryItem registry={registry}/></div>
 }
