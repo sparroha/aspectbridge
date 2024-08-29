@@ -14,7 +14,7 @@ export default function Layout({children}: {children: React.ReactNode}){
     return <div style={{backgroundColor: 'white', padding: '5px'}}>
             <div className={'row'} style={{margin: '5px 0px 5px 0px'}}>
                 <div className={'col'}><a style={btnstyle} key={'registry'} href={'/registry'}>{'registry'}</a></div>
-                {apps.map(app=><div className={'col'}><a style={btnstyle} key={app} href={'/registry?app='+app}>{app}</a></div>)}
+                {apps.map(app=><div className={'col'}><a style={btnstyle} key={app} href={'/registry?search='+app}>{app}</a></div>)}
             </div>
             <div className={'row'}>
                 <div className={'col'}>{children}</div>

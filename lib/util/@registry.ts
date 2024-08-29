@@ -50,3 +50,6 @@ export async function setDB(name: string, data: any){
 export async function getDB(name: string, signal?: AbortSignal): Promise<RegistryEntry>{
     return fetch(`/api/registry/${name}?create=true`,{signal: signal}).then(res=>res.json())
 }
+export async function searchDB(name: string, signal?: AbortSignal): Promise<RegistryEntry[]>{
+    return fetch(`/api/registry/${name}?search=true`,{signal: signal}).then(res=>res.json())
+}

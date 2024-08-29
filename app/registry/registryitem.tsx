@@ -20,6 +20,7 @@ export default function RegistryItem({registry}: {registry: RegistryEntry}){
     </div>
 }
 function RegistryData({data, id}){
+    if(!data) return <>diabled</>
     if(typeof data === 'string') return <div className={'col-12'}>{data}</div>
     if(typeof data === 'object') return <>{Object.entries(data).map((a,i)=>{
         return <div key={data.id+'_'+i} className={'col-12'}>
