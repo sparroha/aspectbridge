@@ -5,11 +5,6 @@ import { ActiveUser } from "../../app/api/users/active/route"
 import { User } from "../../app/login/[action]/page"
 import { RegistryEntry } from "../../app/api/registry/route"
 import { parsedRegistryData } from "../../app/api/util/parsedregistry"
-/*export type ActiveUser = {
-    name: string,
-    access: number,
-    time: number,
-  }*/
 export const ACTIVEUSERS = 'active_users'
 export default function useActiveUsers(delay: number = 2000): ActiveUser[]{
     const [activeUsers, setActiveUsers] = useState([{name: 'Loading...', access: 2, time: 0}])
@@ -25,21 +20,25 @@ export async function activateUser(user: Partial<User>){
     //console.log('activating')
     if(!user) return console.log('/lib/util/^activeusers.activateUser(): No user provided')
     return getDB(ACTIVEUSERS)
-      .then((data: RegistryEntry)=>parsedRegistryData(data.registry_data))
-      .then((data: ActiveUser[])=>{
-        if(data.length == 0){
-          setDB(ACTIVEUSERS, [{name: user.username, access: user.access || 0, time: new Date().getTime()}])
-        }else{
-          //remove current and old users
-          let dataArr = data.filter(({time, name}) => {
-            if(name == user.username) return false //prevent duplicate user entry
-            if((new Date().getTime() - time) > (1000*60*60)/6) return false//remove users that havent been active in the last hour...last 10 min
-            return true
-          })
-          //console.log('activated')
-          dataArr.push({name: user.username, access: user.access, time: new Date().getTime()})
-          setDB(ACTIVEUSERS, dataArr)
-        }
-      }
+		.then((data: RegistryEntry)=>parsedRegistryData(data.registry_data))
+		.then((data: ActiveUser[])=>{
+		if(data.length == 0){
+			setDB(ACTIVEUSERS, [{name: user.username, access: user.access || 0, time: new Date().getTime()}])
+		}else{
+			let activeUsers = cleanupInactiveUsers(data,user)
+			//console.log('activated')
+			activeUsers.push({name: user.username, access: user.access, time: new Date().getTime()})
+			setDB(ACTIVEUSERS, activeUsers)
+		}
+		}
     )
-  }
+}
+
+const cleanupInactiveUsers: (activeUsers: ActiveUser[], user: Partial<User>)=>ActiveUser[] = (activeUsers, user)=> {
+	const freshActiveUsers: ActiveUser[] = activeUsers.filter((nextActiveUser: ActiveUser) => {
+		if(nextActiveUser.name == user.username) return false //prevent duplicate user entry
+		if((new Date().getTime() - nextActiveUser.time) > (1000*60*60)/6) return false//remove users that have not been active in the last hour...last 10 min
+		return true
+	})
+	return freshActiveUsers
+}

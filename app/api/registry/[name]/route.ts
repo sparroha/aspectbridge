@@ -12,13 +12,13 @@ export async function GET(req: Request, context: any, res: Response): Promise<Re
         const registries: RegistryEntry[] = await sql`SELECT * FROM aspect_registry_ WHERE name LIKE ${name};`
         return NextResponse.json(registries)
     }
-    if (!name) return NextResponse.json({ alert: 'no name found', create: create, query: query });
+    if (!name) return NextResponse.json({ error: 'no name found', create: create, query: query });
     const [registry]: [RegistryEntry] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name};`
     if (registry) {return NextResponse.json(registry)}
     
-    if(!create) return NextResponse.json({ alert: 'no registry found', create: create })
+    if(!create) return NextResponse.json({ error: 'no registry found', create: create })
     let newR = await sql`INSERT INTO aspect_registry_ (name, registry_data) VALUES (${name}, ${"default"}) ON DUPLICATE KEY UPDATE registry_data = ${"default"};`
     const [newregistry]: [RegistryEntry] = await sql`SELECT * FROM aspect_registry_ WHERE name = ${name};`
-    if (!newregistry) return NextResponse.json({ final: 'no registry created' })
+    if (!newregistry) return NextResponse.json({ error: 'no registry created' })
     return NextResponse.json(newregistry)
 }
