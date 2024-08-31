@@ -6,10 +6,10 @@ export default function D(){return<>D</>}
 
 export type Deck = {
     name: string,
-    cards: Card[]
+    cards: CardData[]
 }
 
-export type Card = {
+export type CardData = {
     name: string,
     type: string,
     subtype: string,
@@ -39,8 +39,8 @@ export type ActionHandler = {
 export type GameState = {
     playerid: string,
     active: boolean,
-    hand: Card[],
-    deck: Card[],
+    hand: CardData[],
+    deck: CardData[],
     decks: Deck[],
 }
 export type FunctionStack = Function[]

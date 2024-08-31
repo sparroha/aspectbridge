@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from "react"
+import { actionHAndlers, CardData, Deck } from "./cardgame"
 import { Col, Container, Row } from "react-bootstrap"
-import { Deck, Card, actionHAndlers } from "./cardgame"
 import SandboxNavbar from "./navbar"
 
 
@@ -8,7 +8,7 @@ export default function Sandbox(props) {
     const [cardLib, setCardLib] = useState([])
     const [deckLib, setDeckLib] = useState([])
     //useLog('INIT: '+cards)
-    const priest: Card = {
+    const priest: CardData = {
         name: 'priest',
         type: 'hero',
         subtype: 'priest',
@@ -75,10 +75,9 @@ export default function Sandbox(props) {
     //INITIALIZE DECKS
     useEffect(() => {console.log('use INITIALIZE DECKS')
         if(cardLib.length == 0){
-            const cards: Promise<Card[]> = fetch('/api/sandbox/cards').then(res => res.json()).then(data => {
-                console.log('cards fetched: '+JSON.stringify(JSON.parse(data.cards)[0]))
-                setCardLib(JSON.parse(data.cards))
-                return JSON.parse(data.cards)
+            fetch('/api/sandbox').then(res => res.json()).then((data: CardData[]) => {
+                console.log('cards fetched: ', data)
+                setCardLib(data)
             })
             
         }else{
