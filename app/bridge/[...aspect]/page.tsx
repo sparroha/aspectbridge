@@ -48,8 +48,8 @@ export default Page
  */
 function AspectBridge(props){
 	const {user, aspect} = props
-    const [colors, setColors] = useColors(1)
-    const [colorz, setColorz] = useColors(1)
+    const [colors, setColors] = useColors(null)
+    const [colorz, setColorz] = useColors(null)
 
     const prophet = useProphet()
     
@@ -64,7 +64,7 @@ function AspectBridge(props){
                     </Col>
             </Row>
     }
-    const swtc = ()=>{switch(aspect[0]){
+    const SWTC = ()=>{switch(aspect[0]){
         case 'about':
             return <>
                     <h4>Aspect Bridge</h4>
@@ -156,7 +156,7 @@ function AspectBridge(props){
 
             <Col xs={12} style={{backgroundColor: colorz[0] || 'white', transition: 'background-color 1s linear'}}>
                 <ColorPicker id={'headercolorz'} username={user?.username || props.currentUsername} colors={colorz} setColors={setColorz}>
-                    {swtc()}
+                    <SWTC/>
                 </ColorPicker>
             </Col>
 
