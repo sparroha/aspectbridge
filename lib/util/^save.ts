@@ -2,9 +2,13 @@
 import { useCallback, useRef } from "react";
 import useSWR from "swr";
 
-export default function useSave(uuid: string, interval?: number){
+/**
+ * 
+ * DEPRICATED??? ^register.ts
+ */
+export default function useSave(uuid: string, interval?: number): {data: any, error: any, save: (data: any)=>Promise<any>}{
     const {data, error} = useSWR(`/api/registry/${uuid}`, { refreshInterval: interval || 1000 })
-    const parseData = useRef(data)
+    const parseData = useRef(data)//CONFLICTING PARSESR
     try{
         parseData.current = JSON.parse(data)
     }catch(e){
