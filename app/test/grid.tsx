@@ -48,6 +48,15 @@ export function Cell({row, col}){
     //{grid: []}
     const {state, dispatch} = useGridContext()
     return <div style={{width: '100px', height: '100px', backgroundColor: '#bbb'}}>
+        {
+            /**
+             * GRID FUNCTIONAL CONTENT
+             */
+
+            /**
+             * GRID FUNCTIONAL CONTENT
+             */
+        }
         {JSON.stringify(row)}/{JSON.stringify(col)}:STATE:{JSON.stringify(state)}
     </div>
 }

@@ -16,14 +16,14 @@ import { useUserSave } from '../../lib/util/^userSave';
 //----------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------
-export default function Go(p){
+export default function Go({params, searchParams}){
     /**CONSTANTS**/
     const {state, dispatch} = useVerseContext()//138 lines
     const user = useUser()//22
     
     const dataFun = (data)=>dispatch({type: 'set', payload: data})
     const userFun = (username)=>dispatch({type: 'user', payload: username})
-    const [save, loading, load] = useUserSave('verse', user?.username, state, dataFun, userFun)//40 lines
+    const [save, loading, load] = useUserSave('verse', /*searchParams.session?searchParams.session:*/user?.username, state, dataFun, userFun)//40 lines
     useEffect(()=>{//If user changes after load
         if(!user)return
         load()
