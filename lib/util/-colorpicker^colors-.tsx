@@ -8,7 +8,7 @@ export default function ColorPicker({id, username, colors, setColors, children}:
     useEffect(()=>{
         if(typeof colors == 'string')setColors([colors])
         else if(colors instanceof Array){
-            if(colors[0].length < 4)setColors([colors.join('')])
+            if(colors[0]?.length < 4)setColors([colors.join('')])
             else setColors(colors)
         }
         //setColors((c)=>typeof colors == 'string'?[colors]:c)

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import CodeNotes from '../../../lib/util/-codenotes-';
 import Navi, { useProphet } from '../../../components/navi';
 import ColorPicker, { useColors } from '../../../lib/util/-colorpicker^colors-';
+import { grid, Grid, GridContextProvider } from '../../test/grid';
 
 interface pageProps{params: {aspect: string[]}, searchParams}
 
@@ -50,6 +51,7 @@ function AspectBridge(props){
 	const {user, aspect} = props
     const [colors, setColors] = useColors(null)
     const [colorz, setColorz] = useColors(null)
+    const [color3, setColor3] = useColors(null)
 
     const prophet = useProphet()
     
@@ -157,6 +159,13 @@ function AspectBridge(props){
             <Col xs={12} style={{backgroundColor: colorz[0] || 'white', transition: 'background-color 1s linear'}}>
                 <ColorPicker id={'headercolorz'} username={user?.username || props.currentUsername} colors={colorz} setColors={setColorz}>
                     <SWTC/>
+                </ColorPicker>
+            </Col>
+
+            
+            <Col xs={12} style={{backgroundColor: color3[0] || 'white', transition: 'background-color 1s linear'}}>
+                <ColorPicker id={'contentcolor3'} username={user?.username || props.currentUsername} colors={color3} setColors={setColor3}>
+                <GridContextProvider><Grid grid={grid(10,10)}/></GridContextProvider>
                 </ColorPicker>
             </Col>
 
