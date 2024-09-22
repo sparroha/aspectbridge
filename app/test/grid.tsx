@@ -3,8 +3,8 @@ import { Col, Container, Row } from "react-bootstrap"
 
 type CellProps = {row: number, col: number}
 type RowProps = CellProps[]
-type GridProps = RowProps[] //{row: number, col: number}[][]
-const initialGridState  = {grid: []}
+type GridProps = RowProps[]//{row: number, col: number}[][]
+const initialGridState: {grid: GridProps}  = {grid: []}
 const GridContext = createContext(null)
 const useGridContext = ()=>{
     const context = useContext(GridContext)

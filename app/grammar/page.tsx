@@ -65,10 +65,10 @@ class Word {
                     processed[i] = 'able'
                     break
                 case 'al':
-                    processed[i] = 'characterized by'
+                    processed[i] = 'al'
                     break
                 case 'ed':
-                    processed[i] = 'past tense'
+                    processed[i] = 'ed'
                     break
                 case 'en':
                     processed[i] = 'made of'
@@ -78,16 +78,20 @@ class Word {
                     processed[i] = i==this['suffix'].length-1?'ate':'at'
                     break
                 case 'er':
-                    processed[i] = 'one who'
+                    processed[i] = 'er'
                     break
                 case 'ion':
                     processed[i] = 'ion'
                     break
-                case 'or':
-                    processed[i] = 'one who'
+                case 'ing':
+                    processed[i] = 'ing'
                     break
+                case 'or':
+                    processed[i] = 'or'
+                    break
+                case 'es':
                 case 's':
-                    processed[i] = 'plural'
+                    processed[i] = this['root'].charAt(this['root'].length-1)=='e'?'es':'s'//with
                     break
                 case 'tion':
                     processed[i] = 'tion'
@@ -127,11 +131,11 @@ class Word {
 
 
 export default function Page({params, searchParams}){
-    const [word, setWord] = useState(new Word(['again','with'],'bini',['at','ion']))
+    const [word, setWord] = useState(new Word(['again','with'],'bini',['ate','ion']))
 
     
     return <div style={{color: 'white'}}>
-        <h1>{"Word(['again','with'],'bini',['at','ion'])"}</h1>
+        <h1>{"Word(['again','with'],'bini',['ate','ion'])"}</h1>
         <h2>{word.prefix.concat([word.root]).concat(word.suffix).join(',')}</h2>
         <h3>{word.say()}</h3>
     </div>

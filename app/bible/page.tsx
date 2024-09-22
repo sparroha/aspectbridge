@@ -1,14 +1,42 @@
 'use client'
-export default function Gen(c,v?){
+
+import { create, createStore } from "zustand"
+type StateEntry = {
+    [key: string]: string | ((name: string, value: string) => void)
+}
+type State = StateEntry &{
+    ELOHIM: string
+    fmake: (name: string, value: string) => void
+}
+
+const useStore = create((set) => ({
+    ELOHIM: 'ELOHIM',
+    fmake: (name, value) => set((state) => ({ ...state, [name]: value })),
+}))
+useStore.subscribe((state: State) => console.log('new state', state))
+//context?
+
+export default function Gen({params, searchParams}) {
+    //create = (set: ()=>{}) => ({})
+    /*const useStore = create((set) => ({
+        ELOHIM: 'ELOHIM',
+        fmake: (name, value) => set((state) => ({ ...state, [name]: value })),
+    }))
+    useStore.subscribe((state: State) => console.log('new state', state))*/
+    const make = useStore((state: State) => state.fmake)
+    const el = useStore((state: State) => state.ELOHIM)
+
+    const c = params.chapter
+    const v = params.verse
     if(c==1&&(!v||v==2))return <>
         In the Beginning there was water and air<br/>
-        "And the Spirit of {this.ELOHIM} was hovering over the face of the waters"<br/>
-        "And the breath of {this.ELOHIM} was growing soft over the face of the waters"<br/>
-        "And {this.ELOHIM} smelled the water"<br/>
+        "And the Spirit of {el} was hovering over the face of the waters"<br/>
+        "And the breath of {el} was growing soft over the face of the waters"<br/>
+        "And {el} smelled the water"<br/>
     </>
      
     if(c==1&&v==3)return <>
-        "And {this.ELOHIM} said Yehi Aur, and there was light"
+        "And {el} said Yehi Aur, and there was light"
     </>
     
     if(c==1&&v==4){
@@ -21,10 +49,13 @@ export default function Gen(c,v?){
 
         let Bneyan = ["structure, building"]
         return <>
-            "And {this.ELOHIM} saw the light, that it was good"
-            "And {this.ELOHIM} divided between the light and between the darkness"
-            "And {this.ELOHIM} did badel 'Ben haAur' and 'Ben haChoshek'"
+            "And {el} saw the light, that it was good"
+            "And {el} divided between the light and between the darkness"
+            "And {el} did badel 'Ben haAur' and 'Ben haChoshek'"
         </>
     }
-    return <></>
+    return <>
+        <a href="https://scripture.api.bible/admin/applications/1409624938121?service_id=2555417731121">scripture.api.bible/admin</a><br/>
+        <a href="https://scripture.api.bible/livedocs#/Bibles/getBibles">scripture.api.bible/livedocs#/Bibles/getBibles</a>
+    </>
 }
