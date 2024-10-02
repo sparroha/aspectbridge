@@ -11,11 +11,11 @@ export type StoreState = {
 
 const StoreContext = createContext(null)
 export const useStoreInContext: any = (selector: { (state: StoreState): any; (state: StoreState): (id: string) => void; (state: StoreState): (id: string) => void; (state: StoreState): (id?: string) => void; (state: StoreState): (id: string) => void; (state: StoreState): (id: string) => void; (state: any): any; (state: StoreState): unknown }) => {
-  const store: StoreApi<StoreState> = useContext(StoreContext)
-  if (!store) {
-    throw new Error('Missing StoreProvider')
-  }
-  return useStore(store, selector)
+	const store: StoreApi<StoreState> = useContext(StoreContext)
+	if (!store) {
+		throw new Error('Missing StoreProvider')
+	}
+	return useStore(store, selector)
 }
 
 const StoreProvider = ({ children }) => {
@@ -24,18 +24,18 @@ const StoreProvider = ({ children }) => {
     if (!storeRef.current) {
         storeRef.current = createStore((set) => ({
             reset: (id?: string) => set((state) => {
-            if (id) return {...state, [id+'_count']: 0}
-            let nextstate = {...state}
-            for (let key in state) if (key.includes('_count')) nextstate[key] = 0
-            return nextstate
+				if (id) return {...state, [id+'_count']: 0}
+				let nextstate = {...state}
+				for (let key in state) if (key.includes('_count')) nextstate[key] = 0
+				return nextstate
             }),
             increment: (id: string) => set((state) => {
-            if (!state[id+'_count']) return {...state, [id+'_count']: 1}
-            return { ...state, [id+'_count']: state[id+'_count'] + 1 }
+				if (!state[id+'_count']) return {...state, [id+'_count']: 1}
+				return { ...state, [id+'_count']: state[id+'_count'] + 1 }
             }),
             decrement: (id: string) => set((state) => {
-            if (!state[id+'_count']) return {...state, [id+'_count']: -1}
-            return { ...state, [id+'_count']: state[id+'_count'] - 1 }
+				if (!state[id+'_count']) return {...state, [id+'_count']: -1}
+				return { ...state, [id+'_count']: state[id+'_count'] - 1 }
             }),
         }))
     }
@@ -44,5 +44,5 @@ const StoreProvider = ({ children }) => {
         {children}
       </StoreContext.Provider>
     )
-  }
-  export default StoreProvider
+}
+export default StoreProvider
