@@ -32,7 +32,7 @@ export default function Cookbook({params}){
         'VeggieTable'
     ]
     
-    return <div style={{backgroundImage: 'linear-gradient(to bottom, #999, #fff', borderRadius: '22px'}}>
+    return <div style={{ width: '80vw', backgroundImage: 'linear-gradient(to bottom, #999, #fff', borderRadius: '22px'}}>
         <div className="row" style={{backgroundColor: 'transparent'}}>
             {pages.map((p, i)=>{
                 if((page == 'Home' && p != 'Home') || (page != 'Home' && p == 'Home'))return <div key={i} className="col-4" style={{height: '100px', backgroundImage: 'none'}}>

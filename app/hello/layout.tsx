@@ -1,5 +1,5 @@
 export default async function DevLayout({children}) {
-    return <>{children}<br/>
+    return <>{children}<br/><br/><br/><hr style={{borderColor: 'white'}}/>
     	<a href="/hello">/api/hello</a><br/>
     	<a href="/hello?quest=what&how=do">/api/hello?quest=what&how=do</a><br/>
 

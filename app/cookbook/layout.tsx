@@ -15,11 +15,11 @@ export const metadata: Metadata = {
   //assets: 'https://aspectbridge.com/assets',
 }
 export default async function RootLayout({children}) {
-  return <div id="cookbook_layout" style={{width: '100%', height: '100%'}}>
-    <div  style={{position: 'relative', width: '100%', height: '100%'}}>
-      <div style={{position: 'absolute', width: '98%', height: '98%', opacity: '.5', margin: '1%', padding: '1%', border: '1% outset #aaa', borderRadius: '22px', backgroundImage: 'linear-gradient(to bottom right, #777, #fff)', zIndex: '0'}}></div>
-      <div style={{position: 'absolute', width: '98%', height: '98%', margin: '1%', padding: '1%', border: '1% outset #aaa', borderRadius: '22px', backgroundImage: ''}}>
-        <div style={{width: '100%', height: '100%', padding: '2%', border: '1% outset #aaa', borderRadius: '22px', backgroundImage: 'linear-gradient(to bottom right, #777, #fff)', overflow: 'auto'}}>
+  return <div id="cookbook_layout" style={{width: '100vw', height: '100vh'}}>
+    <div  style={{position: 'relative', width: '100vw', height: '100vh'}}>
+      <div style={{position: 'absolute', width: '90vw', height: '50vh', opacity: '.5', margin: '1%', padding: '1%', border: '1% outset #aaa', borderRadius: '22px', backgroundImage: 'linear-gradient(to bottom right, #777, #fff)', zIndex: '0'}}></div>
+      <div style={{position: 'absolute', width: '90vw', height: 'auto', margin: '1%', padding: '1%', border: '1% outset #aaa', borderRadius: '22px', backgroundImage: ''}}>
+        <div style={{width: '85vw', height: 'auto', padding: '2%', border: '1% outset #aaa', borderRadius: '22px', backgroundImage: 'linear-gradient(to bottom right, #777, #fff)', overflow: 'auto'}}>
           {children}
         </div>
       </div>
