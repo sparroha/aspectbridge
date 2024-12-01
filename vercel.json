@@ -17,7 +17,7 @@
         {
             "name": "my-cron",
             "schedule": "*/10 * * * *",
-            "dest": "/api/reurly/route.js?name=Cron"
+            "path": "/api/reurly/route.js?name=Cron"
         }
     ]
 }
