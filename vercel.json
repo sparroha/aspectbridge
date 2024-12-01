@@ -12,5 +12,12 @@
             ],
             "dest": "/api/users.js"
         }
+    ],
+    "crons": [
+        {
+            "name": "my-cron",
+            "schedule": "*/10 * * * *",
+            "dest": "/api/reurly/route.js?name=Cron"
+        }
     ]
 }

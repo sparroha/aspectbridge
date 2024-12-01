@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CookingIt from "./cooking_it";
 import Foundations from "./grounding/foundations/page";
 import Heating from "./grounding/heating/page";
@@ -33,6 +33,10 @@ export default function Cookbook({params}){
     ]
     
     return <div style={{ width: '80vw', backgroundImage: 'linear-gradient(to bottom, #999, #fff', borderRadius: '22px'}}>
+        <div className="row" style={{color: 'white'}}>
+            {//<Blank/>
+            }
+        </div><br/><br/>
         <div className="row" style={{backgroundColor: 'transparent'}}>
             {pages.map((p, i)=>{
                 if((page == 'Home' && p != 'Home') || (page != 'Home' && p == 'Home'))return <div key={i} className="col-4" style={{height: '100px', backgroundImage: 'none'}}>
@@ -140,5 +144,35 @@ export default function Cookbook({params}){
                 {subPage == 'VeggieTable' && <VeggieTable/>}
             </>
         }
+    </div>
+}
+
+
+
+
+export function Blank(){
+    //helpers
+    const rand = (x)=>(Math.floor(Math.random() * x))
+    //screan refresh timer
+    const [out, setOut] = useState({})
+    useEffect(()=>{
+        let i = setInterval(()=>setOut({}), 1000)
+        return ()=>clearInterval(i)
+    }, [])
+    //timer end
+    return <div style={{color: 'white'}}>
+        {
+            (
+                (name: string)=>{
+                    return name.charAt(rand(name.length))
+                }
+            )('abcdefghijklmnopqrstuvwxyz')
+        }
+        <br/><br/>
+        {(
+                (name: string[])=>{
+                    return name[rand(name.length)]
+                }
+            )(['heads','tails'])}
     </div>
 }
