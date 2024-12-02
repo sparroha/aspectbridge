@@ -15,7 +15,7 @@
     ],
     "crons": [
         {
-            "path": "/api/reurly/route.js?name=Cron",
+            "path": "/api/reurly/route.js",
             "schedule": "*/10 * * * *"
         }
     ]
