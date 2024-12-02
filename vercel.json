@@ -12,11 +12,5 @@
             ],
             "dest": "/api/users.js"
         }
-    ],
-    "crons": [
-        {
-            "path": "/api/recurly",
-            "schedule": "*/10 * * * *"
-        }
     ]
 }
