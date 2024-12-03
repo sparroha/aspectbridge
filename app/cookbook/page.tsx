@@ -149,8 +149,7 @@ export default function Cookbook({params, searchParams}){
 
 
 
-
-export function Blank({params, searchParams}){
+/*export function Blank({params, searchParams}){
     //helpers
     const rand = (x)=>(Math.floor(Math.random() * x))
     //screan refresh timer
@@ -175,4 +174,4 @@ export function Blank({params, searchParams}){
                 }
             )(['heads','tails'])}
     </div>
-}
+}*/
