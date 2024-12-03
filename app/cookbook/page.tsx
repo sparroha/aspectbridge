@@ -16,7 +16,7 @@ import FFrame from "./string";
 import SystemBaseNotes from "./system_base_notes";
 import VeggieTable from "./veggie table/veggie_plate";
 
-export default function Cookbook({params}){
+export default function Cookbook({params, searchParams}){
     const [page, setPage] = useState('Home')
     const [subPage, setSubPage] = useState('')
     const pages = [
@@ -150,7 +150,7 @@ export default function Cookbook({params}){
 
 
 
-export function Blank(){
+export function Blank({params, searchParams}){
     //helpers
     const rand = (x)=>(Math.floor(Math.random() * x))
     //screan refresh timer
