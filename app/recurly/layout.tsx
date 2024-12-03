@@ -1,5 +1,6 @@
+require("./rc.js")
 export default async function DevLayout({children}) {
-    return <>{children}<br/><br/><br/><hr style={{borderColor: 'white'}}/>
-    	<a href="/api/revurly">/api/recurly</a><br/>
+    return <><script src="https://js.recurly.com/v4/recurly.js"></script>
+        {children}
     </>
 }

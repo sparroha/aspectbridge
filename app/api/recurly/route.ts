@@ -1,9 +1,10 @@
 import { getQuery } from "../util/params";
-import recurly, { Account } from 'recurly';
+import recurly from 'recurly';
+
 
 // GET /api/recurly?name=World
 export async function GET(req: Request, context: any, res: Response) {
-
+    //recurly.configure('ewr1-AxqCz2aZ9UMj5oOBsENPG2');
     const {
         //CRON_SECRET,
         RECURLY_API_KEY//need aquisition

@@ -17,6 +17,7 @@
     "@blueprintjs/core": "^5.11.0",
     "@blueprintjs/icons": "^5.11.0",
     "@legendapp/state": "^2.1.14",
+    "@recurly/react-recurly": "^2.0.1",
     "@stylexjs/stylex": "^0.3.0",
     "@vercel/speed-insights": "^1.0.12",
     "bootstrap": "^5.3.3",

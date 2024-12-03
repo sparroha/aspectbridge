@@ -1,0 +1,24 @@
+<html>
+    <script src="https://js.recurly.com/v4/recurly.js"></script>
+    <link href="https://js.recurly.com/v4/recurly.css" rel="stylesheet" type="text/css">
+    <body>
+        <div id="recurly-elements"></div>
+        <button id="submit-button">Submit</button>
+        <script>
+            recurly.configure('ewr1-AxqCz2aZ9UMj5oOBsENPG2');
+            var elements = recurly.Elements();
+            var cardElement = elements.CardElement();
+            cardElement.attach('#recurly-elements');
+            var submitButton = document.getElementById('submit-button');
+            submitButton.addEventListener('click', function () {
+                recurly.token(cardElement, function (err, token) {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log(token);
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
