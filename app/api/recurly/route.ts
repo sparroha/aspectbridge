@@ -1,9 +1,11 @@
+import { useRecurly } from "@recurly/react-recurly";
 import { getQuery } from "../util/params";
 import recurly from 'recurly';
 
 
 // GET /api/recurly?name=World
 export async function GET(req: Request, context: any, res: Response) {
+    const token = useRecurly().token;
     //recurly.configure('ewr1-AxqCz2aZ9UMj5oOBsENPG2');
     const {
         //CRON_SECRET,
@@ -14,13 +16,17 @@ export async function GET(req: Request, context: any, res: Response) {
     //const authHeader = req.headers.get('Authorization');
     const query = getQuery(req);
     const accountId = query['actid'];
+    const tokenId = query['token'] || token;
+    if (!accountId) {
+        return new Response('Missing account id', { status: 400 });
+    }
     /*if (authHeader !== `Bearer ${CRON_SECRET}` && query['Authorization'] !== CRON_SECRET) {
         return new Response('Not authorized: auth='+query['Authorization'],{status: 401});
     }*/
 
     const account = await client.getAccount(accountId);
     await doCreateLineItems(client, account.id).then(() => {console.log('Line Items Done')})//!!!
-    .then(()=>doInvoice(client, account.id).then(() => {console.log('Invoice Done')}))//!!!
+    .then(()=>doInvoice(client, account.id, tokenId).then(() => {console.log('Invoice Done')}))//!!!
 
     /*const accounts = await client.listAccounts().each();
     for await (const account of accounts) {
@@ -60,11 +66,17 @@ async function doCreateLineItems(client, accountId: string) {
         }
     }
 }
-async function doInvoice(client, accountId: string) {
+async function doInvoice(client, accountId: string, tokenId) {
     try {
         let invoiceCreate = {
             currency: 'USD',
-            collectionMethod: 'automatic'
+            collectionMethod: 'automatic',
+            account: {
+                code: accountId,
+                billingInfo: {
+                  tokenId: tokenId
+                }
+              },
         }
         let invoiceCollection = await client.createInvoice(accountId, invoiceCreate)
         console.log('Created Invoice')
